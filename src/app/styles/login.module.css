@@ -1,0 +1,26 @@
+/* Styles for the right container */
+.image-container {
+    background-image   : url('/images/image1.png');
+    background-size    : cover;
+    background-position: center center;
+    border-radius      : 0.5rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex>div {
+    flex: 1;
+}
+
+.login-button {
+    background-color: #4d70eb;
+    color           : white;
+    border          : none;
+    font-weight     : bold;
+}
+
+.login-button:hover {
+    background-color: #4362a3;
+}

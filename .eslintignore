@@ -1,0 +1,5 @@
+# Ignore all files in the "pages/api" directory
+
+# Ignore a specific page
+scr/app/login/page.jsx
+scr/app/signup/page.jsx
