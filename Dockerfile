@@ -1,4 +1,4 @@
-FROM node:19 AS dependency
+FROM node:18.17.0 AS dependency
 
 WORKDIR /app
 COPY package.json .
@@ -9,6 +9,6 @@ WORKDIR /app
 COPY --from=dependency /app/node_modules ./node_modules
 COPY . .
 RUN env
-RUN yarn build:prod
+RUN yarn build
 
 CMD [ "yarn","start" ]
