@@ -1,31 +1,31 @@
 .ant-segmented {
-    margin-bottom: 0px;
-    border: none;
-    background-color: #FFFFFF;
-    color: rgba(0, 0, 0, 0.65);
-    font-weight: bold;
-    font-size: 12.6px;  /* Added this line */
+  margin-bottom: 0px;
+  border: none;
+  background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: bold;
+  font-size: 12.6px; /* Added this line */
 }
 
 .ant-segmented-item {
-    background-color: #FFFFFF;
-    color: #565656;
-    border: none;
-    padding: 0px;
-    font-size: 12.6px;  /* Added this line */
+  background-color: #ffffff;
+  color: #565656;
+  border: none;
+  padding: 0px;
+  font-size: 12.6px; /* Added this line */
 }
 
 .ant-segmented-item-selected {
-    color: #FFFFFF !important;
-    background-color: #4d70eb !important;
-    font-size: 12.6px;  /* Added this line */
+  color: #ffffff !important;
+  background-color: #4d70eb !important;
+  font-size: 12.6px; /* Added this line */
 }
 
 .ant-segmented-thumb {
-    background-color: #4d70eb !important;
+  background-color: #4d70eb !important;
 }
 
 .ant-segmented-item-label {
-    border: none !important;
-    font-size: 12.6px;  /* Added this line */
+  border: none !important;
+  font-size: 12.6px; /* Added this line */
 }

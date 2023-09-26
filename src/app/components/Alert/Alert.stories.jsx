@@ -15,7 +15,7 @@ export default {
   },
 };
 
-const Template = (args) => <Alert {...args} />;
+const Template = args => <Alert {...args} />;
 
 export const Success = Template.bind({});
 Success.args = {

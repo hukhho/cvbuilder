@@ -31,18 +31,18 @@
 
 // export default DocxPreview;
 
-"use client"
+'use client';
+
 import { useEffect, useRef } from 'react';
 
 export default function PDFViewer() {
   return (
-    <div className='pdf-viewer'>
+    <div className="pdf-viewer">
       <iframe
-        src='http://localhost:8080/api/cv/' // Replace with your Spring Boot endpoint
-        title='PDF Viewer'
+        src="http://localhost:8080/api/cv/" // Replace with your Spring Boot endpoint
+        title="PDF Viewer"
         style={{ width: '100%', height: '100vh', border: 'none' }}
-      ></iframe>
+      />
     </div>
   );
 }
-

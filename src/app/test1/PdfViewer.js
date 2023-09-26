@@ -10,12 +10,12 @@ export default function PdfViewer({ pdfResponse }) {
           path: '/webviewer/lib',
           licenseKey: 'VMeLR5MsW5lX3X9YfqQF', // Replace with your license key
         },
-        viewer.current
-      ).then((instance) => {
+        viewer.current,
+      ).then(instance => {
         const { docViewer } = instance;
 
         // Function to load the PDF content
-        const loadPdfFromByteArray = (pdfByteArray) => {
+        const loadPdfFromByteArray = pdfByteArray => {
           const documentId = 'cv.pdf'; // Unique document ID
           const options = {}; // Optional options for loading
 
@@ -41,7 +41,7 @@ export default function PdfViewer({ pdfResponse }) {
 
   return (
     <div className="MyComponent">
-      <div className="webviewer" ref={viewer} style={{ height: '100vh' }}></div>
+      <div className="webviewer" ref={viewer} style={{ height: '100vh' }} />
     </div>
   );
 }

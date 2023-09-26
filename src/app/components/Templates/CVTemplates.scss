@@ -1,0 +1,81 @@
+#resume {
+  $font-size: 9pt;
+  $line-height: 1.25;
+  $font-family: Merriweather, serif;
+  $font-color: rgb(28, 105, 206);
+}
+
+.cv-layout-container {
+  margin: 2em;
+  padding: 2em;
+  background-color: #ffffff;
+  position: relative;
+  width: 100%;
+  max-width: fit-content;
+  box-shadow: none;
+  min-width: fit-content;
+  display: flex;
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  justify-content: center;
+  text-align: left;
+  border-radius: 4px;
+  .title {
+    font-weight: 600;
+    line-height: 1.35em;
+    color: var(--font-color);
+  }
+  .information-section-container {
+    text-align: center;
+    .contact-info {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+  }
+  .skills-section-container {
+    .skill-items {
+    }
+  }
+  .experiences-section-container {
+    .experience-items {
+    }
+  }
+  .educations-section-container {
+    .education-items {
+    }
+  }
+  .certifications-section-container {
+    .certification-items {
+    }
+  }
+  .summary-section-container {
+    justify-content: flex-start;
+    .summary-content {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      vertical-align: top;
+      font-weight: 100;
+      font-size: 0.85em;
+    }
+  }
+  .standard-item {
+    margin-bottom: 12px;
+    .item-title {
+      color: var(--font-color);
+      line-height: var(--line-height);
+    }
+    .item-sub-title {
+      display: flex;
+      .left-sub-title {
+      }
+      .right-sub-title {
+        margin-left: auto;
+      }
+    }
+    .item-description {
+      font-weight: 100;
+    }
+  }
+}

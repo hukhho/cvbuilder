@@ -2,11 +2,11 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8080/api/v1', // This is the base URL for your Next.js API routes
-    timeout: 10000, // Set a timeout for requests
-    headers: {
-        'Content-Type': 'application/json',
-    },
+  baseURL: 'http://localhost:8080/api/v1', // This is the base URL for your Next.js API routes
+  timeout: 10000, // Set a timeout for requests
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // If you need to set up interceptors (e.g., for handling errors or setting auth headers), you can do it here.
