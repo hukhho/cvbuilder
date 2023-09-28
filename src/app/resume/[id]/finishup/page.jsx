@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -38,6 +40,16 @@ const mockData = {
           id: 2,
           companyName: 'Momo',
           role: 'Product Manager',
+          startDate: '',
+          endDate: '',
+          location: 'Ho Chi Minh',
+          description:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        },
+        {
+          id: 3,
+          companyName: 'VNG',
+          role: 'Dev',
           startDate: '',
           endDate: '',
           location: 'Ho Chi Minh',
@@ -203,11 +215,12 @@ const FinishUp = () => {
                   />
                 </div>
                 <CVLayout>
-                  <InformationSection type={templateType[1]} userInfo={userInfo} />
-                  <SummarySection type={templateType[1]} summary={mockSummary} />
-                  <ExperiencesSection type={templateType[1]} experiences={experiences} />
-                  <EducationsSection type={templateType[1]} educations={educations} />
-                  <SkillsSection type={templateType[1]} skills={skills} />
+                  {/* should modify */}
+                  {userInfo && <InformationSection type={templateType[1]} userInfo={userInfo} />}
+                  {mockSummary && <SummarySection type={templateType[1]} summary={mockSummary} />}
+                  {experiences && <ExperiencesSection type={templateType[1]} experiences={experiences} />}
+                  {educations && <EducationsSection type={templateType[1]} educations={educations} />}
+                  {skills && <SkillsSection type={templateType[1]} skills={skills} />}
                 </CVLayout>
               </div>
 
@@ -227,7 +240,7 @@ const FinishUp = () => {
                 </div>
                 <div className="h-1/3 ">
                   <h1>REZI EXPERT REVIEW</h1>
-                  <p>We 'll correct all formatting, content, and grammar errors directly in your resume</p>
+                  <p>We'll correct all formatting, content, and grammar errors directly in your resume</p>
                   <Button
                     className="form-button w-full"
                     style={{
