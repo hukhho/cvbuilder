@@ -1,14 +1,13 @@
 import React from "react";
 
-const ExperienceList = ({ data, onDelete, onEdit }) => {
+const CourseworkList = ({ data, onDelete, onEdit }) => {
   const {
     id,
-    companyName,
-    location,
-    role,
-    description,
-    startDate,
-    endDate,
+    name,
+    skill,
+    courseLocation,
+    endYear,
+    description
   } = data;
   console.log("data: ", data)
   const handleDeleteClick = async () => {
@@ -31,7 +30,7 @@ const ExperienceList = ({ data, onDelete, onEdit }) => {
       <div className="h-[67.39px] flex-col justify-start items-start gap-[9px] flex">
         <div className="self-stretch pr-32 pb-[0.80px] justify-start items-start inline-flex">
           <div className="text-slate-700 text-lg font-normal font-['Source Sans Pro'] leading-7 whitespace-nowrap">
-            {role}
+            {name}
           </div>
           {/* <div className="text-slate-300 text-lg font-normal font-['Source Sans Pro'] leading-7 whitespace-nowrap">
             {companyName}
@@ -71,4 +70,4 @@ const ExperienceList = ({ data, onDelete, onEdit }) => {
   );
 };
 
-export default ExperienceList;
+export default CourseworkList;

@@ -15,11 +15,11 @@ const stylesInput = {
   fontWeight: "600",
   fontFamily: "Source Sans Pro, sans-serif",
 };
-const CertificationForm = ({ cvId, onCreated, data }) => {
+const SkillsForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
 
-  const dataService = new DataService('certifications', cvId);
+  const dataService = new DataService('skills', cvId);
 
   useEffect(() => {
     if (data) {
@@ -57,60 +57,25 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
           autoComplete="off"
         >
           <Form.Item
-            name="name"
+            name="skills"
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                WHAT WAS THE CERTIFICATE <strong>NAME</strong>?
+                ENTER THE <strong>SKILLS</strong> YOU POSSESS
                 </span> 
               </label>
             }
           >
             <Input style={stylesInput} placeholder="Project Management Professional (PMP)" />
           </Form.Item>
-          <Form.Item
-            name="certificateSource"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                    <strong>WHERE</strong> DID YOU GET THE CERTIFICATE?
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="Project Management Institute" />
-          </Form.Item>
-          <Form.Item
-            name="endYear"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                    <strong>WHEN</strong> DID YOU GET THE CERTIFICATE?
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="2023" />
-          </Form.Item>
-          <Form.Item
-            name="certificateRelevance"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                    HOW IS THE CERTIFICATE <strong>RELEVANT</strong>?
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="• Certified in a standardized and evolving set of project management principles." />
-          </Form.Item>
+        
           <Button
             htmlType="submit"
             className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
             style={{ width: "769.22px", height: "47.86px", backgroundColor: "rgb(77, 112, 235)", color: "white" }}
           >
             <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-              {isEditMode ? "UPDATE " : "SAVE TO CERTIFICATION LIST"}
+              {isEditMode ? "UPDATE " : "SAVE TO SKILLS LIST"}
             </div>
           </Button>
         </Form>
@@ -118,4 +83,4 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
     </>
   );
 };
-export default CertificationForm;
+export default SkillsForm;

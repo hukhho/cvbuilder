@@ -74,6 +74,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         collapsed={collapsed}
         onCollapse={setCollapsed}
       >
+        
         <div className="demo-logo-vertical" />
         <svg
           style={{
@@ -128,7 +129,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
       <Layout
         className="site-layout"
         style={{
-          marginLeft: 190,
+          marginLeft: 113,
           background: "white",
         }}
       >
@@ -162,11 +163,13 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
           </div>
         </Content>
         <Footer
+
           style={{
+            marginTop: "200px",
             textAlign: "center",
+            background: "#FFFFFF"
           }}
         >
-          Ant Design ©2023
         </Footer>
       </Layout>
     </Layout>

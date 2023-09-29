@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, InputNumber, Typography, DatePicker, Button } from "antd";
+import { Form, Input, InputNumber, Typography, Button } from "antd";
 import DataService from "@/app/utils/dataService";
-import moment from "moment";
-const { RangePicker } = DatePicker;
 
 import "./customtext.css";
 
@@ -17,23 +15,15 @@ const stylesInput = {
   fontWeight: "600",
   fontFamily: "Source Sans Pro, sans-serif",
 };
-const ProjectForm = ({ cvId, onCreated, data }) => {
+const CourseworkForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
 
-  const dataService = new DataService("projects", cvId);
+  const dataService = new DataService("source-works", cvId);
 
   useEffect(() => {
     if (data) {
-      //   // Convert the startDate and endDate to moment objects
-      const startDateMoment = moment(data.startDate);
-      const endDateMoment = moment(data.endDate);
-      // Set the form values
-      form.setFieldsValue({
-        ...data,
-        "range-picker": [startDateMoment, endDateMoment],
-      });
-
+      form.setFieldsValue(data);
       setIsEditMode(true); // Set to edit mode if education prop is provided
     } else {
       form.resetFields();
@@ -41,13 +31,6 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
     }
   }, [data, form]);
 
-  const handleDateChange = (dates, dateStrings) => {
-    const [startDate, endDate] = dates;
-    form.setFieldsValue({
-      startDate: startDate,
-      endDate: endDate,
-    });
-  };
   const handleSubmit = async (values) => {
     try {
       if (isEditMode) {
@@ -74,80 +57,79 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
           autoComplete="off"
         >
           <Form.Item
-            name="title"
+            name="name"
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                  GIVE YOUR PROJECT A <strong>TITLE</strong>
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="Volunteer" />
-          </Form.Item>
-          <Form.Item
-            name="organization"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  IN WHICH <strong>ORGANIZATION</strong> DID YOU DO YOUR
-                  PROJECT?
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="Habitat for Humanity" />
-          </Form.Item>
-          <Form.Item name="startDate" hidden>
-            <Input type="hidden" />
-          </Form.Item>
-          <Form.Item name="endDate" hidden>
-            <Input type="hidden" />
-          </Form.Item>
-          <Form.Item
-            name="range-picker"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  <strong>WHEN</strong> DID YOU DO YOUR PROJECT?
-                </span>
-              </label>
-            }
-          >
-            <RangePicker
-              style={stylesInput}
-              picker="month"
-              onChange={handleDateChange}
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="projectUrl"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  PROJECT <strong>URL</strong>
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="https://www.rezi.ai/" />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  NOW DESCRIBE WHAT <strong>YOU DID</strong>
+                  WHAT WAS THE COURSE <strong>NAME</strong>?
                 </span>
               </label>
             }
           >
             <Input
               style={stylesInput}
-              placeholder="•Volunteerd to help renovate a house and managed a team of 6."
+              placeholder="Introduction to Computer Systems"
             />
           </Form.Item>
+          <Form.Item
+            name="courseLocation"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  <strong>WHERE</strong> DID YOU TAKE THE COURSE?
+                </span>
+              </label>
+            }
+          >
+            <Input
+              style={stylesInput}
+              placeholder="University of Wisconsin, Madison"
+            />
+          </Form.Item>
+          <Form.Item
+            name="endYear"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  <strong>WHEN</strong> DID YOU TAKE THE COURSE?
+                </span>
+              </label>
+            }
+          >
+            <Input style={stylesInput} placeholder="2023" />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  HOW WAS THAT SKILL <strong>APPLIED</strong>?
+                </span> 
+              </label>
+            }
+          >
+            <Input
+              style={stylesInput}
+              placeholder="Teamwork"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="skill"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  WHAT <strong>SKILL</strong> DID YOU USE?
+                </span>
+              </label>
+            }
+          >
+            <Input
+              style={stylesInput}
+              placeholder="• Coordinating on code with a small group of people."
+            />
+          </Form.Item>
+
           <Button
             htmlType="submit"
             className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
@@ -159,7 +141,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
             }}
           >
             <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-              {isEditMode ? "UPDATE " : "SAVE TO PROJECT LIST"}
+              {isEditMode ? "UPDATE " : "SAVE TO COURSEWORK LIST"}
             </div>
           </Button>
         </Form>
@@ -167,4 +149,4 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
     </>
   );
 };
-export default ProjectForm;
+export default CourseworkForm;

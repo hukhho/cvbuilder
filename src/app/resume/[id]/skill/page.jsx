@@ -8,58 +8,60 @@ const { Meta } = Card;
 
 import UserCVBuilderHeader from "@/app/components/UserCVBuilderHeader";
 import UserCVBuilderLayout from "@/app/components/Layout/UseCVBuilderLayout";
-import ExperienceForm from "@/app/components/Form/ExperienceForm";
+
+import CertificationForm from "@/app/components/Form/CertificationForm";
 
 import SortCheckbox from "./SortCheckbox";
-import ExperienceList from "./ExperienceList";
-import { getAllExperiences, deleteExperience } from "./experienceService";
+import SkillList from "./SkillList";
+import DataService from "../../../utils/dataService";
+import SkillsForm from "@/app/components/Form/SkillForm";
 
-const Experience = ({ params }) => {
-  const [experiences, setExperiences] = useState([]);
-  const [selectedExperience, setSelectedExperience] = useState(null);
+const Certification = ({ params }) => {
+  const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState(null);
   const [enabledCategories, setEnabledCategories] = useState({
-    EXPERIENCE: true,
+    SKILLS: true,
   });
-  console.log("Experiences: ", params);
+  console.log("Data: ", params);
 
   const cvId = params.id;
+  const dataService = new DataService('skills', cvId);
 
-  const fetchExperiences = async () => {
+  const fetchData = async () => {
     try {
-      const data = await getAllExperiences(cvId);
-      console.log("data getAllExperiences ", data);
-      setExperiences(data);
+      const data = await dataService.getAll();
+      console.log("fetchData ", data);
+      setData(data);
     } catch (error) {
-      console.error("There was an error fetching the experiences", error);
+      console.error("There was an error fetching the data", error);
     }
   };
 
   useEffect(() => {
-    fetchExperiences();
+    fetchData();
   }, []);
 
-  const handleEditExperience = (experience) => {
-    setSelectedExperience(experience);
+  const handleEditData = (data) => {
+    setSelectedData(data);
   };
-  const handleDeleteExperience = async (experienceId) => {
+  const handleDeleteData = async (dataId) => {
     try {
-      console.log("deleteExperience id ", experienceId);
+      console.log("delete data id ", dataId);
 
-      await deleteExperience(cvId, experienceId);
+      await dataService.delete(cvId, experienceId);
 
-      // Refresh the experiences list after deletion
-      const updatedExperiences = await getAllExperiences(cvId);
+      const updatedData = await dataService.getAll(cvId);
 
-      setExperiences(updatedExperiences);
+      setData(updatedData);
+
     } catch (error) {
-      console.error("There was an error deleting the experience", error);
+      console.error("There was an error deleting the data", error);
     }
   };
   const [sortByDate, setSortByDate] = useState(true);
 
   const handleSortChange = () => {
     setSortByDate(!sortByDate);
-    // You can implement your sorting logic here
   };
 
   return (
@@ -88,23 +90,23 @@ const Experience = ({ params }) => {
                   <div className=" p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex">
                     <div className="w-[266px] h-[50.50px] relative border-b border-gray-300">
                       <div className="left-0 top-[1.47px] absolute text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
-                        Your Experience
+                        Your Skills
                       </div>
-                      <div className="left-[138.20px] top-[9px] absolute text-gray-300 text-lg font-black font-['Font Awesome 5 Free'] leading-[18px]">
+                      {/* <div className="left-[138.20px] top-[9px] absolute text-gray-300 text-lg font-black font-['Font Awesome 5 Free'] leading-[18px]">
                         
-                      </div>
+                      </div> */}
                     </div>
-                    {experiences.map((experience) => (
-                      <ExperienceList
-                        key={experience.id}
-                        data={experience}
-                        onDelete={handleDeleteExperience}
-                        onEdit={handleEditExperience}
+                    {data.map((item) => (
+                      <SkillList
+                        key={item.id}
+                        data={item}
+                        onDelete={handleDeleteData}
+                        onEdit={handleEditData}
                       />
                     ))}
                     <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">
                       <div className="text-center text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-                        Create new education
+                        Create new skill
                       </div>
                     </div>
                   </div>
@@ -112,10 +114,10 @@ const Experience = ({ params }) => {
               </div>
             </div>
             <div className="flex flex-col px-4">
-              <ExperienceForm
+              <SkillsForm
                 cvId={cvId}
-                onExperienceCreated={fetchExperiences}
-                experience={selectedExperience}
+                onCreated={fetchData}
+                data={selectedData}
               />
             </div>
           </div>
@@ -126,4 +128,4 @@ const Experience = ({ params }) => {
   );
 };
 
-export default Experience;
+export default Certification;

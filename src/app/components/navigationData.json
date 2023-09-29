@@ -1,0 +1,101 @@
+[
+    {
+      "label": "Pham Viet Thuan Thien - CV",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "8.99px",
+        "top": "4.01px"
+      },
+      "background": "bg-neutral-500 bg-opacity-10 rounded-[3.15px]"
+    },
+    {
+      "label": "Contact",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "208.30px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Experience",
+      "className": "text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "284.22px",
+        "top": "4.01px"
+      },
+      "background": "bg-indigo-500 rounded-[3.15px]"
+    },
+    {
+      "label": "Project",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "390.57px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Education",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "471.82px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Certifications",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "567.10px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Coursework",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "689.02px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Involvement",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "799.23px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Skills",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "908.80px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Summary",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "977.60px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "Finish up",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "1064.13px",
+        "top": "8.77px"
+      }
+    },
+    {
+      "label": "AI Cover Letter",
+      "className": "text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3",
+      "position": {
+        "left": "1151.16px",
+        "top": "8.77px"
+      }
+    }
+  ]
+  

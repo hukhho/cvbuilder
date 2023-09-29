@@ -17,17 +17,17 @@ const stylesInput = {
   fontWeight: "600",
   fontFamily: "Source Sans Pro, sans-serif",
 };
-const ProjectForm = ({ cvId, onCreated, data }) => {
+const InvolvementForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
 
-  const dataService = new DataService("projects", cvId);
+  const dataService = new DataService("involvements", cvId);
 
   useEffect(() => {
     if (data) {
-      //   // Convert the startDate and endDate to moment objects
-      const startDateMoment = moment(data.startDate);
-      const endDateMoment = moment(data.endDate);
+      // Convert the startDate and endDate to moment objects
+      const startDateMoment = moment(experience.startDate);
+      const endDateMoment = moment(experience.endDate);
       // Set the form values
       form.setFieldsValue({
         ...data,
@@ -74,29 +74,31 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
           autoComplete="off"
         >
           <Form.Item
-            name="title"
+            name="organizationRole"
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                  GIVE YOUR PROJECT A <strong>TITLE</strong>
+                  WHAT WAS YOUR <strong>ROLE</strong> AT THE ORGANIZATION?
                 </span>
               </label>
             }
           >
-            <Input style={stylesInput} placeholder="Volunteer" />
+            <Input style={stylesInput} placeholder="Selected Member" />
           </Form.Item>
           <Form.Item
-            name="organization"
+            name="organizationName"
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                  IN WHICH <strong>ORGANIZATION</strong> DID YOU DO YOUR
-                  PROJECT?
+                  FOR WHICH <strong>ORGANIZATION</strong> DID YOU WORK?
                 </span>
               </label>
             }
           >
-            <Input style={stylesInput} placeholder="Habitat for Humanity" />
+            <Input
+              style={stylesInput}
+              placeholder="Economics Student Association"
+            />
           </Form.Item>
           <Form.Item name="startDate" hidden>
             <Input type="hidden" />
@@ -109,7 +111,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                  <strong>WHEN</strong> DID YOU DO YOUR PROJECT?
+                  <strong>HOW LONG</strong> WERE YOU WITH THE ORGANIZATION?
                 </span>
               </label>
             }
@@ -122,30 +124,34 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
           </Form.Item>
 
           <Form.Item
-            name="projectUrl"
+            name="college"
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                  PROJECT <strong>URL</strong>
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="https://www.rezi.ai/" />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  NOW DESCRIBE WHAT <strong>YOU DID</strong>
+                  AT <strong>WHICH COLLEGE</strong> WAS THE ORGANIZATION
+                  LOCATED?
                 </span>
               </label>
             }
           >
             <Input
               style={stylesInput}
-              placeholder="•Volunteerd to help renovate a house and managed a team of 6."
+              placeholder="University of Wisconsin, Madison"
+            />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  <strong>WHAT DID YOU DO</strong> AT THE ORGANIZATION?
+                </span>
+              </label>
+            }
+          >
+            <Input
+              style={stylesInput}
+              placeholder="• Participated in forums and discussions presented by key economic thinkers and companies associated with the university."
             />
           </Form.Item>
           <Button
@@ -167,4 +173,4 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
     </>
   );
 };
-export default ProjectForm;
+export default InvolvementForm;
