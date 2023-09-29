@@ -1,22 +1,22 @@
-"use client"
+'use client';
 
 import { useState } from 'react';
 import Cookies from 'js-cookie';
-import { redirect } from 'next/navigation'
-import { RedirectType } from "next/dist/client/components/redirect";
+import { redirect } from 'next/navigation';
+import { RedirectType } from 'next/dist/client/components/redirect';
 
 const CreateUser = () => {
   const [user, setUser] = useState({ name: '', email: '' });
-  
-  const handleChange = (e) => {
+
+  const handleChange = e => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-        "use server";
+      ('use server');
 
       // Send a POST request to your backend to create the user
       const response = await fetch('http://170.187.198.18:8080/api/users', {
@@ -34,8 +34,8 @@ const CreateUser = () => {
 
         // Save the user ID in a cookie
         Cookies.set('userId', id);
-        console.log("cookie set userid: ", id)
-		redirect("/users/1", RedirectType.push)
+        console.log('cookie set userid: ', id);
+        redirect('/users/1', RedirectType.push);
 
         // Redirect to the user's profile page
       } else {
@@ -52,33 +52,15 @@ const CreateUser = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={user.name}
-            onChange={handleChange}
-          />
+          <input type="text" id="name" name="name" value={user.name} onChange={handleChange} />
         </div>
         <div>
           <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={user.email}
-            onChange={handleChange}
-          />
+          <input type="email" id="email" name="email" value={user.email} onChange={handleChange} />
         </div>
         <div>
           <label htmlFor="password">password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={user.password}
-            onChange={handleChange}
-          />
+          <input type="password" id="password" name="password" value={user.password} onChange={handleChange} />
         </div>
         <button type="submit">Create User</button>
       </form>

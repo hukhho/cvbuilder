@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["photos.pinksale.finance"],
+    domains: ['photos.pinksale.finance'],
+  },
+  eslint: {
+    dirs: ['src'],
   },
 };
 

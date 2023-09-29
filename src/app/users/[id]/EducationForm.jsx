@@ -7,7 +7,7 @@ export default function EducationForm({ onAddEducation }) {
     gpa: '',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setEducation({
       ...education,
@@ -15,7 +15,7 @@ export default function EducationForm({ onAddEducation }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     onAddEducation(education); // Pass the education data to the parent component
     setEducation({
@@ -31,36 +31,15 @@ export default function EducationForm({ onAddEducation }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="college">College:</label>
-          <input
-            type="text"
-            id="college"
-            name="college"
-            value={education.college}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="text" id="college" name="college" value={education.college} onChange={handleInputChange} required />
         </div>
         <div>
           <label htmlFor="degree">Degree:</label>
-          <input
-            type="text"
-            id="degree"
-            name="degree"
-            value={education.degree}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="text" id="degree" name="degree" value={education.degree} onChange={handleInputChange} required />
         </div>
         <div>
           <label htmlFor="gpa">GPA:</label>
-          <input
-            type="text"
-            id="gpa"
-            name="gpa"
-            value={education.gpa}
-            onChange={handleInputChange}
-            required
-          />
+          <input type="text" id="gpa" name="gpa" value={education.gpa} onChange={handleInputChange} required />
         </div>
         <div>
           <button type="submit">Add Education</button>
