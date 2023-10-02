@@ -2,18 +2,19 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button, Card, ConfigProvider, Divider } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import ExperienceForm from '@/app/components/Form/ExperienceForm';
 import CVLayout from '@/app/components/Templates/CVLayout';
-import InformationSection from '@/app/components/Templates/InformationSection';
-import SummarySection from '@/app/components/Templates/SummarySection';
-import ExperiencesSection from '@/app/components/Templates/ExperiencesSection';
-import EducationsSection from '@/app/components/Templates/EducationsSection';
-import SkillsSection from '@/app/components/Templates/SkillsSection';
+import InformationSection from '@/app/components/Templates/SectionComponents/InformationSection';
+import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
+import ExperiencesSection from '@/app/components/Templates/SectionComponents/ExperiencesSection';
+import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
+import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
+import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 
 const { Meta } = Card;
 
@@ -34,7 +35,7 @@ const mockData = {
           endDate: '04 Dec',
           location: 'Ho Chi Minh',
           description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+            '• Responsible for dashboard validation, metadata, and human factor projects within the Holistics platform',
         },
         {
           id: 2,
@@ -169,12 +170,56 @@ const templateType = {
   3: 'modern-2',
 };
 
+const fonts = ['Merriweather', 'Source Sans Pro', 'Calibi'];
+
 const FinishUp = () => {
   const [templateData, setTemplateData] = useState(null);
+
+  const [templateSelected, setTemplateSelected] = useState(templateType[1]);
+
+  const [toolbarState, setToolbarState] = useState({
+    fontSize: '9pt',
+    lineHeight: 1.4,
+    fontFamily: `${fonts[2]}`,
+    fontWeight: 'normal',
+    zoom: '130%',
+    paperSize: 'letter',
+    hasDivider: true,
+    fontColor: 'rgb(0, 0, 0)',
+  });
 
   const { user: userInfo } = mockData.data;
   const { educations, projects, involvements, certifications, skills, experiences } = userInfo;
 
+  // to store order of some user's information
+  const [experiencesOrder, setExperiencesOrder] = useState(experiences);
+
+  const [educationsOrder, setEducationsOrder] = useState(educations);
+  const [skillsOrder, setSkillsOrder] = useState(skills);
+
+  const handleExperiencesOrderChange = newOrder => {
+    setExperiencesOrder(newOrder);
+  };
+
+  const handleEducationsOrderChange = useCallback(newOrder => {
+    setEducationsOrder(newOrder);
+  }, []);
+
+  const handleSkillsOrderChange = useCallback(newOrder => {
+    setSkillsOrder(newOrder);
+  }, []);
+
+  // to store order of template
+
+  const [sectionsOrder, setSectionsOrder] = useState([]);
+
+  const handleSectionsOrderChange = newOrder => {
+    setSectionsOrder(newOrder);
+  };
+
+  const handleToolbarChange = values => {
+    setToolbarState(values);
+  };
   // useEffect(() => {
   //   async function fetchData() {
   //     try {
@@ -190,6 +235,56 @@ const FinishUp = () => {
 
   //   fetchData();
   // }, []);
+
+  const sections = [
+    {
+      id: 'information',
+      component: (
+        <InformationSection canBeDrag={false} templateType={templateSelected} userInfo={userInfo} />
+      ),
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: true,
+    },
+    {
+      id: 'summary',
+      component: <SummarySection templateType={templateSelected} summary={mockSummary} />,
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: true,
+    },
+    {
+      id: 'experiences',
+      component: (
+        <ExperiencesSection
+          templateType={templateSelected}
+          experiences={experiences}
+          onChangeOrder={sortedExperiences => {
+            console.log('New order of experiences:', sortedExperiences);
+            // You can perform any necessary actions with the sorted experiences here.
+          }}
+        />
+      ),
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: experiences !== null,
+    },
+    {
+      id: 'educations',
+      component: <EducationsSection templateType={templateSelected} educations={educations} />,
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: educations !== null,
+    },
+    {
+      id: 'skills',
+      component: (
+        <SkillsSection
+          templateType={templateSelected}
+          skills={skills}
+          onChangeOrder={handleSkillsOrderChange}
+        />
+      ),
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: skills !== null,
+    },
+  ];
 
   return (
     <main>
@@ -212,15 +307,25 @@ const FinishUp = () => {
                       width: '100%',
                       height: '120px',
                     }}
-                  />
+                  >
+                    <FinishupToolbar
+                      toolbarState={toolbarState}
+                      onToolbarChange={handleToolbarChange}
+                    />
+                    <select onChange={e => setTemplateSelected(e.target.value)}>
+                      <option label={templateType[1]} value={templateType[1]} />
+                      <option label={templateType[2]} value={templateType[2]} />
+                      <option label={templateType[3]} value={templateType[3]} />
+                    </select>
+                  </div>
                 </div>
-                <CVLayout>
-                  {/* should modify */}
-                  {userInfo && <InformationSection type={templateType[1]} userInfo={userInfo} />}
-                  {mockSummary && <SummarySection type={templateType[1]} summary={mockSummary} />}
-                  {experiences && <ExperiencesSection type={templateType[1]} experiences={experiences} />}
-                  {educations && <EducationsSection type={templateType[1]} educations={educations} />}
-                  {skills && <SkillsSection type={templateType[1]} skills={skills} />}
+                <CVLayout
+                  key={[templateSelected, toolbarState]}
+                  layoutStyles={toolbarState}
+                  sectionsOrder={sectionsOrder}
+                  onSectionsOrderChange={handleSectionsOrderChange}
+                >
+                  {sections.map(section => section.canBeDisplayed && section.component)}
                 </CVLayout>
               </div>
 
@@ -240,7 +345,10 @@ const FinishUp = () => {
                 </div>
                 <div className="h-1/3 ">
                   <h1>REZI EXPERT REVIEW</h1>
-                  <p>We'll correct all formatting, content, and grammar errors directly in your resume</p>
+                  <p>
+                    We'll correct all formatting, content, and grammar errors directly in your
+                    resume
+                  </p>
                   <Button
                     className="form-button w-full"
                     style={{

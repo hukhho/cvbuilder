@@ -86,7 +86,10 @@ module.exports = {
     'react-hooks/exhaustive-deps': 0,
     'react/require-default-props': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'import/no-extraneous-dependencies': ['off', { devDependencies: false, optionalDependencies: false, peerDependencies: false }],
+    'import/no-extraneous-dependencies': [
+      'off',
+      { devDependencies: false, optionalDependencies: false, peerDependencies: false },
+    ],
 
     // Prettier
     // eslint looks for the prettier config at the top level of the package/app
