@@ -1,39 +1,36 @@
 /* eslint-disable no-shadow */
 
+'use client';
+
 import { useCallback, useState } from 'react';
-// import { DndProvider } from 'react-dnd';
-// import { HTML5Backend } from 'react-dnd-html5-backend';
-// import DraggableItem from '../DraggableItem';
 import './CVTemplates.scss';
-import { DndContext, KeyboardSensor, MouseSensor, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import {
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
-import SortableItem, { DragHandle } from '../SortableList/SortableItem';
+import SortableItem from '../SortableList/SortableItem';
+import { Divider } from 'antd';
 
-const CVLayout = ({ children }) => {
-  console.log('🚀 ~ file: CVLayout.jsx:14 ~ CVLayout ~ children:', children);
-  // const [components, setComponents] = useState(children);
-  // const moveItem = (fromIndex, toIndex) => {
-  //   console.log('🚀 ~ file: CVLayout.jsx:19 ~ moveItem ~ toIndex:', toIndex);
-  //   console.log('🚀 ~ file: CVLayout.jsx:19 ~ moveItem ~ fromIndex:', fromIndex);
-  //   const newComponents = [...components];
-  //   const [movedComponent] = newComponents.splice(fromIndex, 1);
-  //   newComponents.splice(toIndex, 0, movedComponent);
-  //   setComponents(newComponents);
-  // };
-  // return (
-  //   <div className="cv-layout-container">
-  //     <DndProvider backend={HTML5Backend}>
-  //       <div>
-  //         {components.map((component, index) => (
-  //           <DraggableItem key={component.key} index={index} moveItem={moveItem}>
-  //             {component}
-  //           </DraggableItem>
-  //         ))}
-  //       </div>
-  //     </DndProvider>
-  //   </div>
-  // );
+const CVLayout = ({ children, onSectionsOrderChange, layoutStyles }) => {
+  const { zoom, paperSize, hasDivider, ...restLayoutStyles } = layoutStyles;
+  const CvStyles = {
+    ...restLayoutStyles,
+    width: layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in',
+    fontFamily: `${layoutStyles.fontFamily}, serif`,
+    backgroundColor: 'white',
+  };
 
   const [components, setComponents] = useState(children);
 
@@ -51,36 +48,73 @@ const CVLayout = ({ children }) => {
     setActiveId(event.active.id);
   }, []);
 
-  const handleDragEnd = useCallback(event => {
-    const { active, over } = event;
+  const handleDragEnd = useCallback(
+    event => {
+      const { active, over } = event;
 
-    if (active.id !== over?.id) {
-      const oldIndex = components.indexOf(active.id);
-      const newIndex = components.indexOf(over.id);
-      const newComponents = [...components];
-      const [movedComponent] = newComponents.splice(oldIndex, 1);
-      newComponents.splice(newIndex, 0, movedComponent);
-      setComponents(newComponents);
-    }
+      if (over && active.id !== over.id) {
+        const oldIndex = components.indexOf(active.id);
+        const newIndex = components.indexOf(over.id);
+        const newComponents = arrayMove(components, oldIndex, newIndex);
+        setComponents([...newComponents]);
+        onSectionsOrderChange(newComponents);
+      }
 
-    setActiveId(null);
-  }, []);
+      setActiveId(null);
+    },
+    [components],
+  );
 
   const handleDragCancel = useCallback(() => {
     setActiveId(null);
   }, []);
 
   return (
-    <div className="cv-layout-container">
-      <DndContext sensors={sensors} onDragCancel={handleDragCancel} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <SortableContext items={components} strategy={verticalListSortingStrategy}>
-          {components.map((child, index) => (
-            <div key={index}>
-              <SortableItem key={index}>{child}</SortableItem>
-            </div>
-          ))}
-        </SortableContext>
-      </DndContext>
+    <div
+      style={{
+        minHeight: layoutStyles.paperSize === 'A4' ? '297mm' : '11in',
+        zoom: layoutStyles.zoom,
+        size: layoutStyles.paperSize,
+      }}
+    >
+      <div id="resume" className="cv-layout-container" style={CvStyles}>
+        <DndContext
+          sensors={sensors}
+          onDragCancel={handleDragCancel}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={components} strategy={verticalListSortingStrategy}>
+            {components.map((child, index) => (
+              <div key={index}>
+                {child.props.canBeDrag === false ? ( // Check if the section can be dragged
+                  <div key={index}>
+                    {child}
+                    {layoutStyles.hasDivider && (
+                      <Divider
+                        style={{
+                          margin: '10px 0px',
+                        }}
+                      />
+                    )}
+                  </div> // Render without drag if canBeDrag is false
+                ) : (
+                  <div key={index}>
+                    <SortableItem key={index}>{child}</SortableItem>
+                    {index < components.length - 1 && layoutStyles.hasDivider && (
+                      <Divider
+                        style={{
+                          margin: '10px 0px',
+                        }}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
     </div>
   );
 };

@@ -87,7 +87,10 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
           viewBox="0 0 389 185"
           className="src-components-Sidebar--tdHjSULsyBY="
         >
-          <path fill="#48c9b0" d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z" />
+          <path
+            fill="#48c9b0"
+            d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z"
+          />
         </svg>
 
         <Space

@@ -1,0 +1,19 @@
+.toolbar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #e8e8e8;
+    background-color: #fff;
+    border-radius: 4px;
+    gap: 12px;
+    height: 80px;
+}
+
+.element {
+    margin: 0px 8px;
+}
+
+.font-family {
+    width: 150px;
+    margin: 0 4px;
+}
