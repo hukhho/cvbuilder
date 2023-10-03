@@ -4,13 +4,11 @@ const SummarySection = ({ summary }) => {
   return (
     <div className="summary-section-container mb-4">
       <div className="title">
-        <Typography.Title level={2} style={{ margin: 0 }}>
-          Summary
-        </Typography.Title>
+        <span style={{ margin: 0 }}>Summary</span>
       </div>
       <Divider className="divider-section" />
       <div className="summary-content">
-        <p>{summary}</p>
+        <span>{summary}</span>
       </div>
     </div>
   );

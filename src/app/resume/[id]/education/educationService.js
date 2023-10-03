@@ -30,7 +30,10 @@ export const createEducation = async (cvId, educationData) => {
 
 export const updateEducation = async (cvId, educationId, educationData) => {
   try {
-    const response = await axiosInstance.put(`/cv/${cvId}/educations/${educationId}`, educationData);
+    const response = await axiosInstance.put(
+      `/cv/${cvId}/educations/${educationId}`,
+      educationData,
+    );
     return response.data;
   } catch (error) {
     throw error;

@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './CVTemplates.scss';
 import {
   DndContext,
@@ -24,13 +24,27 @@ import SortableItem from '../SortableList/SortableItem';
 import { Divider } from 'antd';
 
 const CVLayout = ({ children, onSectionsOrderChange, layoutStyles }) => {
-  const { zoom, paperSize, hasDivider, ...restLayoutStyles } = layoutStyles;
+  const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
   const CvStyles = {
     ...restLayoutStyles,
+    color: layoutStyles.fontColor,
     width: layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in',
     fontFamily: `${layoutStyles.fontFamily}, serif`,
     backgroundColor: 'white',
   };
+
+  useEffect(() => {
+    const resumeId = document.getElementById('resume');
+    resumeId?.style.setProperty('--text-indent', hasIndent ? '1em' : '0em');
+  }, [hasIndent]);
+
+  // useEffect(() => {
+  //   WebFont.load({
+  //     google: {
+  //       families: ['Source Sans Pro'],
+  //     },
+  //   });
+  // }, []);
 
   const [components, setComponents] = useState(children);
 
@@ -93,7 +107,7 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles }) => {
                     {layoutStyles.hasDivider && (
                       <Divider
                         style={{
-                          margin: '10px 0px',
+                          margin: '0px 0px 10px 0px',
                         }}
                       />
                     )}

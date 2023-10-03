@@ -78,12 +78,20 @@ const Education = ({ params }) => {
                 <div className="w-3/4 h-3/4 border-2 border-gray-200 rounded-lg p-4">
                   <div className="container">
                     <EducationHeader />
-                    <EducationList educations={educations} onDeleteEducation={handleDeleteEducation} onEditEducation={handleEditEducation} />
+                    <EducationList
+                      educations={educations}
+                      onDeleteEducation={handleDeleteEducation}
+                      onEditEducation={handleEditEducation}
+                    />
                   </div>
                 </div>
               </div>
               <div className="w-2/3  flex flex-col items-start">
-                <EducationForm cvId={cvId} onEducationCreated={fetchEducations} education={selectedEducation} />
+                <EducationForm
+                  cvId={cvId}
+                  onEducationCreated={fetchEducations}
+                  education={selectedEducation}
+                />
               </div>
             </div>
           }

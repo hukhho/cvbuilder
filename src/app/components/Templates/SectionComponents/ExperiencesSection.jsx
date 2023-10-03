@@ -84,9 +84,7 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
   return (
     <div className="experiences-section-container mb-4">
       <div className="title">
-        <Typography.Title level={2} style={{ margin: 0 }}>
-          Experiences
-        </Typography.Title>
+        <span style={{ margin: 0 }}>Experiences</span>
       </div>
       <Divider className="divider-section" />
       <div className="experience-items">

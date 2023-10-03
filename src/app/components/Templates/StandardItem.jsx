@@ -19,7 +19,7 @@ const StandardItem = props => {
 
   const renderTitle = () => {
     if (titleProps) {
-      return <Typography.Title level={5}>{titleProps}</Typography.Title>;
+      return <span className="item-sub-title">{titleProps}</span>;
     }
 
     switch (templateType) {
@@ -27,21 +27,21 @@ const StandardItem = props => {
         return (
           <div>
             <div className="item-title">
-              <Typography.Title level={4}>{role}</Typography.Title>
+              <span>{role}</span>
             </div>
             <div className="item-sub-title">
               {orgName && (
                 <div className="left-sub-title">
-                  <Typography.Title level={5}>{orgName}</Typography.Title>
+                  <span>{orgName}</span>
                 </div>
               )}
               {startTime && (
                 <div className="right-sub-title">
-                  <Typography.Title level={5}>{dateRangeFormat()}</Typography.Title>
+                  <span>{dateRangeFormat()}</span>
                   {location && (
-                    <Typography.Title className="time" level={5}>
+                    <span className="time" level={5}>
                       , {location}
-                    </Typography.Title>
+                    </span>
                   )}
                 </div>
               )}
@@ -51,39 +51,23 @@ const StandardItem = props => {
       case 'modern':
         return (
           <div className="item-title">
-            <Typography.Title className="role" level={4}>
-              {role}
-            </Typography.Title>
-            <Typography.Title level={4}>|| {orgName}</Typography.Title>
-            {location && (
-              <Typography.Title className="location" level={4}>
-                || {location}
-              </Typography.Title>
-            )}
-            {startTime && (
-              <Typography.Title className="time" level={4}>
-                || {dateRangeFormat()}
-              </Typography.Title>
-            )}
+            <span className="role">{role}</span>
+            <span>|| {orgName}</span>
+            {location && <span className="location">|| {location}</span>}
+            {startTime && <span className="time">|| {dateRangeFormat()}</span>}
           </div>
         );
       case 'modern-2':
         return (
           <>
             <div style={{ display: 'flex' }} className="item-title">
-              <Typography.Title className="role" level={4}>
-                {role}
-              </Typography.Title>
-              {orgName && (
-                <Typography.Title className="org" level={4}>
-                  || {orgName}
-                </Typography.Title>
-              )}
+              <span className="role">{role}</span>
+              {orgName && <span className="org">|| {orgName}</span>}
             </div>
             <div className="item-sub-title">
               {startTime && (
                 <div className="left-sub-title">
-                  <Typography.Title level={5}>{dateRangeFormat()}</Typography.Title>
+                  <span>{dateRangeFormat()}</span>
                 </div>
               )}
             </div>

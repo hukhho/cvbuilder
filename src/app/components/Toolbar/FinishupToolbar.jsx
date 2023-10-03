@@ -1,3 +1,8 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
+'use client';
+
 import React, { useState } from 'react';
 import {
   Button,
@@ -122,28 +127,28 @@ const FinishupToolbar = props => {
         />
 
         <Col className="line-height element">
-          <Button className="flex" onClick={toggleSliderVisibility}>
-            <FontAwesomeIcon icon={faTextHeight} />
-            <span className="text-[12px] w-4 inline-block rounded-md ml-2 text-center">
-              {lineHeight}
-            </span>
-          </Button>
+          <Tooltip title="Line Height">
+            <Button className="flex" onClick={toggleSliderVisibility}>
+              <FontAwesomeIcon icon={faTextHeight} />
+              <span className="text-[12px] w-4 inline-block rounded-md ml-2 text-center">
+                {lineHeight}
+              </span>
+            </Button>
+          </Tooltip>
           {isSliderLineHeightVisible && (
             <div>
-              <Tooltip title="Line Height">
-                <Slider
-                  defaultValue={lineHeight}
-                  className="absolute top-6 left-0"
-                  min={1}
-                  max={3}
-                  step={0.05}
-                  onChange={value => {
-                    setLineHeight(value);
-                    handleChange(value, 'lineHeight');
-                  }}
-                  style={{ width: 80 }}
-                />
-              </Tooltip>
+              <Slider
+                defaultValue={lineHeight}
+                className="absolute top-6 left-0"
+                min={1}
+                max={3}
+                step={0.05}
+                onChange={value => {
+                  setLineHeight(value);
+                  handleChange(value, 'lineHeight');
+                }}
+                style={{ width: 80 }}
+              />
             </div>
           )}
         </Col>
@@ -222,18 +227,18 @@ const FinishupToolbar = props => {
         <Col className="section-divider element">
           <div className="flex items-center">
             <Tooltip placement="top" title="Section Divider">
-              <Button
+              <div
+                className="w-6 h-6 mt-1 justify-center items-center rounded-full  flex "
                 onClick={() => {
                   handleChange(!toolbarState.hasDivider, 'hasDivider');
                 }}
                 style={{
                   backgroundColor: toolbarState.hasDivider ? 'lightblue' : 'transparent',
+                  cursor: 'pointer',
                 }}
               >
-                <div className="mx-auto">
-                  <FontAwesomeIcon icon={faMinus} />
-                </div>
-              </Button>
+                <FontAwesomeIcon icon={faMinus} />
+              </div>
             </Tooltip>
           </div>
         </Col>
@@ -247,9 +252,14 @@ const FinishupToolbar = props => {
         <Col className="indent flex element">
           <Tooltip title="Indent" placement="top">
             <div
+              className="w-6 h-6 justify-center items-center rounded-full  flex "
+              onClick={() => {
+                handleChange(!toolbarState.hasIndent, 'hasIndent');
+              }}
               style={{
                 margin: 'auto',
                 cursor: 'pointer',
+                backgroundColor: toolbarState.hasIndent ? 'lightblue' : '',
               }}
             >
               <FontAwesomeIcon icon={faIndent} />

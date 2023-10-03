@@ -11,7 +11,11 @@ const UserHeader = () => {
 
   return (
     <div>
-      <Segmented options={['RESUME', 'COVER LETTERS', 'RESIGNATION LETTERS']} value={value} onChange={setValue} />
+      <Segmented
+        options={['RESUME', 'COVER LETTERS', 'RESIGNATION LETTERS']}
+        value={value}
+        onChange={setValue}
+      />
     </div>
   );
 };

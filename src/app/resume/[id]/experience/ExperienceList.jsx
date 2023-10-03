@@ -8,7 +8,11 @@ const ExperienceList = ({ onDeleteExperience, onEditExperience, experiences }) =
       {experiences.map((experience, index) => (
         <div key={index}>
           <ExperienceItem role={experience.role} companyName={experience.companyName} />
-          <ExperienceActions onDeleteExperience={onDeleteExperience} onEditExperience={onEditExperience} experience={experience} />
+          <ExperienceActions
+            onDeleteExperience={onDeleteExperience}
+            onEditExperience={onEditExperience}
+            experience={experience}
+          />
         </div>
       ))}
     </div>

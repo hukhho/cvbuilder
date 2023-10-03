@@ -89,14 +89,22 @@ const Experience = ({ params }) => {
                 <div className="h-2/3 border-2 border-gray-200 rounded-lg p-4">
                   <div className="container">
                     <ExperienceHeader />
-                    <ExperienceList experiences={experiences} onDeleteExperience={handleDeleteExperience} onEditExperience={handleEditExperience} />
+                    <ExperienceList
+                      experiences={experiences}
+                      onDeleteExperience={handleDeleteExperience}
+                      onEditExperience={handleEditExperience}
+                    />
                     <SortCheckbox checked={sortByDate} onChange={handleSortChange} />
                   </div>
                 </div>
               </div>
 
               <div className="w-2/3  flex flex-col items-start">
-                <ExperienceForm cvId={cvId} onExperienceCreated={fetchExperiences} experience={selectedExperience} />
+                <ExperienceForm
+                  cvId={cvId}
+                  onExperienceCreated={fetchExperiences}
+                  experience={selectedExperience}
+                />
               </div>
             </div>
           }

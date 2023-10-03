@@ -3,7 +3,10 @@ import Image from 'next/image';
 
 const Register = () => {
   return (
-    <main className="background min-h-screen flex items-center justify-center " style={{ background: 'linear-gradient(to bottom, #9CCECB, #4CA1A3)' }}>
+    <main
+      className="background min-h-screen flex items-center justify-center "
+      style={{ background: 'linear-gradient(to bottom, #9CCECB, #4CA1A3)' }}
+    >
       <div className="flex w-3/4">
         <div className="w-3/4 flex items-center justify-center">
           <div className="w-4/5 max-h-full rounded-md overflow-hidden">

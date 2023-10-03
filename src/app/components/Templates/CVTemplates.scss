@@ -3,11 +3,11 @@
 $font-size: 14pt;
 $line-height: 1.25;
 $font-color: rgb(84, 136, 204);
+$text-indent: 0em;
 
 #resume {
   line-height: $line-height;
   color: $font-color;
-  font-family: 'Calibri', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace, Merriweather;
 }
 
 .cv-layout-container {
@@ -33,13 +33,9 @@ $font-color: rgb(84, 136, 204);
     border-top: 2px solid #423b3b;
   }
 
-  h2,
-  h3,
-  h4,
-  h5 {
-    font-size: inherit !important;
+  h1 {
+    font-size: 1.6em;
   }
-
 
   .information-section-container {
     margin-top: 24px;
@@ -56,7 +52,7 @@ $font-color: rgb(84, 136, 204);
     .contact-info {
       display: flex;
       padding: 12px 0;
-      color: black;
+      color: rgb(46, 61, 80);
       gap: 20px;
     }
   }
@@ -69,6 +65,7 @@ $font-color: rgb(84, 136, 204);
     font-style: normal;
     font-weight: 700;
     color: var(--font-color);
+    font-size: 1.25em !important;
   }
 
   .skills-section-container {
@@ -93,7 +90,7 @@ $font-color: rgb(84, 136, 204);
     .summary-content {
       font-style: normal;
       font-weight: 300;
-      color: black;
+      color: rgb(46, 61, 80);
     }
   }
 
@@ -106,35 +103,30 @@ $font-color: rgb(84, 136, 204);
       /* Allow items to wrap onto a new line */
       gap: 8px;
       color: var(--font-color);
-
-      h4 {
-        margin-top: unset !important;
-        margin-bottom: unset !important;
-        color: var(--font-color);
-      }
-
+      font-weight: 600;
+      font-size: 1.2em;
       /* Vertically align items to the center */
     }
 
     .item-sub-title {
       display: flex;
+      font-weight: 600;
+      font-size: 1em;
+      color: rgb(46, 61, 80);
 
       .left-sub-title {}
 
       .right-sub-title {
         display: flex;
         margin-left: auto;
-
-        h5 {
-          margin-top: unset !important;
-        }
       }
     }
 
     .item-description {
       font-weight: 300;
-      color: black;
+      color: rgb(46, 61, 80);
       font-style: normal;
+      text-indent: var(--text-indent);
     }
   }
 }

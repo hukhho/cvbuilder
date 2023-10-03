@@ -174,17 +174,23 @@ const fonts = ['Merriweather', 'Source Sans Pro', 'Calibi'];
 
 const FinishUp = () => {
   const [templateData, setTemplateData] = useState(null);
+  const [showFinishupCV, setShowFinishupCV] = useState(false);
+
+  useEffect(() => {
+    setShowFinishupCV(true);
+  }, []);
 
   const [templateSelected, setTemplateSelected] = useState(templateType[1]);
 
   const [toolbarState, setToolbarState] = useState({
     fontSize: '9pt',
     lineHeight: 1.4,
-    fontFamily: `${fonts[2]}`,
+    fontFamily: `${fonts[1]}`,
     fontWeight: 'normal',
     zoom: '130%',
     paperSize: 'letter',
     hasDivider: true,
+    hasIndent: false,
     fontColor: 'rgb(0, 0, 0)',
   });
 
@@ -293,41 +299,43 @@ const FinishUp = () => {
           userHeader={<UserCVBuilderHeader />}
           content={
             <div className="flex mt-8">
-              <div
-                style={{
-                  backgroundColor: 'rgba(243, 244, 246)',
-                  borderRadius: '4px',
-                }}
-                className="w-2/3 mr-2 flex flex-col"
-              >
-                <div style={{ marginBottom: '12px' }} className="adjustment">
-                  <div
-                    style={{
-                      background: 'white',
-                      width: '100%',
-                      height: '120px',
-                    }}
-                  >
-                    <FinishupToolbar
-                      toolbarState={toolbarState}
-                      onToolbarChange={handleToolbarChange}
-                    />
-                    <select onChange={e => setTemplateSelected(e.target.value)}>
-                      <option label={templateType[1]} value={templateType[1]} />
-                      <option label={templateType[2]} value={templateType[2]} />
-                      <option label={templateType[3]} value={templateType[3]} />
-                    </select>
-                  </div>
-                </div>
-                <CVLayout
-                  key={[templateSelected, toolbarState]}
-                  layoutStyles={toolbarState}
-                  sectionsOrder={sectionsOrder}
-                  onSectionsOrderChange={handleSectionsOrderChange}
+              {showFinishupCV && (
+                <div
+                  style={{
+                    backgroundColor: 'rgba(243, 244, 246)',
+                    borderRadius: '4px',
+                  }}
+                  className="w-2/3 mr-2 flex flex-col"
                 >
-                  {sections.map(section => section.canBeDisplayed && section.component)}
-                </CVLayout>
-              </div>
+                  <div style={{ marginBottom: '12px' }} className="adjustment">
+                    <div
+                      style={{
+                        background: 'white',
+                        width: '100%',
+                        height: '120px',
+                      }}
+                    >
+                      <FinishupToolbar
+                        toolbarState={toolbarState}
+                        onToolbarChange={handleToolbarChange}
+                      />
+                      <select onChange={e => setTemplateSelected(e.target.value)}>
+                        <option label={templateType[1]} value={templateType[1]} />
+                        <option label={templateType[2]} value={templateType[2]} />
+                        <option label={templateType[3]} value={templateType[3]} />
+                      </select>
+                    </div>
+                  </div>
+                  <CVLayout
+                    key={[templateSelected, toolbarState]}
+                    layoutStyles={toolbarState}
+                    sectionsOrder={sectionsOrder}
+                    onSectionsOrderChange={handleSectionsOrderChange}
+                  >
+                    {sections.map(section => section.canBeDisplayed && section.component)}
+                  </CVLayout>
+                </div>
+              )}
 
               <div className="w-1/3 flex flex-col items-start">
                 <div className="h-1/3">
