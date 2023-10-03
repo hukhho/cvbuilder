@@ -80,7 +80,11 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           <Input style={{}} placeholder="• Orgi..." />
         </Form.Item>
 
-        <Button htmlType="submit" className="form-button w-full" style={{ backgroundColor: 'rgb(77, 112, 235)', color: 'white' }}>
+        <Button
+          htmlType="submit"
+          className="form-button w-full"
+          style={{ backgroundColor: 'rgb(77, 112, 235)', color: 'white' }}
+        >
           {isEditMode ? 'UPDATE EXPERIENCE' : 'SAVE TO EXPERIENCE LIST'}
         </Button>
       </Form>

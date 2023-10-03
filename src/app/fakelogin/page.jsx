@@ -60,7 +60,13 @@ const CreateUser = () => {
         </div>
         <div>
           <label htmlFor="password">password:</label>
-          <input type="password" id="password" name="password" value={user.password} onChange={handleChange} />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+          />
         </div>
         <button type="submit">Create User</button>
       </form>

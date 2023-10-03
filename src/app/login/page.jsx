@@ -7,11 +7,18 @@ import { faFacebookF, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 const Login = () => {
   return (
-    <main className=" background min-h-screen flex items-center justify-center " style={{ background: 'linear-gradient(to bottom, #9CCECB, #4CA1A3)' }}>
+    <main
+      className=" background min-h-screen flex items-center justify-center "
+      style={{ background: 'linear-gradient(to bottom, #9CCECB, #4CA1A3)' }}
+    >
       <div className="flex w-3/4">
         <div className="w-3/4 flex items-center justify-center">
           <div className="w-4/5 max-h-full rounded-md overflow-hidden">
-            <img src="/images/image1.png" alt="Image 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img
+              src="/images/image1.png"
+              alt="Image 1"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
           </div>
         </div>
         <div className="w-1/3 p-8 shadow-md rounded-md bg-white flex flex-col items-center ">

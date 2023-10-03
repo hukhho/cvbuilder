@@ -21,7 +21,10 @@ const onFinish = fieldsValue => {
     'date-time-picker': fieldsValue['date-time-picker'].format('YYYY-MM-DD HH:mm:ss'),
     'month-picker': fieldsValue['month-picker'].format('YYYY-MM'),
     'range-picker': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
-    'range-time-picker': [rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'), rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss')],
+    'range-time-picker': [
+      rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
+      rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
+    ],
     'time-picker': fieldsValue['time-picker'].format('HH:mm:ss'),
   };
   console.log('Received values of form: ', values);

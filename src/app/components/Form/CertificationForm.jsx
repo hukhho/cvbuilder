@@ -22,7 +22,11 @@ const CertificationForm = () => {
           <Input placeholder="Certified in a standardized and evolving set of project management principles." />
         </Form.Item>
 
-        <Button type="primary" className="form-button w-full" style={{ backgroundColor: 'rgb(77, 112, 235)' }}>
+        <Button
+          type="primary"
+          className="form-button w-full"
+          style={{ backgroundColor: 'rgb(77, 112, 235)' }}
+        >
           SAVE TO CERTIFICATIONS LIST
         </Button>
       </Form>

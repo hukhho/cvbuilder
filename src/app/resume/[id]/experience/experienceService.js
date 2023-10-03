@@ -30,7 +30,10 @@ export const createExperience = async (cvId, experienceData) => {
 
 export const updateExperience = async (cvId, experienceId, experienceData) => {
   try {
-    const response = await axiosInstance.put(`/cv/${cvId}/experiences/${experienceId}`, experienceData);
+    const response = await axiosInstance.put(
+      `/cv/${cvId}/experiences/${experienceId}`,
+      experienceData,
+    );
     return response.data;
   } catch (error) {
     throw error;

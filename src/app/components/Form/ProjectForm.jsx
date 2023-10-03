@@ -37,7 +37,10 @@ const ProjectForm = () => {
             placeholder="•Volunteerd to help renovate a house and managed a team of 6."
           />
         </Form.Item>
-        <Button className="form-button w-full" style={{ backgroundColor: 'rgb(77, 112, 235)', color: 'white' }}>
+        <Button
+          className="form-button w-full"
+          style={{ backgroundColor: 'rgb(77, 112, 235)', color: 'white' }}
+        >
           SAVE TO PROJECT LIST
         </Button>
       </Form>

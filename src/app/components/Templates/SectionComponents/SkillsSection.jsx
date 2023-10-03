@@ -73,9 +73,7 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
   return (
     <div className="skills-section-container mb-4">
       <div className="title">
-        <Typography.Title level={2} style={{ margin: 0 }}>
-          Skills
-        </Typography.Title>
+        <span style={{ margin: 0 }}>Skills</span>
       </div>
       <Divider className="divider-section" />
       <div className="skill-items">

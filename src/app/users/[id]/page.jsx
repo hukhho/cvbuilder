@@ -159,17 +159,24 @@ export default function Home({ params }) {
                   <span>
                     {education.college} - GPA: {education.gpa}
                   </span>
-                  <button onClick={() => handleDeleteEducation(education.id)} className="ml-2 bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md">
+                  <button
+                    onClick={() => handleDeleteEducation(education.id)}
+                    className="ml-2 bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md"
+                  >
                     Delete
                   </button>
                 </label>
               </li>
             ))}
           </ul>
-          <button onClick={handleCreateCV} className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
+          <button
+            onClick={handleCreateCV}
+            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
+          >
             Create CV
           </button>
-          {pdfResponse && <PdfViewer pdfResponse={pdfResponse} />} {/* Render PdfViewer component */}
+          {pdfResponse && <PdfViewer pdfResponse={pdfResponse} />}{' '}
+          {/* Render PdfViewer component */}
         </div>
       ) : (
         <p className="text-xl">Loading user data...</p>

@@ -8,7 +8,11 @@ const EducationList = ({ onEditEducation, onDeleteEducation, educations }) => {
       {educations.map((education, index) => (
         <div key={index}>
           <EducationItem collegeName={education.collegeName} />
-          <EducationActions onDeleteEducation={onDeleteEducation} onEditEducation={onEditEducation} education={education} />
+          <EducationActions
+            onDeleteEducation={onDeleteEducation}
+            onEditEducation={onEditEducation}
+            education={education}
+          />
         </div>
       ))}
     </div>

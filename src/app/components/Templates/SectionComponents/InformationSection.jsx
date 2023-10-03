@@ -1,7 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faEnvelope, faGlobe, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { Divider, Typography } from 'antd';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 const ContactInfoItem = ({ icon, text }) => (
   <div>
@@ -11,7 +12,7 @@ const ContactInfoItem = ({ icon, text }) => (
 );
 
 const InformationSection = ({ userInfo, templateType }) => {
-  const { fullName, emailAddress, phone, personalWebsite } = userInfo;
+  const { fullName, emailAddress, phone, personalWebsite, address, linkedIn } = userInfo;
 
   const isClassicalTemplate = templateType === 'classical';
   const isModernTemplate = templateType === 'modern';
@@ -21,7 +22,7 @@ const InformationSection = ({ userInfo, templateType }) => {
       className={`information-section-container mb-4 ${isClassicalTemplate ? 'text-center' : ''}`}
     >
       <div className={`name ${isClassicalTemplate ? 'justify-center' : ''}`}>
-        <Typography.Title level={2} style={{ margin: 0 }}>
+        <Typography.Title level={2} style={{ margin: 0, fontSize: '1.6em', fontFamily: 'inherit' }}>
           {fullName}
         </Typography.Title>
         {isModernTemplate && (
@@ -33,9 +34,12 @@ const InformationSection = ({ userInfo, templateType }) => {
           />
         )}
         <div className={`contact-info ${isClassicalTemplate ? 'justify-center' : ''}`}>
-          <ContactInfoItem icon={faEnvelope} text={emailAddress} />
-          <ContactInfoItem icon={faPhone} text={phone} />
-          <ContactInfoItem icon={faGlobe} text={personalWebsite} />
+          {address && <ContactInfoItem icon={faAddressCard} text={emailAddress} />}
+          {emailAddress && <ContactInfoItem icon={faEnvelope} text={emailAddress} />}
+          {phone && <ContactInfoItem icon={faPhone} text={phone} />}
+          {linkedIn && <ContactInfoItem icon={faLinkedin} text={linkedIn} />}
+          {personalWebsite && <ContactInfoItem icon={faGlobe} text={personalWebsite} />}
+          {}
         </div>
       </div>
     </div>

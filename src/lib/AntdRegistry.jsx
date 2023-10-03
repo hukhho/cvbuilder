@@ -7,7 +7,9 @@ import PropTypes from 'prop-types';
 
 const StyledComponentsRegistry = ({ children }) => {
   const cache = createCache();
-  useServerInsertedHTML(() => <style id="antd" dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }} />);
+  useServerInsertedHTML(() => (
+    <style id="antd" dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }} />
+  ));
   return <StyleProvider cache={cache}>{children}</StyleProvider>;
 };
 

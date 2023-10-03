@@ -56,7 +56,11 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
         <Form.Item name="description" label="OPEN FIELD FOR ADDITIONAL INFORMATION">
           <Input style={{}} placeholder="Awarded full schoolarship for 4 years due to grades." />
         </Form.Item>
-        <Button htmlType="submit" className="form-button w-full" style={{ backgroundColor: 'rgb(77, 112, 235)', color: 'white' }}>
+        <Button
+          htmlType="submit"
+          className="form-button w-full"
+          style={{ backgroundColor: 'rgb(77, 112, 235)', color: 'white' }}
+        >
           {isEditMode ? 'UPDATE EDUCATION' : 'SAVE TO EDUCATION LIST'}
         </Button>
       </Form>
