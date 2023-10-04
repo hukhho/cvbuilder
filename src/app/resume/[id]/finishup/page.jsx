@@ -18,14 +18,38 @@ import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 
 const { Meta } = Card;
 
+const mockSummary =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+
+const templateType = {
+  1: 'classical',
+  2: 'modern',
+  3: 'modern-2',
+};
+
+const fonts = ['Merriweather', 'Source Sans Pro', 'Calibri'];
+
 const mockData = {
   data: {
-    user: {
+    resume: {
       id: 1,
       fullName: 'Pham Viet Thuan Thien',
       phone: 'xxxxxxxxxx',
       personalWebsite: 'bcbcc .cyd',
       emailAddress: 'pvtt@gmail.com',
+      summary: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      templateType: 'classical',
+      resumeStyle: {
+        fontSize: '9pt',
+        lineHeight: 1.4,
+        fontFamily: 'Merriweather',
+        fontWeight: 'normal',
+        zoom: '130%',
+        paperSize: 'letter',
+        hasDivider: true,
+        hasIndent: false,
+        fontColor: 'rgb(0, 0, 0)',
+      },
       experiences: [
         {
           id: 1,
@@ -161,41 +185,27 @@ const mockData = {
   status: true,
 };
 
-const mockSummary =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
-const templateType = {
-  1: 'classical',
-  2: 'modern',
-  3: 'modern-2',
-};
-
-const fonts = ['Merriweather', 'Source Sans Pro', 'Calibi'];
-
-const FinishUp = () => {
+const FinishUp = ({params}) => {
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
+  const [enabledCategories, setEnabledCategories] = useState({
+    INVOLVEMENT: true,
+  });
 
   useEffect(() => {
     setShowFinishupCV(true);
   }, []);
 
-  const [templateSelected, setTemplateSelected] = useState(templateType[1]);
+  const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
 
-  const [toolbarState, setToolbarState] = useState({
-    fontSize: '9pt',
-    lineHeight: 1.4,
-    fontFamily: `${fonts[1]}`,
-    fontWeight: 'normal',
-    zoom: '130%',
-    paperSize: 'letter',
-    hasDivider: true,
-    hasIndent: false,
-    fontColor: 'rgb(0, 0, 0)',
-  });
+  const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
+  useEffect(() => {
+    console.log('Toolbar state changed:', toolbarState);
+  }, [toolbarState]);
 
-  const { user: userInfo } = mockData.data;
-  const { educations, projects, involvements, certifications, skills, experiences } = userInfo;
+  const { resume: resumeInfo } = mockData.data;
+  const { educations, projects, involvements, certifications, skills, experiences } = resumeInfo;
 
   // to store order of some user's information
   const [experiencesOrder, setExperiencesOrder] = useState(experiences);
@@ -226,27 +236,12 @@ const FinishUp = () => {
   const handleToolbarChange = values => {
     setToolbarState(values);
   };
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const response = await fetch(
-  //         "http://localhost:8080/api/v1/cv/templates/get-template-example"
-  //       );
-  //       const data = await response.json();
-  //       setTemplateData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching the template:", error);
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, []);
 
   const sections = [
     {
       id: 'information',
       component: (
-        <InformationSection canBeDrag={false} templateType={templateSelected} userInfo={userInfo} />
+        <InformationSection canBeDrag={false} templateType={templateSelected} userInfo={resumeInfo} />
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
@@ -296,7 +291,9 @@ const FinishUp = () => {
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
-          userHeader={<UserCVBuilderHeader />}
+          userHeader={
+            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
+          }
           content={
             <div className="flex mt-8">
               {showFinishupCV && (
@@ -336,19 +333,15 @@ const FinishUp = () => {
                   </CVLayout>
                 </div>
               )}
-
               <div className="w-1/3 flex flex-col items-start">
                 <div className="h-1/3">
                   <p>
-                    <a href="https://app.rezi.ai/dashboard/resume/jnB6pSiIUsbkyJXK4HG8/experience?wvideo=fo7dvqzmxu">
-                      <img
-                        src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
-                        width="400"
-                        height="225"
-                        style={{ width: '400px', height: '225px' }}
-                        alt="Video Thumbnail"
-                      />
-                    </a>
+                  <Image
+                    src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
+                    width={320}
+                    height={182}
+                    alt="Video"
+                  />
                   </p>
                 </div>
                 <div className="h-1/3 ">

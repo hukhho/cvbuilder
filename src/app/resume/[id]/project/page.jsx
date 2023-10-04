@@ -1,63 +1,117 @@
+/* eslint-disable import/no-unresolved */
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button, Card, ConfigProvider } from 'antd';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
+
 import ProjectForm from '@/app/components/Form/ProjectForm';
 
-import './experience.css';
-import ProjectHeader from './ProjectHeader';
+import SortCheckbox from './SortCheckbox';
+import DataService from '../../../utils/dataService';
 import ProjectList from './ProjectList';
 
 const { Meta } = Card;
 
-const Project = () => {
-  const projects = [
-    { title: '1st Runner-up RE Hackathon', company: '' },
-    { title: 'Champion Debate Tournament FPT University', company: '' },
-    { title: 'Add your first Project', company: '' },
-  ];
+const Project = ({ params }) => {
+  const [projectData, setProjectData] = useState([]);
+  const [selectedData, setSelectedData] = useState(null);
+  const [enabledCategories, setEnabledCategories] = useState({
+    PROJECT: true,
+  });
+  console.log('Data: ', params);
+
+  const cvId = params.id;
+  const dataService = new DataService('projects', cvId);
+
+  const fetchData = async () => {
+    try {
+      const fetchedProjectData = await dataService.getAll(); // Renamed 'projectData' to 'fetchedProjectData'
+      console.log('fetchData ', fetchedProjectData);
+      setProjectData(fetchedProjectData);
+    } catch (error) {
+      console.error('There was an error fetching the data', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleEditData = item => {
+    setSelectedData(item);
+  };
+
+  const handleDeleteData = async itemId => {
+    try {
+      await dataService.delete(cvId, itemId);
+      const updatedData = await dataService.getAll(cvId);
+      setProjectData(updatedData);
+    } catch (error) {
+      console.error('There was an error deleting the data', error);
+    }
+  };
 
   const [sortByDate, setSortByDate] = useState(true);
 
   const handleSortChange = () => {
     setSortByDate(!sortByDate);
-    // You can implement your sorting logic here
   };
 
   return (
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
-          userHeader={<UserCVBuilderHeader />}
+          userHeader={
+            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
+          }
           content={
-            <div className="flex h-screen">
-              <div className="w-1/3  flex flex-col justify-center items-center">
+            <div className="flex h-screen ">
+              <div className="flex flex-col p-4">
                 <div className="h-1/3">
                   <p>
-                    <a href="https://app.rezi.ai/dashboard/resume/jnB6pSiIUsbkyJXK4HG8/experience?wvideo=fo7dvqzmxu">
-                      <img
-                        src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
-                        width="400"
-                        height="225"
-                        style={{ width: '400px', height: '225px' }}
-                        alt="Video Thumbnail"
-                      />
-                    </a>
+                    <Image
+                      src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
+                      width={320}
+                      height={182}
+                      alt="Video"
+                    />
                   </p>
                 </div>
-
-                <div className="h-2/3 border-2 border-gray-200 rounded-lg p-4">
-                  <ProjectHeader />
-                  <ProjectList projects={projects} />
+                <div className="h-3/4">
+                  <div>
+                    <div className=" p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex">
+                      <div className="w-[266px] h-[50.50px] relative border-b border-gray-300">
+                        <div className="left-0 top-[1.47px] absolute text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
+                          Your Project
+                        </div>
+                        {/* <div className="left-[138.20px] top-[9px] absolute text-gray-300 text-lg font-black font-['Font Awesome 5 Free'] leading-[18px]">
+                        
+                      </div> */}
+                      </div>
+                      {projectData.map(item => (
+                        <ProjectList
+                          key={item.id}
+                          data={item}
+                          onDelete={handleDeleteData}
+                          onEdit={handleEditData}
+                        />
+                      ))}
+                      <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">
+                        <div className="text-center text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
+                          Create new project
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div className="w-2/3  flex flex-col items-start">
-                <ProjectForm />
+              <div className="flex flex-col px-4">
+                <ProjectForm cvId={cvId} onCreated={fetchData} data={selectedData} />
               </div>
             </div>
           }

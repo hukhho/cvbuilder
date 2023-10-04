@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, InputNumber, Typography } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, Typography } from 'antd';
 import DataService from '@/app/utils/dataService';
+import moment from 'moment';
 
 import './customtext.css';
+
+const { RangePicker } = DatePicker;
 
 const stylesInput = {
   width: '769.22px',
@@ -15,15 +18,23 @@ const stylesInput = {
   fontWeight: '600',
   fontFamily: 'Source Sans Pro, sans-serif',
 };
-const CertificationForm = ({ cvId, onCreated, data }) => {
+const InvolvementForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
 
-  const dataService = new DataService('certifications', cvId);
+  const dataService = new DataService('involvements', cvId);
 
   useEffect(() => {
     if (data) {
-      form.setFieldsValue(data);
+      // Convert the startDate and endDate to moment objects
+      const startDateMoment = moment(experience.startDate);
+      const endDateMoment = moment(experience.endDate);
+      // Set the form values
+      form.setFieldsValue({
+        ...data,
+        'range-picker': [startDateMoment, endDateMoment],
+      });
+
       setIsEditMode(true); // Set to edit mode if education prop is provided
     } else {
       form.resetFields();
@@ -31,6 +42,13 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
     }
   }, [data, form]);
 
+  const handleDateChange = (dates, dateStrings) => {
+    const [startDate, endDate] = dates;
+    form.setFieldsValue({
+      startDate,
+      endDate,
+    });
+  };
   const handleSubmit = async values => {
     try {
       if (isEditMode) {
@@ -51,54 +69,73 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
     <div className="w-2/3 ">
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
-          name="name"
+          name="organizationRole"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                WHAT WAS THE CERTIFICATE <strong>NAME</strong>?
+                WHAT WAS YOUR <strong>ROLE</strong> AT THE ORGANIZATION?
               </span>
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Project Management Professional (PMP)" />
+          <Input style={stylesInput} placeholder="Selected Member" />
         </Form.Item>
         <Form.Item
-          name="certificateSource"
+          name="organizationName"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                <strong>WHERE</strong> DID YOU GET THE CERTIFICATE?
+                FOR WHICH <strong>ORGANIZATION</strong> DID YOU WORK?
               </span>
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Project Management Institute" />
+          <Input style={stylesInput} placeholder="Economics Student Association" />
+        </Form.Item>
+        <Form.Item name="startDate" hidden>
+          <Input type="hidden" />
+        </Form.Item>
+        <Form.Item name="endDate" hidden>
+          <Input type="hidden" />
         </Form.Item>
         <Form.Item
-          name="endYear"
+          name="range-picker"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                <strong>WHEN</strong> DID YOU GET THE CERTIFICATE?
+                <strong>HOW LONG</strong> WERE YOU WITH THE ORGANIZATION?
               </span>
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="2023" />
+          <RangePicker style={stylesInput} picker="month" onChange={handleDateChange} />
         </Form.Item>
+
         <Form.Item
-          name="certificateRelevance"
+          name="college"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                HOW IS THE CERTIFICATE <strong>RELEVANT</strong>?
+                AT <strong>WHICH COLLEGE</strong> WAS THE ORGANIZATION LOCATED?
+              </span>
+            </label>
+          }
+        >
+          <Input style={stylesInput} placeholder="University of Wisconsin, Madison" />
+        </Form.Item>
+        <Form.Item
+          name="description"
+          label={
+            <label style={{}}>
+              <span className="custom-text whitespace-nowrap">
+                <strong>WHAT DID YOU DO</strong> AT THE ORGANIZATION?
               </span>
             </label>
           }
         >
           <Input
             style={stylesInput}
-            placeholder="• Certified in a standardized and evolving set of project management principles."
+            placeholder="• Participated in forums and discussions presented by key economic thinkers and companies associated with the university."
           />
         </Form.Item>
         <Button
@@ -112,11 +149,11 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
           }}
         >
           <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-            {isEditMode ? 'UPDATE ' : 'SAVE TO CERTIFICATION LIST'}
+            {isEditMode ? 'UPDATE ' : 'SAVE TO PROJECT LIST'}
           </div>
         </Button>
       </Form>
     </div>
   );
 };
-export default CertificationForm;
+export default InvolvementForm;

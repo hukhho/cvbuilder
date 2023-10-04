@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import UserHeader from '../UserHeader';
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -12,7 +13,6 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Layout, Menu, Space, theme, Typography } from 'antd';
-import UserHeader from '../UserHeader';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -125,7 +125,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
       <Layout
         className="site-layout"
         style={{
-          marginLeft: 190,
+          marginLeft: 113,
           background: 'white',
         }}
       >
@@ -157,13 +157,13 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
             {content}
           </div>
         </Content>
-        {/* <Footer
+        <Footer
           style={{
-            textAlign: "center",
+            marginTop: '200px',
+            textAlign: 'center',
+            background: '#FFFFFF',
           }}
-        >
-          Ant Design ©2023
-        </Footer> */}
+        />
       </Layout>
     </Layout>
   );

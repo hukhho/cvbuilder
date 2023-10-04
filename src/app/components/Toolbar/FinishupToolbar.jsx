@@ -34,7 +34,7 @@ import ColorButtons from './ColorPicker';
 const { Option } = Select;
 const { Title } = Typography;
 
-const fonts = ['Merriweather', 'Source Sans Pro', 'Calibi'];
+const fonts = ['Merriweather', 'Source Sans Pro', 'Calibri'];
 
 const papers = ['Letter', 'A4'];
 

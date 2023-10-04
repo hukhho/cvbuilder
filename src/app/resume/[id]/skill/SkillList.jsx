@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ProjectList = ({ data, onDelete, onEdit }) => {
-  const { id, title, organization, projectUrl, startDate, endDate, description } = data;
+const SkillList = ({ data, onDelete, onEdit }) => {
+  const { id, description } = data;
 
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = () => {
     try {
       onDelete(id);
     } catch (error) {
@@ -11,41 +11,42 @@ const ProjectList = ({ data, onDelete, onEdit }) => {
     }
   };
 
-  const handleEditClick = async () => {
+  const handleEditClick = () => {
     try {
       onEdit(data);
     } catch (error) {
-      console.error('Error editing:', error);
+      console.error('Error edit:', error);
     }
   };
 
-  // Function to handle keyboard events for Edit and Delete buttons
-  const handleButtonClick = (event, action) => {
-    if (event.key === 'Enter') {
-      // Trigger the action on Enter key press
-      if (action === 'edit') {
-        handleEditClick();
-      } else if (action === 'delete') {
-        handleDeleteClick();
-      }
+  const handleKeyDown = (e, clickHandler) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      clickHandler();
     }
   };
 
   return (
-    <div className="h-[60.19px] flex-col justify-start items-start gap-[33.75px] flex">
+    <div
+      className="h-[60.19px] flex-col justify-start items-start gap-[33.75px] flex"
+      role="button"
+      tabIndex={0}
+      onClick={handleEditClick}
+      onKeyDown={e => handleKeyDown(e, handleEditClick)}
+    >
       <div className="h-[67.39px] flex-col justify-start items-start gap-[9px] flex">
         <div className="self-stretch pr-32 pb-[0.80px] justify-start items-start inline-flex">
           <div className="text-slate-700 text-lg font-normal font-['Source Sans Pro'] leading-7 whitespace-nowrap">
-            {title}
+            {description}
           </div>
         </div>
         <div className="self-stretch pr-[99.91px] justify-start items-start inline-flex">
           <div className="pr-[9px] justify-start items-center flex">
             <div
+              role="button"
+              tabIndex={0}
               onClick={handleEditClick}
-              onKeyDown={e => handleButtonClick(e, 'edit')} // Handle Enter key for Edit button
-              role="button" // Add a role for accessibility
-              tabIndex={0} // Make the element focusable via keyboard
+              onKeyDown={e => handleKeyDown(e, handleEditClick)}
               className="pl-[9px] pr-[8.45px] pt-[4.50px] pb-[6.09px] bg-indigo-500 rounded justify-center items-center flex"
             >
               <button className="text-center text-white text-[11px] font-bold font-['Source Sans Pro'] uppercase leading-[17.60px]">
@@ -55,10 +56,10 @@ const ProjectList = ({ data, onDelete, onEdit }) => {
           </div>
           <div className="pr-[9px] justify-start items-center flex">
             <div
+              role="button"
+              tabIndex={0}
               onClick={handleDeleteClick}
-              onKeyDown={e => handleButtonClick(e, 'delete')} // Handle Enter key for Delete button
-              role="button" // Add a role for accessibility
-              tabIndex={0} // Make the element focusable via keyboard
+              onKeyDown={e => handleKeyDown(e, handleDeleteClick)}
               className="pl-[9px] pr-[8.89px] pt-[4.50px] pb-[6.09px] bg-red-600 rounded justify-center items-center flex"
             >
               <button className="text-center text-white text-[11px] font-bold font-['Source Sans Pro'] uppercase leading-[17.60px]">
@@ -67,7 +68,13 @@ const ProjectList = ({ data, onDelete, onEdit }) => {
             </div>
           </div>
           <div className="pr-[9px] justify-start items-center flex">
-            <div className="pl-[9px] pr-[10.75px] pt-[4.50px] pb-[6.09px] bg-white rounded border border-zinc-100 justify-center items-center flex">
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => {}}
+              onKeyDown={() => {}}
+              className="pl-[9px] pr-[10.75px] pt-[4.50px] pb-[6.09px] bg-white rounded border border-zinc-100 justify-center items-center flex"
+            >
               <button className="text-center text-gray-500 text-[11px] font-bold font-['Source Sans Pro'] uppercase leading-[17.60px]">
                 Hide
               </button>
@@ -79,4 +86,4 @@ const ProjectList = ({ data, onDelete, onEdit }) => {
   );
 };
 
-export default ProjectList;
+export default SkillList;

@@ -1,7 +1,16 @@
 import React from 'react';
 
-const ProjectList = ({ data, onDelete, onEdit }) => {
-  const { id, title, organization, projectUrl, startDate, endDate, description } = data;
+const InvolvementList = ({ data, onDelete, onEdit }) => {
+  const {
+    id,
+    organizationRole,
+    organizationName,
+    courseLocation,
+    startDate,
+    endDate,
+    college,
+    description,
+  } = data;
 
   const handleDeleteClick = async () => {
     try {
@@ -36,7 +45,7 @@ const ProjectList = ({ data, onDelete, onEdit }) => {
       <div className="h-[67.39px] flex-col justify-start items-start gap-[9px] flex">
         <div className="self-stretch pr-32 pb-[0.80px] justify-start items-start inline-flex">
           <div className="text-slate-700 text-lg font-normal font-['Source Sans Pro'] leading-7 whitespace-nowrap">
-            {title}
+            {organizationRole}
           </div>
         </div>
         <div className="self-stretch pr-[99.91px] justify-start items-start inline-flex">
@@ -79,4 +88,4 @@ const ProjectList = ({ data, onDelete, onEdit }) => {
   );
 };
 
-export default ProjectList;
+export default InvolvementList;

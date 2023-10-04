@@ -1,4 +1,5 @@
 import React from 'react';
+import UserHeader from '../UserHeader';
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -10,7 +11,6 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Layout, Menu, Space, theme, Typography } from 'antd';
-import UserHeader from '../UserHeader';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -231,13 +231,13 @@ const UserLayout = ({ userHeader, content }) => {
             {content}
           </div>
         </Content>
-        {/* <Footer
+        <Footer
           style={{
-            textAlign: "center",
+            textAlign: 'center',
           }}
         >
           Ant Design ©2023
-        </Footer> */}
+        </Footer>
       </Layout>
     </Layout>
   );

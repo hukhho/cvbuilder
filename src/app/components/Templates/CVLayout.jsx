@@ -3,6 +3,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Inter } from 'next/font/google';
 import './CVTemplates.scss';
 import {
   DndContext,
@@ -23,15 +24,38 @@ import {
 import SortableItem from '../SortableList/SortableItem';
 import { Divider } from 'antd';
 
+import './fonts.css';
+
 const CVLayout = ({ children, onSectionsOrderChange, layoutStyles }) => {
   const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
+
+  // Define font styles for different fonts
+  let fontStyles = {};
+
+  if (layoutStyles.fontFamily === 'Merriweather') {
+    fontStyles = {
+      fontFamily: 'Merriweather, serif',
+    };
+  } else if (layoutStyles.fontFamily === 'Source Sans Pro') {
+    fontStyles = {
+      fontFamily: 'Source Sans Pro, sans-serif',
+    };
+  } else {
+    fontStyles = {
+      fontFamily: 'Calibri, serif',
+    };
+  }
+
   const CvStyles = {
     ...restLayoutStyles,
     color: layoutStyles.fontColor,
     width: layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in',
-    fontFamily: `${layoutStyles.fontFamily}, serif`,
+    // fontFamily: `${layoutStyles.fontFamily}, serif`,
     backgroundColor: 'white',
+    ...fontStyles, // Merge font styles with other styles
   };
+
+  console.log('CvStyles', CvStyles);
 
   useEffect(() => {
     const resumeId = document.getElementById('resume');

@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
 import { Button, DatePicker, Form, Input, InputNumber, Typography } from 'antd';
 import moment from 'moment';
-import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
 
 const { RangePicker } = DatePicker;
+
+const stylesInput = {
+  width: '769.22px',
+  height: '56.19px',
+  padding: '17.30px 15.50px 15.89px',
+  backgroundColor: 'white',
+  borderRadius: '4px',
+  border: '2px solid #e5e5e5',
+  fontSize: '16px',
+  fontWeight: '600',
+  fontFamily: 'Source Sans Pro, sans-serif',
+};
 
 const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [form] = Form.useForm();
@@ -56,10 +68,10 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     <div className="w-2/3 ">
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item name="role" label="WHAT WAS YOUR ROLE AT THE COMPANY?">
-          <Input style={{}} placeholder="Marketing Analyst" />
+          <Input style={stylesInput} placeholder="Marketing Analyst" />
         </Form.Item>
         <Form.Item name="companyName" label="FOR WHICH COMPANY DID YOU WORK?">
-          <Input style={{}} placeholder="Google" />
+          <Input style={stylesInput} placeholder="Google" />
         </Form.Item>
 
         <Form.Item name="startDate" hidden>
@@ -68,24 +80,30 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Form.Item name="endDate" hidden>
           <Input type="hidden" />
         </Form.Item>
-
         <Form.Item name="range-picker" label="HOW LONG WERE YOU WITH THE COMPANY?">
-          <RangePicker style={{}} picker="month" onChange={handleDateChange} />
+          <RangePicker style={stylesInput} picker="month" onChange={handleDateChange} />
         </Form.Item>
 
         <Form.Item name="location" label="WHERE WAS THE COMPANY LOCATED?">
-          <Input style={{}} placeholder="NewYork, NY" />
+          <Input style={stylesInput} placeholder="NewYork, NY" />
         </Form.Item>
         <Form.Item name="description" label="WHAT DID YOU DO AT THE COMPANY?">
-          <Input style={{}} placeholder="• Orgi..." />
+          <Input style={stylesInput} placeholder="• Orgi..." />
         </Form.Item>
 
         <Button
           htmlType="submit"
-          className="form-button w-full"
-          style={{ backgroundColor: 'rgb(77, 112, 235)', color: 'white' }}
+          className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
+          style={{
+            width: '769.22px',
+            height: '47.86px',
+            backgroundColor: 'rgb(77, 112, 235)',
+            color: 'white',
+          }}
         >
-          {isEditMode ? 'UPDATE EXPERIENCE' : 'SAVE TO EXPERIENCE LIST'}
+          <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
+            {isEditMode ? 'UPDATE ' : 'SAVE TO EXPERIENCE LIST'}
+          </div>
         </Button>
       </Form>
     </div>

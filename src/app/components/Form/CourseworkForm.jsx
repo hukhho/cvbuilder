@@ -15,11 +15,11 @@ const stylesInput = {
   fontWeight: '600',
   fontFamily: 'Source Sans Pro, sans-serif',
 };
-const CertificationForm = ({ cvId, onCreated, data }) => {
+const CourseworkForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
 
-  const dataService = new DataService('certifications', cvId);
+  const dataService = new DataService('source-works', cvId);
 
   useEffect(() => {
     if (data) {
@@ -55,31 +55,31 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                WHAT WAS THE CERTIFICATE <strong>NAME</strong>?
+                WHAT WAS THE COURSE <strong>NAME</strong>?
               </span>
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Project Management Professional (PMP)" />
+          <Input style={stylesInput} placeholder="Introduction to Computer Systems" />
         </Form.Item>
         <Form.Item
-          name="certificateSource"
+          name="courseLocation"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                <strong>WHERE</strong> DID YOU GET THE CERTIFICATE?
+                <strong>WHERE</strong> DID YOU TAKE THE COURSE?
               </span>
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Project Management Institute" />
+          <Input style={stylesInput} placeholder="University of Wisconsin, Madison" />
         </Form.Item>
         <Form.Item
           name="endYear"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                <strong>WHEN</strong> DID YOU GET THE CERTIFICATE?
+                <strong>WHEN</strong> DID YOU TAKE THE COURSE?
               </span>
             </label>
           }
@@ -87,20 +87,34 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
           <Input style={stylesInput} placeholder="2023" />
         </Form.Item>
         <Form.Item
-          name="certificateRelevance"
+          name="description"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                HOW IS THE CERTIFICATE <strong>RELEVANT</strong>?
+                HOW WAS THAT SKILL <strong>APPLIED</strong>?
+              </span>
+            </label>
+          }
+        >
+          <Input style={stylesInput} placeholder="Teamwork" />
+        </Form.Item>
+
+        <Form.Item
+          name="skill"
+          label={
+            <label style={{}}>
+              <span className="custom-text whitespace-nowrap">
+                WHAT <strong>SKILL</strong> DID YOU USE?
               </span>
             </label>
           }
         >
           <Input
             style={stylesInput}
-            placeholder="• Certified in a standardized and evolving set of project management principles."
+            placeholder="• Coordinating on code with a small group of people."
           />
         </Form.Item>
+
         <Button
           htmlType="submit"
           className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
@@ -112,11 +126,11 @@ const CertificationForm = ({ cvId, onCreated, data }) => {
           }}
         >
           <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-            {isEditMode ? 'UPDATE ' : 'SAVE TO CERTIFICATION LIST'}
+            {isEditMode ? 'UPDATE ' : 'SAVE TO COURSEWORK LIST'}
           </div>
         </Button>
       </Form>
     </div>
   );
 };
-export default CertificationForm;
+export default CourseworkForm;
