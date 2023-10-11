@@ -1,7 +1,7 @@
 // finishUpService.js
 import axiosInstance from '../../../utils/axiosInstance';
 
-const getFinishUp = async cvId => {
+export const getFinishUp = async cvId => {
   try {
     const response = await axiosInstance.get(`/user/finishUp/${cvId}`);
     return response.data;
@@ -9,4 +9,12 @@ const getFinishUp = async cvId => {
     throw error;
   }
 };
-export default getFinishUp;
+
+export const syncUp = async cvId => {
+  try {
+    const response = await axiosInstance.get(`/cv/synchUp/${cvId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

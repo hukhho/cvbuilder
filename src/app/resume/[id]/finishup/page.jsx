@@ -15,7 +15,7 @@ import ExperiencesSection from '@/app/components/Templates/SectionComponents/Exp
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import getFinishUp from './finishUpService';
+import { getFinishUp, syncUp } from './finishUpService';
 
 const { Meta } = Card;
 
@@ -304,12 +304,9 @@ export default function FinishUp({ params }) {
         setFinishUpData(data);
 
         setShowFinishupCV(true);
-
         setTemplateSelected(data.templateType);
         setToolbarState(data.cvStyle);
-
         setSummary(data.summary);
-        set;
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
       }
@@ -317,6 +314,39 @@ export default function FinishUp({ params }) {
 
     fetchData();
   }, []);
+
+  const handleSyncUp = async () => {
+    try {
+      const cvId123 = params.id;
+      setShowFinishupCV(false);
+
+      await syncUp(cvId123); // Call the syncUp function
+      console.log('Synchronization completed.');
+
+      const fetchData = async () => {
+        try {
+          const data = await getFinishUp(cvId123);
+          console.log('FinishUp data: ', data);
+
+          setFinishUpData(data);
+
+          setShowFinishupCV(true);
+
+          setTemplateSelected(data.templateType);
+          setToolbarState(data.cvStyle);
+
+          setSummary(data.summary);
+        } catch (error) {
+          console.error('Error fetching FinishUp data:', error);
+        }
+      };
+
+      fetchData();
+    } catch (error) {
+      console.error('Error during synchronization:', error);
+      // Handle errors or display an error message.
+    }
+  };
 
   return (
     <main>
@@ -353,6 +383,7 @@ export default function FinishUp({ params }) {
                         <option label={templateType[3]} value={templateType[3]} />
                       </select>
                     </div>
+                    <Button onClick={handleSyncUp}>Sync Up</Button>
                   </div>
                   <CVLayout
                     key={[templateSelected, toolbarState]}
