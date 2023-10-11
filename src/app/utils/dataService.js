@@ -31,6 +31,7 @@ class DataService {
   async update(dataId, data) {
     try {
       //    cv/{cvId}/education/{educationId}/
+      console.log('Update dataId: ', dataId);
 
       const response = await axiosInstance.put(`/cv/${this.cvId}/${this.dataType}/${dataId}`, data);
       return response.data;
@@ -41,6 +42,7 @@ class DataService {
 
   async delete(dataId) {
     try {
+      console.log('Delete dataId: ', dataId);
       const response = await axiosInstance.delete(`/cv/${this.cvId}/${this.dataType}/${dataId}`);
       return response.data;
     } catch (error) {

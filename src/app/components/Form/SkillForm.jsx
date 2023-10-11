@@ -51,7 +51,7 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
     <div className="w-2/3 ">
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
-          name="skills"
+          name="description"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">

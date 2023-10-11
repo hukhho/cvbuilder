@@ -9,22 +9,20 @@ import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 
 import DataService from '../../../utils/dataService';
 import ContactForm from '@/app/components/Form/ContactForm';
-
-const { Meta } = Card;
+import getContact from './contactService';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]); // Renamed to "contactData"
-  const [selectedData, setSelectedData] = useState(null);
   const [enabledCategories, setEnabledCategories] = useState({
     CONTACT: true,
   });
 
   const cvId = params.id;
-  const dataService = new DataService('certifications', cvId);
 
   const fetchData = async () => {
     try {
-      const data = await dataService.getAll();
+      const userId = 1;
+      const data = await getContact(1);
       console.log('fetchData ', data);
       setContactData(data); // Updated to set "contactData"
     } catch (error) {
@@ -36,25 +34,6 @@ const Contact = ({ params }) => {
     fetchData();
   }, []);
 
-  const handleEditData = item => {
-    setSelectedData(item);
-  };
-
-  const handleDeleteData = async itemId => {
-    try {
-      await dataService.delete(cvId, itemId);
-      const updatedData = await dataService.getAll(cvId);
-      setContactData(updatedData); // Updated to set "contactData"
-    } catch (error) {
-      console.error('There was an error deleting the data', error);
-    }
-  };
-  const [sortByDate, setSortByDate] = useState(true);
-
-  const handleSortChange = () => {
-    setSortByDate(!sortByDate);
-  };
-
   return (
     <main>
       <ConfigProvider>
@@ -65,7 +44,7 @@ const Contact = ({ params }) => {
           content={
             <div className="flex h-screen ">
               <div className="flex flex-col p-4">
-                <ContactForm cvId={cvId} onCreated={fetchData} data={selectedData} />
+                <ContactForm cvId={cvId} onCreated={fetchData} data={contactData} />
               </div>
             </div>
           }

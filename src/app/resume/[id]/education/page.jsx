@@ -41,6 +41,9 @@ const Education = ({ params }) => {
   const handleEditEducation = education => {
     setSelectedEducation(education);
   };
+  const handleHideEducation = education => {
+    console.log('Hide education: ', education);
+  };
 
   const handleDeleteEducation = async educationId => {
     try {
@@ -92,6 +95,7 @@ const Education = ({ params }) => {
                           education={education}
                           onDeleteEducation={handleDeleteEducation}
                           onEditEducation={handleEditEducation}
+                          onHideEducation={handleHideEducation}
                         />
                       ))}
                       <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">

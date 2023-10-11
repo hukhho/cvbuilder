@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, InputNumber, Typography } from 'antd';
 import DataService from '@/app/utils/dataService';
-
+import updateSummary from './updateSummaryService';
 import './customtext.css';
 
 const stylesInput = {
@@ -17,31 +17,19 @@ const stylesInput = {
 };
 const SummaryForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
-  const [isEditMode, setIsEditMode] = useState(false); // Add this state
-
-  const dataService = new DataService('certifications', cvId);
-
+  console.log('SummaryForm::data: ', data);
   useEffect(() => {
     if (data) {
-      form.setFieldsValue(data);
-      setIsEditMode(true); // Set to edit mode if education prop is provided
-    } else {
-      form.resetFields();
-      setIsEditMode(false); // Set to create mode if education prop is not provided
+      console.log('data.summary: ', data.summary);
+      const sum = { summary: data.summary };
+      form.setFieldsValue(sum);
     }
   }, [data, form]);
 
   const handleSubmit = async values => {
     try {
-      if (isEditMode) {
-        await dataService.update(data.id, values);
-        setIsEditMode(false); // Set to create mode after updating
-        form.resetFields(); // Reset the form
-      } else {
-        await dataService.create(values);
-        form.resetFields();
-      }
-      onCreated();
+      await updateSummary(1, cvId, values);
+      // onCreated();
     } catch (error) {
       console.log('Submit. Error:', error);
     }
@@ -51,7 +39,7 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
     <div className="w-2/3 ">
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
-          name="name"
+          name="summary"
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
@@ -74,7 +62,7 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
           }}
         >
           <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-            {isEditMode ? 'UPDATE ' : 'SAVE SUMMARY INFO'}
+            SAVE SUMMARY INFO
           </div>
         </Button>
       </Form>

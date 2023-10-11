@@ -7,7 +7,7 @@ const cardContentStyle = {
   alignItems: 'center', // To align items vertically centered
 };
 
-function CVCard() {
+function CVCard({ imageUrl, title }) {
   return (
     <Card
       hoverable
@@ -24,7 +24,7 @@ function CVCard() {
             objectFit="cover"
           />
         </div>
-        <Meta title="Pham Viet Thuan Thien - CV" description="cv" />
+        <Meta title={title} description="cv" />
       </div>
     </Card>
   );

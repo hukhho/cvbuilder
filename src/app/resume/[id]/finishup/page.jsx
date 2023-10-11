@@ -15,6 +15,7 @@ import ExperiencesSection from '@/app/components/Templates/SectionComponents/Exp
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
+import getFinishUp from './finishUpService';
 
 const { Meta } = Card;
 
@@ -186,32 +187,34 @@ const mockData = {
   status: true,
 };
 
-const FinishUp = ({ params }) => {
+export default function FinishUp({ params }) {
+  const [finishUpData, setFinishUpData] = useState(null);
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState({
-    INVOLVEMENT: true,
+    'FINISH UP': true,
   });
 
-  useEffect(() => {
-    setShowFinishupCV(true);
-  }, []);
+  // useEffect(() => {
+  //   setShowFinishupCV(false);
+  // }, []);
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
-
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
+
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
   }, [toolbarState]);
 
-  const { resume: resumeInfo } = mockData.data;
-  const { educations, projects, involvements, certifications, skills, experiences } = resumeInfo;
+  // const { resumeInfo } = finishUpData;
+  const { educations, projects, involvements, certifications, skills, experiences } =
+    finishUpData || {};
 
   // to store order of some user's information
-  const [experiencesOrder, setExperiencesOrder] = useState(experiences);
-
-  const [educationsOrder, setEducationsOrder] = useState(educations);
-  const [skillsOrder, setSkillsOrder] = useState(skills);
+  const [experiencesOrder, setExperiencesOrder] = useState([]);
+  const [educationsOrder, setEducationsOrder] = useState([]);
+  const [skillsOrder, setSkillsOrder] = useState([]);
+  const [summary, setSummary] = useState();
 
   const handleExperiencesOrderChange = newOrder => {
     setExperiencesOrder(newOrder);
@@ -244,7 +247,7 @@ const FinishUp = ({ params }) => {
         <InformationSection
           canBeDrag={false}
           templateType={templateSelected}
-          userInfo={resumeInfo}
+          userInfo={finishUpData}
         />
       ),
       canBeDrag: false, // Set to true if this section can be dragged
@@ -252,7 +255,7 @@ const FinishUp = ({ params }) => {
     },
     {
       id: 'summary',
-      component: <SummarySection templateType={templateSelected} summary={mockSummary} />,
+      component: <SummarySection templateType={templateSelected} summary={summary} />,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -290,6 +293,30 @@ const FinishUp = ({ params }) => {
       canBeDisplayed: skills !== null,
     },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cvId = params.id;
+        const data = await getFinishUp(cvId);
+        console.log('FinishUp data: ', data);
+
+        setFinishUpData(data);
+
+        setShowFinishupCV(true);
+
+        setTemplateSelected(data.templateType);
+        setToolbarState(data.cvStyle);
+
+        setSummary(data.summary);
+        set;
+      } catch (error) {
+        console.error('Error fetching FinishUp data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <main>
@@ -337,40 +364,40 @@ const FinishUp = ({ params }) => {
                   </CVLayout>
                 </div>
               )}
-              <div className="w-1/3 flex flex-col items-start">
-                <div className="h-1/3">
-                  <p>
-                    <Image
-                      src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
-                      width={320}
-                      height={182}
-                      alt="Video"
-                    />
-                  </p>
+              {showFinishupCV && (
+                <div className="w-1/3 flex flex-col items-start">
+                  <div className="h-1/3">
+                    <p>
+                      <Image
+                        src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
+                        width={320}
+                        height={182}
+                        alt="Video"
+                      />
+                    </p>
+                  </div>
+                  <div className="h-1/3 ">
+                    <h1>REZI EXPERT REVIEW</h1>
+                    <p>
+                      We'll correct all formatting, content, and grammar errors directly in your
+                      resume
+                    </p>
+                    <Button
+                      className="form-button w-full"
+                      style={{
+                        backgroundColor: 'rgb(77, 112, 235)',
+                        color: 'white',
+                      }}
+                    >
+                      ASK FOR REZI EXPERT REVIEW
+                    </Button>
+                  </div>
                 </div>
-                <div className="h-1/3 ">
-                  <h1>REZI EXPERT REVIEW</h1>
-                  <p>
-                    We'll correct all formatting, content, and grammar errors directly in your
-                    resume
-                  </p>
-                  <Button
-                    className="form-button w-full"
-                    style={{
-                      backgroundColor: 'rgb(77, 112, 235)',
-                      color: 'white',
-                    }}
-                  >
-                    ASK FOR REZI EXPERT REVIEW
-                  </Button>
-                </div>
-              </div>
+              )}
             </div>
           }
         />
       </ConfigProvider>
     </main>
   );
-};
-
-export default FinishUp;
+}

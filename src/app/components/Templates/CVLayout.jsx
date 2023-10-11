@@ -26,8 +26,11 @@ import { Divider } from 'antd';
 
 import './fonts.css';
 
-const CVLayout = ({ children, onSectionsOrderChange, layoutStyles }) => {
+import { NextPageContext } from 'next';
+
+const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
   const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
+  console.log('stars: ', stars);
 
   // Define font styles for different fonts
   let fontStyles = {};

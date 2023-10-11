@@ -1,0 +1,30 @@
+[
+    {
+        "value": "Intership",
+        "label": "Intership"
+    },
+    {
+        "value": "Entry level",
+        "label": "Entry level"
+    },
+    {
+        "value": "Associate",
+        "label": "Associate"
+    },
+    {
+        "value": "Junior level",
+        "label": "Junior level"
+    },
+    {
+        "value": "Mid-senior level",
+        "label": "Mid-senior level"
+    },
+    {
+        "value": "Director",
+        "label": "Director"
+    },
+    {
+        "value": "Excutitive",
+        "label": "Excutitive"
+    }
+]

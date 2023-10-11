@@ -1,0 +1,747 @@
+[
+    {
+     "id": 47,
+     "group": "corp, fin",
+     "label": "Accounting"
+    },
+    {
+     "id": 94,
+     "group": "man, tech, tran",
+     "label": "Airlines"
+    },
+    {
+     "id": 120,
+     "group": "leg, org",
+     "label": "Alternative Dispute Resolution"
+    },
+    {
+     "id": 125,
+     "group": "hlth",
+     "label": "Alternative Medicine"
+    },
+    {
+     "id": 127,
+     "group": "art, med",
+     "label": "Animation"
+    },
+    {
+     "id": 19,
+     "group": "good",
+     "label": "Apparel & Fashion"
+    },
+    {
+     "id": 50,
+     "group": "cons",
+     "label": "Architecture"
+    },
+    {
+     "id": 111,
+     "group": "art, med, rec",
+     "label": "Arts"
+    },
+    {
+     "id": 111,
+     "group": "art, med, rec",
+     "label": "Crafts"
+    },
+    {
+     "id": 53,
+     "group": "man",
+     "label": "Automotive"
+    },
+    {
+     "id": 52,
+     "group": "gov, man",
+     "label": "Aviation"
+    },
+    {
+     "id": 52,
+     "group": "gov, man",
+     "label": "Aerospace"
+    },
+    {
+     "id": 41,
+     "group": "fin",
+     "label": "Banking"
+    },
+    {
+     "id": 12,
+     "group": "gov, hlth, tech",
+     "label": "Biotechnology"
+    },
+    {
+     "id": 36,
+     "group": "med, rec",
+     "label": "Broadcast Media"
+    },
+    {
+     "id": 49,
+     "group": "cons",
+     "label": "Building Materials"
+    },
+    {
+     "id": 138,
+     "group": "corp, man",
+     "label": "Business Supplies & Equipment"
+    },
+    {
+     "id": 129,
+     "group": "fin",
+     "label": "Capital Markets"
+    },
+    {
+     "id": 54,
+     "group": "man",
+     "label": "Chemicals"
+    },
+    {
+     "id": 90,
+     "group": "org, serv",
+     "label": "Social Organization"
+    },
+    {
+     "id": 51,
+     "group": "cons, gov",
+     "label": "Civil Engineering"
+    },
+    {
+     "id": 118,
+     "group": "tech",
+     "label": "Network Security"
+    },
+    {
+     "id": 109,
+     "group": "med, rec",
+     "label": "Games Development"
+    },
+    {
+     "id": 3,
+     "group": "tech",
+     "label": "Hardware Engineering"
+    },
+    {
+     "id": 5,
+     "group": "tech",
+     "label": "Network Engineering"
+    },
+    {
+     "id": 4,
+     "group": "tech",
+     "label": "Software Development"
+    },
+    {
+     "id": 48,
+     "group": "cons",
+     "label": "Construction"
+    },
+    {
+     "id": 24,
+     "group": "good, man",
+     "label": "Consumer Electronics"
+    },
+    {
+     "id": 25,
+     "group": "good, man",
+     "label": "Consumer Goods"
+    },
+    {
+     "id": 91,
+     "group": "org, serv",
+     "label": "Consumer Services"
+    },
+    {
+     "id": 18,
+     "group": "good",
+     "label": "Cosmetics"
+    },
+    {
+     "id": 65,
+     "group": "agr",
+     "label": "Dairy"
+    },
+    {
+     "id": 1,
+     "group": "gov, tech",
+     "label": "Defense & Space"
+    },
+    {
+     "id": 99,
+     "group": "art, med",
+     "label": "Design"
+    },
+    {
+     "id": 69,
+     "group": "edu",
+     "label": "Education Management"
+    },
+    {
+     "id": 112,
+     "group": "good, man",
+     "label": "Electronic Manufacturing"
+    },
+    {
+     "id": 28,
+     "group": "med, rec",
+     "label": "Entertainment"
+    },
+    {
+     "id": 86,
+     "group": "org, serv",
+     "label": "Environment"
+    },
+    {
+     "id": 110,
+     "group": "corp, rec, serv",
+     "label": "Events"
+    },
+    {
+     "id": 76,
+     "group": "gov",
+     "label": "Executive Office"
+    },
+    {
+     "id": 122,
+     "group": "corp, serv",
+     "label": "Facilities Services"
+    },
+    {
+     "id": 63,
+     "group": "agr",
+     "label": "Agricultural"
+    },
+    {
+     "id": 43,
+     "group": "fin",
+     "label": "Financial Services"
+    },
+    {
+     "id": 38,
+     "group": "art, med, rec",
+     "label": "Fine Art"
+    },
+    {
+     "id": 66,
+     "group": "agr",
+     "label": "Harvest"
+    },
+    {
+     "id": 34,
+     "group": "rec, serv",
+     "label": "Food & Beverages"
+    },
+    {
+     "id": 23,
+     "group": "good, man, serv",
+     "label": "Food Production"
+    },
+    {
+     "id": 101,
+     "group": "org",
+     "label": "Fundraising"
+    },
+    {
+     "id": 26,
+     "group": "good, man",
+     "label": "Furniture"
+    },
+    {
+     "id": 75,
+     "group": "gov",
+     "label": "Government Administration"
+    },
+    {
+     "id": 148,
+     "group": "gov",
+     "label": "Government Relations"
+    },
+    {
+     "id": 140,
+     "group": "art, med",
+     "label": "Graphic Design"
+    },
+    {
+     "id": 124,
+     "group": "hlth, rec",
+     "label": "Health"
+    },
+    {
+    "id": 124,
+    "group": "hlth, rec",
+    "label": "Wellness"
+    },
+    {
+     "id": 124,
+     "group": "hlth, rec",
+     "label": "Fitness"
+    },
+    {
+     "id": 68,
+     "group": "edu",
+     "label": "Education"
+    },
+    {
+     "id": 14,
+     "group": "hlth",
+     "label": "Health Care"
+    },
+    {
+     "id": 14,
+     "group": "hlth",
+     "label": "Hospital"
+    },
+    {
+     "id": 31,
+     "group": "rec, serv, tran",
+     "label": "Hospitality"
+    },
+    {
+     "id": 137,
+     "group": "corp",
+     "label": "Human Resources"
+    },
+    {
+     "id": 134,
+     "group": "corp, good, tran",
+     "label": "Import & Export"
+    },
+    {
+     "id": 88,
+     "group": "org, serv",
+     "label": "Individual Services"
+    },
+    {
+     "id": 88,
+     "group": "org, serv",
+     "label": "Family Services"
+    },
+    {
+     "id": 147,
+     "group": "cons, man",
+     "label": "Industrial Automation"
+    },
+    {
+     "id": 84,
+     "group": "med, serv",
+     "label": "Information Services"
+    },
+    {
+     "id": 96,
+     "group": "tech",
+     "label": "Information Technology & Services"
+    },
+    {
+     "id": 42,
+     "group": "fin",
+     "label": "Insurance"
+    },
+    {
+     "id": 74,
+     "group": "gov",
+     "label": "International Affairs"
+    },
+    {
+     "id": 141,
+     "group": "gov, org, tran",
+     "label": "International Trade & Development"
+    },
+    {
+     "id": 6,
+     "group": "tech",
+     "label": "Internet"
+    },
+    {
+     "id": 45,
+     "group": "fin",
+     "label": "Investment Banking"
+    },
+    {
+     "id": 46,
+     "group": "fin",
+     "label": "Investment Management"
+    },
+    {
+     "id": 73,
+     "group": "gov, leg",
+     "label": "Justice"
+    },
+    {
+     "id": 77,
+     "group": "gov, leg",
+     "label": "Law Enforcement"
+    },
+    {
+     "id": 9,
+     "group": "leg",
+     "label": "Law Practice"
+    },
+    {
+     "id": 10,
+     "group": "leg",
+     "label": "Legal Services"
+    },
+    {
+     "id": 72,
+     "group": "gov, leg",
+     "label": "Legislative Office"
+    },
+    {
+     "id": 30,
+     "group": "rec, serv, tran",
+     "label": "Travel & Tourism"
+    },
+    {
+     "id": 116,
+     "group": "corp, tran",
+     "label": "Logistics"
+    },
+    {
+     "id": 116,
+     "group": "corp, tran",
+     "label": "Supply Chain"
+    },
+    {
+     "id": 143,
+     "group": "good",
+     "label": "Jewelry"
+    },
+    {
+     "id": 143,
+     "group": "good",
+     "label": "Luxury Goods"
+    },
+    {
+     "id": 55,
+     "group": "man",
+     "label": "Machinery"
+    },
+    {
+     "id": 11,
+     "group": "corp",
+     "label": "Management Consulting"
+    },
+    {
+     "id": 97,
+     "group": "corp",
+     "label": "Market Research"
+    },
+    {
+     "id": 80,
+     "group": "corp, med",
+     "label": "Marketing"
+    },
+    {
+     "id": 80,
+     "group": "corp, med",
+     "label": "Advertising"
+    },
+    {
+     "id": 135,
+     "group": "cons, gov, man",
+     "label": "Mechanical"
+    },
+    {
+     "id": 135,
+     "group": "cons, gov, man",
+     "label": "Industrial Engineering"
+    },
+    {
+     "id": 126,
+     "group": "med, rec",
+     "label": "Media Production"
+    },
+    {
+     "id": 17,
+     "group": "hlth",
+     "label": "Medical Devices"
+    },
+    {
+     "id": 13,
+     "group": "hlth",
+     "label": "Medical Practice"
+    },
+    {
+     "id": 139,
+     "group": "hlth",
+     "label": "Mental Health Care"
+    },
+    {
+     "id": 71,
+     "group": "gov",
+     "label": "Military"
+    },
+    {
+     "id": 56,
+     "group": "man",
+     "label": "Mining & Metals"
+    },
+    {
+     "id": 35,
+     "group": "art, med, rec",
+     "label": "Motion Pictures & Film"
+    },
+    {
+     "id": 37,
+     "group": "art, med, rec",
+     "label": "Museums"
+    },
+    {
+     "id": 37,
+     "group": "art, med, rec",
+     "label": "Institutions"
+    },
+    {
+     "id": 115,
+     "group": "art, rec",
+     "label": "Music"
+    },
+    {
+     "id": 114,
+     "group": "gov, man, tech",
+     "label": "Nanotechnology"
+    },
+    {
+     "id": 81,
+     "group": "med, rec",
+     "label": "Newspapers"
+    },
+    {
+     "id": 100,
+     "group": "org",
+     "label": "Non Profit Organization Management"
+    },
+    {
+     "id": 57,
+     "group": "man",
+     "label": "Oil"
+    },
+    {
+     "id": 57,
+     "group": "man",
+     "label": "Energy"
+    },
+    {
+     "id": 113,
+     "group": "med",
+     "label": "Online Media"
+    },
+    {
+     "id": 87,
+     "group": "serv, tran",
+     "label": "Fulfillment"
+    },
+    {
+     "id": 87,
+     "group": "serv, tran",
+     "label": "Freight Delivery"
+    },
+    {
+     "id": 146,
+     "group": "good, man",
+     "label": "Packaging & Containers"
+    },
+    {
+     "id": 61,
+     "group": "man",
+     "label": "Paper"
+    },
+    {
+     "id": 61,
+     "group": "man",
+     "label": "Forest"
+    },
+    {
+     "id": 15,
+     "group": "hlth, tech",
+     "label": "Pharmaceuticals"
+    },
+    {
+     "id": 136,
+     "group": "art, med, rec",
+     "label": "Photography"
+    },
+    {
+     "id": 117,
+     "group": "man",
+     "label": "Plastics"
+    },
+    {
+     "id": 107,
+     "group": "gov, org",
+     "label": "Political Organization"
+    },
+    {
+     "id": 83,
+     "group": "med, rec",
+     "label": "Printing"
+    },
+    {
+     "id": 105,
+     "group": "corp",
+     "label": "Professional Training"
+    },
+    {
+     "id": 105,
+     "group": "corp",
+     "label": "Coaching"
+    },
+    {
+     "id": 102,
+     "group": "corp, org",
+     "label": "Program Development"
+    },
+    {
+     "id": 79,
+     "group": "gov",
+     "label": "Public Policy"
+    },
+    {
+     "id": 98,
+     "group": "corp",
+     "label": "Public Relations"
+    },
+    {
+     "id": 98,
+     "group": "corp",
+     "label": "Communications"
+    },
+    {
+     "id": 78,
+     "group": "gov",
+     "label": "Public Safety"
+    },
+    {
+     "id": 82,
+     "group": "med, rec",
+     "label": "Publishing"
+    },
+    {
+     "id": 44,
+     "group": "cons, fin, good",
+     "label": "Real Estate"
+    },
+    {
+     "id": 40,
+     "group": "rec, serv",
+     "label": "Recreational Facilities"
+    },
+    {
+     "id": 40,
+     "group": "rec, serv",
+     "label": "Recreational Services"
+    },
+    {
+     "id": 144,
+     "group": "gov, man, org",
+     "label": "Renewables"
+    },
+    {
+     "id": 70,
+     "group": "edu, gov",
+     "label": "Research"
+    },
+    {
+     "id": 32,
+     "group": "rec, serv",
+     "label": "Restaurants"
+    },
+    {
+     "id": 27,
+     "group": "good, man",
+     "label": "Retail"
+    },
+    {
+     "id": 121,
+     "group": "corp, org, serv",
+     "label": "Security"
+    },
+    {
+     "id": 121,
+     "group": "corp, org, serv",
+     "label": "Investigations"
+    },
+    {
+     "id": 7,
+     "group": "tech",
+     "label": "Semiconductors"
+    },
+    {
+     "id": 58,
+     "group": "man",
+     "label": "Shipbuilding"
+    },
+    {
+     "id": 33,
+     "group": "rec",
+     "label": "Sports"
+    },
+    {
+     "id": 104,
+     "group": "corp",
+     "label": "Staffing & Recruiting"
+    },
+    {
+     "id": 8,
+     "group": "gov, tech",
+     "label": "Telecommunications"
+    },
+    {
+     "id": 130,
+     "group": "gov, org",
+     "label": "Think Tanks"
+    },
+    {
+     "id": 21,
+     "group": "good",
+     "label": "Tobacco"
+    },
+    {
+     "id": 108,
+     "group": "corp, gov, serv",
+     "label": "Translation & Localization"
+    },
+    {
+     "id": 92,
+     "group": "tran",
+     "label": "Transportation"
+    },
+    {
+     "id": 59,
+     "group": "man",
+     "label": "Utilities"
+    },
+    {
+     "id": 106,
+     "group": "fin, tech",
+     "label": "Venture Capital"
+    },
+    {
+     "id": 106,
+     "group": "fin, tech",
+     "label": "Private Equity"
+    },
+    {
+     "id": 16,
+     "group": "hlth",
+     "label": "Veterinary"
+    },
+    {
+     "id": 93,
+     "group": "tran",
+     "label": "Warehouse"
+    },
+    {
+     "id": 133,
+     "group": "good",
+     "label": "Wholesale"
+    },
+    {
+     "id": 119,
+     "group": "tech",
+     "label": "Wireless"
+    },
+    {
+     "id": 103,
+     "group": "art, med, rec",
+     "label": "Writing & Editing"
+    }
+]

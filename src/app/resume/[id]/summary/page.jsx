@@ -10,6 +10,7 @@ import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import DataService from '../../../utils/dataService';
 import ContactForm from '@/app/components/Form/ContactForm';
 import SummaryForm from '@/app/components/Form/SummaryForm';
+import getSummary from './summaryService';
 
 const { Meta } = Card;
 
@@ -17,7 +18,7 @@ const Summary = ({ params }) => {
   const [summaryData, setSummaryData] = useState([]); // Renamed to summaryData
   const [selectedData, setSelectedData] = useState(null);
   const [enabledCategories, setEnabledCategories] = useState({
-    CONTACT: true,
+    SUMMARY: true,
   });
   console.log('Data: ', params);
 
@@ -26,8 +27,10 @@ const Summary = ({ params }) => {
 
   const fetchData = async () => {
     try {
-      const data = await dataService.getAll();
+      const data = await getSummary(1, cvId);
+
       console.log('fetchData ', data);
+      console.log('Summary: ', data.summary);
       setSummaryData(data); // Updated to setSummaryData
     } catch (error) {
       console.error('There was an error fetching the data', error);
@@ -67,7 +70,7 @@ const Summary = ({ params }) => {
           content={
             <div className="flex h-screen ">
               <div className="w-2/3 flex flex-col p-4">
-                <SummaryForm cvId={cvId} onCreated={fetchData} data={selectedData} />
+                <SummaryForm cvId={cvId} onCreated={fetchData} data={summaryData} />
               </div>
               <div className="w-1/3" />
             </div>

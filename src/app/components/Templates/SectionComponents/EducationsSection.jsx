@@ -23,6 +23,7 @@ import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
 const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
+  console.log('EducationSection::: ', educations);
   const educationItems = (
     <>
       {educations.map(edu => {

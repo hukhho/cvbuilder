@@ -1,7 +1,7 @@
 import React from 'react';
 import { deleteEducation } from './educationService';
 
-const EducationList = ({ education, onDeleteEducation, onEditEducation }) => {
+const EducationList = ({ education, onDeleteEducation, onEditEducation, onHideEducation }) => {
   const { id, collegeName, location, description, endYear, degree, gpa, minor } = education;
 
   const handleDeleteClick = async () => {
@@ -20,13 +20,22 @@ const EducationList = ({ education, onDeleteEducation, onEditEducation }) => {
       console.error('Error editing education:', error);
     }
   };
-
+  const handleHideClick = async () => {
+    try {
+      onHideEducation(education);
+      console.log('Hide edu: ', education);
+    } catch (error) {
+      console.error('Error hide education:', error);
+    }
+  };
   // Function to handle keyboard events for Edit and Delete buttons
   const handleButtonClick = (event, action) => {
     if (event.key === 'Enter') {
       // Trigger the action on Enter key press
       if (action === 'edit') {
         handleEditClick();
+      } else if (action === 'hide') {
+        handleHideClick();
       } else if (action === 'delete') {
         handleDeleteClick();
       }
@@ -69,7 +78,13 @@ const EducationList = ({ education, onDeleteEducation, onEditEducation }) => {
             </div>
           </div>
           <div className="pr-[9px] justify-start items-center flex">
-            <div className="pl-[9px] pr-[10.75px] pt-[4.50px] pb-[6.09px] bg-white rounded border border-zinc-100 justify-center items-center flex">
+            <div
+              onClick={handleHideClick}
+              onKeyDown={e => handleButtonClick(e, 'hide')} // Handle Enter key for Edit button
+              role="button" // Add a role for accessibility
+              tabIndex={0} // Make the element focusable via keyboard
+              className="pl-[9px] pr-[10.75px] pt-[4.50px] pb-[6.09px] bg-white rounded border border-zinc-100 justify-center items-center flex"
+            >
               <button className="text-center text-gray-500 text-[11px] font-bold font-['Source Sans Pro'] uppercase leading-[17.60px]">
                 Hide
               </button>

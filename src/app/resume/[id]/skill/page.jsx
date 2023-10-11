@@ -49,7 +49,9 @@ const Skill = ({ params }) => {
   const handleDeleteData = async itemId => {
     // Renamed the parameter to "itemId"
     try {
-      await dataService.delete(cvId, itemId);
+      console.log('Delete CVID: ', cvId);
+
+      await dataService.delete(itemId);
       const updatedData = await dataService.getAll(cvId);
       setSkillsData(updatedData); // Updated to set 'skillsData'
     } catch (error) {

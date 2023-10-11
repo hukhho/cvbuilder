@@ -12,7 +12,7 @@ const ContactInfoItem = ({ icon, text }) => (
 );
 
 const InformationSection = ({ userInfo, templateType }) => {
-  const { fullName, emailAddress, phone, personalWebsite, address, linkedIn } = userInfo;
+  const { name, email, phone, personalWebsite, address, linkedIn } = userInfo;
 
   const isClassicalTemplate = templateType === 'classical';
   const isModernTemplate = templateType === 'modern';
@@ -23,7 +23,7 @@ const InformationSection = ({ userInfo, templateType }) => {
     >
       <div className={`name ${isClassicalTemplate ? 'justify-center' : ''}`}>
         <Typography.Title level={2} style={{ margin: 0, fontSize: '1.6em', fontFamily: 'inherit' }}>
-          {fullName}
+          {name}
         </Typography.Title>
         {isModernTemplate && (
           <Divider
@@ -34,8 +34,8 @@ const InformationSection = ({ userInfo, templateType }) => {
           />
         )}
         <div className={`contact-info ${isClassicalTemplate ? 'justify-center' : ''}`}>
-          {address && <ContactInfoItem icon={faAddressCard} text={emailAddress} />}
-          {emailAddress && <ContactInfoItem icon={faEnvelope} text={emailAddress} />}
+          {address && <ContactInfoItem icon={faAddressCard} text={address} />}
+          {email && <ContactInfoItem icon={faEnvelope} text={email} />}
           {phone && <ContactInfoItem icon={faPhone} text={phone} />}
           {linkedIn && <ContactInfoItem icon={faLinkedin} text={linkedIn} />}
           {personalWebsite && <ContactInfoItem icon={faGlobe} text={personalWebsite} />}

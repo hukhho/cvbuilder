@@ -1,5 +1,6 @@
 import React from 'react';
 import UserHeader from '../UserHeader';
+import CreateResume from '../Modal/CreateResume';
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -99,17 +100,7 @@ const UserLayout = ({ userHeader, content }) => {
             bottom: 0,
           }}
         >
-          <Button
-            style={{
-              background: '#4D70EB',
-              fontSize: '12px',
-              padding: '4px 8px',
-              color: '#ffffff',
-              fontWeight: 'bold',
-            }}
-          >
-            CREATE NEW RESUME
-          </Button>
+          <CreateResume />
         </Space>
 
         <Menu
@@ -231,13 +222,13 @@ const UserLayout = ({ userHeader, content }) => {
             {content}
           </div>
         </Content>
-        <Footer
+        {/* <Footer
           style={{
             textAlign: 'center',
           }}
         >
           Ant Design ©2023
-        </Footer>
+        </Footer> */}
       </Layout>
     </Layout>
   );

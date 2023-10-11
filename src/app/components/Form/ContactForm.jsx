@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import DataService from '@/app/utils/dataService';
+import updateContact from './updateContactService';
 
 import './customtext.css';
 import './select.css';
@@ -19,30 +20,36 @@ const stylesInput = {
 
 const ContactForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
-  const [isEditMode, setIsEditMode] = useState(false);
-
-  const dataService = new DataService('certifications', cvId);
 
   useEffect(() => {
+    console.log('ContactForm data: ', data);
+
     if (data) {
-      form.setFieldsValue(data);
-      setIsEditMode(true);
-    } else {
-      form.resetFields();
-      setIsEditMode(false);
+      const mockData = {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        linkedIn: data.linkin,
+        website: data.permissionWebsite,
+        country: data.country,
+        state: data.state,
+        city: data.city,
+      };
+
+      console.log('Form fields set with data:', data);
+
+      // Use mockData if no data is provided
+      const initialData = mockData;
+      console.log('initialData: ', initialData);
+      form.setFieldsValue(initialData);
     }
   }, [data, form]);
 
   const handleSubmit = async values => {
     try {
-      if (isEditMode) {
-        await dataService.update(data.id, values);
-        setIsEditMode(false);
-        form.resetFields();
-      } else {
-        await dataService.create(values);
-        form.resetFields();
-      }
+      const userId = 1;
+      await updateContact(userId, values);
+      form.resetFields();
       onCreated();
     } catch (error) {
       console.log('Submit. Error:', error);
@@ -118,7 +125,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
 
           <Col span={12}>
             <Form.Item
-              name="website"
+              name="permissionWebsite"
               label={
                 <label style={{}}>
                   <span className="custom-text whitespace-nowrap">
@@ -192,7 +199,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                 color: 'white',
               }}
             >
-              {isEditMode ? 'UPDATE' : 'SAVE TO CONTACT'}
+              SAVE TO CONTACT
             </Button>
           </Col>
         </Row>
