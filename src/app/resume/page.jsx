@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { ConfigProvider } from 'antd';
-import UserLayout from './components/Layout/UserLayout';
-import UserHeader from './components/UserHeader';
-import CVCard from './components/Card/CVCard';
+import UserLayout from '../components/Layout/UserLayout';
+import UserHeader from '../components/UserHeader';
+import CVCard from '../components/Card/CVCard';
 import Link from 'next/link'; // Import Link from Next.js for navigation
-import getResumes from './utils/indexService';
+import getResumes from '../utils/indexService';
 
 const Home = () => {
   const [resumes, setResumes] = useState([]);
@@ -49,6 +49,7 @@ const Home = () => {
             <div className="container mx-auto px-4 py-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {/* Map over the mockCardData and generate cards with links */}
+                THIS IS RESUME PAGE
                 {mockCards.map((card, index) => (
                   <Link key={index} href={`/resume/${card.cvId}/education`}>
                     <CVCard imageUrl={card.imageUrl} title={card.title} />

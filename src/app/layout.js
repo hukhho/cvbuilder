@@ -16,9 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        {/* <Header /> */}
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-        {/* <Footer /> */}
       </body>
     </html>
   );

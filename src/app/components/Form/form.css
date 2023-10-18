@@ -1,0 +1,121 @@
+.inputEl {
+    display: block;
+    font: var(--font-input);
+    /*width: 100%;*/
+    color: inherit;
+    /*background: white;*/
+    outline: none;
+    margin: 0;
+    box-shadow: none;
+    /*padding: 0.85em 0.75em 0.75em;*/
+    /*border: 2px solid var(--color-grey-50);*/
+    /*border-radius: var(--radius-2);*/
+    transition: border 150ms ease;
+    &:focus {
+      border-color: var(--color-primary);
+    }
+    &[disabled] {
+      opacity: 0.6;
+      color: var(--color-text-light);
+    }
+    &::placeholder {
+      opacity: 0.5;
+    }
+    &:read-only {
+      cursor: default;
+    }
+  }
+  textarea {
+    &.inputEl {
+      width: 100%;
+      background: white;
+      padding: 0.85em 0.75em 0.75em;
+      border: 2px solid var(--color-grey-50);
+      border-radius: var(--radius-2);
+    }
+  }
+  
+  :global(.coursework-section.type-description) {
+    font-weight: 400;
+  }
+  
+  .label {
+    font: var(--font-ui);
+    font-weight: 400;
+    font-size: var(--scale-000);
+    color: var(--color-text-light);
+    margin-bottom: 1em;
+    text-transform: uppercase;
+    display: flex;
+    & strong {
+      color: var(--color-text);
+      word-break: keep-all;
+      white-space: nowrap;
+    }
+  }
+  :global(.company-view) {
+    & .label {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  }
+  .switchable {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    margin: -3px 0;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    & span {
+      margin-right: 10px;
+    }
+    &[data-visible="visible"] {
+      visibility: visible;
+      height: 18px;
+      opacity: 1;
+    }
+    &.ai-suggestion {
+      width: auto;
+      margin-left: 10px;
+      & span {
+        margin-left: 10px;
+      }
+    }
+  }
+  
+  .status {
+    display: block;
+    margin-top: 1em;
+  }
+  
+  .status {
+    font: var(--font-ui);
+    opacity: 0;
+    color: transparent;
+    transition: all 300ms ease;
+    &::before {
+      display: block;
+      height: 0;
+      overflow: visible;
+    }
+  }
+  
+  [required]:valid ~ .status {
+    opacity: 1;
+    color: var(--color-green);
+    &::before {
+      content: attr(data-valid-message);
+    }
+  }
+  
+  [data-submitted="true"] *:invalid ~ .status {
+    opacity: 1;
+    color: var(--color-red);
+    &::before {
+      content: attr(data-invalid-message);
+    }
+  }
+  

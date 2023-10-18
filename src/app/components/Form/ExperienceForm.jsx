@@ -47,7 +47,14 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       endDate,
     });
   };
-
+  const handleDescriptionChange = e => {
+    const bullet = '• ';
+    const inputValue = e.target.value;
+    // Check if the input value starts with a bullet point, and if not, add it.
+    if (!inputValue.startsWith(bullet)) {
+      form.setFieldsValue({ description: bullet + inputValue });
+    }
+  };
   const handleSubmit = async values => {
     try {
       if (isEditMode) {
@@ -88,7 +95,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           <Input style={stylesInput} placeholder="NewYork, NY" />
         </Form.Item>
         <Form.Item name="description" label="WHAT DID YOU DO AT THE COMPANY?">
-          <Input style={stylesInput} placeholder="• Orgi..." />
+          <Input style={stylesInput} placeholder="• Orgi..." onInput={handleDescriptionChange} />
         </Form.Item>
 
         <Button

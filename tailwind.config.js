@@ -9,7 +9,15 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        'cm-23.3': '23.3cm',
+        'cm-30': '30cm',
+      },
+    },
   },
-  plugins: [],
+  plugins: [{
+    'postcss-nested': {},
+
+},]
 };
