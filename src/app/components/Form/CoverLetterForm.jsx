@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import DataService from '@/app/utils/dataService';
 import { createCoverLetter } from './coverLetterService';
+// import { convertToSliderValue, convertToSliderLabel } from './CreativitySlider';
 
+import { Slider, SliderFilledTrack, SliderThumb, SliderTrack, Tooltip } from '@chakra-ui/react';
 import './customtext.css';
 import './select.css';
 import './coverletter.css';
@@ -41,16 +43,23 @@ const CoverLetterForm = ({ cvId, onCreated, data }) => {
     }
   }, [data, form]);
 
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState();
+  const [loading, setLoading] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleSubmit = async values => {
     try {
       const userId = 1;
-      const content = await createCoverLetter(userId, values);
+      setLoading(true);
+      const contentResponse = await createCoverLetter(userId, values);
+      setLoading(false);
       console.log('handleSubmit, values: ', values);
-      // form.resetFields();
-      setContent(content);
+      console.log('content state: ', content);
+      console.log('content.data.reply: ', contentResponse.reply);
 
+      // form.resetFields();
+      setContent(contentResponse.reply);
+      console.log('content state: ', content);
       onCreated();
     } catch (error) {
       console.log('Submit. Error:', error);
@@ -163,6 +172,34 @@ const CoverLetterForm = ({ cvId, onCreated, data }) => {
               <Input style={stylesInput} placeholder="John Doe" />
             </Form.Item>
           </Col>
+          <Col span={12}>
+            {/*      
+                  <Slider
+                    id='temperature'
+                    defaultValue={30}
+                    min={0}
+                    max={68}
+                    colorScheme='purple'
+                    onChange={(v) => setSliderValue(v)}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                  >
+                    <SliderTrack>
+                      <SliderFilledTrack />
+                    </SliderTrack>
+                    <Tooltip
+                      hasArrow
+                      bg='purple.300'
+                      color='white'
+                      placement='top'
+                      isOpen={showTooltip}
+                      label={`${convertToSliderLabel(sliderValue)}`}
+                    >
+                      <SliderThumb />
+                    </Tooltip>
+                  </Slider>
+                */}
+          </Col>
         </Row>
         <Row justify="center">
           <Col>
@@ -171,11 +208,12 @@ const CoverLetterForm = ({ cvId, onCreated, data }) => {
               className="form-button"
               style={{
                 width: '100%',
-                backgroundColor: 'rgb(77, 112, 235)',
+                backgroundColor: loading ? 'gray' : 'rgb(77, 112, 235)',
                 color: 'white',
               }}
+              disabled={loading}
             >
-              CREATE CONTENT COVER LETTER
+              {loading ? 'WAIT TO CREATING COVER LETTER' : 'CREATE CONTENT COVER LETTER '}
             </Button>
           </Col>
         </Row>
@@ -186,11 +224,18 @@ const CoverLetterForm = ({ cvId, onCreated, data }) => {
           id="content-section-form-0"
           aria-label="Write a professional **cover letter**"
           rows={20}
-          placeholder="As an accomplished Marketing graduate from Wisconsin University with years of strategic marketing and data analysis experience, ..."
+          placeholder={
+            loading
+              ? 'We are writing cover letter for you... It will in here soon! '
+              : 'As an accomplished Marketing graduate from Wisconsin University with years of strategic marketing and data analysis experience, ...'
+          }
           name="content"
-          value={content}
+          onChange={e => {
+            setContent(e.target.value);
+          }}
+          value={loading ? null : content}
           style={{ background: 'white', height: 545 }}
-          defaultValue={content}
+          // defaultValue={content}
         />
       </div>
     </div>

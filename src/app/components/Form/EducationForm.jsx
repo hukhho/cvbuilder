@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, InputNumber, Typography } from 'antd';
 import { createEducation, updateEducation } from '@/app/resume/[id]/education/educationService';
 import './customtext.css';
+import './test.css';
 
 const stylesInput = {
   width: '769.22px',

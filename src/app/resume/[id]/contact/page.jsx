@@ -19,20 +19,20 @@ const Contact = ({ params }) => {
 
   const cvId = params.id;
 
-  // const fetchData = async () => {
-  //   try {
-  //     const userId = 1;
-  //     const data = await getContact(1);
-  //     console.log('fetchData ', data);
-  //     setContactData(data); // Updated to set "contactData"
-  //   } catch (error) {
-  //     console.error('There was an error fetching the data', error);
-  //   }
-  // };
+  const fetchData = async () => {
+    try {
+      const userId = 1;
+      const data = await getContact(1);
+      console.log('fetchData ', data);
+      setContactData(data); // Updated to set "contactData"
+    } catch (error) {
+      console.error('There was an error fetching the data', error);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <main>

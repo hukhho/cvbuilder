@@ -5,9 +5,10 @@ import updateContact from './updateContactService';
 
 import './customtext.css';
 import './select.css';
+import ButtonContact from './ButtonContact';
 
 const stylesInput = {
-  width: '100%',
+  width: '584px',
   height: '56.19px',
   padding: '17.30px 15.50px 15.89px',
   backgroundColor: 'white',
@@ -59,8 +60,8 @@ const ContactForm = ({ cvId, onCreated, data }) => {
   return (
     <div className="w-full">
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
-        <Row gutter={[16, 16]}>
-          <Col span={12}>
+        <Row justify="start" gutter={[16, 16]}>
+          <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="name"
               label={
@@ -74,7 +75,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               <Input style={stylesInput} placeholder="Charles Bloomberg" />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="email"
               label={
@@ -93,7 +94,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col span={12}>
+          <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="phone"
               label={
@@ -108,7 +109,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col span={12}>
+          <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="linkedIn"
               label={
@@ -123,7 +124,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col span={12}>
+          <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="permissionWebsite"
               label={
@@ -138,68 +139,36 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col span={12}>
+          <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="country"
               label={
                 <label style={{}}>
                   <span className="custom-text whitespace-nowrap">
-                    <strong>COUNTRY</strong>
+                    <strong>CITY/PROVINCE</strong>
                   </span>
                 </label>
               }
             >
-              <Select style={{}}>
-                <Select.Option value="UnitedState">United State</Select.Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="state"
-              label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>STATE</strong>
-                  </span>
-                </label>
-              }
-            >
-              <Select>
-                <Select.Option value="UnitedState">United State</Select.Option>
-              </Select>
-            </Form.Item>
-          </Col>
-
-          <Col span={12}>
-            <Form.Item
-              name="city"
-              label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>CITY</strong>
-                  </span>
-                </label>
-              }
-            >
-              <Select>
-                <Select.Option value="UnitedState">United State</Select.Option>
-              </Select>
+              <Input style={stylesInput} placeholder="https://www.charlesbloomberg.com" />
             </Form.Item>
           </Col>
         </Row>
-        <Row justify="center">
+        <Row justify="start">
           <Col>
             <Button
               htmlType="submit"
-              className="form-button"
+              className="form-button  w-[769.22px] h-[47.86px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
               style={{
-                width: '100%',
+                width: '584px',
+                height: '56px',
                 backgroundColor: 'rgb(77, 112, 235)',
                 color: 'white',
               }}
             >
-              SAVE TO CONTACT
+              <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
+                SAVE BASIC INFO
+              </div>
             </Button>
           </Col>
         </Row>
