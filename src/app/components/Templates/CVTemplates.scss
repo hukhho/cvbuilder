@@ -11,14 +11,15 @@ $text-indent: 0em;
 }
 
 .cv-layout-container {
+  margin-top: 18px;
   margin: 2em;
   padding: 2em;
   background-color: #ffffff;
   position: relative;
   width: 100%;
-  max-width: fit-content;
+  max-width: 94%;
   box-shadow: none;
-  min-width: fit-content;
+  min-width: 94%;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
