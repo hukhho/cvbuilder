@@ -6,7 +6,24 @@
     background-color: #fff;
     border-radius: 4px;
     gap: 12px;
-    height: 80px;
+    height: fit-content;
+    max-height: 160px;
+    margin-bottom: 16px;
+
+    .ant-select-selection-item {
+        font-weight: 900 !important;
+    }
+}
+
+.adjustment {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-radius: 4px;
+    transition: height 0.8s;
+
+
 }
 
 .element {

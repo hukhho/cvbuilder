@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { Button, Card, ConfigProvider, Divider } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
-import ExperienceForm from '@/app/components/Form/ExperienceForm';
 import CVLayout from '@/app/components/Templates/CVLayout';
 import InformationSection from '@/app/components/Templates/SectionComponents/InformationSection';
 import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
@@ -16,19 +15,6 @@ import EducationsSection from '@/app/components/Templates/SectionComponents/Educ
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import { getFinishUp, syncUp } from './finishUpService';
-
-const { Meta } = Card;
-
-const mockSummary =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-
-const templateType = {
-  1: 'classical',
-  2: 'modern',
-  3: 'modern-2',
-};
-
-const fonts = ['Merriweather', 'Source Sans Pro', 'Calibri'];
 
 const mockData = {
   data: {
@@ -347,6 +333,9 @@ export default function FinishUp({ params }) {
       // Handle errors or display an error message.
     }
   };
+  //   <div style={{ marginBottom: '12px' }}>
+  //   <Button onClick={handleSyncUp}>Sync Up</Button>
+  // </div>
 
   return (
     <main>
@@ -365,25 +354,18 @@ export default function FinishUp({ params }) {
                   }}
                   className="w-2/3 mr-2 flex flex-col"
                 >
-                  <div style={{ marginBottom: '12px' }} className="adjustment">
-                    <div
-                      style={{
-                        background: 'white',
-                        width: '100%',
-                        height: '120px',
-                      }}
-                    >
-                      <FinishupToolbar
-                        toolbarState={toolbarState}
-                        onToolbarChange={handleToolbarChange}
-                      />
-                      <select onChange={e => setTemplateSelected(e.target.value)}>
-                        <option label={templateType[1]} value={templateType[1]} />
-                        <option label={templateType[2]} value={templateType[2]} />
-                        <option label={templateType[3]} value={templateType[3]} />
-                      </select>
-                    </div>
-                    <Button onClick={handleSyncUp}>Sync Up</Button>
+                  <div
+                    style={{
+                      background: 'white',
+                      width: '100%',
+                    }}
+                  >
+                    <FinishupToolbar
+                      handleChangeTemplateSelected={value => setTemplateSelected(value)}
+                      toolbarState={toolbarState}
+                      onToolbarChange={handleToolbarChange}
+                      currentTemplate={mockData.data.resume.resumeStyle}
+                    />
                   </div>
                   <CVLayout
                     key={[templateSelected, toolbarState]}

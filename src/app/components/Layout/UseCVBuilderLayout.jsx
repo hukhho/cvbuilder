@@ -160,13 +160,13 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
             {content}
           </div>
         </Content>
-        <Footer
+        {/* <Footer
           style={{
             marginTop: '200px',
             textAlign: 'center',
             background: '#FFFFFF',
           }}
-        />
+        /> */}
       </Layout>
     </Layout>
   );
