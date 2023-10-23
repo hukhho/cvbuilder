@@ -4,43 +4,37 @@
 'use client';
 
 import React, { useState } from 'react';
-import {
-  Button,
-  Col,
-  Divider,
-  InputNumber,
-  Menu,
-  Popover,
-  Row,
-  Select,
-  Slider,
-  Tooltip,
-  Typography,
-} from 'antd';
+import { Button, Col, Divider, Popover, Row, Select, Slider, Tooltip, Typography } from 'antd';
 import './FinishupToolbar.css'; // Create a CSS file for styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faArrowDownUpAcrossLine,
   faChevronDown,
   faIndent,
-  faMagnifyingGlass,
   faMinus,
   faPlus,
   faTextHeight,
+  faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { DownOutlined } from '@ant-design/icons';
+
 import ColorButtons from './ColorPicker';
+import DynamicColorCircle from '../Templates/templatesStyles/DynamicColorCircle';
 
 const { Option } = Select;
-const { Title } = Typography;
 
 const fonts = ['Merriweather', 'Source Sans Pro', 'Calibri'];
 
 const papers = ['Letter', 'A4'];
 
-const FinishupToolbar = props => {
-  const { toolbarState, onToolbarChange } = props;
+const templateType = {
+  1: 'classical',
+  2: 'modern',
+  3: 'modern-2',
+};
 
+const FinishupToolbar = props => {
+  const { toolbarState, onToolbarChange, handleChangeTemplateSelected, currentTemplate } = props;
+
+  const [showAdjustment, setShowAdjustment] = useState(false);
   const [color, setColor] = useState(toolbarState.fontColor);
   const [fontSize, setFontSize] = useState(parseInt(toolbarState.fontSize.slice(0, -2), 10));
 
@@ -61,11 +55,29 @@ const FinishupToolbar = props => {
     setSliderLineHeightVisible(!isSliderLineHeightVisible);
   };
 
-  return (
-    <div className="toolbar">
-      <Row style={{ margin: 'auto' }}>
+  const handleChangeTemplate = value => {
+    handleChangeTemplateSelected(value);
+  };
+
+  const renderAdjustment = () => (
+    <div className="adjustment bg-neutral-50">
+      <Row>
+        <Col className="element">
+          <Tooltip title="Profile picture">
+            <Button size="small" className="ml-1">
+              <FontAwesomeIcon icon={faUserCircle} />
+            </Button>
+          </Tooltip>
+        </Col>
+        <Divider
+          style={{
+            height: 'auto',
+          }}
+          type="vertical"
+        />
         <Col className="font-family element">
           <Select
+            size="small"
             defaultValue={toolbarState.fontFamily}
             style={{ width: '100%' }}
             onChange={e => handleChange(e, 'fontFamily')}
@@ -88,7 +100,9 @@ const FinishupToolbar = props => {
           <div className="flex items-center">
             <Tooltip title="Decrease font size">
               <Button
+                size="small"
                 disabled={fontSize < 7}
+                type="text"
                 onClick={() => {
                   const newFontSize = fontSize - 1;
                   if (newFontSize < 6) return;
@@ -105,7 +119,9 @@ const FinishupToolbar = props => {
             </div>
             <Tooltip title="Increase font size">
               <Button
+                size="small"
                 disabled={fontSize > 15}
+                type="text"
                 onClick={() => {
                   const newFontSize = fontSize + 1;
                   if (newFontSize > 16) return;
@@ -128,7 +144,12 @@ const FinishupToolbar = props => {
 
         <Col className="line-height element">
           <Tooltip title="Line Height">
-            <Button className="flex" onClick={toggleSliderVisibility}>
+            <Button
+              size="small"
+              type="text"
+              className="flex items-center"
+              onClick={toggleSliderVisibility}
+            >
               <FontAwesomeIcon icon={faTextHeight} />
               <span className="text-[12px] w-4 inline-block rounded-md ml-2 text-center">
                 {lineHeight}
@@ -139,7 +160,7 @@ const FinishupToolbar = props => {
             <div>
               <Slider
                 defaultValue={lineHeight}
-                className="absolute top-6 left-0"
+                className="absolute top-6 left-0 slider"
                 min={1}
                 max={3}
                 step={0.05}
@@ -163,7 +184,9 @@ const FinishupToolbar = props => {
           <div className="flex items-center">
             <Tooltip placement="top" title="Paper size">
               <Select
+                size="small"
                 defaultValue={toolbarState.paperSize}
+                bordered={false}
                 style={{ width: '80px' }}
                 onChange={e => handleChange(e, 'paperSize')}
               >
@@ -186,6 +209,8 @@ const FinishupToolbar = props => {
           <Tooltip title="Zoom">
             <div className="flex flex-col">
               <Button
+                size="small"
+                type="text"
                 onClick={() => {
                   setSliderZoomVisible(!isSliderZoomVisible);
                 }}
@@ -200,7 +225,7 @@ const FinishupToolbar = props => {
                 <div>
                   <Slider
                     defaultValue={zoomValue}
-                    className="absolute top-6"
+                    className="absolute top-6 slider"
                     min={50}
                     max={200}
                     step={5}
@@ -228,13 +253,15 @@ const FinishupToolbar = props => {
           <div className="flex items-center">
             <Tooltip placement="top" title="Section Divider">
               <div
-                className="w-6 h-6 mt-1 justify-center items-center rounded-full  flex "
+                className="mt-0.5 justify-center items-center rounded-full  flex "
                 onClick={() => {
                   handleChange(!toolbarState.hasDivider, 'hasDivider');
                 }}
                 style={{
                   backgroundColor: toolbarState.hasDivider ? 'lightblue' : 'transparent',
                   cursor: 'pointer',
+                  height: '20px',
+                  width: '20px',
                 }}
               >
                 <FontAwesomeIcon icon={faMinus} />
@@ -252,17 +279,19 @@ const FinishupToolbar = props => {
         <Col className="indent flex element">
           <Tooltip title="Indent" placement="top">
             <div
-              className="w-6 h-6 justify-center items-center rounded-full  flex "
+              className="justify-center items-center rounded-full flex "
               onClick={() => {
                 handleChange(!toolbarState.hasIndent, 'hasIndent');
               }}
               style={{
                 margin: 'auto',
                 cursor: 'pointer',
+                height: '20px',
+                width: '20px',
                 backgroundColor: toolbarState.hasIndent ? 'lightblue' : '',
               }}
             >
-              <FontAwesomeIcon icon={faIndent} />
+              <FontAwesomeIcon size="sm" icon={faIndent} />
             </div>
           </Tooltip>
         </Col>
@@ -273,7 +302,12 @@ const FinishupToolbar = props => {
           type="vertical"
         />
 
-        <Col className="color element flex">
+        <Col
+          className="color element flex"
+          style={{
+            height: '24px',
+          }}
+        >
           <Popover
             title="Color Picker"
             trigger="click"
@@ -289,11 +323,67 @@ const FinishupToolbar = props => {
           >
             <div
               style={{ backgroundColor: color, cursor: 'pointer', margin: 'auto' }}
-              className="rounded-full w-5 h-[20px]"
+              className="rounded-full w-5 h-5"
             />
           </Popover>
         </Col>
       </Row>
+    </div>
+  );
+
+  return (
+    <div className="flex px-4 py-1 toolbar">
+      <div className="flex-auto src-components-GeneratorCompiler--pu3sXrl4gGw=">
+        <div className="flex text-center">
+          <DynamicColorCircle progress={10} />
+          <div className="flex items-center ml-2">
+            <Button className="font-bold">Explore My Rezi score</Button>
+          </div>
+          <div className="flex ml-auto ">
+            <div className="flex items-center ml-2">
+              <Button type="text" className="font-bold">
+                Auto-Adjust
+              </Button>
+            </div>
+            <div className="flex items-center ml-2">
+              <Button
+                type="text"
+                className="font-bold"
+                onClick={() => {
+                  setShowAdjustment(!showAdjustment);
+                }}
+              >
+                Adjustments
+                <FontAwesomeIcon className="ml-1" icon={faChevronDown} />
+              </Button>
+            </div>
+            <div className="flex items-center ml-2">
+              <Select
+                className="font-bold"
+                size="small"
+                defaultValue={templateType[1]}
+                label="Templates"
+                bordered={false}
+                style={{ width: 120 }}
+                onChange={handleChangeTemplate}
+                options={[
+                  { value: templateType[1], label: templateType[1] },
+                  { value: templateType[2], label: templateType[2] },
+                  { value: templateType[3], label: templateType[3] },
+                ]}
+              >
+                Templates
+              </Select>
+            </div>
+            <div className="flex items-center ml-2">
+              <Button color="primary" className="font-bold">
+                Download
+              </Button>
+            </div>
+          </div>
+        </div>
+        {showAdjustment && renderAdjustment()}
+      </div>
     </div>
   );
 };

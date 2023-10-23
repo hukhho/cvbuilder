@@ -3,7 +3,6 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Inter } from 'next/font/google';
 import './CVTemplates.scss';
 import {
   DndContext,
@@ -27,10 +26,10 @@ import { Divider } from 'antd';
 import './fonts.css';
 
 import { NextPageContext } from 'next';
+import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
 
 const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
   const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
-  console.log('stars: ', stars);
 
   // Define font styles for different fonts
   let fontStyles = {};
@@ -110,12 +109,17 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
     setActiveId(null);
   }, []);
 
+  const cvHeightSize = layoutStyles.paperSize === 'A4' ? '297mm' : '11in';
+  const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
+
   return (
     <div
       style={{
-        minHeight: layoutStyles.paperSize === 'A4' ? '297mm' : '11in',
+        height: cvHeightSize,
+        width: cvWidthSize,
         zoom: layoutStyles.zoom,
-        size: layoutStyles.paperSize,
+        size: cvHeightSize,
+        marginTop: 18,
       }}
     >
       <div id="resume" className="cv-layout-container" style={CvStyles}>
@@ -155,6 +159,7 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
             ))}
           </SortableContext>
         </DndContext>
+        <DesignStudioBreakPage paperSize={cvHeightSize} />
       </div>
     </div>
   );
