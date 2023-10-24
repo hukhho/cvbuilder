@@ -278,7 +278,6 @@ const CoverLetterForm = ({ cvId, onCreated, data }) => {
             onChange={e => {
               setContent(e.target.value);
             }}
-            onDoubleClick={checkSelection}
             value={loading ? null : content}
             style={{ background: 'white', height: 545, width: 1050 }}
           />
