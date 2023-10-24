@@ -1,6 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { faCaretDown, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCheckCircle,
+  faExclamationCircle,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 const ListError = ({ errors }) => {
   console.log('ListError errors: ', errors);
@@ -18,22 +23,48 @@ const ListError = ({ errors }) => {
     >
       <div className="mt-4">
         <div>
-          <div className="flex justify-between pt-2 pb-2.5 border-b border-gray-200 max-w-[280px]">
-            <div className="text-sm leading-7 mr-2.5">
-              <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#B91C1C' }} />
-            </div>
-            <div className="w-full justify-start" style={{ textAlign: 'left' }}>
-              <h6 className="text-sm align-baseline inline-block m-0 font-normal">
-                Short Bullet Points
-              </h6>
-              <p className="text-gray-600 text-xs leading-4 m-0">
-                Each bullet point should be a full line length. Take a look at bullet 1
-              </p>
-            </div>
-            <div className="pl-2 font-semibold min-w-[15px]">
-              <span className="text-red-700">1</span>
-            </div>
-          </div>
+          {errors
+            .filter(error => error.status === 'Error')
+            .map((error, index) => (
+              <div
+                key={index}
+                className="flex justify-between pt-2 pb-2.5 border-b border-gray-200 max-w-[280px]"
+              >
+                <div className="text-sm leading-7 mr-2.5">
+                  <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#B91C1C' }} />
+                </div>
+                <div className="w-full justify-start" style={{ textAlign: 'left' }}>
+                  <h6 className="text-sm align-baseline inline-block m-0 font-normal">
+                    {error.title}
+                  </h6>
+                  <p className="text-gray-600 text-xs leading-4 m-0">{error.result}</p>
+                </div>
+                <div className="pl-2 font-semibold min-w-[15px]">
+                  <span className="text-red-700">1</span>
+                </div>
+              </div>
+            ))}
+          {errors
+            .filter(error => error.status === 'Warning')
+            .map((error, index) => (
+              <div
+                key={index}
+                className="flex justify-between pt-2 pb-2.5 border-b border-gray-200 max-w-[280px]"
+              >
+                <div className="text-sm leading-7 mr-2.5">
+                  <FontAwesomeIcon icon={faExclamationCircle} style={{ color: '#ffa726' }} />
+                </div>
+                <div className="w-full justify-start" style={{ textAlign: 'left' }}>
+                  <h6 className="text-sm align-baseline inline-block m-0 font-normal">
+                    {error.title}
+                  </h6>
+                  <p className="text-gray-600 text-xs leading-4 m-0">{error.result}</p>
+                </div>
+                <div className="pl-2 font-semibold min-w-[15px]">
+                  <span className="text-orange-400">1</span>
+                </div>
+              </div>
+            ))}
 
           <div>
             <span

@@ -77,10 +77,8 @@ const Experience = ({ params }) => {
   const handleDownButton = () => {
     setIsShow(!isShow);
   };
-  const listErrors = [
-    { id: 1, message: 'Error 1' },
-    { id: 2, message: 'Error 2' },
-  ];
+  console.log('experiences: ', experiences);
+  console.log('experiences.bulletPointDtos: ', experiences.bulletPointDtos);
 
   return (
     <main>
@@ -117,7 +115,9 @@ const Experience = ({ params }) => {
 
                       {isShow && (
                         <>
-                          <ListError errors={listErrors} />
+                          {selectedExperience && (
+                            <ListError errors={selectedExperience?.bulletPointDtos} />
+                          )}
                           {experiences.map(experience => (
                             <ExperienceList
                               key={experience.id}

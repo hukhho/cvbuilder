@@ -81,30 +81,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
   useEffect(() => {
     if (experience) {
-      // Convert the startDate and endDate to moment objects
-      // const startDateMoment = moment(experience.startDate);
-      // const endDateMoment = moment(experience.endDate);
-
-      // Set the form values
-      form.setFieldsValue({
-        ...experience,
-        'range-picker': [startDateMoment, endDateMoment],
-      });
-      // form.setFieldsValue(experience);
       setIsEditMode(true); // Set to edit mode if experience prop is provided
     } else {
       form.resetFields();
       setIsEditMode(false); // Set to create mode if experience prop is not provided
     }
   }, [experience, form]);
-
-  const handleDateChange = (dates, dateStrings) => {
-    const [startDate, endDate] = dates;
-    form.setFieldsValue({
-      startDate,
-      endDate,
-    });
-  };
 
   const handleSubmit = async values => {
     try {
