@@ -184,7 +184,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                   width: '18px',
                   height: '55px',
                 }}
-                class="flex items-center justify-center border border-black bold"
+                class="flex items-center justify-center bold"
               >
                 -
               </div>
