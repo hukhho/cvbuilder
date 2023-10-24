@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './preview.css';
+import getCoverLetter from './getCoverLetter';
 
 function ResumeGenerator() {
   const [lineHeight, setLineHeight] = useState(1.55);
   const [fontSize, setFontSize] = useState(9);
   const [zoom, setZoom] = useState(100);
-
+  const [content, setContent] = useState({
+    name: '',
+    address: '',
+    phone: '',
+    email: '',
+    introDate: 'April 20, 2023',
+    company: '',
+    addressto: 'Dear Google',
+    content: '',
+  });
   const handleLineHeightChange = event => {
     setLineHeight(event.target.value);
   };
@@ -24,16 +34,49 @@ function ResumeGenerator() {
   };
 
   // Define the content for editable elements using dangerouslySetInnerHTML
-  const content = {
-    name: 'Charles Bloomberg',
-    address: 'q9',
-    phone: '0387788906',
-    email: 'hunglinode008@protonmail.com',
-    introDate: 'April 20, 2023',
-    company: 'hung',
-    addressto: 'Dear Google',
-    content: 'cccccccccccccccccccc',
-  };
+  // const content = {
+  //   name: 'Charles Bloomberg',
+  //   address: 'q9',
+  //   phone: '0387788906',
+  //   email: 'hunglinode008@protonmail.com',
+  //   introDate: 'April 20, 2023',
+  //   company: 'hung',
+  //   addressto: 'Dear Google',
+  //   content: 'cccccccccccccccccccc',
+  // };
+
+  // const content2 = await getCoverLetter(1, 1);
+  // const content = {
+  //   name: content2.user.name,
+  //   address: content2.user.address,
+  //   phone: content2.user.phone,
+  //   email: content2.user.email,
+  //   introDate: 'April 20, 2023',
+  //   company: content2.user.company,
+  //   addressto: 'Dear Google',
+  //   content: content2.description,
+  // };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const content2 = await getCoverLetter(1, 1);
+        setContent({
+          name: content2.user.name,
+          address: content2.user.address,
+          phone: content2.user.phone,
+          email: content2.user.email,
+          company: content2.user.company,
+          content: content2.description,
+        });
+      } catch (error) {
+        // Handle any errors that occur during the data fetch
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <div className="sample-generator-wrapper">
@@ -135,12 +178,12 @@ function ResumeGenerator() {
                         contentEditable="true"
                         dangerouslySetInnerHTML={{ __html: content.company }}
                       />
-                      <span
+                      {/* <span
                         className="editableContent cursor-text contact-item"
                         id="cl-addressto-addressto"
                         contentEditable="true"
                         dangerouslySetInnerHTML={{ __html: content.addressto }}
-                      />
+                      /> */}
                     </div>
                     <div className="item">
                       <p

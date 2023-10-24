@@ -12,29 +12,15 @@ import DataService from '../../../utils/dataService';
 import ContactForm from '@/app/components/Form/ContactForm';
 import getContact from './contactService';
 import CoverLetterForm from '@/app/components/Form/CoverLetterForm';
+import CoverLetterContent from '@/app/components/Form/CoverLetterContent';
 
-const Contact = ({ params }) => {
-  const [contactData, setContactData] = useState([]); // Renamed to "contactData"
+const Content = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
-    CONTACT: true,
+    CONTENT: true,
   });
+  const [contentData, setContentData] = useState();
 
   const cvId = params.id;
-
-  const fetchData = async () => {
-    try {
-      const userId = 1;
-      const data = await getContact(1);
-      console.log('fetchData ', data);
-      setContactData(data); // Updated to set "contactData"
-    } catch (error) {
-      console.error('There was an error fetching the data', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <main>
@@ -47,9 +33,9 @@ const Contact = ({ params }) => {
             />
           }
           content={
-            <div className="flex h-screen ">
+            <div className="flex h-screen">
               <div className="flex flex-col p-4">
-                <CoverLetterForm cvId={cvId} onCreated={fetchData} data={contactData} />
+                <CoverLetterContent data={contentData} />
               </div>
             </div>
           }
@@ -59,4 +45,4 @@ const Contact = ({ params }) => {
   );
 };
 
-export default Contact;
+export default Content;

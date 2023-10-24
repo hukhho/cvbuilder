@@ -19,10 +19,16 @@ import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSe
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import CoverLetterPreview from './CoverLetterPreview';
 
-export default function FinishUp() {
+export default function FinishUp({ params }) {
   const [lineHeight, setLineHeight] = useState(1.55);
   const [fontSize, setFontSize] = useState(9);
   const [zoom, setZoom] = useState(100);
+
+  const [enabledCategories, setEnabledCategories] = useState({
+    'FINISH UP': true,
+  });
+
+  const cvId = params.id;
 
   const handleLineHeightChange = event => {
     setLineHeight(event.target.value);
@@ -39,7 +45,12 @@ export default function FinishUp() {
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
-          userHeader={<UserCoverLetterBuilderHeader />}
+          userHeader={
+            <UserCoverLetterBuilderHeader
+              coverLetterId={cvId}
+              initialEnabledCategories={enabledCategories}
+            />
+          }
           content={
             <div className="flex mt-8">
               <div className="w-2/3 mr-2 flex flex-col">

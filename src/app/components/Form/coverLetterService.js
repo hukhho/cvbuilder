@@ -9,13 +9,14 @@ export const createCoverLetter = async (userId, contactData) => {
   try {
     const queryString = convertContactDataToQueryString(contactData);
 
-    const response = await axiosInstance.post(`/chat-gpt/generate?${queryString}`, {
+    const response = await axiosInstance.post(`/chat-gpt/cover-letter?${queryString}`, {
       timeout: 20000,
     });
-    return {
-      reply:
-        'Hi Dear Hiring Manager,\n\nI am writing to express my interest in the job opportunity for the position of [Job Title] at [Company]. I came across the job description and was immediately captivated by the potential for growth and the exciting challenges mentioned. Based on my background and experiences, I believe I am a strong candidate for this role.\n\nIn reviewing the job description, I noticed that you are looking for someone who possesses a strong background in [relevant skill/experience].',
-    };
+    return response.data;
+    // return {
+    //   reply:
+    //     'Hi Dear Hiring Manager,\n\nI am writing to express my interest in the job opportunity for the position of [Job Title] at [Company]. I came across the job description and was immediately captivated by the potential for growth and the exciting challenges mentioned. Based on my background and experiences, I believe I am a strong candidate for this role.\n\nIn reviewing the job description, I noticed that you are looking for someone who possesses a strong background in [relevant skill/experience].',
+    // };
 
     // const response = await axiosInstance.post(
     //   'https://api-cvbuilder.monoinfinity.net/api/v1/chat-gpt/generate?temperature=0.2&company=1&title=1&cvId=1&dear=1&name=1&description=1',

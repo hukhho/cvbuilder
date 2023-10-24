@@ -6,12 +6,14 @@ import UserLayout from '../components/Layout/UserLayout';
 import UserHeader from '../components/UserHeader';
 import CVCard from '../components/Card/CVCard';
 import Link from 'next/link'; // Import Link from Next.js for navigation
-import getResumes from '../utils/indexService';
+import { getResumes } from '../utils/indexService';
 
 const Home = () => {
   const [resumes, setResumes] = useState([]);
   const [mockCards, setMockCards] = useState([]);
-
+  const [enabledCategories, setEnabledCategories] = useState({
+    RESUMES: true,
+  });
   // Mock JSON data for cards
   const defaultImageUrl =
     'https://photos.pinksale.finance/file/pinksale-logo-upload/1692701716873-e9b5323edab631aa000eabb7a8512a33.PNG';
@@ -44,12 +46,11 @@ const Home = () => {
     <main>
       <ConfigProvider>
         <UserLayout
-          userHeader={<UserHeader />}
+          userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={
             <div className="container mx-auto px-4 py-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {/* Map over the mockCardData and generate cards with links */}
-                THIS IS RESUME PAGE
                 {mockCards.map((card, index) => (
                   <Link key={index} href={`/resume/${card.cvId}/education`}>
                     <CVCard imageUrl={card.imageUrl} title={card.title} />
