@@ -57,7 +57,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
   return (
     <Layout
       style={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fbfbfb',
       }}
       hasSider
     >
@@ -111,7 +111,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         <Menu
           style={{
             backgroundColor: '#3C2E8D',
-            color: '#ffffff',
+            color: '#fbfbfb',
             marginTop: 50,
             width: '80%',
             fontSize: '12.6px',
@@ -129,14 +129,15 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         className="site-layout"
         style={{
           marginLeft: 113,
-          background: 'white',
+          background: '#fbfbfb',
         }}
       >
         <Header
           style={{
             padding: 10,
             paddingLeft: 60,
-            background: colorBgContainer,
+            width: '120%',
+            background: '#fbfbfb',
           }}
         >
           {userHeader}
@@ -146,15 +147,15 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
           style={{
             margin: '24px 16px 0',
             height: '100vh',
-            overflow: 'initial',
-            background: colorBgContainer,
+            width: '120%',
+            background: '#fbfbfb',
           }}
         >
           <div
             style={{
               padding: 24,
               textAlign: 'center',
-              background: colorBgContainer,
+              background: '#fbfbfb',
             }}
           >
             {content}

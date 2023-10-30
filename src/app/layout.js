@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="pro-ui">
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>

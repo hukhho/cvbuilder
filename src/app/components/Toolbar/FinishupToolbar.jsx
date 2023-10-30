@@ -18,6 +18,7 @@ import {
 
 import ColorButtons from './ColorPicker';
 import DynamicColorCircle from '../Templates/templatesStyles/DynamicColorCircle';
+import { Modal } from '@chakra-ui/react';
 
 const { Option } = Select;
 
@@ -32,6 +33,8 @@ const templateType = {
 };
 
 const FinishupToolbar = props => {
+  const [open, setOpen] = useState(false);
+
   const { toolbarState, onToolbarChange, handleChangeTemplateSelected, currentTemplate } = props;
 
   const [showAdjustment, setShowAdjustment] = useState(false);

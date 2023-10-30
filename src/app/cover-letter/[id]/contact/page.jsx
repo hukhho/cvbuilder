@@ -11,10 +11,14 @@ import UserCoverLetterBuilderHeader from '@/app/components/UserCoverLetterBuilde
 import DataService from '../../../utils/dataService';
 import ContactForm from '@/app/components/Form/ContactForm';
 import getContact from './contactService';
-import CoverLetterForm from '@/app/components/Form/CoverLetterForm';
+import CoverLetterFormV2 from '@/app/components/Form/CoverLetterFormV2';
+
+import { getResumes } from '@/app/utils/indexService';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]); // Renamed to "contactData"
+  const [listResumes, setListResumes] = useState([]);
+
   const [enabledCategories, setEnabledCategories] = useState({
     CONTACT: true,
   });
@@ -25,8 +29,12 @@ const Contact = ({ params }) => {
     try {
       const userId = 1;
       const data = await getContact(1);
+
       console.log('fetchData ', data);
       setContactData(data); // Updated to set "contactData"
+
+      const resumes = await getResumes(userId);
+      setListResumes(resumes);
     } catch (error) {
       console.error('There was an error fetching the data', error);
     }
@@ -48,8 +56,13 @@ const Contact = ({ params }) => {
           }
           content={
             <div className="flex h-screen ">
-              <div className="flex flex-col p-4">
-                <CoverLetterForm cvId={cvId} onCreated={fetchData} data={contactData} />
+              <div className="flex flex-col p-4" style={{ width: '800px' }}>
+                <CoverLetterFormV2
+                  cvId={cvId}
+                  onCreated={fetchData}
+                  data={contactData}
+                  listResumes={listResumes}
+                />
               </div>
             </div>
           }

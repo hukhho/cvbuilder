@@ -1,0 +1,5 @@
+.react-datepicker__input-container input[type="text"],
+.react-datepicker__input-container .inputEl {
+  border: none; /* Remove the border */
+  /* Add any other desired styles */
+}

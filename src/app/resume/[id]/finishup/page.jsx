@@ -4,7 +4,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Divider } from 'antd';
+import { Button, Card, ConfigProvider, Divider, Modal } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import CVLayout from '@/app/components/Templates/CVLayout';
@@ -15,6 +15,7 @@ import EducationsSection from '@/app/components/Templates/SectionComponents/Educ
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import { getFinishUp, syncUp } from './finishUpService';
+import ScoreFinishUp from './Score';
 
 const mockData = {
   data: {
@@ -290,8 +291,10 @@ export default function FinishUp({ params }) {
         setFinishUpData(data);
 
         setShowFinishupCV(true);
+
         setTemplateSelected(data.templateType);
         setToolbarState(data.cvStyle);
+
         setSummary(data.summary);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
@@ -337,6 +340,8 @@ export default function FinishUp({ params }) {
   //   <Button onClick={handleSyncUp}>Sync Up</Button>
   // </div>
 
+  const [open, setOpen] = useState(false);
+
   return (
     <main>
       <ConfigProvider>
@@ -354,6 +359,22 @@ export default function FinishUp({ params }) {
                   }}
                   className="w-2/3 mr-2 flex flex-col"
                 >
+                  <Button type="primary" onClick={() => setOpen(true)}>
+                    Open Modal of 1000px width
+                  </Button>
+
+                  <Modal
+                    title=""
+                    centered
+                    open={open}
+                    onOk={() => setOpen(false)}
+                    onCancel={() => setOpen(false)}
+                    width={1000}
+                    className="custom"
+                  >
+                    <ScoreFinishUp />
+                  </Modal>
+
                   <div
                     style={{
                       background: 'white',

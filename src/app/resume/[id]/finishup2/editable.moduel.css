@@ -1,0 +1,57 @@
+:global(.editableContent) {
+    -webkit-font-feature-settings: "liga" 0, "onum" 1, "kern" 1;
+    -o-font-feature-settings: "liga" 0, "onum" 1, "kern" 1;
+    font-feature-settings: "liga" 0, "onum" 1, "kern" 1;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    vertical-align: top;
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  :global(.editableContent:not(.designStudio)) {
+    font-family: "Merriweather", serif;
+  }
+  
+  :global(.need-comma):before {
+    content: ",";
+    position: relative;
+    left: 0;
+    box-sizing: border-box;
+    padding: 0 3px 0 0;
+  }
+  
+  :global(.heading) {
+    display: flex;
+    align-items: center;
+    transition: background 150ms ease;
+  }
+  
+  :global(.ghost-hightlight) {
+    position: absolute;
+    & span {
+      font-size: 1em !important;
+      display: inline !important;
+      float: none !important;
+      color: transparent;
+      line-height: 1em;
+      &:before {
+        display: none !important;
+      }
+    }
+    & mark {
+      background: #cff3ee;
+      color: #cff3ee;
+      margin: 0 -2px;
+      padding: 0 2px;
+    }
+  }
+  
+  :global(.skills) :global(.ghost-hightlight) {
+    & span {
+      font-weight: 700 !important;
+    }
+  }
+  

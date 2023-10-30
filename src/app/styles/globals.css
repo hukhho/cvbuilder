@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "./ui.css";
+@import "./colors.css";
+@import "./typography.css";
+@import "./button.css";
 /**
  * Document defaults
  * Root line height reflected to postcss config for rlh units
@@ -80,7 +84,8 @@ a {
     &[disabled] {
       opacity: 0.6;
       color: var(--color-text-light);
-    }
+    } 
+
     &::placeholder {
       opacity: 0.5;
     }
