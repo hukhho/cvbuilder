@@ -49,6 +49,7 @@ const stylesInput4 = {
   width: '842.22px',
   height: '132.19px',
   padding: '10.30px 0.50px 10.89px 10px',
+  marginLeft: '0px',
   backgroundColor: 'white',
   borderRadius: '4px',
   border: '2px solid #e5e5e5',
@@ -283,6 +284,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                   showMonthYearPicker
                   selected={startDate}
                   onChange={date => setStartDate(date)}
+                  placeholderText={format(new Date(), 'MMMM yyyy')}
                 />
               </div>
               <div
@@ -303,6 +305,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                   calendarContainer={MyContainer}
                   onChange={date => setEndDate(date)}
                   customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
+                  placeholderText={format(new Date(), 'MMMM yyyy')}
                 />
 
                 {/* <DatePicker

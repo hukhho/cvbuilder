@@ -15,6 +15,8 @@ const ListError = ({ errors }) => {
     setIsShow(!isShow);
   };
 
+  const countPass = errors.filter(error => error.status === 'Pass').length;
+
   return (
     <section
       id="react-collapsed-panel-:r0:"
@@ -34,7 +36,7 @@ const ListError = ({ errors }) => {
                   <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#B91C1C' }} />
                 </div>
                 <div className="w-full justify-start" style={{ textAlign: 'left' }}>
-                  <h6 className="text-sm align-baseline inline-block m-0 font-normal">
+                  <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
                     {error.title}
                   </h6>
                   <p className="text-gray-600 text-xs leading-4 m-0">{error.result}</p>
@@ -55,7 +57,7 @@ const ListError = ({ errors }) => {
                   <FontAwesomeIcon icon={faExclamationCircle} style={{ color: '#ffa726' }} />
                 </div>
                 <div className="w-full justify-start" style={{ textAlign: 'left' }}>
-                  <h6 className="text-sm align-baseline inline-block m-0 font-normal">
+                  <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
                     {error.title}
                   </h6>
                   <p className="text-gray-600 text-xs leading-4 m-0">{error.result}</p>
@@ -71,7 +73,7 @@ const ListError = ({ errors }) => {
               className="text-teal-400 block font-bold mt-2.5"
               style={{ fontSize: '16px', textAlign: 'left' }}
             >
-              7 best practices applied
+              {countPass} best practices applied
               <button>
                 <FontAwesomeIcon
                   icon={faCaretDown}
@@ -87,23 +89,28 @@ const ListError = ({ errors }) => {
                 aria-hidden="false"
                 style={{ boxSizing: 'border-box' }}
               >
-                <div className="flex justify-between pt-2 pb-2.5 border-b border-gray-200 max-w-[280px]">
-                  <div className="text-sm leading-7 mr-2.5">
-                    <i className="fas fa-check-circle text-teal-400" aria-hidden="true" />
-                    <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#38A169' }} />
-                  </div>
-                  <div className="w-full" style={{ textAlign: 'left' }}>
-                    <h6 className="text-sm align-baseline inline-block m-0 font-normal">
-                      Weak Bullet Points
-                    </h6>
-                    <p className="text-gray-600 text-xs leading-4 m-0">
-                      Avoid using weak verbs to describe your experience
-                    </p>
-                  </div>
-                  <div className="pl-2 font-semibold min-w-[15px]">
-                    <span className="text-teal-400">1</span>
-                  </div>
-                </div>
+                {errors
+                  .filter(error => error.status === 'Pass')
+                  .map((error, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between pt-2 pb-2.5 border-b border-gray-200 max-w-[280px]"
+                    >
+                      <div className="text-sm leading-7 mr-2.5">
+                        <i className="fas fa-check-circle text-teal-400" aria-hidden="true" />
+                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#38A169' }} />
+                      </div>
+                      <div className="w-full" style={{ textAlign: 'left' }}>
+                        <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
+                          {error.title}
+                        </h6>
+                        <p className="text-gray-600 text-xs leading-4 m-0">{error.result}</p>
+                      </div>
+                      <div className="pl-2 font-semibold min-w-[15px]">
+                        <span className="text-teal-400">1</span>
+                      </div>
+                    </div>
+                  ))}
               </div>
             )}
           </div>
