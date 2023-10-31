@@ -5,6 +5,7 @@ const ProjectList = ({ data, onDelete, onEdit }) => {
 
   const handleDeleteClick = async () => {
     try {
+      console.log('handleDeleteClick::data: ', data);
       onDelete(id);
     } catch (error) {
       console.error('Error deleting:', error);

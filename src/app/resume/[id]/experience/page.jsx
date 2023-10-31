@@ -35,6 +35,7 @@ const Experience = ({ params }) => {
     try {
       const data = await getAllExperiences(cvId);
       console.log('data getAllExperiences ', data);
+      setSelectedExperience(null);
       setExperiences(data);
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
@@ -42,6 +43,7 @@ const Experience = ({ params }) => {
   };
 
   useEffect(() => {
+    setSelectedExperience(null);
     fetchExperiences();
   }, []);
 
@@ -96,8 +98,11 @@ const Experience = ({ params }) => {
                   </div>
                 </div>
                 <div className="h-3/4">
-                  <div style={{ maxWidth: '320px', marginTop: '20px' }}>
-                    <div className="p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex">
+                  <div style={{ maxWidth: '320px', marginTop: '20px', marginBottom: '20px' }}>
+                    <div
+                      style={{ maxWidth: '320px' }}
+                      className="mb-8 p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex"
+                    >
                       <div className="w-[266px] h-[50.50px] flex border-b border-gray-300">
                         <div className="left-0 top-[1.47px] text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
                           Your Experiences
@@ -122,6 +127,8 @@ const Experience = ({ params }) => {
                             <ExperienceList
                               key={experience.id}
                               data={experience}
+                              selectedExperience={selectedExperience}
+                              cvId={cvId}
                               onDelete={handleDeleteExperience}
                               onEdit={handleEditExperience}
                             />
@@ -129,11 +136,11 @@ const Experience = ({ params }) => {
                         </>
                       )}
 
-                      <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">
+                      {/* <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">
                         <div className="text-center text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
                           Create new education
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

@@ -45,6 +45,20 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
     }
   };
 
+  const [inputValue, setInputValue] = useState(''); // State to track input value
+  const handleInputChange = event => {
+    const newValue = event.target.value;
+
+    // Check if the newValue starts with a bullet point
+    if (!newValue.startsWith('• ')) {
+      setInputValue(`• ${newValue}`);
+      form.setFieldValue('description', `• ${newValue}`);
+    } else {
+      setInputValue(newValue);
+      form.setFieldValue('description', newValue);
+    }
+  };
+
   return (
     <div className="w-2/3 ">
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
@@ -66,8 +80,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                What is your <strong>degree</strong> or other <strong>qualification</strong> and{' '}
-                <strong>major</strong>?
+                <strong>WHERE</strong> DID YOU EARN YOUR DEGREE/QUALIFICATION?
               </span>
             </label>
           }
@@ -79,8 +92,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                What is your <strong>degree</strong> or other <strong>qualification</strong> and{' '}
-                <strong>major</strong>?
+                <strong>WHERE</strong> IS THE INSTITUTION LOCATED?
               </span>
             </label>
           }
@@ -92,8 +104,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                What is your <strong>degree</strong> or other <strong>qualification</strong> and{' '}
-                <strong>major</strong>?
+                <strong>WHEN</strong> DID YOU EARN YOUR DEGREE/QUALIFICATION?
               </span>
             </label>
           }
@@ -105,8 +116,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                What is your <strong>degree</strong> or other <strong>qualification</strong> and{' '}
-                <strong>major</strong>?
+                DID YOU <strong>MINOR</strong> IN ANYTHING?
               </span>
             </label>
           }
@@ -118,8 +128,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                What is your <strong>degree</strong> or other <strong>qualification</strong> and{' '}
-                <strong>major</strong>?
+                <strong>GPA</strong> (IF APPLICABLE)
               </span>
             </label>
           }
@@ -139,6 +148,8 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
         >
           <Input
             style={stylesInput}
+            value={inputValue}
+            onChange={handleInputChange}
             placeholder="Awarded full schoolarship for 4 years due to grades."
           />
         </Form.Item>

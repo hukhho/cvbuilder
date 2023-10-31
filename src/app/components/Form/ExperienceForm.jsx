@@ -64,10 +64,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
   const inputRef = useRef(null);
   const [inputValue, setInputValue] = useState('');
-
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
 
   useEffect(() => {
@@ -81,20 +79,15 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       if (endDateString === 'Present') {
         setIsCurrentlyWorking(true);
         const parsedStartDate = parse(startDateString, 'MMMM yyyy', new Date());
-
         setStartDate(parsedStartDate);
-
         setEndDate(new Date());
       } else {
         setIsCurrentlyWorking(false);
-
         const parsedStartDate = parse(startDateString, 'MMMM yyyy', new Date());
         const parsedEndDate = parse(endDateString, 'MMMM yyyy', new Date());
-
         setStartDate(parsedStartDate);
         setEndDate(parsedEndDate);
       }
-
       form.setFieldsValue(experience);
     } else {
       form.resetFields();
@@ -111,11 +104,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       values.description = inputValue;
       if (isCurrentlyWorking) {
         values.duration = `${format(startDate, 'MMMM yyyy')} - Present`;
-        // values.duration = startDate + ' - ' + 'Present';
       } else {
         values.duration = `${format(startDate, 'MMMM yyyy')} - ${format(endDate, 'MMMM yyyy')}`;
-
-        // values.duration = startDate + ' -' + endDate;
       }
       if (isEditMode) {
         await updateExperience(cvId, experience.id, values);
@@ -181,7 +171,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       }
       return line;
     });
-
     setInputValue(formattedLines.join('\n'));
   };
 

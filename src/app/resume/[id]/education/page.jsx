@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable */
 
 'use client';
 
@@ -12,6 +12,8 @@ import EducationForm from '@/app/components/Form/EducationForm';
 
 import { deleteEducation, getAllEducations } from './educationService';
 import EducationList from './EducationList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const { Meta } = Card;
 
@@ -21,6 +23,10 @@ const Education = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     EDUCATION: true,
   });
+  const [isShow, setIsShow] = useState(true);
+  const handleDownButton = () => {
+    setIsShow(!isShow);
+  };
   console.log('Education: ', params);
   const cvId = params.id;
 
@@ -83,9 +89,15 @@ const Education = ({ params }) => {
                     <div className=" p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex">
                       <div className="w-[266px] h-[50.50px] relative border-b border-gray-300">
                         <div className="left-0 top-[1.47px] absolute text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
-                          Your Education{' '}
+                          Your Education
+                        </div>
+                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ml-8">
                           <button>
-                            <span className="toggle1">&#9660;</span>
+                            <FontAwesomeIcon
+                              icon={faCaretDown}
+                              className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                              onClick={handleDownButton}
+                            />
                           </button>
                         </div>
                       </div>

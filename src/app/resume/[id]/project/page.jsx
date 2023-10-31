@@ -14,6 +14,9 @@ import ProjectForm from '@/app/components/Form/ProjectForm';
 import SortCheckbox from './SortCheckbox';
 import DataService from '../../../utils/dataService';
 import ProjectList from './ProjectList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import ListError from '@/app/components/ListError/ListError';
 
 const { Meta } = Card;
 
@@ -23,6 +26,10 @@ const Project = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     PROJECT: true,
   });
+  const [isShow, setIsShow] = useState(true);
+  const handleDownButton = () => {
+    setIsShow(!isShow);
+  };
   console.log('Data: ', params);
 
   const cvId = params.id;
@@ -32,6 +39,7 @@ const Project = ({ params }) => {
     try {
       const fetchedProjectData = await dataService.getAll(); // Renamed 'projectData' to 'fetchedProjectData'
       console.log('fetchData ', fetchedProjectData);
+      setSelectedData(null);
       setProjectData(fetchedProjectData);
     } catch (error) {
       console.error('There was an error fetching the data', error);
@@ -48,7 +56,7 @@ const Project = ({ params }) => {
 
   const handleDeleteData = async itemId => {
     try {
-      await dataService.delete(cvId, itemId);
+      await dataService.delete(itemId);
       const updatedData = await dataService.getAll(cvId);
       setProjectData(updatedData);
     } catch (error) {
@@ -89,23 +97,37 @@ const Project = ({ params }) => {
                         <div className="left-0 top-[1.47px] absolute text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
                           Your Project
                         </div>
+                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ">
+                          <button>
+                            <FontAwesomeIcon
+                              icon={faCaretDown}
+                              className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                              onClick={handleDownButton}
+                            />
+                          </button>
+                        </div>
                         {/* <div className="left-[138.20px] top-[9px] absolute text-gray-300 text-lg font-black font-['Font Awesome 5 Free'] leading-[18px]">
                         
                       </div> */}
                       </div>
-                      {projectData.map(item => (
-                        <ProjectList
-                          key={item.id}
-                          data={item}
-                          onDelete={handleDeleteData}
-                          onEdit={handleEditData}
-                        />
-                      ))}
-                      <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">
-                        <div className="text-center text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-                          Create new project
-                        </div>
-                      </div>
+                      {isShow && (
+                        <>
+                          {selectedData && <ListError errors={selectedData?.bulletPointDtos} />}
+                          {projectData.map(item => (
+                            <ProjectList
+                              key={item.id}
+                              data={item}
+                              onDelete={handleDeleteData}
+                              onEdit={handleEditData}
+                            />
+                          ))}
+                          <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">
+                            <div className="text-center text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
+                              Create new project
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

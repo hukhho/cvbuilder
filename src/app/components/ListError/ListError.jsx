@@ -21,7 +21,7 @@ const ListError = ({ errors }) => {
     <section
       id="react-collapsed-panel-:r0:"
       aria-hidden="false"
-      style={{ boxSizing: 'border-box' }}
+      style={{ maxWidth: '280px', boxSizing: 'border-box' }}
     >
       <div className="mt-4">
         <div>
