@@ -387,6 +387,9 @@ export default function FinishUp({ params }) {
                       onToolbarChange={handleToolbarChange}
                       currentTemplate={mockData.data.resume.resumeStyle}
                     />
+                    <Button type="" onClick={() => handleSyncUp()}>
+                      Sync Up
+                    </Button>
                   </div>
                   <CVLayout
                     key={[templateSelected, toolbarState]}

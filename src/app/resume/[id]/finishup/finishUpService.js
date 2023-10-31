@@ -4,9 +4,9 @@ import { mockData } from './mockData';
 
 export const getFinishUp = async cvId => {
   try {
-    // const response = await axiosInstance.get(`/user/finishUp/${cvId}`);
-    return mockData.data.resume;
-    // return response.data;
+    const response = await axiosInstance.get(`/user/finishUp/${cvId}`);
+    // return mockData.data.resume;
+    return response.data;
   } catch (error) {
     throw error;
   }
