@@ -1,39 +1,43 @@
 .sortable-item {
     position: relative;
 
-    /* border-color: antiquewhite;
-    border-radius: 4px;
-    border: 1px solid gray; */
+    .sortable-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .sortable-item {
+        margin: 0;
+        // padding: 10px;
+        // border: 1px solid #ccc;
+        cursor: grab;
+    }
+    
+    .sortable-item:active {
+        cursor: grabbing;
+    }
+    
+
+    /* Styling for the drag handle */
     .drag-handle {
         -webkit-tap-highlight-color: transparent;
         opacity: 0;
-        /* Initially set the opacity to 0 */
         visibility: hidden;
-        /* Initially hide the element */
         transition: opacity 0.2s ease;
         width: 0;
-        /* Set width to zero */
         height: 0;
-        /* Set height to zero */
         position: absolute;
-        /* Position absolutely within the parent */
         top: 0;
-
         right: 0;
-        /* Add a transition effect */
     }
 
     &:hover {
-
-        // Display the drag-handle when hovering over the sortable-item
+        /* Display the drag-handle when hovering over the sortable-item */
         .drag-handle {
             opacity: 1;
-            /* Make it visible on hover */
             visibility: visible;
             width: auto;
-            /* Set width back to auto to make it visible */
             height: auto;
-            /* Set height back to auto to make it visible */
         }
 
         .drag-handle:focus-visible {
@@ -42,6 +46,7 @@
     }
 
     .sortable-component {
-        margin: unset;
+        /* Reset any unwanted margins on the sortable component */
+        margin: 0;
     }
 }

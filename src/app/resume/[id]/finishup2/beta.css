@@ -1,0 +1,348 @@
+.top-big-border {
+    width: 100%;
+    height: 12px;
+    background: #3c78d8ff;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  @page {
+    margin: 1.2cm 0;
+  }
+  @page:first {
+    margin-top: 0;
+  }
+  
+  .resume {
+    padding: 1.3cm 1.4cm 1.3cm 1.4cm;
+    position: relative;
+  }
+  .print .ghost-hightlight {
+    display: none;
+  }
+  .print .resume {
+    padding: 1.12cm 1.2cm 0 1.2cm !important;
+  }
+  .print .handle-sort-wrapper {
+    display: none;
+  }
+  .print .resume {
+    letter-spacing: 0.003em !important;
+  }
+  .print .handle {
+    display: none;
+  }
+  .beta {
+    font-family: "Source Sans Pro", sans-serif;
+    color: #2e3d50;
+    -webkit-font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+    -o-font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+    font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+  }
+  
+  .beta h1 {
+    font-family: "Source Sans Pro", sans-serif;
+    line-height: inherit;
+  }
+  .beta .draggable-item > .handle-sort-wrapper {
+    position: absolute;
+  }
+  .beta .draggable-item section .handle-sort-wrapper {
+    position: absolute;
+  }
+  .beta .draggable-item > .handle-sort-wrapper > span {
+    visibility: hidden;
+  }
+  .beta .draggable-item section .handle-sort-wrapper > span {
+    visibility: hidden;
+  }
+  .beta .section-header {
+    font-family: "Source Sans Pro", sans-serif;
+    display: block;
+    font-size: 1.35em;
+    letter-spacing: 0;
+    font-weight: bold;
+    margin: 14px 0 0 0;
+    text-transform: uppercase;
+    text-align: left;
+    border-bottom: none;
+  }
+  .beta .editableContent {
+    font-family: "Source Sans Pro", serif;
+    font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+    overflow: hidden;
+  }
+  
+  .beta p {
+    white-space: pre-line;
+    padding: 0;
+    margin: 0 auto;
+    font-size: 0.95em;
+    font-weight: 100;
+    line-height: 1.5;
+    text-align: left;
+    display: block;
+    position: relative;
+  }
+  
+  .beta hr {
+    height: 0;
+    border-top: 1px solid rgba(44, 62, 80, 0.1);
+    border-bottom: 0;
+    padding: 0 0;
+    margin: 10px auto;
+  }
+  
+  .beta .item {
+    line-height: 1.25 !important;
+    margin-bottom: 9px;
+  }
+  .beta .skills .item {
+    line-height: 1.25 !important;
+    margin-bottom: 0;
+  }
+  .beta .name {
+    font-family: "Source Sans Pro", sans-serif;
+    margin: 0 auto;
+    display: block;
+    text-align: left;
+    width: 100%;
+    font-size: 2.5em;
+    padding: 0 0 3px 0;
+    font-weight: 700;
+  }
+  .beta .contact-separator {
+    width: 75%;
+    height: 2px;
+    background: #d9d9d9;
+    margin: 0.5em 0 1.2em;
+  }
+  .beta .contact {
+    margin-top: 2px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .beta .contact-item {
+    font-family: "Source Sans Pro", sans-serif;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 2px 3px 8px 3px;
+  }
+  
+  .beta .contact-item-location {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 2px 3px 8px 0;
+  }
+  
+  .beta .contact-icon {
+    width: 0.9em;
+    height: 0.9em;
+    margin-right: 3px;
+    fill: currentColor;
+  }
+  
+  .beta[data-icons="false"] .contact-icon {
+    display: none;
+  }
+  
+  .beta[data-icons="false"] .contact-item:after {
+    content: "•";
+    display: block;
+    padding: 0 1px 0 7px;
+  }
+  .beta[data-icons="false"] .contact-item:last-child:after {
+    content: "";
+    display: none;
+    padding: 0;
+  }
+  
+  .beta .contact span i {
+    position: relative;
+    top: 1px;
+    margin: 0 3px 0 0;
+  }
+  
+  .beta .summary {
+    display: block;
+  }
+  .beta .summary-paragraph {
+    margin-top: 0.7em !important;
+  }
+  .beta .item.education-paragraph {
+    display: inline-block;
+    margin-top: 0.4em !important;
+  }
+  .beta .skills-paragraph {
+    display: inline-block;
+    margin-top: 0.4em !important;
+  }
+  .beta .paragraph {
+    margin-top: 0.25em !important;
+  }
+  .beta .item > div > span {
+    line-height: 2em;
+  }
+  .beta .item span {
+    margin: 0 0 -6px;
+    font-size: 1em;
+    font-weight: 700;
+    text-align: left;
+    display: inline-flex;
+    align-items: baseline;
+    padding: 0;
+    line-height: initial;
+  }
+  
+  .beta .item .ghost-hightlight span > span {
+    font-size: 1em;
+    font-weight: 400 !important;
+  }
+  .beta .item span > span:after {
+    display: none;
+  }
+  
+  .beta .minor {
+    font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+    display: inline-flex !important;
+    position: relative;
+    overflow: hidden;
+  }
+  .beta .minor-text {
+    font-size: 1em !important;
+  }
+  .beta .item p {
+    display: block;
+    text-align: left;
+    white-space: pre-line;
+    padding: 0;
+    margin: 0 auto;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.6em;
+  }
+  .beta .ghost-hightlight {
+    position: absolute !important;
+  }
+  .beta .ghost-hightlight > span {
+    line-height: 1.6em;
+    font-size: 1em !important;
+    font-weight: 400 !important;
+    display: inline !important;
+    float: none !important;
+    color: transparent;
+  }
+  .beta .draggable-item {
+    position: relative;
+  }
+  .beta .handle {
+    top: 0 !important;
+  }
+  .beta > div > div > div > .handle {
+    top: 0px !important;
+    font-size: 1.2em;
+    height: calc(100% - 27px);
+  }
+  .beta .summary .item {
+    margin-top: -6px;
+  }
+  
+  .beta .education .item > div {
+    display: inline-block;
+  }
+  
+  .beta .education-location,
+  .beta .education-date {
+    font-weight: 400 !important;
+  }
+  .beta .education .item > div:after {
+    content: "|";
+    font-weight: bold;
+    position: relative;
+    left: 0;
+    box-sizing: border-box;
+    padding: 0 3px 0;
+  }
+  .beta .item span:after {
+    content: "|";
+    position: relative;
+    left: 0;
+    box-sizing: border-box;
+    padding: 0 3px 0;
+  }
+  .beta .item span:last-child:after {
+    content: "";
+    position: relative;
+    padding: 0;
+  }
+  
+  .beta .hero.havePicture {
+    display: flex;
+    align-items: flex-end;
+  }
+  
+  .beta .hero.havePicture .name {
+    text-align: left;
+  }
+  
+  .beta .hero.havePicture .contact {
+    text-align: left;
+    justify-content: left;
+  }
+  
+  .beta .picture {
+    width: 2.5cm;
+    min-width: 2.5cm;
+    height: 3cm;
+    margin: 0 20px 10px 0;
+    border-radius: 15px;
+    overflow: hidden;
+    color: #f1f1f1;
+    background: #f1f1f1;
+  }
+  .beta .picture img {
+    object-fit: cover;
+    object-position: center;
+    width: 2.5cm;
+    height: 3cm;
+  }
+  .beta .no-picture {
+    color: var(--color-grey);
+    border: 2px dashed var(--color-grey);
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-transform: uppercase;
+    font: var(--font-heading);
+    font-size: var(--scale-000);
+    line-height: 1.5em;
+  }
+  
+  .beta .hide-picture {
+    display: none;
+  }
+  

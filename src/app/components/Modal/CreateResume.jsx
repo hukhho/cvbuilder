@@ -97,7 +97,21 @@ const CreateResume = () => {
 
   return (
     <>
-      <Button
+      <button
+        href=""
+        data-size="default"
+        data-theme="default"
+        data-busy="false"
+        class="cta-button cta button "
+        id="navi-create-new-resume"
+        onClick={showModal}
+       
+      >
+        {' '}
+        <i class="fad fa-file-plus" aria-hidden="true"></i>
+        <span>Create new resume</span>
+      </button>
+      {/* <Button
         style={{
           background: '#4D70EB',
           fontSize: '12px',
@@ -108,7 +122,7 @@ const CreateResume = () => {
         onClick={showModal}
       >
         CREATE NEW RESUME
-      </Button>
+      </Button> */}
       <Modal
         open={open}
         title="Create a resume"

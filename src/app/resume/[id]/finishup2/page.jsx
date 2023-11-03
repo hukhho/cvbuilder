@@ -16,9 +16,21 @@ import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSe
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import { getFinishUp, syncUp } from './finishUpService';
 import ScoreFinishUp from './Score';
+import {
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import './styles.moduel.css';
 import './editable.moduel.css';
 import './alpha.css';
+import './beta.css';
+import './omega.css';
+
 import './template.css';
 
 const mockData = {
@@ -43,6 +55,9 @@ const mockData = {
         hasIndent: false,
         fontColor: 'rgb(0, 0, 0)',
       },
+      
+
+
       experiences: [
         {
           id: 1,
@@ -293,7 +308,7 @@ export default function FinishUp({ params }) {
         console.log('FinishUp data: ', data);
 
         setFinishUpData(data);
-
+        
         setShowFinishupCV(true);
 
         setTemplateSelected(data.templateType);
@@ -478,7 +493,7 @@ export default function FinishUp({ params }) {
                       </div>
                     </div>
                     <div id="resume-preview-wrapper" className="resume-preview-wrapper">
-                      {/* <div className="toolbar card">
+                      <div className="toolbar card">
                         <div className="flex flex-col">
                           <div className="flex px-4 py-1">
                             <div className="flex-auto donutContainer">
@@ -486,7 +501,7 @@ export default function FinishUp({ params }) {
                                 width={52}
                                 height={52}
                                 xmlns="https://www.w3.org/2000/svg"
-                                className="src-components-GeneratorCompiler--6igPcwJlOTA="
+                                className="donutContainerSvg"
                               >
                                 <g>
                                   <title>Resume completion</title>
@@ -515,27 +530,27 @@ export default function FinishUp({ params }) {
                                     y="-24px"
                                     dominantBaseline="middle"
                                     textAnchor="middle"
-                                    className="src-components-GeneratorCompiler---iJvat0pVKg="
+                                    className="donut-text"
                                   >
                                     78
                                   </text>
                                 </g>
                               </svg>
                               <div
-                                className="src-components-GeneratorCompiler--RD-qY4wS5FM= src-components-GeneratorCompiler--oypazpT7Vfo="
+                                className="toolbar-button-download toolbar-button-score"
                                 data-score="true"
                               >
                                 Explore My Rezi score
                               </div>
                             </div>
-                            <div className="src-components-GeneratorCompiler--0cvijpKhQQk=">
-                              <span className="src-components-GeneratorCompiler--oC3iOJvBmSQ=">
+                            <div className="toolbar-button-wrapper">
+                              <span className="toolbar-button-adjustement">
                                 <i
-                                  className="fas fa-magic src-components-GeneratorCompiler---kjja11t6fo="
+                                  className="fas fa-magic toolbar-mobile"
                                   style={{ marginRight: 5 }}
                                   aria-hidden="true"
                                 />
-                                <span className="src-components-GeneratorCompiler--qdfYq8rjais=">
+                                <span className="toolbar-desktop">
                                   Auto-adjust
                                   <span
                                     style={{
@@ -550,26 +565,26 @@ export default function FinishUp({ params }) {
                               </span>
                               <span
                                 data-config="adjustments"
-                                className="false src-components-GeneratorCompiler--oC3iOJvBmSQ="
+                                className="false toolbar-button-adjustement"
                               >
-                                <span className="src-components-GeneratorCompiler--qdfYq8rjais=">
+                                <span className="toolbar-button">
                                   Adjustments
                                 </span>
                                 <i
-                                  className="fad fa-cog src-components-GeneratorCompiler---kjja11t6fo="
+                                  className="fad fa-cog toolbar-mobile"
                                   aria-hidden="true"
                                 />{' '}
                                 <svg
                                   xmlns="https://www.w3.org/2000/svg"
                                   viewBox="0 0 24 24"
-                                  className="src-components-GeneratorCompiler--yxLxsGZBMvw="
+                                  className="toolbar-button-icon"
                                 >
                                   <path d="m5.293 9.707 6 6a.999.999 0 0 0 1.414 0l6-6a.999.999 0 1 0-1.414-1.414L12 13.586 6.707 8.293a.999.999 0 1 0-1.414 1.414z" />
                                 </svg>
                               </span>
-                              <span className="src-components-GeneratorCompiler--RGfVJbHXONM=">
+                              <span className="toolbar-button-adjustement">
                                 <span
-                                  className="src-components-GeneratorCompiler--qdfYq8rjais="
+                                  className="toolbar-desktop"
                                   style={{ paddingRight: 15 }}
                                 >
                                   Template
@@ -579,7 +594,7 @@ export default function FinishUp({ params }) {
                                   aria-hidden="true"
                                 />
                               </span>
-                              <div
+                              {/* <div
                                 className="z-50 src-components-GeneratorCompiler-DownloadAction--oqHJ808Hvqg="
                                 data-config="adjustments"
                               >
@@ -624,7 +639,8 @@ export default function FinishUp({ params }) {
                                     SAVE TO DRIVE
                                   </span>
                                 </div>
-                              </div>
+                              </div> */}
+
                             </div>
                           </div>
                           <div className="flex justify-start flex-wrap items-center bg-neutral-50 rounded-b-[0.5em] font-semibold select-none gap-y-2 h-[0px] opacity-0 pointer-events-none overflow-hidden px-4 transition-all ease-in-out duration-300">
@@ -754,7 +770,8 @@ export default function FinishUp({ params }) {
                             </div>
                           </div>
                         </div>
-                      </div> */}
+                      </div>
+                      
                       <div className="preview card">
                         <div
                           className="bg-gray-100 rounded-md p-4 select-none text-[#2e3d50]"
@@ -770,7 +787,7 @@ export default function FinishUp({ params }) {
                           >
                             <div
                               id="resume"
-                              className="relative bg-white transition-colors resume"
+                              className="relative bg-white transition-colors resume alpha"
                               data-type="designStudio"
                               data-format="letter"
                               data-template="standard"
@@ -816,7 +833,7 @@ export default function FinishUp({ params }) {
                                           lineHeight: 'inherit',
                                         }}
                                       >
-                                        Charles Bloomberg
+                                        {finishUpData?.fullName}
                                       </h1>
                                       <div
                                         className="pt-[2px] text-center false"
@@ -828,11 +845,11 @@ export default function FinishUp({ params }) {
                                       >
                                         <ul className="inline-block mr-1">
                                           <li className="inline-block [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-1">
-                                            New York City
+                                            Viet Nam
                                           </li>
-                                          <li className="inline-block [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-1">
+                                          {/* <li className="inline-block [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-1">
                                             United States
-                                          </li>
+                                          </li> */}
                                         </ul>
                                         <span className="inline-block mr-1">
                                           <svg
@@ -845,7 +862,7 @@ export default function FinishUp({ params }) {
                                           >
                                             <path d="M20.016 8.016V6L12 11.016 3.984 6v2.016L12 12.985zm0-4.032q.797 0 1.383.609t.586 1.406v12q0 .797-.586 1.406t-1.383.609H3.985q-.797 0-1.383-.609t-.586-1.406v-12q0-.797.586-1.406t1.383-.609h16.031z" />
                                           </svg>
-                                          charlesbloomberg@wisc.edu
+                                          {finishUpData?.emailAddress}
                                         </span>
                                         <span className="inline-block mr-1">
                                           <svg
@@ -858,7 +875,7 @@ export default function FinishUp({ params }) {
                                           >
                                             <path d="M19.5 0h-15A1.5 1.5 0 0 0 3 1.5v21A1.5 1.5 0 0 0 4.5 24h15a1.5 1.5 0 0 0 1.5-1.5v-21A1.5 1.5 0 0 0 19.5 0zM18 18H6V3h12z" />
                                           </svg>
-                                          (621) 799-5548
+                                          {finishUpData?.phone}
                                         </span>
                                         <span className="inline-block mr-1">
                                           <svg
@@ -871,16 +888,18 @@ export default function FinishUp({ params }) {
                                           >
                                             <path d="M21.75 0H2.25A2.257 2.257 0 0 0 0 2.25v19.5A2.257 2.257 0 0 0 2.25 24h19.5A2.257 2.257 0 0 0 24 21.75V2.25A2.257 2.257 0 0 0 21.75 0zM9 19.5H6V9h3zm-1.5-12C6.67 7.5 6 6.83 6 6s.67-1.5 1.5-1.5S9 5.17 9 6s-.67 1.5-1.5 1.5zm12 12h-3v-6c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v6h-3V9h3v1.861C14.119 10.013 15.066 9 16.125 9c1.866 0 3.375 1.678 3.375 3.75z" />
                                           </svg>
-                                          in/bloomberg
+                                          {finishUpData?.personalWebsite}
                                         </span>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                                 <div>
-                                  <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+
+                                  {/* <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
                                     <hr />
-                                  </div>
+                                  </div> */}
+                                  
                                 </div>
                                 <ul className="sortable-container col-span-12 z-10">
                                   <li
@@ -901,7 +920,7 @@ export default function FinishUp({ params }) {
                                         }}
                                       >
                                         <span
-                                          className="editableContent cursor-text  designStudio "
+                                          className="editableContent cursor-text  designStudio section-header"
                                           id="summary-heading"
                                           tabIndex={0}
                                           contentEditable="true"
@@ -913,7 +932,7 @@ export default function FinishUp({ params }) {
                                         >
                                           Summary
                                         </span>
-                                        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
+                                        {/* <hr className="border-0 border-b-[1px] border-black mt-[1px]" /> */}
                                       </div>
                                       <div
                                         className="relative whitespace-pre-line cursor-text focus:outline-none"
@@ -951,10 +970,11 @@ export default function FinishUp({ params }) {
                                         </p>
                                       </div>
                                     </div>
-                                    <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                                    {/* <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
                                       <hr />
-                                    </div>
+                                    </div> */}
                                   </li>
+
                                   <li
                                     className="experience leading-snug relative group "
                                     style={{ marginBottom: 8 }}
@@ -973,7 +993,7 @@ export default function FinishUp({ params }) {
                                         }}
                                       >
                                         <span
-                                          className="editableContent cursor-text  designStudio "
+                                          className="editableContent cursor-text designStudio section-header"
                                           id="experience-heading"
                                           tabIndex={0}
                                           contentEditable="true"
@@ -985,15 +1005,18 @@ export default function FinishUp({ params }) {
                                         >
                                           Experience
                                         </span>
-                                        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
+                                        {/* <hr className="border-0 border-b-[1px] border-black mt-[1px]" /> */}
                                       </div>
+
+
+
                                       <div
                                         className="flex flex-col"
                                         style={{ lineHeight: '1.6em' }}
                                       >
                                         <ul className="sortable-container ">
-                                          <li
-                                            className="smpl125032021 leading-snug relative group "
+                                         <li
+                                            className="smpl125032021 leading-snug relative group"
                                             style={{
                                               paddingLeft: '1.4cm',
                                               paddingRight: '1.4cm',
@@ -1047,7 +1070,7 @@ export default function FinishUp({ params }) {
                                                 </div>
                                                 <div style={{ color: 'rgb(46, 61, 80)' }}>
                                                   <div
-                                                    className="inline-block before:first:hidden before:absolute "
+                                                    className="inline-block before:first:hidden before:absolute"
                                                     style={{ fontSize: '0.85em' }}
                                                   >
                                                     <span
@@ -1100,352 +1123,7 @@ export default function FinishUp({ params }) {
                                                 • cc
                                               </p>
                                             </div>
-                                          </li>
-                                          <li
-                                            className="smpl025032021 leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: 11,
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div className="" style={{ lineHeight: '1em' }}>
-                                              <div className="flex gap-2">
-                                                <span
-                                                  className="text-[#000000]"
-                                                  style={{ color: 'rgb(0, 0, 0)' }}
-                                                >
-                                                  <div
-                                                    className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ color: 'rgb(0, 0, 0)' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
-                                                      id="smpl025032021-role"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      Creative Producer
-                                                    </span>
-                                                  </div>
-                                                </span>
-                                              </div>
-                                              <div className="flex gap-2 justify-between font-semibold">
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="smpl025032021-company"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      Company A
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <div
-                                                    className="inline-block before:first:hidden before:absolute "
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text leading-snug ml-0 designStudio "
-                                                      id="smpl025032021-duration"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      June 2020 - Present
-                                                    </span>
-                                                  </div>
-                                                  <div
-                                                    className="inline-block before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text leading-snug ml-2 designStudio "
-                                                      id="smpl025032021-location"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      New York, NY
-                                                    </span>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div
-                                              className="text-[0.85em] relative whitespace-pre-line "
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                lineHeight: '1.6em',
-                                                fontSize: '0.85em',
-                                                fontWeight: 100,
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      • Functions internally with executive and
-                                                      marketing teams on the creation of video
-                                                      content, photography and graphic design. •
-                                                      Sole producer in the company, owning all
-                                                      visual content. • Coordinates with technical
-                                                      teams, executive teams and sales to produce
-                                                      messaging and content. • Leader of
-                                                      communications efforts including production
-                                                      for press, trade shows and collaboration with
-                                                      automotive partners.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio "
-                                                id="smpl025032021-description"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                • Functions internally with executive and marketing
-                                                teams on the creation of video content, photography
-                                                and graphic design. • Sole producer in the company,
-                                                owning all visual content. • Coordinates with
-                                                technical teams, executive teams and sales to
-                                                produce messaging and content. • Leader of
-                                                communications efforts including production for
-                                                press, trade shows and collaboration with automotive
-                                                partners.
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="ncQ-wVn_6 leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: 11,
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div className="" style={{ lineHeight: '1em' }}>
-                                              <div className="flex gap-2">
-                                                <span
-                                                  className="text-[#000000]"
-                                                  style={{ color: 'rgb(0, 0, 0)' }}
-                                                >
-                                                  <div
-                                                    className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ color: 'rgb(0, 0, 0)' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
-                                                      id="ncQ-wVn_6-role"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      c
-                                                    </span>
-                                                  </div>
-                                                </span>
-                                              </div>
-                                              <div className="flex gap-2 justify-between font-semibold">
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="ncQ-wVn_6-company"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      c
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <div
-                                                    className="inline-block before:first:hidden before:absolute "
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text leading-snug ml-0 designStudio "
-                                                      id="ncQ-wVn_6-duration"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      February 2023 -October 2023
-                                                    </span>
-                                                  </div>
-                                                  <div
-                                                    className="inline-block before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text leading-snug ml-2 designStudio "
-                                                      id="ncQ-wVn_6-location"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      c
-                                                    </span>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div
-                                              className="text-[0.85em] relative whitespace-pre-line "
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                lineHeight: '1.6em',
-                                                fontSize: '0.85em',
-                                                fontWeight: 100,
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">• c</span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio "
-                                                id="ncQ-wVn_6-description"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                • c
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="-btVlug1A3 leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div className="" style={{ lineHeight: '1em' }}>
-                                              <div className="flex gap-2">
-                                                <span
-                                                  className="text-[#000000]"
-                                                  style={{ color: 'rgb(0, 0, 0)' }}
-                                                >
-                                                  <div
-                                                    className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ color: 'rgb(0, 0, 0)' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
-                                                      id="-btVlug1A3-role"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      C
-                                                    </span>
-                                                  </div>
-                                                </span>
-                                              </div>
-                                              <div className="flex gap-2 justify-between font-semibold">
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="-btVlug1A3-company"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      C
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <div
-                                                    className="inline-block before:first:hidden before:absolute "
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text leading-snug ml-0 designStudio "
-                                                      id="-btVlug1A3-duration"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      February 2023 -October 2023
-                                                    </span>
-                                                  </div>
-                                                  <div
-                                                    className="inline-block before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text leading-snug ml-2 designStudio "
-                                                      id="-btVlug1A3-location"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      C
-                                                    </span>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div
-                                              className="text-[0.85em] relative whitespace-pre-line "
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                lineHeight: '1.6em',
-                                                fontSize: '0.85em',
-                                                fontWeight: 100,
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">• C</span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio "
-                                                id="-btVlug1A3-description"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                • C
-                                              </p>
-                                            </div>
-                                          </li>
+                                          </li>                                  
                                         </ul>
                                         <div id="DndDescribedBy-2" style={{ display: 'none' }}>
                                           To pick up a draggable item, press the space bar. While
@@ -1477,759 +1155,14 @@ export default function FinishUp({ params }) {
                                       <hr />
                                     </div>
                                   </li>
-                                  <li
-                                    className="projects leading-snug relative group "
-                                    style={{ marginBottom: 8 }}
-                                  >
-                                    <i
-                                      className="fas fa-sort absolute left-[20px] top-0 top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                      aria-hidden="true"
-                                    />
-                                    <div className="">
-                                      <div
-                                        className="uppercase mb-[4px]   "
-                                        style={{
-                                          fontWeight: 600,
-                                          padding: '0cm 1.4cm',
-                                          lineHeight: '1.35em',
-                                        }}
-                                      >
-                                        <span
-                                          className="editableContent cursor-text  designStudio "
-                                          id="projects-heading"
-                                          tabIndex={0}
-                                          contentEditable="true"
-                                          style={{
-                                            color: 'rgb(46, 61, 80)',
-                                            fontSize: '1.15em',
-                                            display: 'block',
-                                          }}
-                                        >
-                                          Projects
-                                        </span>
-                                        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
-                                      </div>
-                                      <div
-                                        className="flex flex-col"
-                                        style={{ lineHeight: '1.6em' }}
-                                      >
-                                        <ul className="sortable-container ">
-                                          <li
-                                            className="mgSrie3Jg leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: 11,
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div className="" style={{ lineHeight: '1.2em' }}>
-                                              <div className="flex gap-2">
-                                                <span
-                                                  className="text-[#000000]"
-                                                  style={{ color: 'rgb(0, 0, 0)' }}
-                                                >
-                                                  <div
-                                                    className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ color: 'rgb(0, 0, 0)' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
-                                                      id="mgSrie3Jg-title"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      Director &amp; Editor
-                                                    </span>
-                                                  </div>
-                                                </span>
-                                              </div>
-                                              <div className="flex gap-2 justify-between font-semibold">
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="mgSrie3Jg-organization"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      Apple
-                                                    </span>
-                                                  </span>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="mgSrie3Jg-date"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      September, 2017
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                                <div style={{ color: 'rgb(46, 61, 80)' }} />
-                                              </div>
-                                            </div>
-                                            <div
-                                              className="relative whitespace-pre-line "
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                lineHeight: '1.6em',
-                                                fontSize: '0.85em',
-                                                fontWeight: 100,
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      • Directed and edited the introduction video
-                                                      for the iPhone X keynote. • Filming began at
-                                                      8:00am, and rolled to stream at 9:55am. •
-                                                      Captured the first official aerial footage of
-                                                      Apple Park and Steve Jobs Theater. •
-                                                      Collaborated alongside Apple Marcom team and
-                                                      the keynote's director to achieve desired end
-                                                      result.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio "
-                                                id="mgSrie3Jg-description"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                • Directed and edited the introduction video for the
-                                                iPhone X keynote. • Filming began at 8:00am, and
-                                                rolled to stream at 9:55am. • Captured the first
-                                                official aerial footage of Apple Park and Steve Jobs
-                                                Theater. • Collaborated alongside Apple Marcom team
-                                                and the keynote's director to achieve desired end
-                                                result.
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="88E7br1tz leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: 11,
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div className="" style={{ lineHeight: '1.2em' }}>
-                                              <div className="flex gap-2">
-                                                <span
-                                                  className="text-[#000000]"
-                                                  style={{ color: 'rgb(0, 0, 0)' }}
-                                                >
-                                                  <div
-                                                    className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ color: 'rgb(0, 0, 0)' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
-                                                      id="88E7br1tz-title"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      Editor
-                                                    </span>
-                                                  </div>
-                                                </span>
-                                              </div>
-                                              <div className="flex gap-2 justify-between font-semibold">
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="88E7br1tz-organization"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      ClassAcademy
-                                                    </span>
-                                                  </span>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="88E7br1tz-date"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      2020
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                                <div style={{ color: 'rgb(46, 61, 80)' }} />
-                                              </div>
-                                            </div>
-                                            <div
-                                              className="relative whitespace-pre-line "
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                lineHeight: '1.6em',
-                                                fontSize: '0.85em',
-                                                fontWeight: 100,
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      • Completed all post production on an animated
-                                                      educational program for kids. • Collaborated
-                                                      on creating the "Hypermesh" workflow, allowing
-                                                      animators to seamlessly deliver assets to
-                                                      editors. • Wrote story beats, episode outlines
-                                                      and jokes with the head writer, and members of
-                                                      the team.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio "
-                                                id="88E7br1tz-description"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                • Completed all post production on an animated
-                                                educational program for kids. • Collaborated on
-                                                creating the "Hypermesh" workflow, allowing
-                                                animators to seamlessly deliver assets to editors. •
-                                                Wrote story beats, episode outlines and jokes with
-                                                the head writer, and members of the team.
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="hztSOwCHD leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: 11,
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div className="" style={{ lineHeight: '1.2em' }}>
-                                              <div className="flex gap-2">
-                                                <span
-                                                  className="text-[#000000]"
-                                                  style={{ color: 'rgb(0, 0, 0)' }}
-                                                >
-                                                  <div
-                                                    className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ color: 'rgb(0, 0, 0)' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
-                                                      id="hztSOwCHD-title"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      Director &amp; DoP
-                                                    </span>
-                                                  </div>
-                                                </span>
-                                              </div>
-                                              <div className="flex gap-2 justify-between font-semibold">
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="hztSOwCHD-organization"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      Waze
-                                                    </span>
-                                                  </span>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="hztSOwCHD-date"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      2016-2018
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                                <div style={{ color: 'rgb(46, 61, 80)' }} />
-                                              </div>
-                                            </div>
-                                            <div
-                                              className="relative whitespace-pre-line "
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                lineHeight: '1.6em',
-                                                fontSize: '0.85em',
-                                                fontWeight: 100,
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      • Recurring producing, directing and editing
-                                                      of projects for Waze and Google marketing
-                                                      efforts. • Managed the tone and visual
-                                                      delivery of stories, advertisements and
-                                                      promotional materials. • Created visual assets
-                                                      and effects to demonstrate Waze's relationship
-                                                      with users.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio "
-                                                id="hztSOwCHD-description"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                • Recurring producing, directing and editing of
-                                                projects for Waze and Google marketing efforts. •
-                                                Managed the tone and visual delivery of stories,
-                                                advertisements and promotional materials. • Created
-                                                visual assets and effects to demonstrate Waze's
-                                                relationship with users.
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="QXZ2kqKlE leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div className="" style={{ lineHeight: '1.2em' }}>
-                                              <div className="flex gap-2">
-                                                <span
-                                                  className="text-[#000000]"
-                                                  style={{ color: 'rgb(0, 0, 0)' }}
-                                                >
-                                                  <div
-                                                    className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                                                    style={{ color: 'rgb(0, 0, 0)' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
-                                                      id="QXZ2kqKlE-title"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                    >
-                                                      Editor, Original Programming
-                                                    </span>
-                                                  </div>
-                                                </span>
-                                              </div>
-                                              <div className="flex gap-2 justify-between font-semibold">
-                                                <div style={{ color: 'rgb(46, 61, 80)' }}>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="QXZ2kqKlE-organization"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      Amazon
-                                                    </span>
-                                                  </span>
-                                                  <span
-                                                    className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                                                    style={{ fontSize: '0.85em' }}
-                                                  >
-                                                    <span
-                                                      className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                                                      id="QXZ2kqKlE-date"
-                                                      tabIndex={0}
-                                                      contentEditable="true"
-                                                      style={{
-                                                        display: 'inline',
-                                                        verticalAlign: 'initial',
-                                                      }}
-                                                    >
-                                                      December, 2016
-                                                    </span>
-                                                  </span>
-                                                </div>
-                                                <div style={{ color: 'rgb(46, 61, 80)' }} />
-                                              </div>
-                                            </div>
-                                            <div
-                                              className="relative whitespace-pre-line "
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                lineHeight: '1.6em',
-                                                fontSize: '0.85em',
-                                                fontWeight: 100,
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      • Executed all post production, graphic design
-                                                      and visual effects. • Prepared content for
-                                                      quality control and delivery to Amazon's video
-                                                      platform.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio "
-                                                id="QXZ2kqKlE-description"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                • Executed all post production, graphic design and
-                                                visual effects. • Prepared content for quality
-                                                control and delivery to Amazon's video platform.
-                                              </p>
-                                            </div>
-                                          </li>
-                                        </ul>
-                                        <div id="DndDescribedBy-3" style={{ display: 'none' }}>
-                                          To pick up a draggable item, press the space bar. While
-                                          dragging, use the arrow keys to move the item. Press space
-                                          again to drop the item in its new position, or press
-                                          escape to cancel.
-                                        </div>
-                                        <div
-                                          id="DndLiveRegion-2"
-                                          role="status"
-                                          aria-live="assertive"
-                                          aria-atomic="true"
-                                          style={{
-                                            position: 'fixed',
-                                            width: 1,
-                                            height: 1,
-                                            margin: '-1px',
-                                            border: 0,
-                                            padding: 0,
-                                            overflow: 'hidden',
-                                            clip: 'rect(0px, 0px, 0px, 0px)',
-                                            clipPath: 'inset(100%)',
-                                            whiteSpace: 'nowrap',
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
-                                      <hr />
-                                    </div>
-                                  </li>
-                                  <li
-                                    className="skills leading-snug relative group "
-                                    style={{ marginBottom: 8 }}
-                                  >
-                                    <i
-                                      className="fas fa-sort absolute left-[20px] top-0 top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                      aria-hidden="true"
-                                    />
-                                    <div className="">
-                                      <div
-                                        className="uppercase mb-[4px]   "
-                                        style={{
-                                          fontWeight: 600,
-                                          padding: '0cm 1.4cm',
-                                          lineHeight: '1.35em',
-                                        }}
-                                      >
-                                        <span
-                                          className="editableContent cursor-text  designStudio "
-                                          id="skills-heading"
-                                          tabIndex={0}
-                                          contentEditable="true"
-                                          style={{
-                                            color: 'rgb(46, 61, 80)',
-                                            fontSize: '1.15em',
-                                            display: 'block',
-                                          }}
-                                        >
-                                          Skills
-                                        </span>
-                                        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
-                                      </div>
-                                      <div className="flex flex-col" style={{ lineHeight: '2em' }}>
-                                        <ul className="sortable-container ">
-                                          <li
-                                            className="zBkM-K9OU leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: '6.75px',
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div
-                                              className="relative whitespace-pre-line"
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                fontWeight: 700,
-                                                fontSize: '0.85em',
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      Video production, from start to finish.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio  "
-                                                id="zBkM-K9OU-skill"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                Video production, from start to finish.
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="a8Bz4mfTG leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: '6.75px',
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div
-                                              className="relative whitespace-pre-line"
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                fontWeight: 700,
-                                                fontSize: '0.85em',
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      Post: Expert in Final Cut Pro, Premiere,
-                                                      DaVinci Resolve and After Effects. Experienced
-                                                      in media management, compression and delivery
-                                                      workflows. Additional proficiencies in
-                                                      Cinema4D and Figma.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio  "
-                                                id="a8Bz4mfTG-skill"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                Post: Expert in Final Cut Pro, Premiere, DaVinci
-                                                Resolve and After Effects. Experienced in media
-                                                management, compression and delivery workflows.
-                                                Additional proficiencies in Cinema4D and Figma.
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="6tX0rRrdt leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                              marginBottom: '6.75px',
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div
-                                              className="relative whitespace-pre-line"
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                fontWeight: 700,
-                                                fontSize: '0.85em',
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      Pre-Production: Content development,
-                                                      collaborative scriptwriting &amp;
-                                                      storyboarding, production timelines and
-                                                      production management.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio  "
-                                                id="6tX0rRrdt-skill"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                Pre-Production: Content development, collaborative
-                                                scriptwriting &amp; storyboarding, production
-                                                timelines and production management.
-                                              </p>
-                                            </div>
-                                          </li>
-                                          <li
-                                            className="ji5ai3a2w leading-snug relative group "
-                                            style={{
-                                              paddingLeft: '1.4cm',
-                                              paddingRight: '1.4cm',
-                                            }}
-                                          >
-                                            <i
-                                              className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                                              aria-hidden="true"
-                                            />
-                                            <div
-                                              className="relative whitespace-pre-line"
-                                              style={{
-                                                color: 'rgb(46, 61, 80)',
-                                                fontWeight: 700,
-                                                fontSize: '0.85em',
-                                              }}
-                                            >
-                                              <div className="relative">
-                                                <p className="editableContent ghost-hightlight w-full designStudio ">
-                                                  <span>
-                                                    <span className="">
-                                                      Production: Camera operation of platforms and
-                                                      support solutions, sound &amp; lighting,
-                                                      direction and crew management.
-                                                    </span>
-                                                  </span>
-                                                </p>
-                                              </div>
-                                              <p
-                                                className="editableContent cursor-text  designStudio  "
-                                                id="ji5ai3a2w-skill"
-                                                tabIndex={0}
-                                                contentEditable="true"
-                                              >
-                                                Production: Camera operation of platforms and
-                                                support solutions, sound &amp; lighting, direction
-                                                and crew management.
-                                              </p>
-                                            </div>
-                                          </li>
-                                        </ul>
-                                        <div id="DndDescribedBy-4" style={{ display: 'none' }}>
-                                          To pick up a draggable item, press the space bar. While
-                                          dragging, use the arrow keys to move the item. Press space
-                                          again to drop the item in its new position, or press
-                                          escape to cancel.
-                                        </div>
-                                        <div
-                                          id="DndLiveRegion-3"
-                                          role="status"
-                                          aria-live="assertive"
-                                          aria-atomic="true"
-                                          style={{
-                                            position: 'fixed',
-                                            width: 1,
-                                            height: 1,
-                                            margin: '-1px',
-                                            border: 0,
-                                            padding: 0,
-                                            overflow: 'hidden',
-                                            clip: 'rect(0px, 0px, 0px, 0px)',
-                                            clipPath: 'inset(100%)',
-                                            whiteSpace: 'nowrap',
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
-                                      <hr />
-                                    </div>
-                                  </li>
+                                 
                                 </ul>
                                 <div id="DndDescribedBy-1" style={{ display: 'none' }}>
                                   To pick up a draggable item, press the space bar. While dragging,
                                   use the arrow keys to move the item. Press space again to drop the
                                   item in its new position, or press escape to cancel.
                                 </div>
+                             
                                 <div
                                   id="DndLiveRegion-4"
                                   role="status"
@@ -2248,6 +1181,7 @@ export default function FinishUp({ params }) {
                                     whiteSpace: 'nowrap',
                                   }}
                                 />
+
                               </div>
                             </div>
                           </div>

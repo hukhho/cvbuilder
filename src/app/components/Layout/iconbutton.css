@@ -1,0 +1,82 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    font: var(--font-ui);
+    font-size: var(--scale-000);
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    transition: color 150ms ease;
+    cursor: pointer;
+    white-space: nowrap;
+    &:hover,
+    &:global(.active) {
+      color: white;
+    }
+  }
+  .icon_wrap {
+    display: inline-block;
+    width: 3em;
+  }
+  .icon {
+    font-size: 1.5em;
+    vertical-align: middle;
+    color: currentColor;
+    transition: fill 150ms ease;
+  }
+  
+  .button:hover .icon {
+    color: white;
+  }
+  
+  :global(.icon-jobs) {
+    width: 14.19px;
+    transition: fill 150ms ease;
+    fill: currentColor;
+  }
+  
+  .button:global(.active) .icon {
+    color: var(--color-primary);
+  }
+  
+  :global(.pro-ui) {
+    & .button {
+      color: var(--color-nav);
+      &:hover,
+      &:global(.active) {
+        color: var(--color-nav-hover);
+        white-space: nowrap;
+      }
+    }
+    & .button:hover .icon {
+      color: var(--color-hover-icon);
+    }
+    & .button:hover :global(.icon-jobs) {
+      color: var(--color-hover-icon);
+    }
+    & .button:global(.active) .icon {
+      color: var(--color-hover-icon);
+    }
+    & .button:global(.active) :global(.icon-jobs) {
+      color: var(--color-hover-icon);
+    }
+  }
+  
+  .badge {
+    color: #fff;
+    background-color: rgba(108, 117, 125, 0.61);
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    margin: 0 0 0 7px;
+    text-transform: capitalize;
+    &.green {
+      background: var(--color-green);
+    }
+  }
+  

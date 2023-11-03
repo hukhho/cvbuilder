@@ -26,8 +26,8 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
   const skillItems = (
     <>
       {skills.map(edu => {
-        const { name } = edu;
-        return <StandardItem key={edu.id} titleProps={name} templateType={templateType} />;
+        const { description } = edu;
+        return <StandardItem key={edu.id} titleProps={description} templateType={templateType} />;
       })}
     </>
   );
@@ -71,12 +71,33 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="skills-section-container mb-4">
-      <div className="title">
-        <span style={{ margin: 0 }}>Skills</span>
+    <div className="skill leading-snug relative group ">
+      <div
+        className="uppercase mb-[4px]"
+        style={{
+          fontWeight: 600,
+          padding: '0cm 1.4cm',
+          lineHeight: '1.35em',
+        }}
+      >
+        <span
+          className="editableContent cursor-text designStudio section-header"
+          id="skill-heading"
+          tabIndex={0}
+          contentEditable="true"
+          style={{
+            color: 'rgb(46, 61, 80)',
+            fontSize: '1.15em',
+            display: 'block',
+          }}
+        >
+          Skills
+        </span>
       </div>
-      <Divider className="divider-section" />
-      <div className="skill-items">
+      {/* <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+        <hr />
+      </div>{' '} */}
+      <div>
         <DndContext
           sensors={sensors}
           onDragCancel={handleDragCancel}
@@ -86,7 +107,9 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
           <SortableContext items={components}>
             {components.map((child, index) => (
               <div key={index}>
-                <SortableItem key={index}>{child}</SortableItem>
+                <SortableItem className="hello" key={index}>
+                  {child}
+                </SortableItem>
               </div>
             ))}
           </SortableContext>

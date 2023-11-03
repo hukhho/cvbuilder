@@ -1,0 +1,42 @@
+.page {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--grid-page);
+    min-height: 100vh;
+    width: 100%;
+    padding-top: var(--gutter);
+  }
+  :global(.sr-only) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .content {
+    align-self: start;
+    grid-column: 2 / 3;
+  }
+  .mobile-content {
+    height: 100%;
+  }
+  input {
+    display: block;
+    font: var(--font-input);
+    width: 100%;
+    color: inherit;
+    background: white;
+    outline: none;
+    margin: 0;
+    box-shadow: none;
+    padding: 0.85em 0.75em 0.75em;
+    border: 2px solid var(--color-grey-50);
+    border-radius: var(--radius-2);
+    transition: border 150ms ease;
+  }
+
+  

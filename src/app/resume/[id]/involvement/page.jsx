@@ -44,7 +44,7 @@ const Involvement = ({ params }) => {
 
   const handleDeleteData = async itemId => {
     try {
-      await dataService.delete(cvId, itemId);
+      await dataService.delete(itemId);
       const updatedData = await dataService.getAll(cvId);
       setInvolvementData(updatedData);
     } catch (error) {

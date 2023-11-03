@@ -43,7 +43,6 @@ const Experience = ({ params }) => {
   };
 
   useEffect(() => {
-    setSelectedExperience(null);
     fetchExperiences();
   }, []);
 

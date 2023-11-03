@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { use, useEffect } from 'react';
 import './score.css';
 // import './button.css';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const ScoreFinishUp = ({ checked, onChange }) => {
+const ScoreFinishUp = ({ checked, onChange, data }) => {
+  const { content, optimization, practice } = data[0];
+  const [activeSection, setActiveSection] = useState('Content');
+  const handleButtonClick = section => {
+    setActiveSection(section);
+  };
+  useEffect(() => {
+    console.log('Score Finish Up: data', data);
+    console.log('Score Finish Up: content', content);
+  }, [data]);
+
   return (
     <div className="score-wrapper">
       <header>
@@ -142,7 +152,8 @@ const ScoreFinishUp = ({ checked, onChange }) => {
             data-size="default"
             data-theme="default"
             data-busy="false"
-            className="pro-ui active"
+            className={`pro-ui ${activeSection === 'Content' ? 'active' : ''}`}
+            onClick={() => handleButtonClick('Content')}
           >
             Content
           </button>
@@ -160,9 +171,20 @@ const ScoreFinishUp = ({ checked, onChange }) => {
             data-size="default"
             data-theme="default"
             data-busy="false"
-            className="src-components-Button--kYf2WsZ80yU= "
+            className={`pro-ui ${activeSection === 'Optimization' ? 'active' : ''}`}
+            onClick={() => handleButtonClick('Optimization')}
           >
             Optimization
+          </button>
+          <button
+            href
+            data-size="default"
+            data-theme="default"
+            data-busy="false"
+            className={`pro-ui ${activeSection === 'Practice' ? 'active' : ''}`}
+            onClick={() => handleButtonClick('Practice')}
+          >
+            Practice
           </button>
           <button
             href
@@ -185,41 +207,41 @@ const ScoreFinishUp = ({ checked, onChange }) => {
         </div>
         <div className="audit-details">
           <div className="details-head">
-            <h5> Content</h5>
+            <h5>Content</h5>
             <p>See all Content audits which did not pass</p>
             <span>22 / 31</span>
           </div>
           <div className="details-list">
             <ul>
-              <li>
-                <i>
-                  <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
-                </i>
-                <div>
-                  <h6>
-                    <span className="critical-badge">CRITICAL</span>
-                    <span>
-                      Your resume has <span className="exp-color">3 experiences</span> without
-                      punctuated bullet points
-                    </span>
-                  </h6>
-                  <p>
-                    Capitalize the first letter and end with a period for each bullet point.{' '}
-                    <a
-                      href="https://www.rezi.ai/rezi-docs?category=Rezi%20Score#punctuated-bullets-points-"
-                      target="_blank"
-                    >
-                      {' '}
-                      Learn more
-                    </a>
-                  </p>
-                  <div>
-                    <div className="badge experience">acc</div>
-                    <div className="badge experience">c</div>
-                    <div className="badge experience">C</div>
-                  </div>
-                </div>
-              </li>
+              {content?.map((item, index) => {
+                return (
+                  <li>
+                    <i>
+                      <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                    </i>
+                    <div>
+                      <h6>
+                        <span className="critical-badge">CRITICAL</span>
+                        <span>
+                          Your resume has{' '}
+                          <span className="exp-color">{item?.detail?.length} experiences</span>{' '}
+                          without {item.title}
+                        </span>
+                      </h6>
+                      <p>{item.description}</p>
+                      <div>
+                        {item.detail.map((itemChild, index) => {
+                          return (
+                            <>
+                              <div className="badge experience">{itemChild.title}</div>
+                            </>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

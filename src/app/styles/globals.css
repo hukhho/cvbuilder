@@ -248,3 +248,18 @@ a {
     color: white;
   }
 }
+
+#gradient-canvas {
+  min-width: 2000px;
+  width: 100%;
+  height: 140%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  --gradient-color-1: #372e8f;
+  --gradient-color-2: #9a227f;
+  --gradient-color-3: #020d3b;
+
+  /*--gradient-color-3: #f33a3e;*/
+}

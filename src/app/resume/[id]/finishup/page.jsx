@@ -14,7 +14,7 @@ import ExperiencesSection from '@/app/components/Templates/SectionComponents/Exp
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import { getFinishUp, syncUp } from './finishUpService';
+import { getAudit, getFinishUp, syncUp } from './finishUpService';
 import ScoreFinishUp from './Score';
 
 const mockData = {
@@ -129,18 +129,26 @@ const mockData = {
         {
           id: 1,
           name: 'CSS',
+          description: 'CSS'
+
         },
         {
           id: 2,
           name: 'HTML',
+          description: 'CSS'
+
         },
         {
           id: 3,
           name: 'React',
+          description: 'CSS'
+
         },
         {
           id: 4,
           name: 'Vue',
+          description: 'CSS'
+
         },
       ],
       involvements: [
@@ -176,6 +184,8 @@ const mockData = {
 
 export default function FinishUp({ params }) {
   const [finishUpData, setFinishUpData] = useState(null);
+  const [auditData, setAuditData] = useState(null);
+
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState({
@@ -286,16 +296,20 @@ export default function FinishUp({ params }) {
       try {
         const cvId = params.id;
         const data = await getFinishUp(cvId);
+
         console.log('FinishUp data: ', data);
 
         setFinishUpData(data);
-
+        
         setShowFinishupCV(true);
 
         setTemplateSelected(data.templateType);
         setToolbarState(data.cvStyle);
 
         setSummary(data.summary);
+
+        const data1 = await getAudit(cvId);
+        setAuditData(data1);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
       }
@@ -353,10 +367,6 @@ export default function FinishUp({ params }) {
             <div className="flex mt-8">
               {showFinishupCV && (
                 <div
-                  style={{
-                    backgroundColor: 'rgba(243, 244, 246)',
-                    borderRadius: '4px',
-                  }}
                   className="w-2/3 mr-2 flex flex-col"
                 >
                   <Button type="primary" onClick={() => setOpen(true)}>
@@ -372,13 +382,13 @@ export default function FinishUp({ params }) {
                     width={1000}
                     className="custom"
                   >
-                    <ScoreFinishUp />
+                    <ScoreFinishUp data={auditData} />
                   </Modal>
 
                   <div
                     style={{
-                      background: 'white',
-                      width: '100%',
+                      // background: 'white',
+                      // width: '100%',
                     }}
                   >
                     <FinishupToolbar
@@ -391,6 +401,7 @@ export default function FinishUp({ params }) {
                       Sync Up
                     </Button>
                   </div>
+
                   <CVLayout
                     key={[templateSelected, toolbarState]}
                     layoutStyles={toolbarState}
@@ -399,6 +410,7 @@ export default function FinishUp({ params }) {
                   >
                     {sections.map(section => section.canBeDisplayed && section.component)}
                   </CVLayout>
+
                 </div>
               )}
               {showFinishupCV && (

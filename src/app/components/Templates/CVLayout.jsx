@@ -24,6 +24,12 @@ import SortableItem from '../SortableList/SortableItem';
 import { Divider } from 'antd';
 
 import './fonts.css';
+import './styles.moduel.css';
+import './editable.moduel.css';
+import './alpha.css';
+import './beta.css';
+import './omega.css';
+import './template.css';
 
 import { NextPageContext } from 'next';
 import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
@@ -112,54 +118,112 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
   const cvHeightSize = layoutStyles.paperSize === 'A4' ? '297mm' : '11in';
   const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
 
+  // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
+
   return (
-    <div
-      style={{
-        height: cvHeightSize,
-        width: cvWidthSize,
-        zoom: layoutStyles.zoom,
-        size: cvHeightSize,
-        marginTop: 18,
-      }}
-    >
-      <div id="resume" className="cv-layout-container" style={CvStyles}>
-        <DndContext
-          sensors={sensors}
-          onDragCancel={handleDragCancel}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
+    <div className="preview card">
+      <div
+        className="bg-gray-100 rounded-md p-4 select-none text-[#2e3d50]"
+        id="resume-preview"
+        style={{ transform: 'scale(1.05071)', transformOrigin: 'left top' }}
+      >
+        <div
+          style={{
+            backgroundColor: 'rgb(255, 255, 255)',
+            minHeight: cvHeightSize,
+            paddingBottom: '1.3cm',
+          }}
         >
-          <SortableContext items={components} strategy={verticalListSortingStrategy}>
-            {components.map((child, index) => (
-              <div key={index}>
-                {child.props.canBeDrag === false ? ( // Check if the section can be dragged
-                  <div key={index}>
-                    {child}
-                    {layoutStyles.hasDivider && (
-                      <Divider
-                        style={{
-                          margin: '0px 0px 10px 0px',
-                        }}
-                      />
-                    )}
-                  </div> // Render without drag if canBeDrag is false
-                ) : (
-                  <div key={index}>
-                    <SortableItem key={index}>{child}</SortableItem>
-                    {index < components.length - 1 && layoutStyles.hasDivider && (
-                      <Divider
-                        style={{
-                          margin: '10px 0px',
-                        }}
-                      />
-                    )}
-                  </div>
-                )}
+          <div
+            id="resume"
+            className="relative bg-white transition-colors resume alpha"
+            data-type="designStudio"
+            data-format="letter"
+            data-template="standard"
+            style={{
+              ...fontStyles,
+              fontSize: CvStyles.fontSize,
+              lineHeight: CvStyles.lineHeight,
+              width: cvWidthSize,
+              transform: 'initial',
+              transformOrigin: 'initial',
+              // fontFamily: 'Merriweather, serif',
+              padding: '1.3cm 0cm 0cm',
+              borderColor: 'rgb(0, 0, 0)',
+              textAlign: 'left',
+            }}
+          >
+            <div
+              className="design-studio-break-page"
+              style={{
+                top: 'calc(10.4882in)',
+                fontFamily: '"Source Sans Pro", sans-serif',
+                lineHeight: 20,
+              }}
+            >
+              <div />
+              {/* Break */}
+            </div>
+            <div id="sortable-area" className="relative z-50 mb-[10px] transition-all">
+              <DndContext
+                sensors={sensors}
+                onDragCancel={handleDragCancel}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext items={components} strategy={verticalListSortingStrategy}>
+                  {components.map((child, index) => (
+                    <div key={index}>
+                      {child.props.canBeDrag === false ? ( // Check if the section can be dragged
+                        <div key={index}>
+                          {child}
+                          {layoutStyles.hasDivider && (
+                            <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                              <hr />
+                            </div>
+                          )}
+                        </div> // Render without drag if canBeDrag is false
+                      ) : (
+                        <div key={index}>
+                          <SortableItem key={index}>{child}</SortableItem>
+                          {index < components.length - 1 && layoutStyles.hasDivider && (
+                            <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                              <hr />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </SortableContext>
+              </DndContext>
+
+              <div id="DndDescribedBy-1" style={{ display: 'none' }}>
+                To pick up a draggable item, press the space bar. While dragging, use the arrow keys
+                to move the item. Press space again to drop the item in its new position, or press
+                escape to cancel.
               </div>
-            ))}
-          </SortableContext>
-        </DndContext>
-        <DesignStudioBreakPage paperSize={cvHeightSize} />
+              <div
+                id="DndLiveRegion-4"
+                role="status"
+                aria-live="assertive"
+                aria-atomic="true"
+                style={{
+                  position: 'fixed',
+                  width: 1,
+                  height: 1,
+                  margin: '-1px',
+                  border: 0,
+                  padding: 0,
+                  overflow: 'hidden',
+                  clip: 'rect(0px, 0px, 0px, 0px)',
+                  clipPath: 'inset(100%)',
+                  whiteSpace: 'nowrap',
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,439 @@
+@page {
+    margin: 1.2cm 0;
+  }
+  @page:first {
+    margin-top: 0;
+  }
+  
+  .resume {
+    padding: 1.3cm 1.4cm 1.3cm 1.4cm;
+    position: relative;
+  }
+  
+  .print .resume {
+    padding: 1.12cm 1.2cm 0 1.2cm !important;
+    letter-spacing: 0.003em !important;
+  }
+  
+  .print .handle-sort-wrapper {
+    display: none;
+  }
+  
+  .print .ghost-hightlight {
+    display: none;
+  }
+  
+  .omega {
+    font-family: Merriweather, serif;
+    line-height: inherit;
+    color: #2e3d50;
+    -webkit-font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+    -o-font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+    font-feature-settings:
+      "liga" 0,
+      "onum" 1,
+      "kern" 1;
+  }
+  
+  .omega h1 {
+    font-family: Merriweather, serif;
+    line-height: inherit;
+  }
+  
+  .omega .section-header {
+    font-family: Merriweather, serif;
+    display: block;
+    font-size: 1.15em;
+    letter-spacing: 0.05em;
+    line-height: 1.35em;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    text-align: left;
+    border-bottom: 0.12em solid #000;
+  }
+  
+  .omega p {
+    white-space: pre-line;
+    padding: 0;
+    letter-spacing: 0.004em;
+    margin: 0 auto;
+    font-size: 0.85em;
+    font-weight: 100;
+    line-height: 1.5;
+    text-align: left;
+    display: block;
+  }
+  
+  .omega hr {
+    height: 0;
+    border-top: 1px solid rgba(44, 62, 80, 0.1);
+    border-bottom: 0;
+    padding: 0 0;
+    margin: 10px auto;
+  }
+  
+  .omega .item {
+    line-height: 1.25 !important;
+    margin-bottom: 0.8em;
+  }
+  
+  .omega .name {
+    font-family: Merriweather, serif;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    width: 100%;
+    font-size: 1.65em;
+    letter-spacing: 1px;
+    padding: 0 0 3px 0;
+    font-weight: 700;
+  }
+  
+  .omega .contact {
+    margin-top: 2px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .omega .contact-item {
+    font-family: Merriweather, serif;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 0.75em;
+    font-weight: 300;
+    padding: 2px 3px 8px 3px;
+  }
+  
+  .omega .contact-item-location {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 0.75em;
+    font-weight: 300;
+    padding: 2px 3px 8px 0;
+  }
+  
+  .omega .contact-icon {
+    width: 0.9em;
+    height: 0.9em;
+    margin-right: 3px;
+    fill: currentColor;
+  }
+  
+  .omega[data-icons="false"] .contact-icon {
+    display: none;
+  }
+  
+  .omega .contact span i {
+    position: relative;
+    top: 1px;
+    margin: 0 3px 0 0;
+  }
+  
+  .omega .summary {
+    display: block;
+  }
+  
+  .omega .projects .item {
+    text-align: left;
+    line-height: 1em;
+    padding: 5px 0;
+  }
+  
+  .omega .projects .item span {
+    font-family: Merriweather, serif;
+    font-size: 1em;
+    font-weight: 700;
+    text-align: left;
+    display: block;
+    padding: 0;
+    margin: 0 auto;
+  }
+  
+  .omega .experience .item {
+    text-align: left;
+    line-height: 1.25em;
+    padding: 5px 0;
+  }
+  
+  .omega .skills .item {
+    text-align: left;
+  }
+  
+  .omega .coursework .item p,
+  .omega .certification .item p,
+  .omega .education .item p,
+  .omega .involvement .item p,
+  .omega .summary .item p {
+    display: block;
+    text-align: left;
+  }
+  
+  .omega .projects .item p {
+    display: block;
+  }
+  
+  .omega .coursework .item,
+  .omega .certification .item,
+  .omega .education .item,
+  .omega .involvement .item,
+  .omega .projects .item,
+  .omega .summary .item {
+    text-align: left;
+    line-height: 1em;
+    padding: 5px 0;
+  }
+  
+  .omega .skills .item span {
+    font-size: 0.9em;
+  }
+  
+  .omega .experience .item:first-child {
+    padding-top: 0;
+  }
+  
+  .omega .experience .item:last-child {
+    padding-bottom: 0;
+  }
+  
+  .omega .education .item span > span {
+    display: inline !important;
+    font-weight: 400 !important;
+  }
+  
+  .omega .experience .item span:nth-child(1) {
+    font-size: 1em;
+    font-weight: 700;
+    text-align: left;
+    display: block;
+    padding: 0;
+    margin: 0 auto;
+  }
+  
+  .omega .experience .item span:nth-child(2) {
+    font-size: 0.85em;
+    font-weight: 700;
+    text-align: left;
+    position: relative;
+  }
+  
+  .omega .experience .item span:nth-child(3),
+  .omega .experience .item span:nth-child(4) {
+    font-size: 0.85em;
+    font-weight: 700;
+    text-align: left;
+    position: relative;
+    float: right;
+    display: block;
+  }
+  
+  /*.omega .experience .item span:nth-child(3):before {*/
+  /*  content: ",";*/
+  /*  position: relative;*/
+  /*  left: 0;*/
+  /*  box-sizing: border-box;*/
+  /*  padding: 0 3px 0 0;*/
+  /*}*/
+  
+  .omega .experience .item span p {
+    font-family: Merriweather, serif;
+    display: block;
+    font-size: 0.6em;
+  }
+  
+  .omega .projects .item:first-child {
+    padding-top: 0;
+  }
+  
+  .omega .projects .item:last-child {
+    padding-bottom: 0;
+  }
+  
+  .omega .coursework .item:first-child,
+  .omega .education .item:first-child,
+  .omega .certification .item:first-child,
+  .omega .involvement .item:first-child,
+  .omega .projects .item:first-child,
+  .omega .summary .item:first-child {
+    padding-top: 0;
+  }
+  
+  .omega .coursework .item:last-child,
+  .omega .certification .item:last-child,
+  .omega .education .item:last-child,
+  .omega .involvement .item:last-child,
+  .omega .projects .item:last-child,
+  .omega .summary .item:last-child {
+    padding-bottom: 0;
+  }
+  
+  .omega .coursework .item span:nth-child(1),
+  .omega .certification .item span:nth-child(1),
+  .omega .education .item span:nth-child(1),
+  .omega .involvement .item span:nth-child(1),
+  .omega .projects .item span:nth-child(1),
+  .omega .summary .item span:nth-child(1) {
+    font-size: 1em;
+    font-weight: 600;
+    display: block;
+    padding: 0;
+    margin: 0 auto;
+  }
+  
+  .omega .coursework .item span:nth-child(2),
+  .omega .coursework .item span:nth-child(3),
+  .omega .coursework .item span:nth-child(4),
+  .omega .coursework .item span:nth-child(5),
+  .omega .coursework .item span:nth-child(6),
+  .omega .certification .item span:nth-child(2),
+  .omega .certification .item span:nth-child(3),
+  .omega .certification .item span:nth-child(4),
+  .omega .certification .item span:nth-child(5),
+  .omega .certification .item span:nth-child(6),
+  .omega .education .item span:nth-child(2),
+  .omega .education .item span:nth-child(3),
+  .omega .education .item span:nth-child(4),
+  .omega .education .item span:nth-child(5),
+  .omega .education .item span:nth-child(6),
+  .omega .involvement .item span:nth-child(2),
+  .omega .involvement .item span:nth-child(3),
+  .omega .involvement .item span:nth-child(4),
+  .omega .involvement .item span:nth-child(5),
+  .omega .involvement .item span:nth-child(6),
+  .omega .projects .item span:nth-child(2),
+  .omega .projects .item span:nth-child(3),
+  .omega .projects .item span:nth-child(4),
+  .omega .projects .item span:nth-child(5),
+  .omega .projects .item span:nth-child(6),
+  .omega .summary .item span:nth-child(2),
+  .omega .summary .item span:nth-child(3),
+  .omega .summary .item span:nth-child(4),
+  .omega .summary .item span:nth-child(5),
+  .omega .summary .item span:nth-child(6) {
+    display: inline;
+    font-size: 0.9em;
+    font-weight: 400;
+  }
+  
+  .omega .coursework .item span:nth-child(3):before,
+  .omega .coursework .item span:nth-child(4):before,
+  .omega .coursework .item span:nth-child(5):before,
+  .omega .coursework .item span:nth-child(6):before,
+  .omega .certification .item span:nth-child(3):before,
+  .omega .certification .item span:nth-child(4):before,
+  .omega .certification .item span:nth-child(5):before,
+  .omega .certification .item span:nth-child(6):before,
+  .omega .education .item span:nth-child(3):before,
+  .omega .education .item span:nth-child(4):before,
+  .omega .education .item span:nth-child(5):before,
+  .omega .education .item span:nth-child(6):before,
+  .omega .involvement .item span:nth-child(3):before,
+  .omega .involvement .item span:nth-child(4):before,
+  .omega .involvement .item span:nth-child(5):before,
+  .omega .involvement .item span:nth-child(6):before,
+  .omega .projects .item span:nth-child(3):before,
+  .omega .projects .item span:nth-child(4):before,
+  .omega .projects .item span:nth-child(5):before,
+  .omega .projects .item span:nth-child(6):before,
+  .omega .summary .item span:nth-child(3):before,
+  .omega .summary .item span:nth-child(4):before,
+  .omega .summary .item span:nth-child(5):before,
+  .omega .summary .item span:nth-child(6):before {
+    content: "•";
+    display: inline-block;
+    padding: 0 5px 0 3px;
+  }
+  
+  .omega .skills .item p {
+    font-weight: 700;
+  }
+  
+  .omega .skills .item:last-child span:after {
+    content: "";
+  }
+  
+  .need-comma:before {
+    content: ",";
+    position: relative;
+    left: 0;
+    box-sizing: border-box;
+    padding: 0 3px 0 0;
+  }
+  
+  .omega .hero.havePicture {
+    display: flex;
+    align-items: flex-end;
+  }
+  
+  .omega .hero.havePicture .name {
+    text-align: left;
+  }
+  
+  .omega .hero.havePicture .contact {
+    text-align: left;
+    justify-content: left;
+  }
+  
+  .omega .picture {
+    width: 2.5cm;
+    min-width: 2.5cm;
+    height: 3cm;
+    margin: 0 20px 10px 0;
+    border-radius: 15px;
+    overflow: hidden;
+    color: #f1f1f1;
+    background: #f1f1f1;
+  }
+  .omega .picture img {
+    object-fit: cover;
+    object-position: center;
+    width: 2.5cm;
+    height: 3cm;
+  }
+  .omega .no-picture {
+    color: var(--color-grey);
+    border: 2px dashed var(--color-grey);
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-transform: uppercase;
+    font: var(--font-heading);
+    font-size: var(--scale-000);
+    line-height: 1.5em;
+  }
+  
+  .omega .hide-picture {
+    display: none;
+  }
+  .omega .draggable-item > .handle-sort-wrapper {
+    padding-top: 10px;
+    position: absolute;
+  }
+  .omega .draggable-item > .handle-sort-wrapper > span {
+    font-size: 1.15em;
+    line-height: 1.35em;
+    visibility: hidden;
+  }
+  .omega .draggable-item section .handle-sort-wrapper {
+    padding-top: 0;
+    position: absolute;
+  }
+  .omega .draggable-item section .handle-sort-wrapper > span {
+    font-size: 1em;
+    line-height: initial;
+    visibility: hidden;
+  }
+  

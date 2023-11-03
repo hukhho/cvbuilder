@@ -28,17 +28,19 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
       {experiences.map(exp => {
         const { startDate, endDate, description, companyName, role, location } = exp;
         return (
-          <StandardItem
-            key={exp.id}
-            templateType={templateType}
-            role={role}
-            location={location}
-            startTime={startDate}
-            endTime={endDate}
-            orgName={companyName}
-            renderRightSubtitle
-            description={description}
-          />
+          <>
+            <StandardItem
+              key={exp.id}
+              templateType={templateType}
+              role={role}
+              location={location}
+              startTime={startDate}
+              endTime={endDate}
+              orgName={companyName}
+              renderRightSubtitle
+              description={description}
+            />
+          </>
         );
       })}
     </>
@@ -83,12 +85,31 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="experiences-section-container mb-4">
-      <div className="title">
-        <span style={{ margin: 0 }}>Experiences</span>
+    <div className="experience leading-snug relative group ">
+      <div
+        className="uppercase mb-[4px]   "
+        style={{
+          fontWeight: 600,
+          padding: '0cm 1.4cm',
+          lineHeight: '1.35em',
+        }}
+      >
+        <span
+          className="editableContent cursor-text designStudio section-header"
+          id="experience-heading"
+          tabIndex={0}
+          contentEditable="true"
+          style={{
+            color: 'rgb(46, 61, 80)',
+            fontSize: '1.15em',
+            display: 'block',
+          }}
+        >
+          Experience
+        </span>
       </div>
-      <Divider className="divider-section" />
-      <div className="experience-items">
+      {/* <Divider className="divider-section" /> */}
+      <div>
         <DndContext
           sensors={sensors}
           onDragCancel={handleDragCancel}
@@ -98,7 +119,9 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
           <SortableContext items={components}>
             {components.map((child, index) => (
               <div key={index}>
-                <SortableItem key={index}>{child}</SortableItem>
+                <SortableItem className="hello" key={index}>
+                  {child}
+                </SortableItem>
               </div>
             ))}
           </SortableContext>

@@ -78,11 +78,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       console.log('endDateString: ', endDateString);
       if (endDateString === 'Present') {
         setIsCurrentlyWorking(true);
+        console.log("useEffect: setIsCurrentlyWorking to true");
         const parsedStartDate = parse(startDateString, 'MMMM yyyy', new Date());
         setStartDate(parsedStartDate);
         setEndDate(new Date());
       } else {
         setIsCurrentlyWorking(false);
+        console.log("useEffect: setIsCurrentlyWorking to false");
         const parsedStartDate = parse(startDateString, 'MMMM yyyy', new Date());
         const parsedEndDate = parse(endDateString, 'MMMM yyyy', new Date());
         setStartDate(parsedStartDate);
@@ -175,13 +177,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   };
 
   const MyContainer = ({ className, children }) => {
+      
     const handleSwitchChange = checked => {
       setIsCurrentlyWorking(checked);
       if (checked) {
         setEndDate(new Date());
       }
     };
-
     return (
       <div style={{}}>
         <CalendarContainer className={className}>
@@ -194,7 +196,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                 checked={isCurrentlyWorking}
                 onChange={handleSwitchChange}
               />
-              Currently work here
+              Currently work here {isCurrentlyWorking ? 'Yes' : 'No'}
             </div>
             <div className="mt-5" />
           </div>

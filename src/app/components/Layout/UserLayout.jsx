@@ -12,6 +12,8 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Layout, Menu, Space, theme, Typography } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFile, faFileAlt, faFileCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -20,29 +22,29 @@ const { Header, Content, Footer, Sider } = Layout;
 const items = [
   {
     key: '1',
-    // icon: <UserOutlined />,
-    label: 'MY DASHBOARD',
+    icon: <FontAwesomeIcon icon={faFile} style={{ background: '#3c2e8d', fill: '#ffffff'}} />, //fad fa-file 
+    label: <span style={{fontSize: 11}}>MY DASHBOARD</span>,
   },
   {
     key: '2',
-    // icon: <VideoCameraOutlined />,
-    label: 'MY MATCHED JOBS',
+    icon: <FontAwesomeIcon icon={faFileAlt} style={{ background: '#3c2e8d', fill: '#ffffff'}} />, //fad fa-file 
+    label: <span style={{fontSize: 11}}>SAMPLE LIBRARY</span>,
   },
   {
     key: '3',
-    // icon: <UploadOutlined />,
-    label: 'SAMPLE LIBRARY',
+    icon: <FontAwesomeIcon icon={faFileCircleCheck} style={{ background: '#3c2e8d', fill: '#ffffff'}} />, //fad fa-file 
+    label: <span style={{fontSize: 11}}>REVIEW MY RESUME</span>,
   },
-  {
-    key: '4',
-    // icon: <BarChartOutlined />,
-    label: 'REVIEW MY RESUME',
-  },
-  {
-    key: '5',
-    // icon: <CloudOutlined />,
-    label: 'MY PROFILE',
-  },
+  // {
+  //   key: '4',
+  //   // icon: <BarChartOutlined />,
+  //   label: 'REVIEW MY RESUME',
+  // },
+  // {
+  //   key: '5',
+  //   // icon: <CloudOutlined />,
+  //   label: 'MY PROFILE',
+  // },
 ];
 const UserLayout = ({ userHeader, content }) => {
   const {
@@ -108,9 +110,9 @@ const UserLayout = ({ userHeader, content }) => {
             backgroundColor: '#3C2E8D',
             color: '#ffffff',
             marginTop: 50,
-            marginLeft: 20,
-            width: '80%',
-            fontSize: '12.6px',
+            marginLeft: 10,
+            width: '100%',
+            fontSize: '11.2',
             fontFamily: 'Source Sans Pro',
             fontWeight: 'bold',
           }}
@@ -130,7 +132,7 @@ const UserLayout = ({ userHeader, content }) => {
             background: 'rgba(255, 255, 255, 0.4)',
           }}
         >
-          ALL CREDITS3,096
+          Dang fix?   
         </Text>
         <Space
           direction="vertical"

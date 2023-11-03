@@ -110,18 +110,25 @@ export const mockData = {
         {
           id: 1,
           name: 'CSS',
+          description: 'CSS'
         },
         {
           id: 2,
           name: 'HTML',
+          description: 'CSS'
+
         },
         {
           id: 3,
           name: 'React',
+          description: 'CSS'
+
         },
         {
           id: 4,
           name: 'Vue',
+          description: 'CSS'
+
         },
       ],
       involvements: [

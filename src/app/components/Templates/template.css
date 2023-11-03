@@ -1,0 +1,15 @@
+.template {
+    font: initial;
+    line-height: initial;
+    -webkit-font-smoothing: auto;
+    & * {
+      font: inherit;
+      line-height: inherit;
+    }
+  }
+  
+  .template[data-editable="false"] * {
+    user-select: none;
+    pointer-events: none;
+  }
+  
