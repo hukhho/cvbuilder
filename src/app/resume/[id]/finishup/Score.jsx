@@ -213,7 +213,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
           </div>
           <div className="details-list">
             <ul>
-              {content?.map((item, index) => {
+              {activeSection === 'Content' && content?.map((item, index) => {
                 return (
                   <li>
                     <i>
