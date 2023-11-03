@@ -1,4 +1,4 @@
-import React, { use, useEffect } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import './score.css';
 // import './button.css';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
@@ -162,7 +162,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
             data-size="default"
             data-theme="default"
             data-busy="false"
-            className="src-components-Button--kYf2WsZ80yU= "
+            className="src-components-Button--kYf2WsZ80yU="
           >
             Format
           </button>
@@ -171,7 +171,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
             data-size="default"
             data-theme="default"
             data-busy="false"
-            className={`pro-ui ${activeSection === 'Optimization' ? 'active' : ''}`}
+            className={`pro-ui ${activeSection === 'Optimization' ? 'active bg-gray-100' : ''}`}
             onClick={() => handleButtonClick('Optimization')}
           >
             Optimization
@@ -181,7 +181,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
             data-size="default"
             data-theme="default"
             data-busy="false"
-            className={`pro-ui ${activeSection === 'Practice' ? 'active' : ''}`}
+            className={`pro-ui ${activeSection === 'Practice' ? 'active bg-gray-100' : ''}`}
             onClick={() => handleButtonClick('Practice')}
           >
             Practice
@@ -191,57 +191,103 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
             data-size="default"
             data-theme="default"
             data-busy="false"
-            className="src-components-Button--kYf2WsZ80yU= "
+            className="src-components-Button--kYf2WsZ80yU="
           >
             Best Practices
-          </button>
-          <button
-            href
-            data-size="default"
-            data-theme="default"
-            data-busy="false"
-            className="src-components-Button--kYf2WsZ80yU= "
-          >
-            Application Ready
           </button>
         </div>
         <div className="audit-details">
           <div className="details-head">
-            <h5>Content</h5>
-            <p>See all Content audits which did not pass</p>
+            <h5>{activeSection}</h5>
+            <p>See all {activeSection} audits which did not pass</p>
             <span>22 / 31</span>
           </div>
           <div className="details-list">
             <ul>
-              {activeSection === 'Content' && content?.map((item, index) => {
-                return (
-                  <li>
-                    <i>
-                      <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
-                    </i>
-                    <div>
-                      <h6>
-                        <span className="critical-badge">CRITICAL</span>
-                        <span>
-                          Your resume has{' '}
-                          <span className="exp-color">{item?.detail?.length} experiences</span>{' '}
-                          without {item.title}
-                        </span>
-                      </h6>
-                      <p>{item.description}</p>
+              {activeSection === 'Content' &&
+                content?.map((item, index) => {
+                  return (
+                    <li>
+                      <i>
+                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                      </i>
                       <div>
-                        {item.detail.map((itemChild, index) => {
-                          return (
-                            <>
-                              <div className="badge experience">{itemChild.title}</div>
-                            </>
-                          );
-                        })}
+                        <h6>
+                          <span className="critical-badge">CRITICAL</span>
+                          <span>
+                            Your resume has{' '}
+                            <span className="exp-color">{item?.detail?.length} experiences</span>{' '}
+                            without {item.title}
+                          </span>
+                        </h6>
+                        <p>{item.description}</p>
+                        <div>
+                          {item.detail.map((itemChild, index) => {
+                            return (
+                              <>
+                                <div className="badge experience">{itemChild.title}</div>
+                              </>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                );
-              })}
+                    </li>
+                  );
+                })}
+
+              {activeSection === 'Optimization' &&
+                optimization?.map((item, index) => {
+                  return (
+                    <li>
+                      <i>
+                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                      </i>
+                      <div>
+                        <h6>
+                          <span className="critical-badge">CRITICAL</span>
+                          <span>{item.title}</span>
+                        </h6>
+                        <p>{item.description}</p>
+                        <div>
+                          {item.detail.map((itemChild, index) => {
+                            return (
+                              <>
+                                <div className="badge experience">{itemChild.title}</div>
+                              </>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+
+              {activeSection === 'Practice' &&
+                practice?.map((item, index) => {
+                  return (
+                    <li>
+                      <i>
+                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                      </i>
+                      <div>
+                        <h6>
+                          <span className="critical-badge">CRITICAL</span>
+                          <span>{item.title}</span>
+                        </h6>
+                        <p>{item.description}</p>
+                        <div>
+                          {item.detail?.map((itemChild, index) => {
+                            return (
+                              <>
+                                <div className="badge experience">{itemChild.title}</div>
+                              </>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
             </ul>
           </div>
         </div>
