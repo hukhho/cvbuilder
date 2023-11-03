@@ -12,7 +12,7 @@ const ContactInfoItem = ({ icon, text }) => (
 );
 
 const InformationSection = ({ userInfo, templateType }) => {
-  const { fullName, emailAddress, phone, personalWebsite, address, linkedIn } = userInfo;
+  const { name, email, phone, personalWebsite, address, linkedIn } = userInfo;
 
   const isClassicalTemplate = templateType === 'classical';
   const isModernTemplate = templateType === 'modern';
@@ -66,7 +66,7 @@ const InformationSection = ({ userInfo, templateType }) => {
               lineHeight: 'inherit',
             }}
           >
-            {fullName}
+            {name}
           </h1>
           <div
             className="pt-[2px] text-center false"
@@ -86,7 +86,7 @@ const InformationSection = ({ userInfo, templateType }) => {
             </ul> */}
             <span className="inline-block mr-1">
               {/* <i className="mr-1">•</i> */}
-              {emailAddress}
+              {email}
             </span>
             <span className="inline-block mr-1">
               <i className="mr-1">•</i>{phone}

@@ -159,18 +159,18 @@ const StandardItem = props => {
                     <div className="relative">
                       <p className="editableContent ghost-hightlight w-full designStudio ">
                         <span>
-                          <span className="">• cc</span>
+                          <span className="">{description}</span>
                         </span>
                       </p>
                     </div>
-                    <p
+                    {/* <p
                       className="editableContent cursor-text  designStudio "
                       id="smpl125032021-description"
                       tabIndex={0}
                       contentEditable="true"
                     >
                       {description}
-                    </p>
+                    </p> */}
                   </div>
                 </li>
               </ul>
