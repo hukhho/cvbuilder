@@ -367,11 +367,11 @@ export default function FinishUp({ params }) {
             <div className="flex mt-8">
               {showFinishupCV && (
                 <div
-                  className="w-2/3 mr-2 flex flex-col"
+                  className="w-2/3 mr-2 flex flex-col "
                 >
-                  <Button type="primary" onClick={() => setOpen(true)}>
+                  {/* <Button type="primary" onClick={() => setOpen(true)}>
                     Open Modal of 1000px width
-                  </Button>
+                  </Button> */}
 
                   <Modal
                     title=""
@@ -393,10 +393,12 @@ export default function FinishUp({ params }) {
                   >
                     <FinishupToolbar
                       handleChangeTemplateSelected={value => setTemplateSelected(value)}
+                      handleOpenModal={() => setOpen(true)}
                       toolbarState={toolbarState}
                       onToolbarChange={handleToolbarChange}
                       currentTemplate={mockData.data.resume.resumeStyle}
                     />
+                    
                     <Button type="" onClick={() => handleSyncUp()}>
                       Sync Up
                     </Button>

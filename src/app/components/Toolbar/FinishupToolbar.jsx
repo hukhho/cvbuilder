@@ -35,7 +35,13 @@ const templateType = {
 const FinishupToolbar = props => {
   const [open, setOpen] = useState(false);
 
-  const { toolbarState, onToolbarChange, handleChangeTemplateSelected, currentTemplate } = props;
+  const {
+    toolbarState,
+    onToolbarChange,
+    handleChangeTemplateSelected,
+    handleOpenModal,
+    currentTemplate,
+  } = props;
 
   const [showAdjustment, setShowAdjustment] = useState(false);
   const [color, setColor] = useState(toolbarState.fontColor);
@@ -63,7 +69,7 @@ const FinishupToolbar = props => {
   };
 
   const renderAdjustment = () => (
-    <div className="adjustment bg-neutral-50">
+    <div className="adjustment bg-neutral-50 width-1000 asolute">
       <Row>
         <Col className="element">
           <Tooltip title="Profile picture">
@@ -335,59 +341,99 @@ const FinishupToolbar = props => {
   );
 
   return (
-    <div className="flex px-4 py-1 toolbar">
-      <div className="flex-auto src-components-GeneratorCompiler--pu3sXrl4gGw=">
-        <div className="flex text-center">
-          <DynamicColorCircle progress={10} />
+    <>
+      <div styles={{ width: '200px' }} className="flex px-4 py-1 toolbar">
+        <div className="flex-auto donutContainer">
+          <svg
+            width={52}
+            height={52}
+            xmlns="https://www.w3.org/2000/svg"
+            className="donutContainerSvg"
+          >
+            <g>
+              <title>Resume completion</title>
+              <circle r={22} cy={26} cx={26} strokeWidth={8} stroke="#f2f2f2" fill="none" />
+              <circle
+                id="circle_animation"
+                className="donut"
+                r={22}
+                cy={26}
+                cx={26}
+                strokeWidth={8}
+                stroke="#f2c94b"
+                fill="none"
+                style={{ strokeDashoffset: '30.36' }}
+              />
+              <text
+                fill="#283e50"
+                x="50%"
+                y="-24px"
+                dominantBaseline="middle"
+                textAnchor="middle"
+                className="donut-text"
+              >
+                78
+              </text>
+            </g>
+          </svg>
+          <Button onClick={handleOpenModal} className="font-bold ml-10">
+            Explore My Rezi score
+          </Button>
+        </div>
+
+        <div className="flex-auto">
+          <div className="flex text-center">
+            {/* <DynamicColorCircle progress={10} />
           <div className="flex items-center ml-2">
             <Button className="font-bold">Explore My Rezi score</Button>
-          </div>
-          <div className="flex ml-auto ">
-            <div className="flex items-center ml-2">
-              <Button type="text" className="font-bold">
-                Auto-Adjust
-              </Button>
-            </div>
-            <div className="flex items-center ml-2">
-              <Button
-                type="text"
-                className="font-bold"
-                onClick={() => {
-                  setShowAdjustment(!showAdjustment);
-                }}
-              >
-                Adjustments
-                <FontAwesomeIcon className="ml-1" icon={faChevronDown} />
-              </Button>
-            </div>
-            <div className="flex items-center ml-2">
-              <Select
-                className="font-bold"
-                size="small"
-                defaultValue={templateType[1]}
-                label="Templates"
-                bordered={false}
-                style={{ width: 120 }}
-                onChange={handleChangeTemplate}
-                options={[
-                  { value: templateType[1], label: templateType[1] },
-                  { value: templateType[2], label: templateType[2] },
-                  { value: templateType[3], label: templateType[3] },
-                ]}
-              >
-                Templates
-              </Select>
-            </div>
-            <div className="flex items-center ml-2">
-              <Button color="primary" className="font-bold">
-                Download
-              </Button>
+          </div> */}
+            <div className="flex ml-auto ">
+              <div className="flex items-center ml-2">
+                <Button type="text" className="font-bold">
+                  Auto-Adjust
+                </Button>
+              </div>
+              <div className="flex items-center ml-2">
+                <Button
+                  type="text"
+                  className="font-bold"
+                  onClick={() => {
+                    setShowAdjustment(!showAdjustment);
+                  }}
+                >
+                  Adjustments
+                  <FontAwesomeIcon className="ml-1" icon={faChevronDown} />
+                </Button>
+              </div>
+              <div className="flex items-center ml-2">
+                <Select
+                  className="font-bold"
+                  size="small"
+                  defaultValue={templateType[1]}
+                  label="Templates"
+                  bordered={false}
+                  style={{ width: 120 }}
+                  onChange={handleChangeTemplate}
+                  options={[
+                    { value: templateType[1], label: templateType[1] },
+                    { value: templateType[2], label: templateType[2] },
+                    { value: templateType[3], label: templateType[3] },
+                  ]}
+                >
+                  Templates
+                </Select>
+              </div>
+              <div className="flex items-center ml-2">
+                <Button color="primary" className="font-bold">
+                  Download
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-        {showAdjustment && renderAdjustment()}
       </div>
-    </div>
+      {showAdjustment && renderAdjustment()}
+    </>
   );
 };
 
