@@ -44,7 +44,9 @@ const Home = () => {
 
   return (
     <main>
-      <ConfigProvider>
+      <ConfigProvider theme={{
+        colorBgContainer: 'red',
+      }}>
         <UserLayout
           userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={

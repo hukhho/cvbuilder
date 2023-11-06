@@ -1,0 +1,106 @@
+.resume-title {
+    font: var(--font-ui);
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    padding: 0.3em 0.5em;
+    border-radius: var(--radius-2);
+    transition: all 200ms ease;
+    white-space: nowrap;
+    font-size: var(--scale-000);
+    margin: 0 0.5rem 0 0;
+    background: #7474741f;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .item {
+    font: var(--font-ui);
+    font-size: var(--scale-000);
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    margin: 0 0.5rem;
+    padding: 0.3em 0.5em;
+    border-radius: var(--radius-2);
+    transition: all 200ms ease;
+    white-space: nowrap;
+    &:global(.active) {
+      background: var(--color-primary);
+      color: white;
+    }
+  }
+  
+  .mobile-resume-title {
+    font: var(--font-ui);
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    padding: 0.3em 0.5em;
+    border-radius: var(--radius-2);
+    transition: all 200ms ease;
+    white-space: nowrap;
+    font-size: var(--scale-000);
+    margin: 0 0.2rem 0.3rem;
+    background: #7474741f;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mobile-item {
+    font: var(--font-ui);
+    font-size: var(--scale-000);
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    margin: 0 0.2rem 0.3rem;
+    padding: 0.3em 0.5em;
+    border-radius: var(--radius-2);
+    transition: all 200ms ease;
+    white-space: nowrap;
+    &:global(.active) {
+      background: var(--color-primary);
+      color: white;
+    }
+  }
+  
+  .item-spacer {
+    width: 1rem;
+    flex-shrink: 0;
+  }
+  
+  .modal-description {
+    font-family: "Source Sans Pro", sans-serif;
+    color: var(--color-grey-500);
+  }
+  
+  :global(.pro-ui) {
+    & .item {
+      &:global(.active) {
+        background: var(--color-violet);
+      }
+    }
+  }
+  .rms-admin {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .resume-mobile-container .item,
+  .resume-mobile-container .resume-title {
+    font-size: 0.6rem;
+    margin: 0 0.2rem;
+  }
+  .resume-mobile-container .item-spacer {
+    width: 0.2rem;
+  }
+  
+  .resume-mobile-container .navbar {
+    justify-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .resume-container .item,
+  .resume-title {
+    font-size: var(--scale-000);
+    margin: 0 0.5rem;
+  }
+  

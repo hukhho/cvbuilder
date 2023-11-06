@@ -197,6 +197,7 @@ const UserLayout = ({ userHeader, content }) => {
       >
         <Header
           style={{
+            marginTop: '40px',
             padding: 10,
             paddingLeft: 60,
             background: colorBgContainer,

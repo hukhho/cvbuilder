@@ -14,6 +14,8 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Layout, Menu, Space, theme, Typography } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCake, faFile, faFileAlt, faFileCircleCheck, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -22,29 +24,25 @@ const { Header, Content, Footer, Sider } = Layout;
 const items = [
   {
     key: '1',
-    icon: <UserOutlined />,
-    label: 'MY DASHBOARD',
+    icon: <FontAwesomeIcon icon={faFileCirclePlus} />,
+    label: 'CREATE NEW RESUME',
   },
   {
     key: '2',
-    icon: <VideoCameraOutlined />,
-    label: 'MY MATCHED JOBS',
+    icon: <FontAwesomeIcon icon={faFile} />,
+    label: 'MY DASHBOARD',
   },
   {
     key: '3',
-    icon: <UploadOutlined />,
+    icon: <FontAwesomeIcon icon={faFileAlt} />,
     label: 'SAMPLE LIBRARY',
   },
   {
     key: '4',
-    icon: <BarChartOutlined />,
+    icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
     label: 'REVIEW MY RESUME',
   },
-  {
-    key: '5',
-    icon: <CloudOutlined />,
-    label: 'MY PROFILE',
-  },
+  
 ];
 const UserCVBuilderLayout = ({ userHeader, content }) => {
   const {
@@ -63,15 +61,8 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
     >
       <Sider
         style={{
-          backgroundColor: '#3C2E8D',
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          bottom: 0,
-          paddingLeft: 0,
-          paddingRight: 0,
+          // backgroundColor: '#3C2E8D',
+          backgroundImage: `url('https://photos.pinksale.finance/file/pinksale-logo-upload/1699259953581-c26be60cfd1ba40772b5ac48b95ab19b.png')`,
         }}
         collapsible
         collapsed={collapsed}
@@ -110,10 +101,8 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         />
         <Menu
           style={{
-            backgroundColor: '#3C2E8D',
+            background: 'transparent',
             color: '#fbfbfb',
-            marginTop: 50,
-            width: '80%',
             fontSize: '12.6px',
             fontFamily: 'Source Sans Pro',
             fontWeight: 'bold',
@@ -128,15 +117,12 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
       <Layout
         className="site-layout"
         style={{
-          marginLeft: 113,
           background: '#fbfbfb',
         }}
       >
         <Header
           style={{
-            padding: 10,
-            paddingLeft: 60,
-            width: '120%',
+            marginTop: '40px',
             background: '#fbfbfb',
           }}
         >
@@ -146,8 +132,6 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         <Content
           style={{
             margin: '24px 16px 0',
-            height: '100vh',
-            width: '120%',
             background: '#fbfbfb',
           }}
         >
@@ -161,13 +145,13 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
             {content}
           </div>
         </Content>
-        {/* <Footer
+        <Footer
           style={{
             marginTop: '200px',
             textAlign: 'center',
-            background: '#FFFFFF',
+            background: '#fbfbfb',
           }}
-        /> */}
+        />
       </Layout>
     </Layout>
   );

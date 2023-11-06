@@ -22,7 +22,7 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
   console.log('initialEnabledCategories: ', initialEnabledCategories);
 
   return (
-    <div className="w-[1267.01px] h-[28.80px] relative flex space-x-8">
+    <div className="w-[1255px] h-[25px] relative flex space-x-8">
       <div className="flex items-center">
         <div className="w-[150px] h-[23.09px] pl-[6.28px] pr-[5.75px] pt-[4.76px] pb-[5.33px] bg-neutral-500 bg-opacity-10 rounded-[3.15px] justify-start items-start inline-flex">
           <div
@@ -31,7 +31,10 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
               overflow: 'hidden',
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
-              maxWidth: '100%',
+              fontSize: '11.2px',
+              lineHeight: '11.2px',
+              textAlign: 'left',
+              letterSpacing: 'normal',
             }}
           >
             Pham Viet Thuan Thien - CV
@@ -39,7 +42,7 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
         </div>
       </div>
 
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center space-x-4">
         {categories.map(category => (
           <Link
             key={category.name}
@@ -49,6 +52,12 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
               className={`text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap ${
                 enabledCategories[category.name] ? 'bg-indigo-500 text-white' : 'text-neutral-600'
               } cursor-pointer rounded-[3.15px] p-[4.76px] pl-[6.28px] pr-[5.80px] pt-[4.76px] pb-[5.33px]'`}
+              style={{
+                fontSize: '11.2px',
+                lineHeight: '11.2px',
+                textAlign: 'left',
+                letterSpacing: 'normal',
+              }}
             >
               {category.name}
             </div>
