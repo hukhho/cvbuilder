@@ -192,7 +192,7 @@ const UserLayout = ({ userHeader, content }) => {
         className="site-layout"
         style={{
           marginLeft: 300,
-          background: 'white',
+          background: '#fbfbfb',
         }}
       >
         <Header
@@ -200,7 +200,8 @@ const UserLayout = ({ userHeader, content }) => {
             marginTop: '40px',
             padding: 10,
             paddingLeft: 60,
-            background: colorBgContainer,
+            background: '#fbfbfb',
+            backgroundColor: '#fbfbfb'
           }}
         >
           {userHeader}
@@ -212,14 +213,16 @@ const UserLayout = ({ userHeader, content }) => {
             margin: '24px 16px 0',
             height: '100vh',
             overflow: 'initial',
-            background: colorBgContainer,
+            background: '#fbfbfb',
+            backgroundColor: '#fbfbfb'
+
           }}
         >
           <div
             style={{
               padding: 24,
               textAlign: 'center',
-              background: colorBgContainer,
+              background: '#fbfbfb',
             }}
           >
             {content}
