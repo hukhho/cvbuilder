@@ -104,8 +104,8 @@ const CreateResume = () => {
         data-busy="false"
         class="cta-button cta button "
         id="navi-create-new-resume"
+        style={{ backgroundColor: '#4d70eb' }}
         onClick={showModal}
-       
       >
         {' '}
         <i class="fad fa-file-plus" aria-hidden="true"></i>

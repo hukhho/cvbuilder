@@ -31,6 +31,8 @@ const items = [
     key: '2',
     icon: <FontAwesomeIcon icon={faFile} />,
     label: 'MY DASHBOARD',
+    href: '/create-resume'
+
   },
   {
     key: '3',

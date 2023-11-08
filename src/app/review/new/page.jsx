@@ -5,7 +5,9 @@ import { ConfigProvider } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
+
 import './card.css';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getExperts, createReview } from './reviewService';
@@ -93,6 +95,7 @@ const Home = () => {
       <main>
         <ConfigProvider>
           <UserLayout
+            selected={'3'}
             userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
             content={
               <div className="container mx-auto px-4 py-6">

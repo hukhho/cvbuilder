@@ -50,6 +50,7 @@ const FinishupToolbar = props => {
   const [zoomValue, setZoomValue] = useState(
     toolbarState.zoom ? parseInt(toolbarState.zoom.slice(0, -1), 10) : 0,
   );
+  
   const [isSliderZoomVisible, setSliderZoomVisible] = useState(false);
 
   const [lineHeight, setLineHeight] = useState(parseFloat(toolbarState.lineHeight));
@@ -342,8 +343,8 @@ const FinishupToolbar = props => {
 
   return (
     <>
-      <div styles={{ width: '200px' }} className="flex px-4 py-1 toolbar">
-        <div className="flex-auto donutContainer">
+      <div styles={{ width: '200px'}} className="flex px-4 py-1 toolbar">
+        <div className="flex-auto donutContainer mt-4 mb-4 ml-2">
           <svg
             width={52}
             height={52}
@@ -381,7 +382,7 @@ const FinishupToolbar = props => {
           </Button>
         </div>
 
-        <div className="flex-auto">
+        <div className="flex-auto" >
           <div className="flex text-center">
             {/* <DynamicColorCircle progress={10} />
           <div className="flex items-center ml-2">

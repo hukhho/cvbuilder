@@ -6,6 +6,9 @@
 @import "./colors.css";
 @import "./typography.css";
 @import "./button.css";
+/* @import "./varriable.css"; */
+@import "./font.css";
+
 /**
  * Document defaults
  * Root line height reflected to postcss config for rlh units

@@ -1,0 +1,75 @@
+/**
+ * Design system
+ * Using Bloom as a foundation
+ * https://github.com/tomorrowstudio/bloom
+ */
+/* Import required modules from Bloom */
+@import "./typography.css";
+@import "./ui.css";
+@import "./colors.css";
+
+:root {
+  /**
+   * Typography
+   */
+  --font-family-forms: "Source Sans Pro", sans-serif;
+
+  /* Custom stacks */
+  --font-input: 600 var(--scale-0) / 1.3 var(--font-family-forms);
+  --font-weight-bold: 700;
+
+  /* Families */
+  --font-ui-weight: var(--font-weight-bold);
+  --font-heading-weight: var(--font-weight-bold);
+
+  /**
+   * Colors
+   */
+  --color-primary: var(--color-violet);
+  --color-text: var(--color-grey-900);
+  --color-text-light: var(--color-grey-500);
+
+  --color-green: #48c9b0;
+  --color-violet: #4d70eb;
+  --color-hover-icon: #4d70eb;
+  --color-nav: #fff;
+  --color-nav-hover: #fff;
+  --color-button-created-background: var(--color-primary);
+  --color-red: #d40000;
+  --color-button-created-text: #fff;
+  --color-grey-default: #adb1b8;
+
+  --color-black-dark: #1e2125;
+  --color-black: #1a252f;
+  --color-grey-900: #283e50;
+  --color-grey-500: #565656;
+  /*#757575;*/
+
+  --color-grey-300: #95a5a6;
+  --color-grey-100: #e7e7e7;
+  --color-grey-50: #f0f0f0;
+
+  /**
+   * Layout
+   */
+  --gutter: 2.25rem;
+  --grid-page: minmax(8.5vw, 1fr) minmax(0, 90rem) minmax(8.5vw, 1fr);
+  --grid-content: repeat(12, 1fr);
+  --grid-gap: 1rem;
+  --grid-gap-offset: calc(0px - var(--grid-gap));
+
+  /**
+   * UI
+   */
+  --elevation: 0 0 0.4rem rgb(0 0 0 / 15%);
+  --elevation-flat: 0 0 0.125rem 0 rgb(0 0 0 / 10%);
+
+  /**
+   * tablet break point => we can't use this variables but share this information
+   */
+  --tablet001: 1365px;
+  --tablet002: 1120px;
+  --mobile001: 800px;
+  --mobile002: 600px;
+  /*The smallest size of a tablet horizontally (microsoft-surface : 1366px)*/
+}

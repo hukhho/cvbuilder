@@ -46,6 +46,7 @@ const Home = () => {
     <main>
       <ConfigProvider>
         <UserLayout
+          selected='1'
           userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={
             <div className="container mx-auto px-4 py-6">

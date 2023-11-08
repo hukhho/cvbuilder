@@ -16,6 +16,9 @@ import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSe
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import { getAudit, getFinishUp, syncUp } from './finishUpService';
 import ScoreFinishUp from './Score';
+import VideoComponent from '@/app/components/VideoComponent';
+import './expert.css';
+import './gen.css';
 
 const mockData = {
   data: {
@@ -129,26 +132,22 @@ const mockData = {
         {
           id: 1,
           name: 'CSS',
-          description: 'CSS'
-
+          description: 'CSS',
         },
         {
           id: 2,
           name: 'HTML',
-          description: 'CSS'
-
+          description: 'CSS',
         },
         {
           id: 3,
           name: 'React',
-          description: 'CSS'
-
+          description: 'CSS',
         },
         {
           id: 4,
           name: 'Vue',
-          description: 'CSS'
-
+          description: 'CSS',
         },
       ],
       involvements: [
@@ -300,7 +299,7 @@ export default function FinishUp({ params }) {
         console.log('FinishUp data: ', data);
 
         setFinishUpData(data);
-        
+
         setShowFinishupCV(true);
 
         setTemplateSelected(data.templateType);
@@ -366,9 +365,7 @@ export default function FinishUp({ params }) {
           content={
             <div className="flex mt-8">
               {showFinishupCV && (
-                <div
-                  className="w-2/3 mr-2 flex flex-col "
-                >
+                <div className="mr-2 flex flex-col">
                   {/* <Button type="primary" onClick={() => setOpen(true)}>
                     Open Modal of 1000px width
                   </Button> */}
@@ -384,24 +381,29 @@ export default function FinishUp({ params }) {
                   >
                     <ScoreFinishUp data={auditData} />
                   </Modal>
-
                   <div
-                    style={{
-                      // background: 'white',
-                      // width: '100%',
-                    }}
+                    style={
+                      {
+                        // background: 'white',
+                        // width: '100%',
+                      }
+                    }
                   >
-                    <FinishupToolbar
-                      handleChangeTemplateSelected={value => setTemplateSelected(value)}
-                      handleOpenModal={() => setOpen(true)}
-                      toolbarState={toolbarState}
-                      onToolbarChange={handleToolbarChange}
-                      currentTemplate={mockData.data.resume.resumeStyle}
-                    />
+                    <div style={{ width: '895px' }}>
+                      <FinishupToolbar
+                        handleChangeTemplateSelected={value => setTemplateSelected(value)}
+                        handleOpenModal={() => setOpen(true)}
+                        toolbarState={toolbarState}
+                        onToolbarChange={handleToolbarChange}
+                        currentTemplate={mockData.data.resume.resumeStyle}
+                      />
+                      <div className='flex' style={{ justifyItems: 'center'}}>
+                      <button style={{ width: '60px', height: '30px', marginTop: '10px', marginBottom: '10px'}} className='button' type="" onClick={() => handleSyncUp()}>
+                        Sync Up
+                      </button>
+                      </div>
                     
-                    <Button type="" onClick={() => handleSyncUp()}>
-                      Sync Up
-                    </Button>
+                    </div>
                   </div>
 
                   <CVLayout
@@ -412,36 +414,68 @@ export default function FinishUp({ params }) {
                   >
                     {sections.map(section => section.canBeDisplayed && section.component)}
                   </CVLayout>
-
                 </div>
               )}
               {showFinishupCV && (
-                <div className="w-1/3 flex flex-col items-start">
-                  <div className="h-1/3">
-                    <p>
-                      <Image
-                        src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
-                        width={320}
-                        height={182}
-                        alt="Video"
-                      />
-                    </p>
+                <div className="flex flex-col items-start" style={{ position: 'static', width: '360px' }}>
+                  <div className="">
+                    <div style={{ marginLeft: '14px', maxHeight: '185px' }}>
+                      <VideoComponent />
+                    </div>
                   </div>
-                  <div className="h-1/3 ">
-                    <h1>REZI EXPERT REVIEW</h1>
-                    <p>
-                      We'll correct all formatting, content, and grammar errors directly in your
-                      resume
-                    </p>
-                    <Button
-                      className="form-button w-full"
-                      style={{
-                        backgroundColor: 'rgb(77, 112, 235)',
-                        color: 'white',
-                      }}
-                    >
-                      ASK FOR REZI EXPERT REVIEW
-                    </Button>
+                  <div className="">
+                    <div className="askForReview card share-card" style={{ color: 'black', textAlign: 'left' }}>
+                      <h4>Rezi Expert Review</h4>
+                      <span>
+                        We'll correct all formatting, content, and grammar errors directly in your
+                        resume
+                      </span>
+                      <button
+                        href=""
+                        data-size="default"
+                        data-theme="default"
+                        data-busy="false"
+                        className=" button "
+                      >
+                        Ask for Rezi Expert Review
+                      </button>
+                    </div>
+                  </div>
+                  <div style={{ color: 'black',  textAlign: 'left'  }}>
+                    <div className="keyword-card card share-card ">
+                      <div className="keyword-wrapper">
+                        <div className="keyword-side">
+                          <h4>
+                            <span className="uppercase" style={{ color: 'black' }}>AI Keyword Targeting</span>
+                            <sup
+                              aria-hidden="true"
+                              style={{ paddingLeft: 4, color: 'rgb(204, 204, 204)' }}
+                            >
+                              v2
+                            </sup>
+                          </h4>
+                        </div>
+                        <div style={{}} className="keyword-list">
+                          <span className="keyword-infos">
+                            Want to improve your chances of getting this role? Consider adding the
+                            following keywords to your resume:
+                          </span>
+                          <div>
+                            <div>
+                              <span>
+                                java <i className="fas fa-times" aria-hidden="true" />
+                              </span>
+                              <span>
+                                <i className="fas fa-circle" aria-hidden="true" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <button className="keyword-button button">
+                          Update job description
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

@@ -1,0 +1,70 @@
+.validOrder {
+    font-weight: bold !important;
+    & i {
+      margin-right: 5px;
+    }
+  }
+  .askForReview {
+    margin: 0 1.5em;
+    width: calc(100% - 3em);
+  }
+  .share-card {
+    padding: 1.5em !important;
+    margin: 1em;
+    & h4 {
+      margin: 8px 0 5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font: var(--font-heading);
+      font-size: var(--scale-000);
+      line-height: 1.5em;
+    }
+    & span {
+      color: var(--color-grey-500);
+      font-family: "Source Sans Pro", sans-serif;
+      line-height: 19px;
+      font-weight: 400;
+      font-size: 14px;
+      display: inline-block;
+      margin: 10px 0 0;
+    }
+    & button {
+      margin: 1.5em 0 0;
+      width: 100%;
+    }
+  }
+  .card {
+    background: white;
+    box-shadow: var(--elevation-flat);
+    border-radius: var(--radius-3);
+    padding: var(--gutter);
+  }
+  
+  .mobile-card {
+    background: white;
+    box-shadow: var(--elevation-flat);
+    border-radius: var(--radius-3);
+    padding: 1rem;
+    & h1 {
+      font-size: 18px !important;
+    }
+    & p {
+      font-size: 14px !important;
+    }
+  }
+  
+  .mobile-card-no-padding {
+    background: white;
+    box-shadow: var(--elevation-flat);
+    border-radius: var(--radius-3);
+    padding: 0px !important;
+    & h1 {
+      font-size: 18px !important;
+    }
+    & p {
+      font-size: 14px !important;
+    }
+  }
+  

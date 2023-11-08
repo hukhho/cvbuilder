@@ -59,10 +59,8 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
     color: layoutStyles.fontColor,
     width: layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in',
     // fontFamily: `${layoutStyles.fontFamily}, serif`,
-    backgroundColor: 'white',
     ...fontStyles, // Merge font styles with other styles
   };
-
   console.log('CvStyles', CvStyles);
 
   useEffect(() => {
@@ -119,13 +117,17 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
   const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
 
   // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
+  const stylesTransform = {
+    transform: `scale(${layoutStyles.zoom})`,
+    transformOrigin: 'left top',
+  };
 
   return (
     <div className="preview card">
       <div
         className="bg-gray-100 rounded-md p-4 select-none text-[#2e3d50]"
         id="resume-preview"
-        style={{ transform: 'scale(1.05071)', transformOrigin: 'left top' }}
+        style={stylesTransform}
       >
         <div
           style={{
