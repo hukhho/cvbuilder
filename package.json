@@ -33,8 +33,10 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^10.16.4",
+    "html2canvas": "^1.4.1",
     "install": "^0.13.0",
     "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.1",
     "mammoth": "^1.6.0",
     "moment": "^2.29.4",
     "next": "^13.4.12",
@@ -45,7 +47,8 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
-    "resolve-url-loader": "^5.0.0"
+    "resolve-url-loader": "^5.0.0",
+    "styled-components": "^6.1.1"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.2.1",

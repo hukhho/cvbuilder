@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './CVTemplates.scss';
 import {
   DndContext,
@@ -33,6 +33,8 @@ import './template.css';
 
 import { NextPageContext } from 'next';
 import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
   const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
@@ -122,6 +124,11 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
     transformOrigin: 'left top',
   };
 
+ 
+  const elementRef = useRef(null); // Reference to the HTML element to be converted
+
+  
+
   return (
     <div className="preview card">
       <div
@@ -129,6 +136,7 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
         id="resume-preview"
         style={stylesTransform}
       >
+   
         <div
           style={{
             backgroundColor: 'rgb(255, 255, 255)',

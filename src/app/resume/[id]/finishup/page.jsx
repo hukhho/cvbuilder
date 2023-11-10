@@ -19,6 +19,7 @@ import ScoreFinishUp from './Score';
 import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
 import './gen.css';
+import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
 
 const mockData = {
   data: {
@@ -369,6 +370,7 @@ export default function FinishUp({ params }) {
                   {/* <Button type="primary" onClick={() => setOpen(true)}>
                     Open Modal of 1000px width
                   </Button> */}
+           
 
                   <Modal
                     title=""
@@ -397,12 +399,21 @@ export default function FinishUp({ params }) {
                         onToolbarChange={handleToolbarChange}
                         currentTemplate={mockData.data.resume.resumeStyle}
                       />
-                      <div className='flex' style={{ justifyItems: 'center'}}>
-                      <button style={{ width: '60px', height: '30px', marginTop: '10px', marginBottom: '10px'}} className='button' type="" onClick={() => handleSyncUp()}>
-                        Sync Up
-                      </button>
+                      <div className="flex" style={{ justifyItems: 'center' }}>
+                        <button
+                          style={{
+                            width: '60px',
+                            height: '30px',
+                            marginTop: '10px',
+                            marginBottom: '10px',
+                          }}
+                          className="button"
+                          type=""
+                          onClick={() => handleSyncUp()}
+                        >
+                          Sync Up
+                        </button>
                       </div>
-                    
                     </div>
                   </div>
 
@@ -417,14 +428,20 @@ export default function FinishUp({ params }) {
                 </div>
               )}
               {showFinishupCV && (
-                <div className="flex flex-col items-start" style={{ position: 'static', width: '360px' }}>
+                <div
+                  className="flex flex-col items-start"
+                  style={{ position: 'static', width: '360px' }}
+                >
                   <div className="">
                     <div style={{ marginLeft: '14px', maxHeight: '185px' }}>
                       <VideoComponent />
                     </div>
                   </div>
                   <div className="">
-                    <div className="askForReview card share-card" style={{ color: 'black', textAlign: 'left' }}>
+                    <div
+                      className="askForReview card share-card"
+                      style={{ color: 'black', textAlign: 'left' }}
+                    >
                       <h4>Rezi Expert Review</h4>
                       <span>
                         We'll correct all formatting, content, and grammar errors directly in your
@@ -441,12 +458,14 @@ export default function FinishUp({ params }) {
                       </button>
                     </div>
                   </div>
-                  <div style={{ color: 'black',  textAlign: 'left'  }}>
+                  <div style={{ color: 'black', textAlign: 'left' }}>
                     <div className="keyword-card card share-card ">
                       <div className="keyword-wrapper">
                         <div className="keyword-side">
                           <h4>
-                            <span className="uppercase" style={{ color: 'black' }}>AI Keyword Targeting</span>
+                            <span className="uppercase" style={{ color: 'black' }}>
+                              AI Keyword Targeting
+                            </span>
                             <sup
                               aria-hidden="true"
                               style={{ paddingLeft: 4, color: 'rgb(204, 204, 204)' }}
@@ -471,9 +490,7 @@ export default function FinishUp({ params }) {
                             </div>
                           </div>
                         </div>
-                        <button className="keyword-button button">
-                          Update job description
-                        </button>
+                        <button className="keyword-button button">Update job description</button>
                       </div>
                     </div>
                   </div>

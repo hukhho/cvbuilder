@@ -41,37 +41,39 @@ const CertificationList = ({ data, onDelete, onEdit }) => {
         </div>
         <div className="self-stretch pr-[99.91px] justify-start items-start inline-flex">
           <div className="pr-[9px] justify-start items-center flex">
-            <div
+            <button
               onClick={handleEditClick}
-              onKeyDown={e => handleButtonClick(e, 'edit')} // Handle Enter key for Edit button
-              role="button" // Add a role for accessibility
-              tabIndex={0} // Make the element focusable via keyboard
-              className="pl-[9px] pr-[8.45px] pt-[4.50px] pb-[6.09px] bg-indigo-500 rounded justify-center items-center flex"
+              type="button"
+              data-busy="false"
+              className="text-white disabled:bg-gray-100 font-[700] uppercase disabled:text-gray-300 focus:ring-0 focus:outline-none  experience-section inline-flex items-center mr-2 bg-rezi-blue text-white px-2 py-1 rounded text-[11px] "
+              id="experience-section-edit-0"
+              style={{ background: 'var(--color-primary)' }}
             >
-              <button className="text-center text-white text-[11px] font-bold font-['Source Sans Pro'] uppercase leading-[17.60px]">
-                Edit
-              </button>
-            </div>
+              Edit
+            </button>
           </div>
           <div className="pr-[9px] justify-start items-center flex">
-            <div
+            <button
+              type="button"
               onClick={handleDeleteClick}
-              onKeyDown={e => handleButtonClick(e, 'delete')} // Handle Enter key for Delete button
-              role="button" // Add a role for accessibility
-              tabIndex={0} // Make the element focusable via keyboard
-              className="pl-[9px] pr-[8.89px] pt-[4.50px] pb-[6.09px] bg-red-600 rounded justify-center items-center flex"
+              data-busy="false"
+              className="text-white disabled:bg-gray-100 font-[700] uppercase disabled:text-gray-300 focus:ring-0 focus:outline-none  experience-section inline-flex items-center mr-2 bg-red-600 text-white px-2 py-1 rounded text-[11px] "
+              id="experience-section-delete-0 "
             >
-              <button className="text-center text-white text-[11px] font-bold font-['Source Sans Pro'] uppercase leading-[17.60px]">
-                Delete
-              </button>
-            </div>
+              Delete
+            </button>
           </div>
           <div className="pr-[9px] justify-start items-center flex">
-            <div className="pl-[9px] pr-[10.75px] pt-[4.50px] pb-[6.09px] bg-white rounded border border-zinc-100 justify-center items-center flex">
-              <button className="text-center text-gray-500 text-[11px] font-bold font-['Source Sans Pro'] uppercase leading-[17.60px]">
-                Hide
-              </button>
-            </div>
+            <button
+              onClick={handleHideClick}
+              type="button"
+              data-busy="false"
+              className=" disabled:bg-gray-100 font-[700] uppercase disabled:text-gray-300 focus:ring-0 focus:outline-none  experience-section inline-flex items-center mr-2 bg-white text-gray-500 border-solid border border-[#eee] px-2 py-1 rounded text-[11px] whitespace-nowrap"
+              id="experience-section-hide-1"
+            >
+              Hide
+              {/* {isDisplayDisplay ? 'Hide' : 'Un-hide'} */}
+            </button>
           </div>
         </div>
       </div>
