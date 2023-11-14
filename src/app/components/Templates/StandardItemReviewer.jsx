@@ -1,17 +1,28 @@
 'use client';
 
-import { Divider, Typography } from 'antd';
+import { Button, Divider, Typography } from 'antd';
 
-//    
-  //   _     _                   _                                    
-  //   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___ 
-  //  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
-  //  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__ 
-  //  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
+//
+//   _     _                   _
+//   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___
+//  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
+//  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__
+//  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
 
-const StandardItem = props => {
-  const { role, orgName, startTime, endTime, description, location, templateType, titleProps } =
-    props;
+const StandardItemReviewers = ( props) => {
+  var {
+    onComment,
+    role,
+    orgName,
+    startTime,
+    endTime,
+    description,
+    location,
+    templateType,
+    titleProps,
+  } = props;
+  
+  console.log('StandardItemReviewers:onComment:', onComment);
 
   const dateRangeFormat = () => {
     let dateRange = startTime || null;
@@ -27,35 +38,35 @@ const StandardItem = props => {
 
   const renderTitle = () => {
     if (titleProps) {
-      return (<div
-        className="XHKKXx5eVL leading-snug relative group "
-        style={{ paddingLeft: "1.4cm", paddingRight: "1.4cm" }}
-      >
-        <i
-          className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-          aria-hidden="true"
-        />
+      return (
         <div
-          className="relative whitespace-pre-line"
-          style={{ color: "rgb(46, 61, 80)", fontWeight: 700, fontSize: "0.85em" }}
+          className="XHKKXx5eVL leading-snug relative group "
+          style={{ paddingLeft: '1.4cm', paddingRight: '1.4cm' }}
         >
-          <div className="relative">
-            {/* <p className="editableContent ghost-hightlight w-full designStudio ">
+          <i
+            className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
+            aria-hidden="true"
+          />
+          <div
+            className="relative whitespace-pre-line"
+            style={{ color: 'rgb(46, 61, 80)', fontWeight: 700, fontSize: '0.85em' }}
+          >
+            <div className="relative">
+              {/* <p className="editableContent ghost-hightlight w-full designStudio ">
               <span>
                 <span className="">{titleProps}</span>
               </span>
             </p> */}
+            </div>
+            <p
+              className="editableContent cursor-text  designStudio  "
+              id="XHKKXx5eVL-skill"
+              tabIndex={0}
+            >
+              {titleProps}
+            </p>
           </div>
-          <p
-            className="editableContent cursor-text  designStudio  "
-            id="XHKKXx5eVL-skill"
-            tabIndex={0}
-            contentEditable="true"
-          >
-            {titleProps}
-          </p>
         </div>
-      </div>
       );
     }
 
@@ -67,13 +78,11 @@ const StandardItem = props => {
               <ul className="sortable-container ">
                 <li
                   className="smpl125032021 leading-snug relative group"
-                  style={
-                    {
-                      paddingLeft: '1.4cm',
-                      paddingRight: '1.4cm',
-                      marginBottom: 11,
-                    }
-                  }
+                  style={{
+                    paddingLeft: '1.4cm',
+                    paddingRight: '1.4cm',
+                    marginBottom: 11,
+                  }}
                 >
                   <i
                     className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
@@ -107,7 +116,6 @@ const StandardItem = props => {
                             className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                             id="smpl125032021-company"
                             tabIndex={0}
-                            contentEditable="true"
                             style={{
                               display: 'inline',
                               verticalAlign: 'initial',
@@ -126,7 +134,6 @@ const StandardItem = props => {
                             className="editableContent cursor-text leading-snug ml-0 designStudio "
                             id="smpl125032021-duration"
                             tabIndex={0}
-                            contentEditable="true"
                           >
                             {dateRangeFormat()}
                           </span>
@@ -139,7 +146,6 @@ const StandardItem = props => {
                             className="editableContent cursor-text leading-snug ml-2 designStudio "
                             id="smpl125032021-location"
                             tabIndex={0}
-                            contentEditable="true"
                           >
                             {location}
                           </span>
@@ -158,18 +164,17 @@ const StandardItem = props => {
                   >
                     {/* <div className="relative">
                       <p className="editableContent ghost-hightlight w-full designStudio ">
-                        <span>
-                          <span className="">{description}</span>
-                        </span>
+                         {description}
                       </p>
                     </div> */}
                     <p
                       className="editableContent cursor-text  designStudio "
                       id="smpl125032021-description"
                       tabIndex={0}
-                      contentEditable="true"
+                      onMouseUp={event => onComment(event, 'experience')}
                     >
-                      {description}
+                      {description}   
+                      {/* <Button color='red' onClick={handleMouseUp}>ddd</Button> */}
                     </p>
                   </div>
                 </li>
@@ -245,4 +250,4 @@ const StandardItem = props => {
   return <>{renderTitle()} </>;
 };
 
-export default StandardItem;
+export default StandardItemReviewers;

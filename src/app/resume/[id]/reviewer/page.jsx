@@ -2,17 +2,17 @@
 
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Divider, Modal } from 'antd';
+import { Button, Card, ConfigProvider, Divider, Input, Modal } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import CVLayout from '@/app/components/Templates/CVLayout';
-import InformationSection from '@/app/components/Templates/SectionComponents/InformationSection';
-import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
-import ExperiencesSection from '@/app/components/Templates/SectionComponents/ExperiencesSection';
-import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
-import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
+import InformationSection from '@/app/components/Templates/SectionComponentsReviewers/InformationSection';
+import SummarySection from '@/app/components/Templates/SectionComponentsReviewers/SummarySection';
+import ExperiencesSection from '@/app/components/Templates/SectionComponentsReviewers/ExperiencesSection';
+import EducationsSection from '@/app/components/Templates/SectionComponentsReviewers/EducationsSection';
+import SkillsSection from '@/app/components/Templates/SectionComponentsReviewers/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import { getAudit, getFinishUp, syncUp } from './finishUpService';
 import ScoreFinishUp from './Score';
@@ -20,6 +20,9 @@ import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
 import './gen.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
+import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';
+import { Box, VStack } from '@chakra-ui/react';
+import { CommentOutlined } from '@ant-design/icons';
 
 const mockData = {
   data: {
@@ -37,7 +40,7 @@ const mockData = {
         lineHeight: 1.4,
         fontFamily: 'Merriweather',
         fontWeight: 'normal',
-        zoom: '100%',
+        zoom: '130%',
         paperSize: 'letter',
         hasDivider: true,
         hasIndent: false,
@@ -213,8 +216,135 @@ export default function FinishUp({ params }) {
   const [skillsOrder, setSkillsOrder] = useState([]);
   const [summary, setSummary] = useState();
 
+  const elementRef = useRef(null); // Reference to the HTML element to be converted
+
+  const [tooltip, setTooltip] = useState(null);
+  const [currentText, setCurrentText] = useState(null);
+  const [textareaState, setTextareaState] = useState('');
+  const [isLnPayPending, setIsLnPayPending] = useState(false);
+  const [isShowComment, setIsShowComment] = useState(false);
+
+  // function handleMouseUp(event, key) {
+  //   if (key === null || key === undefined) {
+  //     return
+  //   }
+  //   const selection = window.getSelection();
+  //   console.log("selection: ", selection);
+  //   console.log('FinishUp:handleMouseUp::key: ', key, " event: ", event);
+  //   if (selection && selection.toString()) {
+  // const range = selection.getRangeAt(0);
+  // const rect = range.getBoundingClientRect();
+
+  // const x = rect.left + window.scrollX + rect.width / 2;
+  // const y = rect.top + window.scrollY;
+
+  // setCurrentText(selection.toString());
+  // setTooltip({ x, y, text: selection.toString(), key });
+  // setIsShowComment(true);
+  //     console.log("currentText: ", currentText);
+  //   }
+  // }
+  const [selectionState, setSelectionState] = useState();
+  const [selectedTextState, setSelectedTextState] = useState();
+  const [selectionRange, setSelectionRange] = useState(null);
+
+  function handleInputBlur(range) {
+    if (range) {
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+  
+  function onSubmitComment() {
+    handleSubmitComment(selectionState, selectedTextState);
+  }
+  function handleSubmitComment(selection, selectedText) {
+    // Create a span element
+    // const span = document.createElement("span");
+    // span.textContent = selectedText;
+    const comment = document.createElement('comment');
+    comment.textContent = selectedText;
+    comment.setAttribute('id', 'someid');
+    comment.setAttribute('class', 'select-none');
+    comment.setAttribute('content', 'This is a comment');
+    // Get the range of the selection
+    const range = selection.getRangeAt(0);
+    // Delete the contents of the range and insert the span
+    range.deleteContents();
+    range.insertNode(comment);
+  }
+  function handleMouseUp(event, key) {
+    if (key === null || key === undefined) {
+      return;
+    }
+    const selection = window.getSelection();
+    setSelectionRange(selection.getRangeAt(0));
+
+    setSelectionState(selection);
+    const selectedText = selection.toString().trim();
+    setSelectedTextState(selectedText);
+    console.log('selection: ', selection);
+    console.log('FinishUp:handleMouseUp::key: ', key, ' event: ', event);
+    if (selection && selection.toString()) {
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+
+      const x = rect.left + window.scrollX + rect.width / 2;
+      const y = rect.top + window.scrollY;
+
+      setCurrentText(selectedText);
+      setTooltip({ x, y, text: selection.toString(), key });
+      setIsShowComment(true);
+      console.log('currentText: ', currentText);
+    }
+    console.log('selectedText: ', selectedText);
+
+    // if (selectedText) {
+    //   handleSubmitComment(selection, selectedText);
+    // }
+  }
+
+  function closeComment() {
+    setCurrentText(null);
+    setTooltip(null);
+    setIsShowComment(false);
+  }
+
+  // function handleMouseDown() {
+  //   const selection = window.getSelection();
+  //   selectedText = selection.toString();
+  // }
+
+  // function handleMouseDown(event) {
+  //   const isTooltipClicked = event.target.closest('.bg-modal');
+  //   const isInputClicked = event.target.closest('input');
+  //   console.log("isTooltipClicked", isTooltipClicked);
+  //   if (!isTooltipClicked && !isInputClicked) {
+  //     setCurrentText(null);
+  //     setTooltip(null);
+  //   }
+  // }
+  useEffect(() => {
+    if (isLnPayPending) {
+      return;
+    }
+
+    document.addEventListener('mouseup', handleMouseUp);
+    // document.addEventListener('mousedown', handleMouseDown);
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+      // document.removeEventListener('mousedown');
+    };
+  }, [tooltip, isLnPayPending]);
+
   const handleExperiencesOrderChange = newOrder => {
     setExperiencesOrder(newOrder);
+  };
+
+  const handleExperiencesCommentChange = (event, key) => {
+    console.log('handleExperiencesCommentChange: ', event, key);
+    handleMouseUp(event, key);
   };
 
   const handleEducationsOrderChange = useCallback(newOrder => {
@@ -262,6 +392,8 @@ export default function FinishUp({ params }) {
         <ExperiencesSection
           templateType={templateSelected}
           experiences={experiences}
+          onComment={handleMouseUp}
+          // onComment={handleExperiencesCommentChange}
           onChangeOrder={sortedExperiences => {
             console.log('New order of experiences:', sortedExperiences);
             // You can perform any necessary actions with the sorted experiences here.
@@ -314,6 +446,10 @@ export default function FinishUp({ params }) {
         console.error('Error fetching FinishUp data:', error);
       }
     };
+    const selection = window.getSelection();
+    const selectedText = selection.toString().trim();
+
+    console.log('selectedText: ', selectedText);
 
     fetchData();
   }, []);
@@ -356,12 +492,18 @@ export default function FinishUp({ params }) {
 
   const [open, setOpen] = useState(false);
 
+  const [inputValue, setInputValue] = useState('');
+
+  const handleChange = event => {
+    setInputValue(event.target.value);
+  };
   return (
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
           userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
+            <></>
+            // <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
           content={
             <div className="flex mt-8">
@@ -370,127 +512,63 @@ export default function FinishUp({ params }) {
                   {/* <Button type="primary" onClick={() => setOpen(true)}>
                     Open Modal of 1000px width
                   </Button> */}
-                  <Modal
-                    title=""
-                    centered
-                    open={open}
-                    onOk={() => setOpen(false)}
-                    onCancel={() => setOpen(false)}
-                    width={1000}
-                    className="custom"
+                  <Box
+                    top={tooltip?.y}
+                    left={tooltip?.x}
+                    display={tooltip?.text ? 'block' : 'none'}
+                    position="absolute"
+                    zIndex={100}
+                    className="select-none"
                   >
-                    <ScoreFinishUp data={auditData} />
-                  </Modal>
-                  <div
-                    style={
-                      {
-                        // background: 'white',
-                        // width: '100%',
-                      }
+                    {
+                      <>
+                        <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
+                          <Box layerStyle="cardLg" p={3}>
+                            <Card
+                              styles={{
+                                background: 'white',
+                                borderRadius: 'lg',
+                                witdh: '5px',
+                                height: '5px',
+                              }}
+                            >
+                              <CommentOutlined /> Comment
+                              {/* <Input
+                                value={inputValue}
+                                onChange={handleChange}
+                                placeholder="Add a comment..."
+                                onFocus={handleMouseDown}
+                              ></Input> */}
+                              
+                              <Input
+                                value={inputValue}
+                                onChange={handleChange}
+                                placeholder="Add a comment..."
+                                // onFocus={handleMouseDown}
+                                onBlur={() => handleInputBlur(selectionRange)}
+                              />
+
+                              <div className="mt-4">
+                                <Button onClick={onSubmitComment}>Submit</Button>
+
+                                <Button onClick={closeComment} className="ml-4">
+                                  Close
+                                </Button>
+                              </div>
+                            </Card>
+                          </Box>
+                        </VStack>
+                      </>
                     }
-                  >
-                    <div style={{ width: '895px' }}>
-                      <FinishupToolbar
-                        handleChangeTemplateSelected={value => setTemplateSelected(value)}
-                        handleOpenModal={() => setOpen(true)}
-                        toolbarState={toolbarState}
-                        onToolbarChange={handleToolbarChange}
-                        currentTemplate={mockData.data.resume.resumeStyle}
-                      />
-                      <div className="flex" style={{ justifyItems: 'center' }}>
-                        <button
-                          style={{
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSyncUp()}
-                        >
-                          Sync Up
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <CVLayout
+                  </Box>
+                  <CVLayoutReviewerView
                     key={[templateSelected, toolbarState]}
                     layoutStyles={toolbarState}
                     sectionsOrder={sectionsOrder}
                     onSectionsOrderChange={handleSectionsOrderChange}
                   >
                     {sections.map(section => section.canBeDisplayed && section.component)}
-                  </CVLayout>
-                </div>
-              )}
-              {showFinishupCV && (
-                <div
-                  className="flex flex-col items-start"
-                  style={{ position: 'static', width: '360px' }}
-                >
-                  <div className="">
-                    <div style={{ marginLeft: '14px', maxHeight: '185px' }}>
-                      <VideoComponent />
-                    </div>
-                  </div>
-                  <div className="">
-                    <div
-                      className="askForReview card share-card"
-                      style={{ color: 'black', textAlign: 'left' }}
-                    >
-                      <h4>Rezi Expert Review</h4>
-                      <span>
-                        We'll correct all formatting, content, and grammar errors directly in your
-                        resume
-                      </span>
-                      <button
-                        href=""
-                        data-size="default"
-                        data-theme="default"
-                        data-busy="false"
-                        className=" button "
-                      >
-                        Ask for Rezi Expert Review
-                      </button>
-                    </div>
-                  </div>
-                  <div style={{ color: 'black', textAlign: 'left' }}>
-                    <div className="keyword-card card share-card ">
-                      <div className="keyword-wrapper">
-                        <div className="keyword-side">
-                          <h4>
-                            <span className="uppercase" style={{ color: 'black' }}>
-                              AI Keyword Targeting
-                            </span>
-                            <sup
-                              aria-hidden="true"
-                              style={{ paddingLeft: 4, color: 'rgb(204, 204, 204)' }}
-                            >
-                              v2
-                            </sup>
-                          </h4>
-                        </div>
-                        <div style={{}} className="keyword-list">
-                          <span className="keyword-infos">
-                            Want to improve your chances of getting this role? Consider adding the
-                            following keywords to your resume:
-                          </span>
-                          <div>
-                            <div>
-                              <span>
-                                java <i className="fas fa-times" aria-hidden="true" />
-                              </span>
-                              <span>
-                                <i className="fas fa-circle" aria-hidden="true" />
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <button className="keyword-button button">Update job description</button>
-                      </div>
-                    </div>
-                  </div>
+                  </CVLayoutReviewerView>
                 </div>
               )}
             </div>

@@ -93,7 +93,7 @@ const ExperienceList = ({ data, onDelete, onEdit, selectedExperience, cvId }) =>
               onClick={handleHideClick}
               type="button"
               data-busy="false"
-              className=" disabled:bg-gray-100 font-[700] uppercase disabled:text-gray-300 focus:ring-0 focus:outline-none  experience-section inline-flex items-center mr-2 bg-white text-gray-500 border-solid border border-[#eee] px-2 py-1 rounded text-[11px] whitespace-nowrap"
+              className="disabled:bg-gray-100 font-[700] uppercase disabled:text-gray-300 focus:ring-0 focus:outline-none  experience-section inline-flex items-center mr-2 bg-white text-gray-500 border-solid border border-[#eee] px-2 py-1 rounded text-[11px] whitespace-nowrap"
               id="experience-section-hide-1"
             >
               {isDisplayDisplay ? 'Hide' : 'Un-hide'}

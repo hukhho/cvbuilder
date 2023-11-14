@@ -41,6 +41,9 @@ export default function FinishUp({ params }) {
   const handleZoomChange = event => {
     setZoom(event.target.value);
   };
+
+
+
   return (
     <main>
       <ConfigProvider>
@@ -65,6 +68,14 @@ export default function FinishUp({ params }) {
                 </div>
 
                 <div className="">
+                  {/* {tooltip && (
+                    <div className='bg-red-500'>
+                      <p>X: {tooltip.x}</p>
+                      <p>Y: {tooltip.y}</p>
+                      <p>Text: {tooltip.text}</p>
+                    </div>
+                  )}
+                  {currentText && <p>{currentText}</p>} */}
                   <CoverLetterPreview />
                 </div>
               </div>

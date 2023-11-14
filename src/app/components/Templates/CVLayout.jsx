@@ -120,14 +120,12 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
 
   // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
   const stylesTransform = {
-    transform: `scale(${layoutStyles.zoom})`,
+    // transform: `scale(${layoutStyles.zoom})`,
+    transform: `scale(1)`,
     transformOrigin: 'left top',
   };
-
- 
+   
   const elementRef = useRef(null); // Reference to the HTML element to be converted
-
-  
 
   return (
     <div className="preview card">
@@ -136,7 +134,6 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
         id="resume-preview"
         style={stylesTransform}
       >
-   
         <div
           style={{
             backgroundColor: 'rgb(255, 255, 255)',

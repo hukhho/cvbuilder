@@ -63,13 +63,13 @@
 
 /* Themes */
 .button[data-theme="inverse"] {
-  background: var(--color-primary);
+  background: white;
   color: var(--color-primary);
   box-shadow: var(--elevation-flat);
 }
 
 .button[data-theme="secondary"] {
-  background: var(--color-primary);
+  background: white;
   color: var(--color-text);
   box-shadow: var(--elevation-flat);
   border: 2px solid var(--color-grey-50);
@@ -83,7 +83,7 @@
 
 .button[disabled] {
   pointer-events: none;
-  background: var(--color-primary);
+  background: white !important;
   color: var(--color-grey-100) !important;
   box-shadow: none !important;
   border: 1px solid var(--color-grey-50);
@@ -94,10 +94,10 @@
     background: var(--color-violet);
   }
   & .button[data-theme="secondary"] {
-    background: var(--color-primary);
+    background: white;
   }
   & .button[data-theme="inverse"] {
-    background: var(--color-primary);
+    background: white;
   }
 }
 /*:global(.company-view) {*/

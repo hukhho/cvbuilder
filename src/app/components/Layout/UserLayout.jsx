@@ -13,7 +13,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, ConfigProvider, Layout, Menu, Space, theme, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile, faFileAlt, faFileCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faFile, faFileAlt, faFileCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -68,7 +68,6 @@ const items = [
   // },
 ];
 const UserLayout = ({ userHeader, content, selected }) => {
- 
   console.log('selected', selected);
   const {
     token: { colorBgContainer },
@@ -146,6 +145,7 @@ const UserLayout = ({ userHeader, content, selected }) => {
 
           <Menu
             style={{
+              marginTop: '36px',
               iconSize: 59,
               backgroundColor: '#3C2E8D',
               color: '#ffffff',
@@ -174,11 +174,18 @@ const UserLayout = ({ userHeader, content, selected }) => {
           </a>
          
         </nav> */}
-          <div className="flex align-center" style={{ justifyContent: 'center' }}>
-            <div
-              style={{ width: '208px', height: '30px',  }}
-            >
-             <AiToken numberToken={'5,627'} />
+          <div className="flex justify-center items-center mt-8">
+            <div className="w-36 h-8 pl-2 pr-24 py-2 bg-white bg-opacity-40 rounded-md justify-between items-start flex">
+              <div className="whitespace-nowrap text-left text-white text-xs font-black font-['Source Sans Pro'] uppercase leading-3">
+                AI Credits
+              </div>
+              <div className="pr-2 flex ml-4">
+                <div className="text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3">
+                  3,096
+                </div>
+                <div className="ml-1 text-white text-xs font-black font-['Font Awesome 5 Free'] uppercase leading-3">
+                <FontAwesomeIcon icon={faCoins} />                </div>
+              </div>
             </div>
           </div>
 

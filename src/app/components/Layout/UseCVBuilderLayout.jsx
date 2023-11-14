@@ -16,7 +16,7 @@ import {
 import { Button, Card, Layout, Menu, Space, theme, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCake, faFile, faFileAlt, faFileCircleCheck, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
-
+import './input.css'
 const { Title, Paragraph, Text, Link } = Typography;
 
 const { Header, Content, Footer, Sider } = Layout;

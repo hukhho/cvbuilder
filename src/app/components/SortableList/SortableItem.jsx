@@ -59,7 +59,7 @@ function SortableItem({ children }) {
           <FontAwesomeIcon icon={faSort} aria-hidden="true" />
         </button>
         <div>
-        <di className="sortable-component ">{children}</di>
+          <div className="sortable-component ">{children}</div>
         </div>
       </div>
     </SortableItemContext.Provider>

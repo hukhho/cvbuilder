@@ -1,0 +1,461 @@
+/* @import "./ui.css";
+@import "./colors.css";
+@import "./typography.css";
+@import "./button.css"; */
+
+.custom .ant-modal-content {
+  background-color: #fbfbfb;
+}
+
+.custom .ant-modal-header {
+  background-color: #fbfbfb;
+}
+
+.score-wrapper {
+  position: relative;
+
+  & header {
+    display: flex;
+    justify-content: space-between;
+
+    & h1 {
+      font: var(--font-heading);
+      font-size: 45px;
+
+      & b:global(.green) {
+        color: var(--color-green);
+      }
+    }
+
+    & h2 {
+      text-transform: capitalize;
+      color: 'grey';
+    }
+  }
+
+  & section {
+    margin: 40px 0 80px;
+
+    &:first-child {
+      padding-top: 160px;
+    }
+
+    & h3 {
+      font-size: 25px;
+    }
+
+    & p {
+      margin: 0;
+      font-size: 16px;
+    }
+  }
+
+  &>div:last-child {
+    z-index: 1;
+    position: relative;
+    padding: 20px 4em 0px;
+  }
+}
+
+.background-gray {
+  position: fixed;
+  top: 36px;
+  left: 36px;
+  right: 0;
+  bottom: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: calc(100% - 72px);
+  max-width: calc(100% - 72px);
+  height: calc(100% - 72px);
+  z-index: 0;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    opacity: 0.78;
+  }
+
+  &::before {
+    background-image: linear-gradient(3deg,
+        #f8f9fa 31%,
+        rgba(239, 253, 248, 0) 97%);
+    background-size: contain;
+    width: 125%;
+    height: 100%;
+    top: -170px;
+    left: -10%;
+    transform: rotate(5deg);
+  }
+
+  &::after {
+    background-image: linear-gradient(1deg, #e9ecef 0, #fff 100%);
+    background-size: cover;
+    width: 120%;
+    height: 120%;
+    top: -60%;
+    left: 1%;
+    transform: rotate(-10deg);
+  }
+}
+
+.critical-badge {
+  background: var(--color-red);
+  color: #fff;
+  font-weight: bold;
+  padding: 1px 5px 2px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  vertical-align: bottom;
+  margin-right: 6px;
+}
+
+.critical-infos {
+  background: white;
+  box-shadow: var(--elevation-flat);
+  border-radius: var(--radius-3);
+  padding: 1.5em 1.5em 0.8em;
+
+  &>div:first-child {
+    display: flex;
+    justify-content: space-between;
+
+    &>span:first-child {
+      font: var(--font-heading);
+      font-size: var(--scale-000);
+      text-transform: uppercase;
+    }
+
+    &>span:last-child {
+      & b {
+        color: var(--color-red-300);
+        font-size: 45px;
+        line-height: 45px;
+      }
+
+      & sub {
+        color: var(--color-grey-300);
+        font-weight: bold;
+        margin-left: 2px;
+        vertical-align: baseline;
+      }
+    }
+  }
+
+  &>div:last-child {
+    border-top: 1px solid var(--color-grey-100);
+    padding-top: 8px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & span {
+      font: var(--font-heading);
+      font-size: var(--scale-000);
+      color: var(--color-grey-300);
+      font-weight: 600;
+    }
+
+    & b {
+      padding: 0 20px;
+      font-size: var(--scale-000);
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .critical-infos {
+    display: none;
+  }
+}
+
+.breakdown-wrapper {
+  margin: 20px 0 0;
+  background: white;
+  box-shadow: var(--elevation-flat);
+  border-radius: var(--radius-3);
+  padding: 1em 1.5em 0.8em;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+:root {
+  --gauge-circle-size-big: 112px;
+  --gauge-circle-size: 80px;
+  --gauge-label-font-size-big: 28px;
+  --gauge-label-font-size: 20px;
+  --gauge-label-line-height-big: 36px;
+  --gauge-label-line-height: 26px;
+  --gauge-percentage-font-size-big: 38px;
+  --gauge-percentage-font-size: 28px;
+  --gauge-wrapper-width: 148px;
+}
+
+/* Gauge */
+.lh-gauge__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-decoration: none;
+  padding: 10px;
+  --circle-border-width: 8;
+  --transition-length: 1s;
+  /* Contain the layout style paint & layers during animation*/
+  contain: content;
+  will-change: opacity;
+  /* Only using for layer promotion */
+}
+
+.lh-gauge-base {
+  opacity: 0.1;
+  stroke: #ccc;
+  stroke-width: 8;
+}
+
+.lh-gauge-arc {
+  fill: none;
+  stroke-width: 8;
+  transition: all 2s ease 500ms;
+  stroke-dasharray: 0 352;
+}
+
+.lh-gauge__wrapper--pass {
+  color: var(--color-green);
+  fill: var(--color-green);
+  stroke: var(--color-green);
+}
+
+.lh-gauge__wrapper--average {
+  color: var(--color-orange-300);
+  fill: var(--color-orange-300);
+  stroke: var(--color-orange-300);
+}
+
+.lh-gauge__wrapper--fail {
+  color: var(--color-red-300);
+  fill: var(--color-red-300);
+  stroke: var(--color-red-300);
+}
+
+.lh-gauge {
+  stroke-linecap: round;
+  width: var(--gauge-circle-size);
+  height: var(--gauge-circle-size);
+}
+
+.lh-category .lh-gauge {
+  --gauge-circle-size: var(--gauge-circle-size-big);
+}
+
+.lh-gauge__svg-wrapper {
+  width: 80px;
+  position: relative;
+  height: var(--gauge-circle-size);
+}
+
+.lh-category .lh-gauge__svg-wrapper {
+  --gauge-circle-size: var(--gauge-circle-size-big);
+}
+
+@keyframes load-gauge {
+  from {
+    stroke-dasharray: 0 352;
+  }
+}
+
+.lh-gauge__percentage {
+  width: 100%;
+  height: var(--gauge-circle-size);
+  position: absolute;
+  font-size: calc(var(--gauge-circle-size) * 0.34 + 1.3px);
+  line-height: 0;
+  text-align: center;
+  top: calc(10px + var(--gauge-circle-size) / 2);
+}
+
+.lh-gauge__label {
+  font-size: 17px;
+  line-height: var(--gauge-label-line-height);
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-grey-900);
+}
+
+.active {
+  background-color: var(--color-grey-100) !important;
+}
+
+.audits-menu {
+  margin: 20px 0;
+
+  & button {
+    text-transform: capitalize;
+    background: transparent;
+    color: var(--color-grey-900);
+    font-size: 15px;
+    padding: 0.8em 1.5em;
+
+    &:global(.active) {
+      background: red;
+    }
+  }
+}
+
+.audit-details {
+  background: white;
+  box-shadow: var(--elevation-flat);
+  border-radius: var(--radius-3);
+}
+
+section .details-head {
+  position: relative;
+  padding: 1.5em;
+  border-bottom: 1px solid var(--color-grey-50);
+
+  & h5 {
+    margin: 0;
+  }
+
+  & p {
+    font-size: 14px;
+    margin-right: 65px;
+  }
+
+  & span {
+    position: absolute;
+    right: 1.8em;
+    background: var(--color-grey-100);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 3px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 15px;
+  }
+}
+
+section .details-list {
+  & ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & li {
+      padding: 1.5em;
+      display: flex;
+      border-bottom: 1px solid var(--color-grey-50);
+
+      & i {
+        color: var(--color-red);
+      }
+
+      & div {
+        margin-left: 8px;
+      }
+
+      & h6 {
+        margin: 0;
+        font-size: 15px;
+        line-height: 17px;
+        font-weight: 600;
+      }
+
+      & p {
+        color: var(--color-grey);
+        font-size: 13px;
+        padding-top: 5px;
+
+        & a {
+          font-weight: bold;
+        }
+      }
+
+      & .lock-feature {
+        cursor: pointer;
+        display: contents;
+        text-transform: capitalize;
+
+        & i {
+          color: inherit;
+        }
+
+        & .critical-badge {
+          background: var(--color-grey-100);
+          color: var(--color-grey);
+          margin: 10px;
+        }
+      }
+    }
+  }
+}
+
+:global(.pro-color) {
+  color: #4a6ee0;
+}
+
+:global(.inv-color) {
+  color: #8095ff;
+}
+
+:global(.exp-color) {
+  color: #003f7f;
+}
+
+.badge {
+  display: inline-block;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 1px 10px 2px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  vertical-align: bottom;
+  margin: 5px 5px 5px 0 !important;
+  max-width: 150px;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.experience {
+    background: #003f7f;
+    color: #fff;
+  }
+
+  &.involvement {
+    background: #8095ff;
+    color: #fff;
+  }
+
+  &.projects {
+    background: #4a6ee0;
+    color: #fff;
+  }
+}
+
+:global(.pro-ui) {
+  & .background-gray {
+    display: none;
+  }
+
+  & .audits-menu {
+    & button {
+      background: red !important;
+
+      &:global(.active) {
+        background: red;
+      }
+    }
+  }
+}

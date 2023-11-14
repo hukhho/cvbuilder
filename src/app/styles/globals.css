@@ -6,7 +6,7 @@
 @import "./colors.css";
 @import "./typography.css";
 @import "./button.css";
-/* @import "./varriable.css"; */
+@import "./varriable.css";
 @import "./font.css";
 
 /**
@@ -66,7 +66,7 @@ a {
 }
 
 @layer components {
-  input[type="text"],
+  /* input[type="text"],
   .inputEl {
     display: block;
     font: var(--font-input);
@@ -92,7 +92,7 @@ a {
     &::placeholder {
       opacity: 0.5;
     }
-  }
+  } */
 
   .btn-rezi {
     border-radius: 0.5em;

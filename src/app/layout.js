@@ -6,7 +6,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css'; // Import the CSS
 
 // Prevent fontawesome from dynamically adding its CSS
-config.autoAddCss = false;
+config.autoAddCss = true;
 
 export const metadata = {
   title: 'Project',

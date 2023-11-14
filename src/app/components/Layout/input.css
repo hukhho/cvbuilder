@@ -1,0 +1,29 @@
+input[type="text"],
+.inputEl {
+    display: block;
+    font: var(--font-input);
+    color: inherit;
+    outline: none;
+    margin: 0;
+    box-shadow: none;
+    transition: border 150ms ease;
+    width: 100%;
+    background: white;
+    padding: 0.85em 0.75em 0.75em;
+    border: 2px solid var(--color-grey-50);
+    border-radius: var(--radius-2);
+
+    &:focus {
+        border-color: var(--color-primary);
+        box-shadow: none;
+    }
+
+    &[disabled] {
+        opacity: 0.6;
+        color: var(--color-text-light);
+    }
+
+    &::placeholder {
+        opacity: 0.5;
+    }
+}
