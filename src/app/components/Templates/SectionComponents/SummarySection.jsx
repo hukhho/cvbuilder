@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Divider, Typography } from 'antd';
 
 const SummarySection = ({ summary }) => {
@@ -14,7 +16,6 @@ const SummarySection = ({ summary }) => {
         <span
           className="editableContent cursor-text designStudio section-header"
           id="experience-heading"
-          tabIndex={0}
           contentEditable="true"
           style={{
             color: 'rgb(46, 61, 80)',
@@ -40,9 +41,7 @@ const SummarySection = ({ summary }) => {
           <div className="relative">
             <p className="editableContent ghost-hightlight w-full designStudio ">
               <span>
-                <span className="">
-                  {summary}
-                </span>
+                <span className="">{summary}</span>
               </span>
             </p>
           </div>

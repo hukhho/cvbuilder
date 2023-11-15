@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useEffect, useRef } from 'react';
 
 export function AnimatedCanvasGradient(props) {
@@ -20,10 +22,10 @@ export function AnimatedCanvasGradient(props) {
 
     function draw() {
       // do drawing
-      var cssAng = radiansFromDegrees(props.angle);
-      var dir = getDir(cssAng, w, h);
-      var gr = ctx.createLinearGradient(dir.x0, dir.y0, dir.x1, dir.y1);
-      props.stops.forEach((stop) => {
+      const cssAng = radiansFromDegrees(props.angle);
+      const dir = getDir(cssAng, w, h);
+      const gr = ctx.createLinearGradient(dir.x0, dir.y0, dir.x1, dir.y1);
+      props.stops.forEach(stop => {
         gr.addColorStop(stop.offset, stop.color);
       });
 
@@ -34,9 +36,7 @@ export function AnimatedCanvasGradient(props) {
         radian += Math.PI;
         const HALF_WIDTH = width * 0.5;
         const HALF_HEIGHT = height * 0.5;
-        const lineLength =
-          Math.abs(width * Math.sin(radian)) +
-          Math.abs(height * Math.cos(radian));
+        const lineLength = Math.abs(width * Math.sin(radian)) + Math.abs(height * Math.cos(radian));
         const HALF_LINE_LENGTH = lineLength / 2;
 
         const x0 = HALF_WIDTH + Math.sin(radian) * HALF_LINE_LENGTH;

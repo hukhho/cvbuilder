@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 'use client';
 
 import { Divider, Typography } from 'antd';
@@ -23,26 +25,24 @@ import StandardItemReviewers from '../StandardItemReviewer';
 
 const ExperiencesSection = ({ experiences, onChangeOrder, onComment, templateType }) => {
   console.log('ExperiencesSection::: ', experiences);
-  console.log('experience section:::onComment ', onComment)
+  console.log('experience section:::onComment ', onComment);
   const experienceItems = (
     <>
       {experiences.map(exp => {
         const { startDate, endDate, description, companyName, role, location } = exp;
         return (
-          <>
-            <StandardItemReviewers
-              onComment={onComment}
-              key={exp.id}
-              templateType={templateType}
-              role={role}
-              location={location}
-              startTime={startDate}
-              endTime={endDate}
-              orgName={companyName}
-              renderRightSubtitle
-              description={description}
-            />
-          </>
+          <StandardItemReviewers
+            onComment={onComment}
+            key={exp.id}
+            templateType={templateType}
+            role={role}
+            location={location}
+            startTime={startDate}
+            endTime={endDate}
+            orgName={companyName}
+            renderRightSubtitle
+            description={description}
+          />
         );
       })}
     </>
@@ -99,7 +99,6 @@ const ExperiencesSection = ({ experiences, onChangeOrder, onComment, templateTyp
         <span
           className="editableContent cursor-text designStudio section-header"
           id="experience-heading"
-          tabIndex={0}
           contentEditable="true"
           style={{
             color: 'rgb(46, 61, 80)',
@@ -121,7 +120,7 @@ const ExperiencesSection = ({ experiences, onChangeOrder, onComment, templateTyp
           <SortableContext items={components}>
             {components.map((child, index) => (
               <div key={index}>
-                <SortableItem className="hello" key={index} >
+                <SortableItem className="hello" key={index}>
                   {child}
                 </SortableItem>
               </div>

@@ -359,7 +359,7 @@ export default function FinishUp({ params }) {
 
   const handleDownloadButtonClick = () => {
     if (cvLayoutRef.current) {
-      cvLayoutRef.current.captureScreenshot();
+      cvLayoutRef.current.CaptureScreenshot();
     }
   };
   return (
@@ -431,7 +431,6 @@ export default function FinishUp({ params }) {
                         >
                           Download
                         </button>
-                       
                       </div>
                     </div>
                   </div>

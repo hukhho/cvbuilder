@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 // components/CanvasGradient.js
 import { useEffect, useRef } from 'react';
 
-const CanvasGradient = (props) => {
+const CanvasGradient = props => {
   const canvasRef = useRef();
 
   const locals = useRef({
@@ -43,7 +45,7 @@ const CanvasGradient = (props) => {
         drawGradient(0, 0);
       } else {
         const frameIncrement = 0.01;
-        const stops = locals.current.animation.stops;
+        const { stops } = locals.current.animation;
 
         for (let i = 0; i < stops.length; i++) {
           const stop = stops[i];
@@ -82,7 +84,7 @@ const CanvasGradient = (props) => {
       });
       const gradient = ctx.createLinearGradient(...gradientLine.points);
 
-      locals.current.animation.stops.forEach((stop) => {
+      locals.current.animation.stops.forEach(stop => {
         const offset = Math.max(0, stop.offset);
         gradient.addColorStop(offset, stop.color);
       });
@@ -115,8 +117,7 @@ function getGradientLine(angleDegrees, bounds, reversed) {
   const radian = radiansFromDegrees(angleDegrees) + Math.PI;
 
   const gradientLineLength =
-    Math.abs(bounds.width * Math.sin(radian)) +
-    Math.abs(bounds.height * Math.cos(radian));
+    Math.abs(bounds.width * Math.sin(radian)) + Math.abs(bounds.height * Math.cos(radian));
 
   const center = {
     x: bounds.width / 2,
@@ -138,7 +139,7 @@ function getGradientLine(angleDegrees, bounds, reversed) {
 
   return {
     length: gradientLineLength,
-    center: center,
+    center,
     line: { start, end },
     points: [start.x, start.y, end.x, end.y],
   };

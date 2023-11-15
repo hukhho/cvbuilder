@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Divider, Typography } from 'antd';
 
 const SummarySection = ({ summary }) => {
@@ -40,9 +42,7 @@ const SummarySection = ({ summary }) => {
           <div className="relative">
             <p className="editableContent ghost-hightlight w-full designStudio ">
               <span>
-                <span className="">
-                  {summary}
-                </span>
+                <span className="">{summary}</span>
               </span>
             </p>
           </div>

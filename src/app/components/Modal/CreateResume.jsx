@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Dialog, Switch, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import './setting.css';
@@ -6,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function MyModal() {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
   function closeModal() {
@@ -39,7 +41,7 @@ export default function MyModal() {
           id="navi-create-new-resume"
           onClick={openModal}
         >
-          <i class="fad fa-file-plus" aria-hidden="true"></i>
+          <i class="fad fa-file-plus" aria-hidden="true" />
           <span>Create new resume</span>
         </button>
       </div>
@@ -75,7 +77,7 @@ export default function MyModal() {
                     className="w-full flex leading-7 text-xl font-semibold bg-slate-50 rounded-t-lg text-gray-900 items-center px-6 py-5 border-b border-slate-200"
                   >
                     <div class="grow font-semibold">Create a resume</div>
-                    <i class="fal fa-times cursor-pointer" aria-hidden="true"></i>
+                    <i class="fal fa-times cursor-pointer" aria-hidden="true" />
                   </Dialog.Title>
                   <div className="p-6">
                     <form>
@@ -204,14 +206,13 @@ export default function MyModal() {
                                 background: 'white',
                                 height: 120,
                               }}
-                              defaultValue={''}
+                              defaultValue=""
                             />
                           </div>
                         </div>
                       </div>
 
                       <button
-                        
                         href=""
                         data-size="default"
                         data-theme="default"

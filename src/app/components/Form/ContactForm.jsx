@@ -69,7 +69,6 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                   fontStyle: 'normal',
                   fontWeight: '550',
                   lineHeight: '23.4px',
-                  
                 }}
                 class="inputEl contact-section inputEl st-current"
                 id="contact-section-form-0"

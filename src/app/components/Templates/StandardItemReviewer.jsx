@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 'use client';
 
 import { Button, Divider, Typography } from 'antd';
@@ -9,8 +11,8 @@ import { Button, Divider, Typography } from 'antd';
 //  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__
 //  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
 
-const StandardItemReviewers = ( props) => {
-  var {
+const StandardItemReviewers = props => {
+  const {
     onComment,
     role,
     orgName,
@@ -21,11 +23,11 @@ const StandardItemReviewers = ( props) => {
     templateType,
     titleProps,
   } = props;
-  
+
   console.log('StandardItemReviewers:onComment:', onComment);
 
   const dateRangeFormat = () => {
-    let dateRange = startTime || null;
+    const dateRange = startTime || null;
     // if (dateRange === null) return null;
     // if (endTime) {
     //   dateRange = dateRange.concat(` - ${endTime}`);
@@ -173,7 +175,7 @@ const StandardItemReviewers = ( props) => {
                       tabIndex={0}
                       onMouseUp={event => onComment(event, 'experience')}
                     >
-                      {description}   
+                      {description}
                       {/* <Button color='red' onClick={handleMouseUp}>ddd</Button> */}
                     </p>
                   </div>

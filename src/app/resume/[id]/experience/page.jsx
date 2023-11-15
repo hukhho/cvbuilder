@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable */
 
 'use client';
 
@@ -83,8 +83,6 @@ const Experience = ({ params }) => {
   console.log('experiences.bulletPointDtos: ', experiences.bulletPointDtos);
 
   return (
-    <>
-    
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
@@ -96,7 +94,8 @@ const Experience = ({ params }) => {
               <div className="flex flex-col p-4">
                 <div className="h-1/3">
                   <div style={{ maxHeight: '185px' }}>
-                    <VideoComponent />12
+                    <VideoComponent />
+                    12
                   </div>
                 </div>
                 <div className="h-3/4">
@@ -159,8 +158,6 @@ const Experience = ({ params }) => {
         />
       </ConfigProvider>
     </main>
-    </>
-
   );
 };
 

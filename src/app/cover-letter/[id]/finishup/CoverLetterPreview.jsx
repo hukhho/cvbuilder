@@ -1,8 +1,10 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from 'react';
 import './preview.css';
 import getCoverLetter from './getCoverLetter';
 import { Button, Card, Popover, Tooltip } from 'antd';
-import { ChakraProvider, VStack, Box } from '@chakra-ui/react';
+import { Box, ChakraProvider, VStack } from '@chakra-ui/react';
 import { CommentOutlined } from '@ant-design/icons';
 
 function ResumeGenerator() {
@@ -89,21 +91,20 @@ function ResumeGenerator() {
 
   function handleMouseUp(event, key) {
     const selection = window.getSelection();
-    console.log("key: ", key)
+    console.log('key: ', key);
     if (selection && selection.toString()) {
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
-  
+
       const x = rect.left + window.scrollX + rect.width / 2;
       const y = rect.top + window.scrollY;
-  
+
       setCurrentText(selection.toString());
       setTooltip({ x, y, text: selection.toString(), key });
     } else {
       setTooltip(null);
     }
   }
-  
 
   useEffect(() => {
     if (isLnPayPending) {
@@ -129,19 +130,17 @@ function ResumeGenerator() {
         position="absolute"
         zIndex={100}
       >
-        {
-          <>
-            <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
-              <Box layerStyle="cardLg" p={3}>
-                <Card
-                  styles={{ background: 'white', borderRadius: 'lg', witdh: '5px', height: '5px' }}
-                >
-                  <CommentOutlined /> Comment
-                </Card>
-              </Box>
-            </VStack>
-          </>
-        }
+        <>
+          <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
+            <Box layerStyle="cardLg" p={3}>
+              <Card
+                styles={{ background: 'white', borderRadius: 'lg', witdh: '5px', height: '5px' }}
+              >
+                <CommentOutlined /> Comment
+              </Card>
+            </Box>
+          </VStack>
+        </>
       </Box>
       <div className="sample-generator-wrapper">
         <div className="toolbar">
@@ -268,7 +267,6 @@ function ResumeGenerator() {
                             // contentEditable="true"
                             onMouseUp={event => handleMouseUp(event, 'content')}
                             // onMouseUp={handleMouseUp}
-
                           >
                             {content.content}
                           </span>

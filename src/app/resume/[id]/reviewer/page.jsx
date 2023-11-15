@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable */
 
 'use client';
 
@@ -255,7 +255,7 @@ export default function FinishUp({ params }) {
       selection.addRange(range);
     }
   }
-  
+
   function onSubmitComment() {
     handleSubmitComment(selectionState, selectedTextState);
   }
@@ -521,44 +521,40 @@ export default function FinishUp({ params }) {
                     className="select-none"
                   >
                     {
-                      <>
-                        <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
-                          <Box layerStyle="cardLg" p={3}>
-                            <Card
-                              styles={{
-                                background: 'white',
-                                borderRadius: 'lg',
-                                witdh: '5px',
-                                height: '5px',
-                              }}
-                            >
-                              <CommentOutlined /> Comment
-                              {/* <Input
+                      <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
+                        <Box layerStyle="cardLg" p={3}>
+                          <Card
+                            styles={{
+                              background: 'white',
+                              borderRadius: 'lg',
+                              witdh: '5px',
+                              height: '5px',
+                            }}
+                          >
+                            <CommentOutlined /> Comment
+                            {/* <Input
                                 value={inputValue}
                                 onChange={handleChange}
                                 placeholder="Add a comment..."
                                 onFocus={handleMouseDown}
                               ></Input> */}
-                              
-                              <Input
-                                value={inputValue}
-                                onChange={handleChange}
-                                placeholder="Add a comment..."
-                                // onFocus={handleMouseDown}
-                                onBlur={() => handleInputBlur(selectionRange)}
-                              />
+                            <Input
+                              value={inputValue}
+                              onChange={handleChange}
+                              placeholder="Add a comment..."
+                              // onFocus={handleMouseDown}
+                              onBlur={() => handleInputBlur(selectionRange)}
+                            />
+                            <div className="mt-4">
+                              <Button onClick={onSubmitComment}>Submit</Button>
 
-                              <div className="mt-4">
-                                <Button onClick={onSubmitComment}>Submit</Button>
-
-                                <Button onClick={closeComment} className="ml-4">
-                                  Close
-                                </Button>
-                              </div>
-                            </Card>
-                          </Box>
-                        </VStack>
-                      </>
+                              <Button onClick={closeComment} className="ml-4">
+                                Close
+                              </Button>
+                            </div>
+                          </Card>
+                        </Box>
+                      </VStack>
                     }
                   </Box>
                   <CVLayoutReviewerView

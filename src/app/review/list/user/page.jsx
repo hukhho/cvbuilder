@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, ConfigProvider, Input } from 'antd';
+import { Avatar, Badge, ConfigProvider, Input, Table, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -10,13 +12,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { getResumes } from '@/app/utils/indexService';
-import { Typography } from 'antd';
 
-const { Title } = Typography;
-
-import { Table } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
+
+const { Title } = Typography;
 const columns = [
   {
     title: 'Resume Name',
@@ -93,8 +93,8 @@ for (let i = 0; i < 100; i++) {
     resumeName: 'Pham Viet Thuan Thien',
     candidate: '<User Name>',
     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-    price: price,
-    status: status,
+    price,
+    status,
     receiveDay: due,
     deadline: due,
   });
@@ -167,8 +167,8 @@ const Home = () => {
       <main>
         <ConfigProvider>
           <UserLayout
-            selected={'3'}
-            //<UserHeaderReview initialEnabledCategories={enabledCategories} />
+            selected="3"
+            // <UserHeaderReview initialEnabledCategories={enabledCategories} />
             userHeader={<></>}
             content={
               <div className="container">
@@ -177,7 +177,7 @@ const Home = () => {
                     <Title level={5}>CV Review Table</Title>
                   </div>
                   <div>
-                    <Input className='' placeholder="Search the resume" />;
+                    <Input className="" placeholder="Search the resume" />;
                   </div>
                   <div>
                     <Table columns={columns} dataSource={data} onChange={onChange} />

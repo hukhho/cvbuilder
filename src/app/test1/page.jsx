@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect } from 'react';
 import html2canvas from 'html2canvas';
@@ -9,10 +9,10 @@ const Home = () => {
     const handleCapture = () => {
       html2canvas(document.getElementById('capture'), {
         allowTaint: true,
-        onrendered: function (canvas) {
+        onrendered(canvas) {
           document.querySelector('.paste').prepend(canvas);
-          var dataURL = canvas.toDataURL();
-          console.log("dataURL", dataURL);
+          const dataURL = canvas.toDataURL();
+          console.log('dataURL', dataURL);
         },
       });
     };
@@ -24,13 +24,13 @@ const Home = () => {
     };
   }, []);
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     console.log(event.target.value);
-    document.querySelector('#test').style.left = event.target.value + 'px';
+    document.querySelector('#test').style.left = `${event.target.value}px`;
   };
 
   return (
-    <div className="wrap" style={{ color: 'red', backgroundColor: 'blue'}}>
+    <div className="wrap" style={{ color: 'red', backgroundColor: 'blue' }}>
       <p>Click "capture" to run html2canvas</p>
       <div id="capture" className="box">
         <span className="text">Capture</span>
@@ -40,11 +40,11 @@ const Home = () => {
           </svg>
         </div>
       </div>
-      <div className="box paste"></div>
+      <div className="box paste" />
       <div>
         <input type="range" onChange={handleChange} />
       </div>
-      <div className="overlay"></div>
+      <div className="overlay" />
     </div>
   );
 };

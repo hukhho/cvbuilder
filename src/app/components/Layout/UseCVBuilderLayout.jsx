@@ -15,9 +15,16 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, Layout, Menu, Space, theme, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCake, faFile, faFileAlt, faFileCircleCheck, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import './input.css'
+import {
+  faCake,
+  faFile,
+  faFileAlt,
+  faFileCircleCheck,
+  faFileCirclePlus,
+} from '@fortawesome/free-solid-svg-icons';
+import './input.css';
 import Head from 'next/head';
+
 const { Title, Paragraph, Text, Link } = Typography;
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -32,8 +39,7 @@ const items = [
     key: '2',
     icon: <FontAwesomeIcon icon={faFile} />,
     label: 'MY DASHBOARD',
-    href: '/create-resume'
-
+    href: '/create-resume',
   },
   {
     key: '3',
@@ -45,7 +51,6 @@ const items = [
     icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
     label: 'REVIEW MY RESUME',
   },
-  
 ];
 const UserCVBuilderLayout = ({ userHeader, content }) => {
   const {
@@ -56,9 +61,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
     setCollapsed(!collapsed);
   };
   return (
-    <>
-    
-      <Layout
+    <Layout
       style={{
         backgroundColor: '#fbfbfb',
       }}
@@ -67,7 +70,8 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
       <Sider
         style={{
           // backgroundColor: '#3C2E8D',
-          backgroundImage: `url('https://photos.pinksale.finance/file/pinksale-logo-upload/1699259953581-c26be60cfd1ba40772b5ac48b95ab19b.png')`,
+          backgroundImage:
+            "url('https://photos.pinksale.finance/file/pinksale-logo-upload/1699259953581-c26be60cfd1ba40772b5ac48b95ab19b.png')",
         }}
         collapsible
         collapsed={collapsed}
@@ -159,8 +163,6 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         />
       </Layout>
     </Layout>
-    </>
-    
   );
 };
 export default UserCVBuilderLayout;

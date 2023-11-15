@@ -28,19 +28,17 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
       {experiences.map(exp => {
         const { startDate, endDate, description, companyName, role, location } = exp;
         return (
-          <>
-            <StandardItem
-              key={exp.id}
-              templateType={templateType}
-              role={role}
-              location={location}
-              startTime={startDate}
-              endTime={endDate}
-              orgName={companyName}
-              renderRightSubtitle
-              description={description}
-            />
-          </>
+          <StandardItem
+            key={exp.id}
+            templateType={templateType}
+            role={role}
+            location={location}
+            startTime={startDate}
+            endTime={endDate}
+            orgName={companyName}
+            renderRightSubtitle
+            description={description}
+          />
         );
       })}
     </>
@@ -98,7 +96,6 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
         <span
           className="editableContent cursor-text designStudio "
           id="experience-heading"
-          tabIndex={0}
           contentEditable="true"
           style={{
             color: 'rgb(46, 61, 80)',

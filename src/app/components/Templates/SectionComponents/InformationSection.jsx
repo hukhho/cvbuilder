@@ -18,14 +18,12 @@ const InformationSection = ({ userInfo, templateType }) => {
   const isModernTemplate = templateType === 'modern';
 
   return (
-    
-  //   _     _                   _                                    
-  //   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___ 
-  //  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
-  //  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__ 
-  //  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
-                                                                         
-   
+    //   _     _                   _
+    //   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___
+    //  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
+    //  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__
+    //  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
+
     // <div
     //   className={`information-section-container mb-4 ${isClassicalTemplate ? 'text-center' : ''}`}
     // >
@@ -89,10 +87,12 @@ const InformationSection = ({ userInfo, templateType }) => {
               {email}
             </span>
             <span className="inline-block mr-1">
-              <i className="mr-1">•</i>{phone}
+              <i className="mr-1">•</i>
+              {phone}
             </span>
             <span className="inline-block mr-1">
-              <i className="mr-1">•</i>{personalWebsite}
+              <i className="mr-1">•</i>
+              {personalWebsite}
             </span>
           </div>
         </div>

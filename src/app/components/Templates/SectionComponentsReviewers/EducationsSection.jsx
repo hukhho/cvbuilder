@@ -84,48 +84,47 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
 
   return (
     <div className="education leading-snug relative group ">
-    <div
-      className="uppercase mb-[4px]   "
-      style={{
-        fontWeight: 600,
-        padding: '0cm 1.4cm',
-        lineHeight: '1.35em',
-      }}
-    >
-      <span
-        className="editableContent cursor-text designStudio section-header"
-        id="education-heading"
-        tabIndex={0}
-        contentEditable="true"
+      <div
+        className="uppercase mb-[4px]   "
         style={{
-          color: 'rgb(46, 61, 80)',
-          fontSize: '1.15em',
-          display: 'block',
+          fontWeight: 600,
+          padding: '0cm 1.4cm',
+          lineHeight: '1.35em',
         }}
       >
-        Education
-      </span>
+        <span
+          className="editableContent cursor-text designStudio section-header"
+          id="education-heading"
+          contentEditable="true"
+          style={{
+            color: 'rgb(46, 61, 80)',
+            fontSize: '1.15em',
+            display: 'block',
+          }}
+        >
+          Education
+        </span>
+      </div>
+      {/* <Divider className="divider-section" /> */}
+      <div>
+        <DndContext
+          sensors={sensors}
+          onDragCancel={handleDragCancel}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={components}>
+            {components.map((child, index) => (
+              <div key={index}>
+                <SortableItem className="hello" key={index}>
+                  {child}
+                </SortableItem>
+              </div>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
     </div>
-    {/* <Divider className="divider-section" /> */}
-    <div>
-      <DndContext
-        sensors={sensors}
-        onDragCancel={handleDragCancel}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext items={components}>
-          {components.map((child, index) => (
-            <div key={index}>
-              <SortableItem className="hello" key={index}>
-                {child}
-              </SortableItem>
-            </div>
-          ))}
-        </SortableContext>
-      </DndContext>
-    </div>
-  </div>
   );
 };
 

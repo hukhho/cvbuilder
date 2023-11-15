@@ -83,7 +83,6 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
         <span
           className="editableContent cursor-text designStudio section-header"
           id="skill-heading"
-          tabIndex={0}
           contentEditable="true"
           style={{
             color: 'rgb(46, 61, 80)',

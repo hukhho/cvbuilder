@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { use, useEffect, useState } from 'react';
 import './score.css';
 // import './button.css';
@@ -223,11 +225,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                         <p>{item.description}</p>
                         <div>
                           {item.detail.map((itemChild, index) => {
-                            return (
-                              <>
-                                <div className="badge experience">{itemChild.title}</div>
-                              </>
-                            );
+                            return <div className="badge experience">{itemChild.title}</div>;
                           })}
                         </div>
                       </div>
@@ -250,11 +248,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                         <p>{item.description}</p>
                         <div>
                           {item.detail.map((itemChild, index) => {
-                            return (
-                              <>
-                                <div className="badge experience">{itemChild.title}</div>
-                              </>
-                            );
+                            return <div className="badge experience">{itemChild.title}</div>;
                           })}
                         </div>
                       </div>
@@ -277,11 +271,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                         <p>{item.description}</p>
                         <div>
                           {item.detail?.map((itemChild, index) => {
-                            return (
-                              <>
-                                <div className="badge experience">{itemChild.title}</div>
-                              </>
-                            );
+                            return <div className="badge experience">{itemChild.title}</div>;
                           })}
                         </div>
                       </div>

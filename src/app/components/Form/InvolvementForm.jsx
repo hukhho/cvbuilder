@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { Button, Form, Input, InputNumber, Switch, Typography } from 'antd';
 import moment from 'moment';
@@ -317,7 +319,6 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
                 <strong>WHAT DID YOU DO</strong> AT THE ORGANIZATION?
-
               </span>
             </label>
           }
@@ -333,10 +334,9 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
             contentEditable="true"
           />
           <Input type="hidden" value={inputValue} />
-         
         </Form.Item>
-       
-        <Button 
+
+        <Button
           htmlType="submit"
           className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
           style={{

@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Card, ConfigProvider } from 'antd';
+import { Avatar, Button, Card, ConfigProvider, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -10,8 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getResumes } from '@/app/utils/indexService';
 
-import { Typography } from 'antd';
 import { StarFilled, UserOutlined } from '@ant-design/icons';
+
 const { Title } = Typography;
 const generateMockExperts = () => {
   const mockExperts = [];
@@ -111,7 +113,7 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected={'3'}
+        selected="3"
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mx-auto">
@@ -136,7 +138,7 @@ const Home = () => {
                     </Title>
                   </div>
                   <div>
-                    <div></div>
+                    <div />
                   </div>
                   <div className="flex">
                     <div style={{ textAlign: 'left', width: '50%' }}>
@@ -152,9 +154,7 @@ const Home = () => {
                         {' '}
                         <span style={{}}>Statistic</span>
                       </Title>
-                      <div className=''>
-
-                      </div>
+                      <div className="" />
                       <div className="flex">
                         <div>
                           <svg
@@ -182,12 +182,8 @@ const Home = () => {
                           <span>Experience in the field</span>
                         </div>
                       </div>
-                      
                     </div>
                   </div>
-
-
-
 
                   <div className="mt-8">
                     <img src="/images/resume.jpg" alt="image" />

@@ -15,18 +15,18 @@ import { Button, Card, ConfigProvider, Layout, Menu, Space, theme, Typography } 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins, faFile, faFileAlt, faFileCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
-const { Title, Paragraph, Text, Link } = Typography;
-
-const { Header, Content, Footer, Sider } = Layout;
-
 import './sidebar.css';
 import AiToken from './AIToken';
 import CanvasGradient from '@/app/testlayout/CanvasGradient';
 
+const { Title, Paragraph, Text, Link } = Typography;
+
+const { Header, Content, Footer, Sider } = Layout;
+
 const items = [
   {
     key: '1',
-    icon: <FontAwesomeIcon icon={faFile} style={{ background: '#3c2e8d', fill: '#fff' }} />, //fad fa-file
+    icon: <FontAwesomeIcon icon={faFile} style={{ background: '#3c2e8d', fill: '#fff' }} />, // fad fa-file
     label: (
       <a href="/resume" rel="noopener noreferrer">
         <span style={{ color: '#ffffff', fontSize: 11 }}>MY DASHBOARD</span>
@@ -35,7 +35,7 @@ const items = [
   },
   {
     key: '2',
-    icon: <FontAwesomeIcon icon={faFileAlt} style={{ background: '#3c2e8d', fill: '#fff' }} />, //fad fa-file
+    icon: <FontAwesomeIcon icon={faFileAlt} style={{ background: '#3c2e8d', fill: '#fff' }} />, // fad fa-file
     label: (
       <a href="/review/new" rel="noopener noreferrer">
         <span style={{ color: '#ffffff', fontSize: 11 }}>SAMPLE LIBRARY</span>
@@ -49,7 +49,7 @@ const items = [
         icon={faFileCircleCheck}
         style={{ background: '#3c2e8d', fill: '#ffffff' }}
       />
-    ), //fad fa-file
+    ), // fad fa-file
     label: (
       <a href="/review/new" rel="noopener noreferrer">
         <span style={{ color: '#ffffff', fontSize: 11 }}>REVIEW MY RESUME</span>
