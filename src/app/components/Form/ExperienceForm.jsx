@@ -9,7 +9,7 @@ import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
 import './date.css';
 import { format, parse } from 'date-fns';
-
+import { lobster } from '@/app/font';
 const { RangePicker } = DatePicker;
 
 const stylesInput = {
@@ -78,13 +78,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       console.log('endDateString: ', endDateString);
       if (endDateString === 'Present') {
         setIsCurrentlyWorking(true);
-        console.log("useEffect: setIsCurrentlyWorking to true");
+        console.log('useEffect: setIsCurrentlyWorking to true');
         const parsedStartDate = parse(startDateString, 'MMMM yyyy', new Date());
         setStartDate(parsedStartDate);
         setEndDate(new Date());
       } else {
         setIsCurrentlyWorking(false);
-        console.log("useEffect: setIsCurrentlyWorking to false");
+        console.log('useEffect: setIsCurrentlyWorking to false');
         const parsedStartDate = parse(startDateString, 'MMMM yyyy', new Date());
         const parsedEndDate = parse(endDateString, 'MMMM yyyy', new Date());
         setStartDate(parsedStartDate);
@@ -177,7 +177,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   };
 
   const MyContainer = ({ className, children }) => {
-      
     const handleSwitchChange = checked => {
       setIsCurrentlyWorking(checked);
       if (checked) {
@@ -224,7 +223,22 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   ));
 
   return (
-    <div className="w-2/3 ">
+    <div className="">
+      {/* <h1 style={{ fontFamily: "'Dancing Script', 'Helvetica Neue', cursive" }}>
+        This is a test heading
+      </h1> */}
+      <input
+        style={{
+          color: '#283E50',
+          fontSize: '16px',
+          fontStyle: 'normal',
+          fontWeight: '600',
+          lineHeight: '23.4px',
+        }}
+        class="inputEl experience-section inputEl st-current"
+        id="experience-section-form-0"
+        placeholder="Marketing Analyst"
+      />
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="role"
@@ -236,7 +250,18 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Marketing Analyst" />
+          <Input
+            style={{
+              color: '#283E50',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '600',
+              lineHeight: '23.4px',
+            }}
+            class="inputEl experience-section inputEl st-current"
+            id="experience-section-form-0"
+            placeholder="Marketing Analyst"
+          />
         </Form.Item>
         <Form.Item
           name="companyName"
@@ -248,7 +273,19 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Google" />
+          <Input
+            style={{
+              color: '#283E50',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '600',
+              lineHeight: '23.4px',
+            }}
+            class="inputEl experience-section inputEl st-current"
+            id="experience-section-form-1"
+            placeholder="Google"
+          />
+          {/* <Input style={stylesInput} placeholder="Google" /> */}
         </Form.Item>
 
         <Form.Item name="startDate" hidden>

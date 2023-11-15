@@ -100,7 +100,7 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
           id="experience-heading"
           tabIndex={0}
           contentEditable="true"
-          style={{  
+          style={{
             color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
@@ -108,9 +108,20 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
         >
           Experience
         </span>
-        <div className='section-header'></div>
+        <div>
+          <hr
+            style={{
+              border: 'none',
+              height: '0.12em',
+              backgroundColor: '#000',
+              width: '100%', // Adjust the width as needed
+              margin: '1px', // Adjust the margin as needed
+            }}
+          />
+        </div>
+        {/* <div className='section-header'></div> */}
       </div>
-        
+
       {/* <Divider className="section-header" /> */}
       <div>
         <DndContext

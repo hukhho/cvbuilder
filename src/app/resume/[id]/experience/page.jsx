@@ -18,6 +18,7 @@ import { deleteExperience, getAllExperiences } from './experienceService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import ListError from '@/app/components/ListError/ListError';
+import Head from 'next/head';
 
 const { Meta } = Card;
 
@@ -82,6 +83,8 @@ const Experience = ({ params }) => {
   console.log('experiences.bulletPointDtos: ', experiences.bulletPointDtos);
 
   return (
+    <>
+    
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
@@ -93,7 +96,7 @@ const Experience = ({ params }) => {
               <div className="flex flex-col p-4">
                 <div className="h-1/3">
                   <div style={{ maxHeight: '185px' }}>
-                    <VideoComponent />
+                    <VideoComponent />12
                   </div>
                 </div>
                 <div className="h-3/4">
@@ -156,6 +159,8 @@ const Experience = ({ params }) => {
         />
       </ConfigProvider>
     </main>
+    </>
+
   );
 };
 

@@ -17,6 +17,7 @@ import { Button, Card, Layout, Menu, Space, theme, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCake, faFile, faFileAlt, faFileCircleCheck, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './input.css'
+import Head from 'next/head';
 const { Title, Paragraph, Text, Link } = Typography;
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -55,7 +56,9 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
     setCollapsed(!collapsed);
   };
   return (
-    <Layout
+    <>
+    
+      <Layout
       style={{
         backgroundColor: '#fbfbfb',
       }}
@@ -156,6 +159,8 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         />
       </Layout>
     </Layout>
+    </>
+    
   );
 };
 export default UserCVBuilderLayout;

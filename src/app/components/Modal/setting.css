@@ -1,0 +1,143 @@
+.heading {
+}
+
+.input {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.cta {
+  margin-top: 1.5rem;
+}
+
+.info-supp {
+  font-size: 21px;
+  border-top: 2px solid var(--color-grey-50);
+  margin: 20px 0 0;
+  padding: 15px 0 0;
+}
+
+.info-supp-text {
+  margin: 5px 0 25px;
+}
+
+.linkedin-import {
+  font: var(--font-ui);
+  font-weight: 400;
+  font-size: var(--scale-000);
+  color: var(--color-text-light);
+  margin: 10px 0 0;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+  & .carret {
+    color: #adb1b8;
+    transition: all 0.2s ease-in-out;
+    padding: 10px;
+    line-height: 11px;
+    vertical-align: middle;
+    cursor: pointer;
+    outline: none;
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+}
+:global(.section-shown-false) {
+  border-bottom: none;
+  padding: 0;
+  & .carret {
+    transform: rotate(-90deg);
+  }
+}
+
+.select-file-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  & span {
+    font: var(--font-ui);
+    font-weight: 400;
+    font-size: var(--scale-000);
+    color: var(--color-text-light);
+    margin-bottom: 1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+  }
+  & label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 2px solid transparent;
+    border-radius: var(--radius-2);
+    font: var(--font-input);
+    padding: 13px;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    margin: 2px;
+    color: #bababa;
+  }
+}
+
+.select-file-ghost {
+  display: flex;
+  margin-bottom: 0;
+  border-radius: 5px;
+  background: #f0f0f0;
+  &:hover {
+    background: #b3b3b3;
+  }
+}
+.linkedin-info {
+  display: flex;
+  flex-direction: row;
+  & i {
+    color: #bdbdbd;
+    padding: 18px 10px;
+  }
+  & p {
+    color: #adadad;
+    font-family: "Source Sans Pro", sans-serif;
+    line-height: 19px;
+    font-weight: 400;
+    font-size: 14px;
+    display: inline-block;
+    margin: 10px 0 0;
+  }
+}
+.linkedin-notice {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 178px;
+  width: 300px;
+  font-family: "Source Sans Pro", sans-serif;
+  line-height: 19px;
+  font-weight: 400;
+  font-size: 14px;
+}
+.warning-target {
+  display: flex;
+  background: #fff;
+  color: #b5b5b5;
+  font: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.79rem;
+  line-height: 1rem;
+  padding: 0.8em;
+  align-items: baseline;
+  margin-top: 1em;
+  & i {
+    margin-right: 1em;
+    color: var(--color-green);
+  }
+  & p {
+    margin: 0;
+  }
+}

@@ -7,18 +7,6 @@ import './customtext.css';
 import './select.css';
 import ButtonContact from './ButtonContact';
 
-const stylesInput = {
-  width: '584px',
-  height: '56.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-
 const ContactForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
 
