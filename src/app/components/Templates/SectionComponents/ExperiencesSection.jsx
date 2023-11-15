@@ -85,21 +85,22 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="experience leading-snug relative group ">
+    <div className="experience leading-snug relative group">
       <div
-        className="uppercase mb-[4px]   "
+        className="uppercase"
         style={{
+          marginBottom: '4px',
           fontWeight: 600,
           padding: '0cm 1.4cm',
           lineHeight: '1.35em',
         }}
       >
         <span
-          className="editableContent cursor-text designStudio section-header"
+          className="editableContent cursor-text designStudio "
           id="experience-heading"
           tabIndex={0}
           contentEditable="true"
-          style={{
+          style={{  
             color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
@@ -107,8 +108,10 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
         >
           Experience
         </span>
+        <div className='section-header'></div>
       </div>
-      {/* <Divider className="divider-section" /> */}
+        
+      {/* <Divider className="section-header" /> */}
       <div>
         <DndContext
           sensors={sensors}

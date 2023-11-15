@@ -133,13 +133,13 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
 
         <Content
           style={{
-            margin: '24px 16px 0',
             background: '#fbfbfb',
           }}
         >
           <div
             style={{
-              padding: 24,
+              padding: 0,
+              marginLeft: '75px',
               textAlign: 'center',
               background: '#fbfbfb',
             }}
@@ -149,7 +149,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         </Content>
         <Footer
           style={{
-            marginTop: '200px',
+            marginTop: '0px',
             textAlign: 'center',
             background: '#fbfbfb',
           }}

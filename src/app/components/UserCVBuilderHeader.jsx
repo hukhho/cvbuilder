@@ -7,7 +7,7 @@ const categories = [
   { name: 'PROJECT', link: 'project' },
   { name: 'EDUCATION', link: 'education' },
   { name: 'CERTIFICATIONS', link: 'certification' },
-  { name: 'COURSEWORK', link: 'coursework' },
+  // { name: 'COURSEWORK', link: 'coursework' },
   { name: 'INVOLVEMENT', link: 'involvement' },
   { name: 'SKILLS', link: 'skill' },
   { name: 'SUMMARY', link: 'summary' },

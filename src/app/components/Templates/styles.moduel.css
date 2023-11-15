@@ -521,8 +521,8 @@
      }
    }
  }
- :global(.list-shown-false),
- :global(.analyse-show-false) {
+ .list-shown-false,
+ .analyse-show-false {
    border-bottom: none;
    padding: 0;
    & .carret {
@@ -609,7 +609,7 @@
      padding-right: 5px;
      color: var(--color-green);
      font-size: 16px;
-     &:global(.fa-exclamation) {
+     .fa-exclamation {
        color: red;
        padding: 0 15px 0 5px;
      }

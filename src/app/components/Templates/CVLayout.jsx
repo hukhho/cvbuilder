@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import './CVTemplates.scss';
 import {
   DndContext,
@@ -36,7 +36,7 @@ import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
+const CVLayout = React.forwardRef(({ children, onSectionsOrderChange, layoutStyles, stars }, ref) => {
   const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
 
   // Define font styles for different fonts
@@ -93,7 +93,6 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
   const handleDragStart = useCallback(event => {
     setActiveId(event.active.id);
   }, []);
-
   const handleDragEnd = useCallback(
     event => {
       const { active, over } = event;
@@ -124,8 +123,34 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
     transform: `scale(1)`,
     transformOrigin: 'left top',
   };
-   
+
   const elementRef = useRef(null); // Reference to the HTML element to be converted
+  const captureRef = useRef();
+  const captureOptions = {
+    scale: 10, // Increase the scale for higher resolution
+    useCORS: true, // Enable Cross-Origin Resource Sharing if needed
+    logging: true, // Enable logging for debugging (optional)
+  };
+  const captureScreenshot = () => {
+    html2canvas(captureRef.current, captureOptions).then(canvas => {
+      console.log('canvas', canvas);
+      // Iterate through each element in the captured content
+      canvas.childNodes.forEach(element => {
+        // Apply sectionHeader styles
+        if (element.classList.contains('section-header')) {
+          Object.assign(element.style, sectionHeader);
+        }
+      });
+
+      var imgData = canvas.toDataURL('image/jpeg');
+      var pdf = new jsPDF('p', 'mm', [canvas.width / 10, canvas.height / 10]); // Adjust PDF size accordingly
+      pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 10, canvas.height / 10);
+      pdf.save(`${new Date().toISOString()}.pdf`);
+    });
+  };
+  useImperativeHandle(ref, () => ({
+    captureScreenshot,
+  }));
 
   return (
     <div className="preview card">
@@ -135,6 +160,20 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
         style={stylesTransform}
       >
         <div
+          className="design-studio-break-page"
+          style={{
+            top: 'calc(10.4882in)',
+            fontFamily: '"Source Sans Pro", sans-serif',
+            lineHeight: 20,
+            zIndex: 99,
+          }}
+        >
+          <div />
+          {/* Break */}
+        </div>
+        <div
+          
+          ref={captureRef}
           style={{
             backgroundColor: 'rgb(255, 255, 255)',
             minHeight: cvHeightSize,
@@ -160,17 +199,6 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
               textAlign: 'left',
             }}
           >
-            <div
-              className="design-studio-break-page"
-              style={{
-                top: 'calc(10.4882in)',
-                fontFamily: '"Source Sans Pro", sans-serif',
-                lineHeight: 20,
-              }}
-            >
-              <div />
-              {/* Break */}
-            </div>
             <div id="sortable-area" className="relative z-50 mb-[10px] transition-all">
               <DndContext
                 sensors={sensors}
@@ -185,7 +213,7 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
                         <div key={index}>
                           {child}
                           {layoutStyles.hasDivider && (
-                            <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                            <div style={{ color: 'red', padding: '0cm 1.4cm', margin: '10px 0px' }}>
                               <hr />
                             </div>
                           )}
@@ -194,7 +222,9 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
                         <div key={index}>
                           <SortableItem key={index}>{child}</SortableItem>
                           {index < components.length - 1 && layoutStyles.hasDivider && (
-                            <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                            <div
+                              style={{ color: 'blue', padding: '0cm 1.4cm', margin: '10px 0px' }}
+                            >
                               <hr />
                             </div>
                           )}
@@ -234,6 +264,6 @@ const CVLayout = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
       </div>
     </div>
   );
-};
+});
 
 export default CVLayout;

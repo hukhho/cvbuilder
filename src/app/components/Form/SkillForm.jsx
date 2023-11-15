@@ -46,9 +46,17 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
       console.log('Submit. Error:', error);
     }
   };
-
+  const [inputValue, setInputValue] = useState();
+  const handleInputChange = event => {
+    setInputValue(event.target.value);
+  };
+  const handleTextareaInput = event => {
+    const textarea = event.target;
+    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
+    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
+  };
   return (
-    <div className="w-2/3 ">
+    <div className="w-2/3" style={{ minWidth: '852.13px' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="description"
@@ -60,10 +68,34 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Project Management Professional (PMP)" />
+          <textarea
+            className="inputEl undefined"
+            id="skills-section-form-0"
+            required
+            aria-label="Enter the **skills** you possess"
+            rows={1}
+            placeholder="Front End: HTML, CSS, Javascript"
+            name="skill"
+            style={{ height: 'auto', overflow: 'hidden', resize: 'none' }}
+            onChange={handleInputChange}
+            onInput={handleTextareaInput}
+            value={inputValue}
+          />
+          {/* <Input className="inputEl" placeholder="Project Management Professional (PMP)" /> */}
         </Form.Item>
-
-        <Button
+        <button
+          href=""
+          data-size="large"
+          data-theme="default"
+          data-busy="false"
+          class="skills-section form-submit button "
+          id="skills-section-save-to-list"
+          type=""
+          on
+        >
+          Save to Skills list
+        </button>
+        {/* <Button
           htmlType="submit"
           className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
           style={{
@@ -76,7 +108,7 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
           <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
             {isEditMode ? 'UPDATE ' : 'SAVE TO SKILLS LIST'}
           </div>
-        </Button>
+        </Button> */}
       </Form>
     </div>
   );

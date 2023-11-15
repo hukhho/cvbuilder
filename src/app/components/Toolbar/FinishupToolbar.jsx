@@ -70,7 +70,7 @@ const FinishupToolbar = props => {
   };
 
   const renderAdjustment = () => (
-    <div className="adjustment bg-neutral-50 width-1000 asolute">
+    <div className="adjustment bg-neutral-50 width-1000 asolute" style={{  }}>
       <Row>
         <Col className="element">
           <Tooltip title="Profile picture">
@@ -344,7 +344,7 @@ const FinishupToolbar = props => {
   return (
     <>
       <div styles={{ width: '200px'}} className="flex px-4 py-1 toolbar">
-        <div className="flex-auto donutContainer mt-4 mb-4 ml-2">
+        <div className="flex-auto donutContainer mt-4 mb-4 ml-4">
           <svg
             width={52}
             height={52}
@@ -425,9 +425,9 @@ const FinishupToolbar = props => {
                 </Select>
               </div>
               <div className="flex items-center ml-2">
-                <Button color="primary" className="font-bold">
+                {/* <Button color="primary" className="font-bold">
                   Download
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>

@@ -30,8 +30,8 @@ const ContactForm = ({ cvId, onCreated, data }) => {
         name: data.name,
         email: data.email,
         phone: data.phone,
-        linkedIn: data.linkin,
-        website: data.permissionWebsite,
+        linkin: data.linkin,
+        permissionWebsite: data.permissionWebsite,
         country: data.country,
         state: data.state,
         city: data.city,
@@ -65,30 +65,46 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             <Form.Item
               name="name"
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>FULL NAME</strong>
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span>
+                      <strong>Full name</strong>
+                    </span>
+                  </div>
                 </label>
               }
             >
-              <Input style={stylesInput} placeholder="Charles Bloomberg" />
+              <Input
+                style={{
+                  color: '#283E50',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: '550',
+                  lineHeight: '23.4px',
+                  
+                }}
+                class="inputEl contact-section inputEl st-current"
+                id="contact-section-form-0"
+                placeholder="Charles Bloomberg"
+              />
             </Form.Item>
           </Col>
           <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="email"
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>EMAIL ADDRESS</strong>
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span>
+                      <strong>Email address</strong>
+                    </span>
+                  </div>
                 </label>
               }
             >
               <Input
-                style={stylesInput}
-                // charlesbloomberg@wisc.edu
+                class="inputEl contact-section inputEl st-current"
+                id="contact-section-form-1"
                 placeholder="charlesbloomberg@wisc.edu"
               />
             </Form.Item>
@@ -98,29 +114,41 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             <Form.Item
               name="phone"
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>PHONE NUMBER</strong>
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span>
+                      <strong>Phone number</strong>
+                    </span>
+                  </div>
                 </label>
               }
             >
-              <Input style={stylesInput} placeholder="(621) 799-5548" />
+              <Input
+                class="inputEl contact-section inputEl st-current"
+                id="contact-section-form-2"
+                placeholder="(621) 799-5548"
+              />
             </Form.Item>
           </Col>
 
           <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
-              name="linkedIn"
+              name="linkin"
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>LINKEDIN</strong> URL
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span>
+                      <strong>Linkedin</strong> url
+                    </span>
+                  </div>
                 </label>
               }
             >
-              <Input style={stylesInput} placeholder="in/cbloomberg" />
+              <Input
+                class="inputEl contact-section inputEl st-current"
+                id="contact-section-form-3"
+                placeholder="in/cbloomberg"
+              />
             </Form.Item>
           </Col>
 
@@ -128,14 +156,20 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             <Form.Item
               name="permissionWebsite"
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>PERSONAL WEBSITE</strong> OR RELEVANT LINK
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span class="st-current">
+                      <strong class="">Personal website</strong> or relevant link
+                    </span>
+                  </div>
                 </label>
               }
             >
-              <Input style={stylesInput} placeholder="https://www.charlesbloomberg.com" />
+              <Input
+                class="inputEl contact-section inputEl st-current"
+                id="contact-section-form-4"
+                placeholder="https://www.charlesbloomberg.com"
+              />
             </Form.Item>
           </Col>
 
@@ -143,19 +177,39 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             <Form.Item
               name="country"
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>CITY/PROVINCE</strong>
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span class="st-current">
+                      <strong>CITY/PROVINCE</strong>
+                    </span>
+                  </div>
                 </label>
               }
             >
-              <Input style={stylesInput} placeholder="https://www.charlesbloomberg.com" />
+              <Input
+                class="inputEl contact-section inputEl st-current"
+                id="contact-section-form-4"
+                placeholder="Ho Chi Minh City"
+              />
             </Form.Item>
           </Col>
         </Row>
         <Row justify="start">
           <Col>
+            <div className="form-submit-wrapper">
+              <button
+                href=""
+                data-size="large"
+                data-theme="default"
+                data-busy="false"
+                class='contact-section form[data-theme="basic"] button'
+                id="contact-section-save-to-list"
+                type="submit"
+              >
+                Save basic info
+              </button>
+            </div>
+
             <Button
               htmlType="submit"
               className="form-button  w-[769.22px] h-[47.86px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"

@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button, Card, ConfigProvider, Divider, Modal } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -355,7 +355,13 @@ export default function FinishUp({ params }) {
   // </div>
 
   const [open, setOpen] = useState(false);
+  const cvLayoutRef = useRef(null);
 
+  const handleDownloadButtonClick = () => {
+    if (cvLayoutRef.current) {
+      cvLayoutRef.current.captureScreenshot();
+    }
+  };
   return (
     <main>
       <ConfigProvider>
@@ -364,7 +370,7 @@ export default function FinishUp({ params }) {
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
           content={
-            <div className="flex mt-8">
+            <div className="flex">
               {showFinishupCV && (
                 <div className="mr-2 flex flex-col">
                   {/* <Button type="primary" onClick={() => setOpen(true)}>
@@ -411,10 +417,26 @@ export default function FinishUp({ params }) {
                         >
                           Sync Up
                         </button>
+                        <button
+                          style={{
+                            width: '60px',
+                            height: '30px',
+                            marginTop: '10px',
+                            marginLeft: '10px',
+                            marginBottom: '10px',
+                          }}
+                          className="button"
+                          type=""
+                          onClick={() => handleDownloadButtonClick()}
+                        >
+                          Download
+                        </button>
+                       
                       </div>
                     </div>
                   </div>
                   <CVLayout
+                    ref={cvLayoutRef}
                     key={[templateSelected, toolbarState]}
                     layoutStyles={toolbarState}
                     sectionsOrder={sectionsOrder}

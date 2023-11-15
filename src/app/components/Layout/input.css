@@ -1,5 +1,10 @@
 input[type="text"],
 .inputEl {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 16px;
+    line-height: 20.8px;
+    text-align: start;
+    letter-spacing: normal;
     display: block;
     font: var(--font-input);
     color: inherit;
