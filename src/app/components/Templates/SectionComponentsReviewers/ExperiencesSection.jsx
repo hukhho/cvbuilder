@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 'use client';
 
 import { Divider, Typography } from 'antd';
@@ -99,7 +101,6 @@ const ExperiencesSection = ({ experiences, onChangeOrder, onComment, templateTyp
             templateType === 'classical' ? 'section-header' : ''
           }`}
           id="experience-heading"
-          tabIndex={0}
           contentEditable="true"
           style={{
             fontSize: '1.15em',

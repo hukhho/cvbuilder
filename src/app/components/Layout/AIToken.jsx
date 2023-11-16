@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './aitoken.css';
 
 export default function AiToken({ numberToken }) {
   return (
@@ -9,8 +8,7 @@ export default function AiToken({ numberToken }) {
           <span>AI credits </span>
         </div>
         <div>
-          {numberToken} {' '}
-          <i className="fa-nzx fa-c1i"></i>
+          {numberToken} <i className="fa-nzx fa-c1i" />
         </div>
       </div>
     </button>

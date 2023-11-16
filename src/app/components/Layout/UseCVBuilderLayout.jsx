@@ -23,6 +23,7 @@ import {
   faFileCirclePlus,
 } from '@fortawesome/free-solid-svg-icons';
 import './input.css';
+import Head from 'next/head';
 
 const { Title, Paragraph, Text, Link } = Typography;
 

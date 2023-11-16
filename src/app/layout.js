@@ -1,9 +1,13 @@
+/* eslint-disable */
+
 // import Footer from './components/Footer/Footer';
 // import UserHeader from './components/Header/UserHeader';
+import Head from 'next/head';
 import StyledComponentsRegistry from '../lib/AntdRegistry';
-import './styles/globals.css';
+// import './styles/globals.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css'; // Import the CSS
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import Script from 'next/script';
 
 // Prevent fontawesome from dynamically adding its CSS
 config.autoAddCss = true;
@@ -11,11 +15,29 @@ config.autoAddCss = true;
 export const metadata = {
   title: 'Project',
 };
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="pro-ui">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap"
+          rel="stylesheet"
+        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+        <link
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900&amp;display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css?family=Merriweather:300,400,600,700,900&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
+          rel="stylesheet"
+        />
+
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>

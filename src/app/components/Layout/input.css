@@ -32,3 +32,10 @@ input[type="text"],
         opacity: 0.5;
     }
 }
+
+
+button, [type='button'], [type='reset'], [type='submit'] {
+    -webkit-appearance: button;
+    background-color: 'red' !important;
+    background-image: 'none' !important;
+}

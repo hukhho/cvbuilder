@@ -42,8 +42,6 @@ export default function FinishUp({ params }) {
     setZoom(event.target.value);
   };
 
-
-
   return (
     <main>
       <ConfigProvider>

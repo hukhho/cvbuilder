@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+/* eslint-disable */
 
 'use client';
 
@@ -32,7 +32,7 @@ import './omega.css';
 import './template.css';
 
 import { NextPageContext } from 'next';
-import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
+// import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -130,7 +130,7 @@ const CVLayout = React.forwardRef(
       useCORS: true, // Enable Cross-Origin Resource Sharing if needed
       logging: true, // Enable logging for debugging (optional)
     };
-    const captureScreenshot = () => {
+    const CaptureScreenshot = () => {
       html2canvas(captureRef.current, captureOptions).then(canvas => {
         console.log('canvas', canvas);
         // Iterate through each element in the captured content
@@ -142,14 +142,13 @@ const CVLayout = React.forwardRef(
         });
 
         const imgData = canvas.toDataURL('image/jpeg');
-        // eslint-disable-next-line new-cap
         const pdf = new jsPDF('p', 'mm', [canvas.width / 10, canvas.height / 10]); // Adjust PDF size accordingly
         pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 10, canvas.height / 10);
         pdf.save(`${new Date().toISOString()}.pdf`);
       });
     };
     useImperativeHandle(ref, () => ({
-      captureScreenshot,
+      CaptureScreenshot,
     }));
 
     return (

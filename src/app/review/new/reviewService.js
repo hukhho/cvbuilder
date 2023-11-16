@@ -24,7 +24,7 @@ const getResumes = async userId => {
 
 const getExperts = async userId => {
   try {
-    const response = await axiosInstance.get(`/experts`);
+    const response = await axiosInstance.get('/experts');
     return response.data;
   } catch (error) {
     throw error;

@@ -10,7 +10,6 @@ export default TitleItem = ({ tittle }) => {
         <span
           className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
           id="smpl125032021-role"
-          tabIndex={0}
           contentEditable="true"
         >
           {tittle}

@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable */
 
 'use client';
 
@@ -18,6 +18,7 @@ import { deleteExperience, getAllExperiences } from './experienceService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import ListError from '@/app/components/ListError/ListError';
+import Head from 'next/head';
 
 const { Meta } = Card;
 
@@ -91,13 +92,13 @@ const Experience = ({ params }) => {
           content={
             <div className="flex h-screen ">
               <div className="flex flex-col p-4">
-                <div className="h-1/3">
+                <div style={{ height: '185px' }}>
                   <div style={{ maxHeight: '185px' }}>
                     <VideoComponent />
                   </div>
                 </div>
-                <div className="h-3/4">
-                  <div style={{ maxWidth: '320px', marginTop: '20px', marginBottom: '20px' }}>
+                <div className="">
+                  <div style={{ width: '320px', marginTop: '20px', marginBottom: '20px' }}>
                     <div
                       style={{ maxWidth: '320px' }}
                       className="mb-8 p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex"
@@ -106,14 +107,12 @@ const Experience = ({ params }) => {
                         <div className="left-0 top-[1.47px] text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
                           Your Experiences
                         </div>
-                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ">
-                          <button>
+                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 "> 
                             <FontAwesomeIcon
                               icon={faCaretDown}
                               className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
                               onClick={handleDownButton}
                             />
-                          </button>
                         </div>
                       </div>
 

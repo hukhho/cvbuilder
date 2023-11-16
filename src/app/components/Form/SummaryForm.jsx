@@ -35,36 +35,83 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
     }
   };
 
+  const [inputValue, setInputValue] = useState();
+  const handleInputChange = event => {
+    setInputValue(event.target.value);
+  };
+  const handleTextareaInput = event => {
+    const textarea = event.target;
+    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
+    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
+  };
+
   return (
-    <div className="w-2/3 ">
+    <div className="" style={{ width: '912.05px' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="summary"
           label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                WRITE A PROFESSIONAL <strong>SUMMARY</strong>
-              </span>
+            <label
+              style={{}}
+              class="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+              for="summary-section-form-0"
+            >
+              <div class="flex gap-2 items-center">
+                <span>
+                  Write a professional <strong>summary</strong>
+                </span>
+              </div>
+              <div id="summary-section-form-0-portal-root" />
             </label>
           }
         >
-          <Input style={stylesInput} placeholder="Project Management Professional (PMP)" />
-        </Form.Item>
+          <textarea
+            className="inputEl undefined src-components-Form-Field--Es8ORQL2ofo= "
+            id="summary-section-form-0"
+            aria-label="Write a professional **summary**"
+            rows={3}
+            placeholder="Experienced global early-stage executive with economics and mathematics degree from the University of Wisconsin. Passion for building inspiring companies people love through industry-leading design, development, branding, and making big bets."
+            name="summary"
+            defaultValue="A production professional with experience creating solutions for the most demanding video content challenges.  I’m a proven successful collaborator with multi-disciplinary teams, artists and personalities."
+            style={{
+              background: 'white',
+              height: 120,
+              fontWeight: 400,
+              overflow: 'hidden',
+              resize: 'none',
+            }}
+            onChange={handleInputChange}
+            onInput={handleTextareaInput}
+            value={inputValue}
+          />
 
-        <Button
+          {/* <Input style={stylesInput} placeholder="Project Management Professional (PMP)" /> */}
+        </Form.Item>
+        <div style={{}}>
+          <button
+            href=""
+            data-size="large"
+            data-theme="default"
+            data-busy="false"
+            class="summary-section button"
+            id="summary-section-save-to-list"
+            type="submit"
+          >
+            Save summary info
+          </button>
+        </div>
+
+        {/* <Button
           htmlType="submit"
-          className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
-          style={{
-            width: '769.22px',
-            height: '47.86px',
-            backgroundColor: 'rgb(77, 112, 235)',
-            color: 'white',
-          }}
+          href=""
+          data-size="large"
+          data-theme="default"
+          data-busy="false"
+          class="summary-section button"
+          id="summary-section-save-to-list"
         >
-          <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
             SAVE SUMMARY INFO
-          </div>
-        </Button>
+        </Button> */}
       </Form>
     </div>
   );

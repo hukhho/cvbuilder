@@ -1,14 +1,51 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ConfigProvider } from 'antd';
+import { Button, ConfigProvider, notification } from 'antd';
 import UserLayout from './components/Layout/UserLayout';
 import UserHeader from './components/UserHeader';
 import CVCard from './components/Card/CVCard';
 import Link from 'next/link'; // Import Link from Next.js for navigation
 import { getResumes } from './utils/indexService';
+import { RadiusBottomrightOutlined } from '@ant-design/icons';
+
+const mockCardsData = [
+  {
+    cvId: 1,
+    imageUrl: 'https://example.com/image1.jpg',
+    title: 'Resume Id 1',
+  },
+  {
+    cvId: 2,
+    imageUrl: 'https://example.com/image2.jpg',
+    title: 'Resume Id 2',
+  },
+  {
+    cvId: 3,
+    imageUrl: 'https://example.com/image3.jpg',
+    title: 'Resume Id 3',
+  },
+  {
+    cvId: 4,
+    imageUrl: 'https://example.com/image4.jpg',
+    title: 'Resume Id 4',
+  },
+  {
+    cvId: 5,
+    imageUrl: 'https://example.com/image5.jpg',
+    title: 'Resume Id 5',
+  },
+];
 
 const Home = () => {
+  // const [api, contextHolder] = notification.useNotification();
+  // const openNotification = placement => {
+  //   api.info({
+  //     message: `Notification ${placement}`,
+  //     description: 'Con Cac',
+  //     placement,
+  //   });
+  // };
   const [resumes, setResumes] = useState([]);
   const [mockCards, setMockCards] = useState([]);
   const [enabledCategories, setEnabledCategories] = useState({
@@ -21,18 +58,22 @@ const Home = () => {
   const fetchResumes = async () => {
     try {
       // Simulate fetching resumes (replace with your actual fetch logic)
-      const fetchedResumes = await getResumes(1);
-
-      // Add additional data to create mock cards
-      const mockCardsData = fetchedResumes.map(resume => ({
-        cvId: resume.id,
-        imageUrl: defaultImageUrl,
-        title: `Resume Id ${resume.id}`, // Add cvId to the card title
-      }));
-
       // Update state with fetched resumes and mock cards
-      setResumes(fetchedResumes);
+      setResumes([]); // Assuming you don't have actual resume data
       setMockCards(mockCardsData);
+
+      // const fetchedResumes = await getResumes(1);
+
+      // // Add additional data to create mock cards
+      // const mockCardsData = fetchedResumes.map(resume => ({
+      //   cvId: resume.id,
+      //   imageUrl: defaultImageUrl,
+      //   title: `Resume Id ${resume.id}`, // Add cvId to the card title
+      // }));
+
+      // // Update state with fetched resumes and mock cards
+      // setResumes(fetchedResumes);
+      // setMockCards(mockCardsData);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
     }
@@ -44,21 +85,25 @@ const Home = () => {
 
   return (
     <main>
+      {/* {contextHolder} */}
+
       <ConfigProvider
         theme={{
-          colorBgContainer: 'red',
+          token: {
+            colorBgContainer: '#fbfbfb',
+            borderRadius: '2px',
+            colorPrimary: 'blue',
+          },
         }}
       >
-
         <UserLayout
           selected="1"
           userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={
             <div className="container mx-auto px-4 py-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {/* Map over the mockCardData and generate cards with links */}
                 {mockCards.map((card, index) => (
-                  <Link key={index} href={`/resume/${card.cvId}/education`}>
+                  <Link key={index} href={`/resume/${card.cvId}/contact`}>
                     <CVCard imageUrl={card.imageUrl} title={card.title} />
                   </Link>
                 ))}

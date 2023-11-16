@@ -6,7 +6,7 @@ export const getFinishUp = async cvId => {
   try {
     // const response = await axiosInstance.get(`/user/cv/${cvId}/finish-up`);
     return mockData.data.resume;
-      // return response.data;
+    // return response.data;
   } catch (error) {
     throw error;
   }

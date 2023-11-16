@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Divider, Typography } from 'antd';
 
 const SummarySection = ({ summary }) => {

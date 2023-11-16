@@ -35,8 +35,8 @@ import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-import { Divider, Button, Card, Popover, Tooltip, Input } from 'antd';
-import { ChakraProvider, VStack, Box } from '@chakra-ui/react';
+import { Button, Card, Divider, Input, Popover, Tooltip } from 'antd';
+import { Box, ChakraProvider, VStack } from '@chakra-ui/react';
 import { CommentOutlined } from '@ant-design/icons';
 
 const CVLayoutReviewerView = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
@@ -124,7 +124,7 @@ const CVLayoutReviewerView = ({ children, onSectionsOrderChange, layoutStyles, s
   // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
   const stylesTransform = {
     // transform: `scale(${layoutStyles.zoom})`,
-    transform: `scale(1)`,
+    transform: 'scale(1)',
     transformOrigin: 'left top',
   };
 
