@@ -35,7 +35,6 @@ const SummarySection = ({ summary }) => {
             color: 'rgb(46, 61, 80)',
             fontWeight: 100,
             fontSize: '0.85em',
-            lineHeight: '1.6em',
             padding: '0cm 1.4cm',
           }}
         >

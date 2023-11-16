@@ -21,8 +21,7 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
-  console.log('ExperiencesSection::: ', experiences);
+const ExperiencesSection = ({ experiences, onChangeOrder, templateType, layoutStyles }) => {
   const experienceItems = (
     <>
       {experiences.map(exp => {
@@ -83,40 +82,32 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="experience leading-snug relative group">
+    <div
+      className="experience relative group"
+      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
+    >
       <div
         className="uppercase"
         style={{
           marginBottom: '4px',
           fontWeight: 600,
           padding: '0cm 1.4cm',
-          lineHeight: '1.35em',
         }}
       >
         <span
-          className="editableContent cursor-text designStudio "
+          className={`editableContent cursor-text designStudio ${
+            templateType === 'classical' ? 'section-header' : ''
+          }`}
           id="experience-heading"
           contentEditable="true"
           style={{
-            color: 'rgb(46, 61, 80)',
+            color: layoutStyles.fontColor,
             fontSize: '1.15em',
             display: 'block',
           }}
         >
           Experience
         </span>
-        <div>
-          <hr
-            style={{
-              border: 'none',
-              height: '0.12em',
-              backgroundColor: '#000',
-              width: '100%', // Adjust the width as needed
-              margin: '1px', // Adjust the margin as needed
-            }}
-          />
-        </div>
-        {/* <div className='section-header'></div> */}
       </div>
 
       {/* <Divider className="section-header" /> */}

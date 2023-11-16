@@ -64,7 +64,6 @@ const CVLayout = React.forwardRef(
       // fontFamily: `${layoutStyles.fontFamily}, serif`,
       ...fontStyles, // Merge font styles with other styles
     };
-    console.log('CvStyles', CvStyles);
 
     useEffect(() => {
       const resumeId = document.getElementById('resume');
@@ -116,12 +115,11 @@ const CVLayout = React.forwardRef(
     }, []);
 
     const cvHeightSize = layoutStyles.paperSize === 'A4' ? '297mm' : '11in';
-    const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
+    // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
 
     // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
     const stylesTransform = {
-      // transform: `scale(${layoutStyles.zoom})`,
-      transform: 'scale(1)',
+      transform: `scale(${layoutStyles.zoom})`,
       transformOrigin: 'left top',
     };
 
@@ -155,17 +153,12 @@ const CVLayout = React.forwardRef(
 
     return (
       <div className="preview card">
-        <div
-          className="bg-gray-100 rounded-md p-4 select-none text-[#2e3d50]"
-          id="resume-preview"
-          style={stylesTransform}
-        >
+        <div className="flex bg-gray-100 rounded-md p-4 m-auto" id="resume-preview">
           <div
             className="design-studio-break-page"
             style={{
               top: 'calc(10.4882in)',
               fontFamily: '"Source Sans Pro", sans-serif',
-              lineHeight: 20,
               zIndex: 99,
             }}
           >
@@ -189,10 +182,8 @@ const CVLayout = React.forwardRef(
               style={{
                 ...fontStyles,
                 fontSize: CvStyles.fontSize,
-                lineHeight: CvStyles.lineHeight,
-                width: cvWidthSize,
-                transform: 'initial',
-                transformOrigin: 'initial',
+                // lineHeight: CvStyles.lineHeight,
+                // width: cvWidthSize,
                 // fontFamily: 'Merriweather, serif',
                 padding: '1.3cm 0cm 0cm',
                 borderColor: 'rgb(0, 0, 0)',
@@ -211,7 +202,9 @@ const CVLayout = React.forwardRef(
                       <div key={index}>
                         {child.props.canBeDrag === false ? ( // Check if the section can be dragged
                           <div key={index}>
-                            {child}
+                            {React.cloneElement(child, {
+                              layoutStyles,
+                            })}
                             {layoutStyles.hasDivider && (
                               <div
                                 style={{ color: 'red', padding: '0cm 1.4cm', margin: '10px 0px' }}
@@ -222,7 +215,11 @@ const CVLayout = React.forwardRef(
                           </div> // Render without drag if canBeDrag is false
                         ) : (
                           <div key={index}>
-                            <SortableItem key={index}>{child}</SortableItem>
+                            <SortableItem key={index}>
+                              {React.cloneElement(child, {
+                                layoutStyles,
+                              })}
+                            </SortableItem>
                             {index < components.length - 1 && layoutStyles.hasDivider && (
                               <div
                                 style={{ color: 'blue', padding: '0cm 1.4cm', margin: '10px 0px' }}

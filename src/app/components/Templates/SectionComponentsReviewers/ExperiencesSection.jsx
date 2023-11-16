@@ -97,11 +97,12 @@ const ExperiencesSection = ({ experiences, onChangeOrder, onComment, templateTyp
         }}
       >
         <span
-          className="editableContent cursor-text designStudio section-header"
+          className={`editableContent cursor-text designStudio ${
+            templateType === 'classical' ? 'section-header' : ''
+          }`}
           id="experience-heading"
           contentEditable="true"
           style={{
-            color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
           }}

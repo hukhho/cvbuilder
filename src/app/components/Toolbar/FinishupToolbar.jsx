@@ -70,8 +70,8 @@ const FinishupToolbar = props => {
   };
 
   const renderAdjustment = () => (
-    <div className="adjustment bg-neutral-50 width-1000 asolute" style={{}}>
-      <Row>
+    <div className="adjustment bg-neutral-50 width-1000 asolute" id="div-toolbar">
+      <Row className="m-auto">
         <Col className="element">
           <Tooltip title="Profile picture">
             <Button size="small" className="ml-1">

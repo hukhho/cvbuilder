@@ -147,6 +147,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
             style={{
               padding: 0,
               marginLeft: '75px',
+              marginRight: '75px',
               textAlign: 'center',
               background: '#fbfbfb',
             }}

@@ -11,10 +11,11 @@ const ContactInfoItem = ({ icon, text }) => (
   </div>
 );
 
-const InformationSection = ({ userInfo, templateType }) => {
-  const { name, email, phone, personalWebsite, address, linkedIn } = userInfo;
+const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
+  const { fullName, email, phone, personalWebsite, address, linkedIn } = userInfo;
 
   const isClassicalTemplate = templateType === 'classical';
+
   const isModernTemplate = templateType === 'modern';
 
   return (
@@ -49,27 +50,29 @@ const InformationSection = ({ userInfo, templateType }) => {
     //     </div>
     //   </div>
     // </div>
-    <div className="pb-[20px]">
+    <div
+      className={`${isClassicalTemplate ? 'justify-center' : ''}`}
+      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
+    >
       <div
         className="flex flex-row items-end gap-4 pb-2"
         style={{ paddingLeft: '1.4cm', paddingRight: '1.4cm' }}
       >
         <div className="grow">
           <h1
-            className="font-bold text-center"
+            className={`${isClassicalTemplate ? 'text-center' : ''} font-bold`}
             style={{
-              color: 'rgb(0, 0, 0)',
               fontSize: '1.65em',
               fontFamily: 'Merriweather, serif',
               lineHeight: 'inherit',
+              color: layoutStyles.fontColor,
             }}
           >
-            {name}
+            {fullName}
           </h1>
           <div
-            className="pt-[2px] text-center false"
+            className={`${isClassicalTemplate ? 'text-center' : ''} pt-[2px] false`}
             style={{
-              color: 'rgb(46, 61, 80)',
               fontWeight: 300,
               fontSize: '0.75em',
             }}

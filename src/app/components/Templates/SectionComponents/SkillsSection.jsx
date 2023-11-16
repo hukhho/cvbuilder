@@ -22,7 +22,7 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
+const SkillsSection = ({ skills, onChangeOrder, templateType, layoutStyles }) => {
   const skillItems = (
     <>
       {skills.map(edu => {
@@ -71,23 +71,27 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="skill leading-snug relative group ">
+    <div
+      className="skill relative group"
+      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
+    >
       <div
         className="uppercase mb-[4px]"
         style={{
           fontWeight: 600,
           padding: '0cm 1.4cm',
-          lineHeight: '1.35em',
         }}
       >
         <span
-          className="editableContent cursor-text designStudio section-header"
+          className={`editableContent cursor-text designStudio ${
+            templateType === 'classical' ? 'section-header' : ''
+          }`}
           id="skill-heading"
           contentEditable="true"
           style={{
-            color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
+            color: layoutStyles.fontColor,
           }}
         >
           Skills

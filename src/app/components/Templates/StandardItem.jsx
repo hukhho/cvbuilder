@@ -2,13 +2,6 @@
 
 import { Divider, Typography } from 'antd';
 
-//
-//   _     _                   _
-//   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___
-//  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
-//  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__
-//  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
-
 const StandardItem = props => {
   const { role, orgName, startTime, endTime, description, location, templateType, titleProps } =
     props;
@@ -29,7 +22,7 @@ const StandardItem = props => {
     if (titleProps) {
       return (
         <div
-          className="XHKKXx5eVL leading-snug relative group "
+          className="XHKKXx5eVL relative group "
           style={{ paddingLeft: '1.4cm', paddingRight: '1.4cm' }}
         >
           <i
@@ -38,7 +31,7 @@ const StandardItem = props => {
           />
           <div
             className="relative whitespace-pre-line"
-            style={{ color: 'rgb(46, 61, 80)', fontWeight: 700, fontSize: '0.85em' }}
+            style={{ fontWeight: 700, fontSize: '0.85em' }}
           >
             <div className="relative">
               {/* <p className="editableContent ghost-hightlight w-full designStudio ">
@@ -62,11 +55,11 @@ const StandardItem = props => {
     switch (templateType) {
       case 'classical':
         return (
-          <div className="leading-snug relative group">
-            <div className="flex flex-col" style={{ lineHeight: '1.6em' }}>
-              <ul className="sortable-container ">
+          <div className="relative group">
+            <div className="flex flex-col">
+              <ul className="sortable-container">
                 <li
-                  className="smpl125032021 leading-snug relative group"
+                  className="smpl125032021 relative group"
                   style={{
                     paddingLeft: '1.4cm',
                     paddingRight: '1.4cm',
@@ -77,7 +70,7 @@ const StandardItem = props => {
                     className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
                     aria-hidden="true"
                   />
-                  <div className="" style={{ lineHeight: '1em' }}>
+                  <div className="">
                     <div className="flex gap-2">
                       <span className="text-[#000000]" style={{ color: 'rgb(0, 0, 0)' }}>
                         <div
@@ -85,7 +78,7 @@ const StandardItem = props => {
                           style={{ color: 'rgb(0, 0, 0)' }}
                         >
                           <span
-                            className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
+                            className="editableContent cursor-text text-[1em]  ml-0 designStudio "
                             id="smpl125032021-role"
                             contentEditable="true"
                           >
@@ -95,7 +88,7 @@ const StandardItem = props => {
                       </span>
                     </div>
                     <div className="flex gap-2 justify-between font-semibold">
-                      <div style={{ color: 'rgb(46, 61, 80)' }}>
+                      <div>
                         <span
                           className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
                           style={{ fontSize: '0.85em' }}
@@ -113,13 +106,13 @@ const StandardItem = props => {
                           </span>
                         </span>
                       </div>
-                      <div style={{ color: 'rgb(46, 61, 80)' }}>
+                      <div>
                         <div
                           className="inline-block before:first:hidden before:absolute"
                           style={{ fontSize: '0.85em' }}
                         >
                           <span
-                            className="editableContent cursor-text leading-snug ml-0 designStudio "
+                            className="editableContent cursor-text ml-0 designStudio "
                             id="smpl125032021-duration"
                             contentEditable="true"
                           >
@@ -131,7 +124,7 @@ const StandardItem = props => {
                           style={{ fontSize: '0.85em' }}
                         >
                           <span
-                            className="editableContent cursor-text leading-snug ml-2 designStudio "
+                            className="editableContent cursor-text ml-2 designStudio "
                             id="smpl125032021-location"
                             contentEditable="true"
                           >
@@ -144,8 +137,6 @@ const StandardItem = props => {
                   <div
                     className="text-[0.85em] relative whitespace-pre-line "
                     style={{
-                      color: 'rgb(46, 61, 80)',
-                      lineHeight: '1.6em',
                       fontSize: '0.85em',
                       fontWeight: 100,
                     }}
@@ -195,40 +186,62 @@ const StandardItem = props => {
         );
       case 'modern':
         return (
-          <>
-            <div className="item-title">
-              <span className="role">{role}</span>
-              <span>|| {orgName}</span>
-              {location && <span className="location">|| {location}</span>}
-              {startTime && <span className="time">|| {dateRangeFormat()}</span>}
-            </div>
-            {description && (
-              <div className="item-description">
-                <span>{description}</span>
-              </div>
-            )}
-          </>
+          <div className="flex flex-col">
+            <ul className="sortable-container">
+              <li
+                className="smpl125032021 relative group"
+                style={{
+                  paddingLeft: '1.4cm',
+                  paddingRight: '1.4cm',
+                  marginBottom: 11,
+                }}
+              >
+                <div className="item-title">
+                  <span className="role">{role}</span>
+                  <span>|| {orgName}</span>
+                  {location && <span className="location">|| {location}</span>}
+                  {startTime && <span className="time">|| {dateRangeFormat()}</span>}
+                </div>
+                {description && (
+                  <div className="item-description">
+                    <span>{description}</span>
+                  </div>
+                )}
+              </li>
+            </ul>
+          </div>
         );
       case 'modern-2':
         return (
-          <>
-            <div style={{ display: 'flex' }} className="item-title">
-              <span className="role">{role}</span>
-              {orgName && <span className="org">|| {orgName}</span>}
-            </div>
-            <div className="item-sub-title">
-              {startTime && (
-                <div className="left-sub-title">
-                  <span>{dateRangeFormat()}</span>
+          <div className="flex flex-col">
+            <ul className="sortable-container">
+              <li
+                className="smpl125032021 relative group"
+                style={{
+                  paddingLeft: '1.4cm',
+                  paddingRight: '1.4cm',
+                  marginBottom: 11,
+                }}
+              >
+                <div style={{ display: 'flex' }} className="item-title">
+                  <span className="role">{role}</span>
+                  {orgName && <span className="org">|| {orgName}</span>}
                 </div>
-              )}
-            </div>
-            {description && (
-              <div className="item-description">
-                <span>{description}</span>
-              </div>
-            )}
-          </>
+                <div className="item-sub-title">
+                  {startTime && (
+                    <div className="left-sub-title">
+                      <span>{dateRangeFormat()}</span>
+                    </div>
+                  )}
+                </div>
+                {description && (
+                  <div className="item-description">
+                    <span>{description}</span>
+                  </div>
+                )}
+              </li>
+            </ul>
+          </div>
         );
       default:
         return null;
