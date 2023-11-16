@@ -33,16 +33,13 @@ const SummarySection = ({ summary }) => {
             color: 'rgb(46, 61, 80)',
             fontWeight: 100,
             fontSize: '0.85em',
-            lineHeight: '1.6em',
             padding: '0cm 1.4cm',
           }}
         >
           <div className="relative">
             <p className="editableContent ghost-hightlight w-full designStudio ">
               <span>
-                <span className="">
-                  {summary}
-                </span>
+                <span className="">{summary}</span>
               </span>
             </p>
           </div>

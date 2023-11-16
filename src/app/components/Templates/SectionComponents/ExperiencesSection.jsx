@@ -21,26 +21,23 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
-  console.log('ExperiencesSection::: ', experiences);
+const ExperiencesSection = ({ experiences, onChangeOrder, templateType, layoutStyles }) => {
   const experienceItems = (
     <>
       {experiences.map(exp => {
         const { startDate, endDate, description, companyName, role, location } = exp;
         return (
-          <>
-            <StandardItem
-              key={exp.id}
-              templateType={templateType}
-              role={role}
-              location={location}
-              startTime={startDate}
-              endTime={endDate}
-              orgName={companyName}
-              renderRightSubtitle
-              description={description}
-            />
-          </>
+          <StandardItem
+            key={exp.id}
+            templateType={templateType}
+            role={role}
+            location={location}
+            startTime={startDate}
+            endTime={endDate}
+            orgName={companyName}
+            renderRightSubtitle
+            description={description}
+          />
         );
       })}
     </>
@@ -85,32 +82,34 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="experience leading-snug relative group">
+    <div
+      className="experience relative group"
+      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
+    >
       <div
         className="uppercase"
         style={{
           marginBottom: '4px',
           fontWeight: 600,
           padding: '0cm 1.4cm',
-          lineHeight: '1.35em',
         }}
       >
         <span
-          className="editableContent cursor-text designStudio "
+          className={`editableContent cursor-text designStudio ${
+            templateType === 'classical' ? 'section-header' : ''
+          }`}
           id="experience-heading"
-          tabIndex={0}
           contentEditable="true"
-          style={{  
-            color: 'rgb(46, 61, 80)',
+          style={{
+            color: layoutStyles.fontColor,
             fontSize: '1.15em',
             display: 'block',
           }}
         >
           Experience
         </span>
-        <div className='section-header'></div>
       </div>
-        
+
       {/* <Divider className="section-header" /> */}
       <div>
         <DndContext

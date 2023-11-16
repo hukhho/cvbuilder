@@ -22,8 +22,11 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
-  console.log('EducationSection::: ', educations);
+const EducationsSection = ({ educations, onChangeOrder, templateType, layoutStyles }) => {
+  console.log(
+    '🚀 ~ file: EducationsSection.jsx:26 ~ EducationsSection ~ layoutStyles:',
+    layoutStyles,
+  );
   const educationItems = (
     <>
       {educations.map(edu => {
@@ -83,49 +86,52 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="education leading-snug relative group ">
     <div
-      className="uppercase mb-[4px]   "
-      style={{
-        fontWeight: 600,
-        padding: '0cm 1.4cm',
-        lineHeight: '1.35em',
-      }}
+      className="education relative group"
+      style={{ zoom: layoutStyles.zoom, lineHeight: `${layoutStyles.lineHeight} !important` }}
     >
-      <span
-        className="editableContent cursor-text designStudio section-header"
-        id="education-heading"
-        tabIndex={0}
-        contentEditable="true"
+      <div
+        className="uppercase mb-[4px]   "
         style={{
-          color: 'rgb(46, 61, 80)',
-          fontSize: '1.15em',
-          display: 'block',
+          fontWeight: 600,
+          padding: '0cm 1.4cm',
         }}
       >
-        Education
-      </span>
+        <span
+          className={`editableContent cursor-text designStudio ${
+            templateType === 'classical' ? 'section-header' : ''
+          }`}
+          id="education-heading"
+          contentEditable="true"
+          style={{
+            fontSize: '1.15em',
+            display: 'block',
+            color: layoutStyles.fontColor,
+          }}
+        >
+          Education
+        </span>
+      </div>
+      {/* <Divider className="divider-section" /> */}
+      <div>
+        <DndContext
+          sensors={sensors}
+          onDragCancel={handleDragCancel}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={components}>
+            {components.map((child, index) => (
+              <div key={index}>
+                <SortableItem className="hello" key={index}>
+                  {child}
+                </SortableItem>
+              </div>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
     </div>
-    {/* <Divider className="divider-section" /> */}
-    <div>
-      <DndContext
-        sensors={sensors}
-        onDragCancel={handleDragCancel}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext items={components}>
-          {components.map((child, index) => (
-            <div key={index}>
-              <SortableItem className="hello" key={index}>
-                {child}
-              </SortableItem>
-            </div>
-          ))}
-        </SortableContext>
-      </DndContext>
-    </div>
-  </div>
   );
 };
 

@@ -11,21 +11,20 @@ const ContactInfoItem = ({ icon, text }) => (
   </div>
 );
 
-const InformationSection = ({ userInfo, templateType }) => {
-  const { name, email, phone, personalWebsite, address, linkedIn } = userInfo;
+const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
+  const { fullName, email, phone, personalWebsite, address, linkedIn } = userInfo;
 
   const isClassicalTemplate = templateType === 'classical';
+
   const isModernTemplate = templateType === 'modern';
 
   return (
-    
-  //   _     _                   _                                    
-  //   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___ 
-  //  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
-  //  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__ 
-  //  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
-                                                                         
-   
+    //   _     _                   _
+    //   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___
+    //  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
+    //  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__
+    //  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
+
     // <div
     //   className={`information-section-container mb-4 ${isClassicalTemplate ? 'text-center' : ''}`}
     // >
@@ -51,27 +50,29 @@ const InformationSection = ({ userInfo, templateType }) => {
     //     </div>
     //   </div>
     // </div>
-    <div className="pb-[20px]">
+    <div
+      className={`${isClassicalTemplate ? 'justify-center' : ''}`}
+      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
+    >
       <div
         className="flex flex-row items-end gap-4 pb-2"
         style={{ paddingLeft: '1.4cm', paddingRight: '1.4cm' }}
       >
         <div className="grow">
           <h1
-            className="font-bold text-center"
+            className={`${isClassicalTemplate ? 'text-center' : ''} font-bold`}
             style={{
-              color: 'rgb(0, 0, 0)',
               fontSize: '1.65em',
               fontFamily: 'Merriweather, serif',
               lineHeight: 'inherit',
+              color: layoutStyles.fontColor,
             }}
           >
-            {name}
+            {fullName}
           </h1>
           <div
-            className="pt-[2px] text-center false"
+            className={`${isClassicalTemplate ? 'text-center' : ''} pt-[2px] false`}
             style={{
-              color: 'rgb(46, 61, 80)',
               fontWeight: 300,
               fontSize: '0.75em',
             }}
@@ -89,10 +90,12 @@ const InformationSection = ({ userInfo, templateType }) => {
               {email}
             </span>
             <span className="inline-block mr-1">
-              <i className="mr-1">•</i>{phone}
+              <i className="mr-1">•</i>
+              {phone}
             </span>
             <span className="inline-block mr-1">
-              <i className="mr-1">•</i>{personalWebsite}
+              <i className="mr-1">•</i>
+              {personalWebsite}
             </span>
           </div>
         </div>

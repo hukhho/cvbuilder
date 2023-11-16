@@ -44,11 +44,14 @@ const Home = () => {
 
   return (
     <main>
-      <ConfigProvider theme={{
-        colorBgContainer: 'red',
-      }}>
+      <ConfigProvider
+        theme={{
+          colorBgContainer: 'red',
+        }}
+      >
+
         <UserLayout
-          selected='1'
+          selected="1"
           userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={
             <div className="container mx-auto px-4 py-6">

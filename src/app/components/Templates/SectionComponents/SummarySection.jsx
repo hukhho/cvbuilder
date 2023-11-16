@@ -1,25 +1,28 @@
 import { Divider, Typography } from 'antd';
 
-const SummarySection = ({ summary }) => {
+const SummarySection = ({ summary, templateType, layoutStyles }) => {
   return (
-    <div className="experience leading-snug relative group ">
+    <div
+      className="experience relative group"
+      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
+    >
       <div
         className="uppercase mb-[4px]   "
         style={{
           fontWeight: 600,
           padding: '0cm 1.4cm',
-          lineHeight: '1.35em',
         }}
       >
         <span
-          className="editableContent cursor-text designStudio section-header"
+          className={`editableContent cursor-text designStudio ${
+            templateType === 'classical' ? 'section-header' : ''
+          }`}
           id="experience-heading"
-          tabIndex={0}
           contentEditable="true"
           style={{
-            color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
+            color: layoutStyles.fontColor,
           }}
         >
           Summary
@@ -30,19 +33,15 @@ const SummarySection = ({ summary }) => {
         <div
           className="relative whitespace-pre-line cursor-text focus:outline-none"
           style={{
-            color: 'rgb(46, 61, 80)',
             fontWeight: 100,
             fontSize: '0.85em',
-            lineHeight: '1.6em',
             padding: '0cm 1.4cm',
           }}
         >
           <div className="relative">
             <p className="editableContent ghost-hightlight w-full designStudio ">
               <span>
-                <span className="">
-                  {summary}
-                </span>
+                <span className="">{summary}</span>
               </span>
             </p>
           </div>
