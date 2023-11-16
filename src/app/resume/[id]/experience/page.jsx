@@ -92,14 +92,13 @@ const Experience = ({ params }) => {
           content={
             <div className="flex h-screen ">
               <div className="flex flex-col p-4">
-                <div className="h-1/3">
+                <div style={{ height: '185px' }}>
                   <div style={{ maxHeight: '185px' }}>
                     <VideoComponent />
-                    12
                   </div>
                 </div>
-                <div className="h-3/4">
-                  <div style={{ maxWidth: '320px', marginTop: '20px', marginBottom: '20px' }}>
+                <div className="">
+                  <div style={{ width: '320px', marginTop: '20px', marginBottom: '20px' }}>
                     <div
                       style={{ maxWidth: '320px' }}
                       className="mb-8 p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex"

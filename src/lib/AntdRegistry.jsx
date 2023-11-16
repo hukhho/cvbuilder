@@ -5,6 +5,8 @@ import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import { useServerInsertedHTML } from 'next/navigation';
 import PropTypes from 'prop-types';
 
+import dynamic from 'next/dynamic';
+
 const StyledComponentsRegistry = ({ children }) => {
   const cache = createCache();
   useServerInsertedHTML(() => (

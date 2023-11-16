@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Input, notification, Row, Select } from 'antd';
 import DataService from '@/app/utils/dataService';
 import updateContact from './updateContactService';
 
@@ -8,6 +8,15 @@ import './select.css';
 import ButtonContact from './ButtonContact';
 
 const ContactForm = ({ cvId, onCreated, data }) => {
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Thong bao',
+      description: message,
+      placement,
+    });
+  };
+
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -37,18 +46,21 @@ const ContactForm = ({ cvId, onCreated, data }) => {
   const handleSubmit = async values => {
     try {
       const userId = 1;
+
       await updateContact(userId, values);
       form.resetFields();
       onCreated();
     } catch (error) {
+      openNotification('bottomRight', `Server hu roi bam cai gi: ${error}`);
+
       console.log('Submit. Error:', error);
     }
   };
-
   return (
     <div className="w-full">
+      {contextHolder}
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
-        <Row justify="start" gutter={[16, 16]}>
+        <Row justify="start" gutter={[16, 0]}>
           <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
               name="name"
@@ -64,11 +76,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             >
               <Input
                 style={{
-                  color: '#283E50',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: '550',
-                  lineHeight: '23.4px',
+                  marginTop: '-10px',
                 }}
                 class="inputEl contact-section inputEl st-current"
                 id="contact-section-form-0"
@@ -90,6 +98,9 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               }
             >
               <Input
+                style={{
+                  marginTop: '-10px',
+                }}
                 class="inputEl contact-section inputEl st-current"
                 id="contact-section-form-1"
                 placeholder="charlesbloomberg@wisc.edu"
@@ -111,6 +122,9 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               }
             >
               <Input
+                style={{
+                  marginTop: '-10px',
+                }}
                 class="inputEl contact-section inputEl st-current"
                 id="contact-section-form-2"
                 placeholder="(621) 799-5548"
@@ -132,6 +146,9 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               }
             >
               <Input
+                style={{
+                  marginTop: '-10px',
+                }}
                 class="inputEl contact-section inputEl st-current"
                 id="contact-section-form-3"
                 placeholder="in/cbloomberg"
@@ -153,6 +170,9 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               }
             >
               <Input
+                style={{
+                  marginTop: '-10px',
+                }}
                 class="inputEl contact-section inputEl st-current"
                 id="contact-section-form-4"
                 placeholder="https://www.charlesbloomberg.com"
@@ -174,6 +194,9 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               }
             >
               <Input
+                style={{
+                  marginTop: '-10px',
+                }}
                 class="inputEl contact-section inputEl st-current"
                 id="contact-section-form-4"
                 placeholder="Ho Chi Minh City"
@@ -182,22 +205,26 @@ const ContactForm = ({ cvId, onCreated, data }) => {
           </Col>
         </Row>
         <Row justify="start">
+          <Col style={{ maxWidth: 602 }} span={12}>
+            <Form.Item>
+              <div className="form-submit-wrapper">
+                <button
+                  style={{ width: '592px', height: '50px' }}
+                  href=""
+                  data-size="large"
+                  data-theme="default"
+                  data-busy="false"
+                  class='contact-section form[data-theme="basic"] button'
+                  id="contact-section-save-to-list"
+                  type="submit"
+                >
+                  Save basic info
+                </button>
+              </div>
+            </Form.Item>
+          </Col>
           <Col>
-            <div className="form-submit-wrapper">
-              <button
-                href=""
-                data-size="large"
-                data-theme="default"
-                data-busy="false"
-                class='contact-section form[data-theme="basic"] button'
-                id="contact-section-save-to-list"
-                type="submit"
-              >
-                Save basic info
-              </button>
-            </div>
-
-            <Button
+            {/* <Button
               htmlType="submit"
               className="form-button  w-[769.22px] h-[47.86px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
               style={{
@@ -210,7 +237,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
                 SAVE BASIC INFO
               </div>
-            </Button>
+            </Button> */}
           </Col>
         </Row>
       </Form>

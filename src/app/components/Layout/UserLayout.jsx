@@ -5,6 +5,7 @@ import {
   AppstoreOutlined,
   BarChartOutlined,
   CloudOutlined,
+  FileDoneOutlined,
   ShopOutlined,
   TeamOutlined,
   UploadOutlined,
@@ -13,49 +14,64 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, ConfigProvider, Layout, Menu, Space, theme, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoins, faFile, faFileAlt, faFileCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCoins,
+  faFile,
+  faFileAlt,
+  faFileCircleCheck,
+  faFileClipboard,
+} from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 import './sidebar.css';
 import AiToken from './AIToken';
-import CanvasGradient from '@/app/testlayout/CanvasGradient';
+import dynamic from 'next/dynamic';
+// Dynamically import CanvasGradient with ssr: false
+const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), {
+  ssr: false,
+});
 
-const { Title, Paragraph, Text, Link } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const items = [
   {
     key: '1',
-    icon: <FontAwesomeIcon icon={faFile} style={{ background: '#3c2e8d', fill: '#fff' }} />, // fad fa-file
+    icon: (
+      <FontAwesomeIcon
+        icon={faFile}
+        style={{ fontSize: '16.8px', background: 'transparent', fill: '#ffffff' }}
+      />
+    ),
     label: (
-      <a href="/resume" rel="noopener noreferrer">
+      <Link href="/resume">
         <span style={{ color: '#ffffff', fontSize: 11 }}>MY DASHBOARD</span>
-      </a>
+      </Link>
     ),
   },
   {
     key: '2',
-    icon: <FontAwesomeIcon icon={faFileAlt} style={{ background: '#3c2e8d', fill: '#fff' }} />, // fad fa-file
+    icon: (
+      <FontAwesomeIcon
+        icon={faFileAlt}
+        style={{ fontSize: '16.8px', background: 'transparent', fill: '#fff' }}
+      />
+    ), // fad fa-file
     label: (
-      <a href="/review/new" rel="noopener noreferrer">
-        <span style={{ color: '#ffffff', fontSize: 11 }}>SAMPLE LIBRARY</span>
-      </a>
+      <Link href="/review/new">
+        <span style={{ color: '#ffffff', fontSize: 11 }}>SAMPLE LIBRARY </span>
+      </Link>
     ),
   },
   {
     key: '3',
-    icon: (
-      <FontAwesomeIcon
-        icon={faFileCircleCheck}
-        style={{ background: '#3c2e8d', fill: '#ffffff' }}
-      />
-    ), // fad fa-file
+    icon: <FileDoneOutlined />, // fad fa-file
     label: (
-      <a href="/review/new" rel="noopener noreferrer">
+      <Link href="/review/new">
         <span style={{ color: '#ffffff', fontSize: 11 }}>REVIEW MY RESUME</span>
-      </a>
+      </Link>
     ),
-    href: '/my-dashboard',
   },
   // {
   //   key: '4',
@@ -90,11 +106,15 @@ const styles = {
     backgroundImage: `linear-gradient(61.63deg, ${COLORS.Primary} 0%, ${COLORS.Secondary} 50%, ${COLORS.Three} 100%)`,
   },
 };
-const UserLayout = ({ userHeader, content, selected }) => {
+const UserLayout = React.memo(({ userHeader, content, selected }) => {
   console.log('selected', selected);
   const {
-    token: { colorBgContainer },
+    token: { colorPrimary, borderRadius, colorBgContainer },
   } = theme.useToken();
+  // Log the extracted values for debugging
+  console.log('colorPrimary:', colorPrimary);
+  console.log('borderRadius:', borderRadius);
+  console.log('colorBgContainer:', colorBgContainer);
   return (
     <ConfigProvider
       theme={{
@@ -106,18 +126,17 @@ const UserLayout = ({ userHeader, content, selected }) => {
           },
         },
         token: {
-          // Seed Token
-          colorPrimary: '#fbfbfb',
-          borderRadius: 2,
-          colorBgContainer: '#fbfbfb',
+          colorPrimary,
+          borderRadius,
+          colorBgContainer,
         },
       }}
     >
-      <Layout hasSider>
+      <Layout style={{ background: colorBgContainer }} hasSider>
         <Sider
           width="280px"
           style={{
-            // backgroundColor: '#3C2E8D',
+            backgroundColor: COLORS.Primary,
             overflow: 'hidden',
             height: '100vh',
             position: 'fixed',
@@ -141,29 +160,7 @@ const UserLayout = ({ userHeader, content, selected }) => {
               ]}
             />
           </div>
-          <div className="demo-logo-vertical" />
-          <svg
-            style={{
-              width: '80px',
-              height: '80px',
-              marginLeft: 40,
-            }}
-            xmlns="https://www.w3.org/2000/svg"
-            viewBox="0 0 389 185"
-            className="src-components-Sidebar--tdHjSULsyBY="
-          >
-            <path
-              fill="#48c9b0"
-              d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z"
-            />
-            <path
-              fill="#16a085"
-              d="M37.6 46.7 0 36.9l1-1h36.6zm53.5-10.8H80.2L89.5 0H91zm37.1 91 .8.8-37.9 10.1V127h37.1z"
-            />
-            <g fill="#fff">
-              <path d="M242.1 134.3h-26.7l-20.2-31.7h-.2v31.7h-21.4V51.8h32c16.3 0 28.7 7.8 28.7 25.4 0 11.4-6.3 21.2-18.1 23.3zm-47.2-45.5h2.1c7 0 14.9-1.3 14.9-10.3S204 68.2 197 68.2h-2.1zM302.4 109.6h-41.9c0 8.1 4.3 12.5 12.5 12.5 4.3 0 7.3-1.4 9.5-5.1h19.1c-3.2 13.2-15.8 19.3-28.5 19.3-18.6 0-32.5-10.5-32.5-29.9 0-18.7 12.8-30 31.1-30 19.5 0 30.7 12 30.7 31.2zm-18.5-11.5c-1-5.4-5.9-8.9-11.3-8.9-5.8 0-10.6 3.1-11.8 8.9zM359.9 117.8v16.5H303l26.4-39.6h-22.9V78.2h56l-26.3 39.6zM388.2 56.6c0 6.1-5 11.2-11.2 11.2s-11.2-5-11.2-11.2c0-6.1 5-11.2 11.2-11.2s11.2 5.1 11.2 11.2zm-1.2 77.7h-19.9V78.2H387z" />
-            </g>
-          </svg>
+
           <Space
             direction="vertical"
             size="middle"
@@ -175,11 +172,48 @@ const UserLayout = ({ userHeader, content, selected }) => {
               bottom: 0,
             }}
           >
+            <div style={{ width: '208px', marginTop: '19px' }}>
+              <svg
+                style={{
+                  width: '80px',
+                  height: '80px',
+                }}
+                xmlns="https://www.w3.org/2000/svg"
+                viewBox="0 0 389 185"
+                className="src-components-Sidebar--tdHjSULsyBY="
+              >
+                <path
+                  fill="#48c9b0"
+                  d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z"
+                />
+                <path
+                  fill="#16a085"
+                  d="M37.6 46.7 0 36.9l1-1h36.6zm53.5-10.8H80.2L89.5 0H91zm37.1 91 .8.8-37.9 10.1V127h37.1z"
+                />
+                <g fill="#fff">
+                  <path d="M242.1 134.3h-26.7l-20.2-31.7h-.2v31.7h-21.4V51.8h32c16.3 0 28.7 7.8 28.7 25.4 0 11.4-6.3 21.2-18.1 23.3zm-47.2-45.5h2.1c7 0 14.9-1.3 14.9-10.3S204 68.2 197 68.2h-2.1zM302.4 109.6h-41.9c0 8.1 4.3 12.5 12.5 12.5 4.3 0 7.3-1.4 9.5-5.1h19.1c-3.2 13.2-15.8 19.3-28.5 19.3-18.6 0-32.5-10.5-32.5-29.9 0-18.7 12.8-30 31.1-30 19.5 0 30.7 12 30.7 31.2zm-18.5-11.5c-1-5.4-5.9-8.9-11.3-8.9-5.8 0-10.6 3.1-11.8 8.9zM359.9 117.8v16.5H303l26.4-39.6h-22.9V78.2h56l-26.3 39.6zM388.2 56.6c0 6.1-5 11.2-11.2 11.2s-11.2-5-11.2-11.2c0-6.1 5-11.2 11.2-11.2s11.2 5.1 11.2 11.2zm-1.2 77.7h-19.9V78.2H387z" />
+                </g>
+              </svg>
+            </div>
+          </Space>
+          <Space
+            direction="vertical"
+            size="middle"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              left: 0,
+              bottom: 0,
+              marginTop: -15,
+            }}
+          >
             <CreateResume />
           </Space>
           <Menu
             style={{
-              marginTop: '36px',
+              marginTop: '26px',
+              marginLeft: '10px',
               iconSize: 59,
               backgroundColor: 'transparent',
               color: '#ffffff',
@@ -193,36 +227,7 @@ const UserLayout = ({ userHeader, content, selected }) => {
             defaultSelectedKeys={[selected]}
             items={items}
           />
-          {/* 
-        <nav className="nav">
-          <a
-            id="my-resumes"
-            aria-current="page"
-            className="side-bar-nav nav-item button-nav active"
-            href="/dashboard/resumes"
-            target=""
-          >
-            <i className="fad fa-file src-components-IconButton--V-yuP6X940M=" aria-hidden="true" />
-            <div className="src-components-IconButton--Ru0PkId2mxI=" />
-            <span className="icon-button-label st-current">My dashboard</span>
-          </a>
-         
-        </nav> */}
-          <div className="flex justify-center items-center mt-8">
-            <div className="w-36 h-8 pl-2 pr-24 py-2 bg-white bg-opacity-40 rounded-md justify-between items-start flex">
-              <div className="whitespace-nowrap text-left text-white text-xs font-black font-['Source Sans Pro'] uppercase leading-3">
-                AI Credits
-              </div>
-              <div className="pr-2 flex ml-4">
-                <div className="text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3">
-                  3,096
-                </div>
-                <div className="ml-1 text-white text-xs font-black font-['Font Awesome 5 Free'] uppercase leading-3">
-                  <FontAwesomeIcon icon={faCoins} />{' '}
-                </div>
-              </div>
-            </div>
-          </div>
+
           <Space
             direction="vertical"
             size="middle"
@@ -234,88 +239,79 @@ const UserLayout = ({ userHeader, content, selected }) => {
               bottom: 0,
             }}
           >
-            {/* <div style={{ marginTop: 20, display: 'flex', alignItems: 'center' }}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    color: 'yellow',
-                  }}
-                >
-                  Get hired fast
-                </span>
-                <span style={{ fontSize: '10px', color: 'white' }}>Unlock all future in under</span>
+            <div
+              className="flex justify-center items-center"
+              style={{
+                marginTop: '19px',
+                fontFamily: 'Source Sans Pro',
+                fontWeight: 'bold',
+                fontSize: '11.2',
+              }}
+            >
+              <div
+                className="pl-2  py-2 bg-white bg-opacity-40 rounded-md justify-between items-start flex"
+                style={{ width: '208px' }}
+              >
+                <div className="whitespace-nowrap text-left text-white text-xs font-black  uppercase leading-3">
+                  AI Credits
+                </div>
+                <div className="pr-2 flex ml-4">
+                  <div className="text-white text-xs font-bold uppercase leading-3">3,096</div>
+                  <div className="ml-1 text-white text-xs font-black font-['Font Awesome 5 Free'] uppercase leading-3">
+                    <FontAwesomeIcon icon={faCoins} />{' '}
+                  </div>
+                </div>
               </div>
-              <Button
-                type="primary"
-                style={{
-                  fontSize: '12px',
-                  padding: '4px 8px',
-                  fontWeight: 'bold',
-                  marginLeft: '10px',
-                }}
-              >
-                UPGRADE
-              </Button>
-            </div> */}
-
-            {/* <Link href="/login">
-              <Text
-                strong
-                style={{
-                  marginTop: 40,
-                  color: 'white',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                LOGOUT
-              </Text>
-            </Link> */}
+            </div>
           </Space>
+
+          <Space
+            direction="vertical"
+            size="middle"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              left: 0,
+              bottom: 0,
+            }}
+          />
         </Sider>
 
         <Layout
           className="site-layout"
           style={{
-            marginLeft: 300,
-            background: '#fbfbfb',
+            marginLeft: 350,
+            background: colorBgContainer,
           }}
         >
           <Header
             style={{
               marginTop: '40px',
-              padding: 10,
-              paddingLeft: 60,
-              background: '#fbfbfb',
-              backgroundColor: '#fbfbfb',
+              padding: 0,
+              paddingLeft: 0,
+              background: colorBgContainer,
             }}
           >
             {userHeader}
-            {/* <UserHeader /> */}
           </Header>
-
           <Content
             style={{
-              margin: '24px 16px 0',
+              margin: '0 0 0 0',
               minHeight: '100vh',
               overflow: 'initial',
-              background: '#fbfbfb',
-              backgroundColor: '#fbfbfb',
             }}
           >
             <div
               style={{
-                padding: 24,
-                textAlign: 'center',
-                background: '#fbfbfb',
+                textAlign: 'left',
+                background: colorBgContainer,
               }}
             >
               {content}
             </div>
           </Content>
+
           {/* <Footer
           style={{
             textAlign: 'center',
@@ -327,5 +323,15 @@ const UserLayout = ({ userHeader, content, selected }) => {
       </Layout>
     </ConfigProvider>
   );
-};
+});
+
+// const UserLayout = ({ userHeader, content, selected }) => {
+//   console.log('selected', selected);
+//   const {
+//     token: { colorBgContainer },
+//   } = theme.useToken();
+//   return (
+
+//   );
+// };
 export default UserLayout;

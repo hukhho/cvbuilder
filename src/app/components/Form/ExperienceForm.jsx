@@ -2,7 +2,7 @@
 
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
-import { Button, Form, Input, InputNumber, Switch, Typography } from 'antd';
+import { Button, Form, Input, InputNumber, Space, Switch, Typography } from 'antd';
 import moment from 'moment';
 import './test.css';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
@@ -10,6 +10,7 @@ import TextArea from 'antd/es/input/TextArea';
 import './date.css';
 import { format, parse } from 'date-fns';
 import { lobster } from '@/app/font';
+import { Box } from '@chakra-ui/react';
 const { RangePicker } = DatePicker;
 
 const stylesInput = {
@@ -101,6 +102,11 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     }
   }, [experience, form]);
 
+  const handleTextareaInput = event => {
+    const textarea = event.target;
+    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
+    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
+  };
   const handleSubmit = async values => {
     try {
       values.description = inputValue;
@@ -205,21 +211,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   };
 
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button
-      style={{
-        width: '180.22px',
-        height: '55.19px',
-        marginLeft: '20px',
-        fontSize: '16px',
-        fontWeight: '600',
-        fontFamily: 'Source Sans Pro, sans-serif',
-        textAlign: 'left', // Set text alignment to left
-      }}
-      onClick={onClick}
-      ref={ref}
-    >
-      Present
-    </button>
+    <input className="inputEl" onClick={onClick} ref={ref} value="Present"></input>
   ));
 
   return (
@@ -227,18 +219,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       {/* <h1 style={{ fontFamily: "'Dancing Script', 'Helvetica Neue', cursive" }}>
         This is a test heading
       </h1> */}
-      <input
-        style={{
-          color: '#283E50',
-          fontSize: '16px',
-          fontStyle: 'normal',
-          fontWeight: '600',
-          lineHeight: '23.4px',
-        }}
-        class="inputEl experience-section inputEl st-current"
-        id="experience-section-form-0"
-        placeholder="Marketing Analyst"
-      />
+
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="role"
@@ -274,28 +255,22 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           }
         >
           <Input
-            style={{
-              color: '#283E50',
-              fontSize: '16px',
-              fontStyle: 'normal',
-              fontWeight: '600',
-              lineHeight: '23.4px',
-            }}
+            style={{}}
             class="inputEl experience-section inputEl st-current"
             id="experience-section-form-1"
             placeholder="Google"
           />
           {/* <Input style={stylesInput} placeholder="Google" /> */}
         </Form.Item>
-
         <Form.Item name="startDate" hidden>
           <Input type="hidden" />
         </Form.Item>
         <Form.Item name="endDate" hidden>
           <Input type="hidden" />
         </Form.Item>
-        <div className="flex">
+        <Space.Compact block>
           <Form.Item
+          style={{ width: '50%'}}
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
@@ -304,8 +279,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               </label>
             }
           >
-            <div className="flex">
-              <div style={stylesInput1}>
+            <Space align="center">
+              <div className="datepicker" style={{ marginLeft: '10px' }}>
                 <DatePicker
                   wrapperClassName=""
                   dateFormat="MMMM yyyy"
@@ -315,17 +290,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                   placeholderText={format(new Date(), 'MMMM yyyy')}
                 />
               </div>
-              <div
-                style={{
-                  width: '18px',
-                  height: '55px',
-                }}
-                class="flex items-center justify-center bold"
-              >
-                -
-              </div>
-
-              <div style={stylesInput1}>
+              <div style={{ marginLeft: -20 }}>-</div>
+              <div style={{}}>
                 <DatePicker
                   dateFormat="MMMM yyyy"
                   selected={isCurrentlyWorking ? new Date() : endDate}
@@ -335,22 +301,14 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                   customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
                   placeholderText={format(new Date(), 'MMMM yyyy')}
                 />
-
-                {/* <DatePicker
-                  wrapperClassName=""
-                  dateFormat={"MMMM yyyy"}
-                  selected={endDate}
-                  showMonthYearPicker 
-                  onChange={handleEndDateChange}
-                  calendarContainer={MyContainer}
-                /> */}
               </div>
-            </div>
+            </Space>
+            <Box className="flex datepicker relative"></Box>
           </Form.Item>
 
           <Form.Item
             name="location"
-            style={{ marginLeft: 20 }}
+            style={{ width: '50%'}}
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
@@ -359,9 +317,14 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               </label>
             }
           >
-            <Input style={stylesInput2} placeholder="NewYork, NY" />
+            <Input
+              style={{}}
+              class="inputEl experience-section inputEl st-current"
+              id="experience-section-form-1"
+              placeholder="New York, NY"
+            />{' '}
           </Form.Item>
-        </div>
+        </Space.Compact>
 
         <Form.Item
           name="description"
@@ -375,6 +338,28 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           }
         >
           <textarea
+            className="inputEl undefined src-components-Form-Field--Es8ORQL2ofo= "
+            id="experience-section-form-4"
+            aria-label="**What did you do** at the company?"
+            rows={5}
+            placeholder="• Organised and implemented Google Analytics data tracking campaigns to maximize the effectiveness of email remarketing initiatives that were deployed using Salesforce's marketing cloud software."
+            name="description"
+            style={{
+              fontWeight: '400',
+              background: 'white',
+              height: 120,
+              height: 'auto',
+              overflow: 'hidden',
+              resize: 'none',
+            }}
+            ref={inputRef}
+            onKeyPress={handleKeyPress}
+            onChange={handleInputChange}
+            onInput={handleTextareaInput}
+            value={inputValue}
+          />
+
+          {/* <textarea
             className="inputEl text-area"
             style={stylesInput4}
             placeholder="• Organized and implemented Google Analytics data tracking campaigns to maximize the effectiveness of email remarketing initiatives that were deployed using Salesforce's marketing cloud software."
@@ -383,7 +368,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             onChange={handleInputChange}
             value={inputValue}
             contentEditable="true"
-          />
+          /> */}
           <Input type="hidden" value={inputValue} />
           {/* <Input
             className="inputEl"

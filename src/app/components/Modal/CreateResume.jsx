@@ -31,8 +31,9 @@ export default function MyModal() {
 
   return (
     <>
-      <div className=" inset-0 flex items-center justify-center">
+      <div className="inset-0 flex items-center justify-center">
         <button
+          style={{width: '208px'}}
           href=""
           data-size="default"
           data-theme="default"
