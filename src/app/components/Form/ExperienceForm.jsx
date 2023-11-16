@@ -215,7 +215,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   ));
 
   return (
-    <div className="">
+    <div className="" style={{ width: '842px' }}>
       {/* <h1 style={{ fontFamily: "'Dancing Script', 'Helvetica Neue', cursive" }}>
         This is a test heading
       </h1> */}
@@ -269,61 +269,63 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           <Input type="hidden" />
         </Form.Item>
         <Space.Compact block>
-          <Form.Item
-          style={{ width: '50%'}}
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  <strong>WHERE</strong> WAS THE COMPANY LOCATED?
-                </span>
-              </label>
-            }
-          >
-            <Space align="center">
-              <div className="datepicker" style={{ marginLeft: '10px' }}>
-                <DatePicker
-                  wrapperClassName=""
-                  dateFormat="MMMM yyyy"
-                  showMonthYearPicker
-                  selected={startDate}
-                  onChange={date => setStartDate(date)}
-                  placeholderText={format(new Date(), 'MMMM yyyy')}
-                />
-              </div>
-              <div style={{ marginLeft: -20 }}>-</div>
-              <div style={{}}>
-                <DatePicker
-                  dateFormat="MMMM yyyy"
-                  selected={isCurrentlyWorking ? new Date() : endDate}
-                  showMonthYearPicker
-                  calendarContainer={MyContainer}
-                  onChange={date => setEndDate(date)}
-                  customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
-                  placeholderText={format(new Date(), 'MMMM yyyy')}
-                />
-              </div>
-            </Space>
-            <Box className="flex datepicker relative"></Box>
-          </Form.Item>
-
-          <Form.Item
-            name="location"
-            style={{ width: '50%'}}
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  <strong>WHERE</strong> WAS THE COMPANY LOCATED?
-                </span>
-              </label>
-            }
-          >
-            <Input
-              style={{}}
-              class="inputEl experience-section inputEl st-current"
-              id="experience-section-form-1"
-              placeholder="New York, NY"
-            />{' '}
-          </Form.Item>
+          <div style={{ width: '50%' }}>
+            {' '}
+            <Form.Item
+              label={
+                <label style={{}}>
+                  <span className="custom-text whitespace-nowrap">
+                    <strong>WHERE</strong> WAS THE COMPANY LOCATED?
+                  </span>
+                </label>
+              }
+            >
+              <Space align="center">
+                <div className="datepicker" style={{ marginLeft: '10px', minWidth: '197px' }}>
+                  <DatePicker
+                    wrapperClassName=""
+                    dateFormat="MMMM yyyy"
+                    showMonthYearPicker
+                    selected={startDate}
+                    onChange={date => setStartDate(date)}
+                    placeholderText={format(new Date(), 'MMMM yyyy')}
+                  />
+                </div>
+                <div style={{ marginLeft: -20 }}>-</div>
+                <div style={{ minWidth: '197px' }}>
+                  <DatePicker
+                    dateFormat="MMMM yyyy"
+                    selected={isCurrentlyWorking ? new Date() : endDate}
+                    showMonthYearPicker
+                    calendarContainer={MyContainer}
+                    onChange={date => setEndDate(date)}
+                    customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
+                    placeholderText={format(new Date(), 'MMMM yyyy')}
+                  />
+                </div>
+              </Space>
+              <Box className="flex datepicker relative"></Box>
+            </Form.Item>
+          </div>
+          <div style={{ width: '50%' }}>
+            <Form.Item
+              name="location"
+              label={
+                <label style={{}}>
+                  <span className="custom-text whitespace-nowrap">
+                    <strong>WHERE</strong> WAS THE COMPANY LOCATED?
+                  </span>
+                </label>
+              }
+            >
+              <Input
+                style={{}}
+                class="inputEl experience-section inputEl st-current"
+                id="experience-section-form-1"
+                placeholder="New York, NY"
+              />{' '}
+            </Form.Item>
+          </div>
         </Space.Compact>
 
         <Form.Item
