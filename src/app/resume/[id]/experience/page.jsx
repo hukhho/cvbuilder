@@ -107,14 +107,12 @@ const Experience = ({ params }) => {
                         <div className="left-0 top-[1.47px] text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
                           Your Experiences
                         </div>
-                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ">
-                          <button>
+                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 "> 
                             <FontAwesomeIcon
                               icon={faCaretDown}
                               className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
                               onClick={handleDownButton}
                             />
-                          </button>
                         </div>
                       </div>
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import { useServerInsertedHTML } from 'next/navigation';
 import PropTypes from 'prop-types';
-
+import '../app/styles/globals.css';
 import dynamic from 'next/dynamic';
 
 const StyledComponentsRegistry = ({ children }) => {

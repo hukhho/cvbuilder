@@ -46,15 +46,22 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
   };
 
   return (
-    <div className="w-2/3">
+    <div className="" style={{ width: '912.05px' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="summary"
           label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                WRITE A PROFESSIONAL <strong>SUMMARY</strong>
-              </span>
+            <label
+              style={{}}
+              class="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+              for="summary-section-form-0"
+            >
+              <div class="flex gap-2 items-center">
+                <span>
+                  Write a professional <strong>summary</strong>
+                </span>
+              </div>
+              <div id="summary-section-form-0-portal-root" />
             </label>
           }
         >
@@ -80,30 +87,30 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
 
           {/* <Input style={stylesInput} placeholder="Project Management Professional (PMP)" /> */}
         </Form.Item>
-        <button
+        <div style={{}}>
+          <button
+            href=""
+            data-size="large"
+            data-theme="default"
+            data-busy="false"
+            class="summary-section button"
+            id="summary-section-save-to-list"
+            type="submit"
+          >
+            Save summary info
+          </button>
+        </div>
+
+        {/* <Button
+          htmlType="submit"
           href=""
           data-size="large"
           data-theme="default"
           data-busy="false"
           class="summary-section button"
           id="summary-section-save-to-list"
-          type="submit"
         >
-          Save summary info
-        </button>
-        {/* <Button
-          htmlType="submit"
-          className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
-          style={{
-            width: '769.22px',
-            height: '47.86px',
-            backgroundColor: 'rgb(77, 112, 235)',
-            color: 'white',
-          }}
-        >
-          <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
             SAVE SUMMARY INFO
-          </div>
         </Button> */}
       </Form>
     </div>

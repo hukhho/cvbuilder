@@ -4,7 +4,7 @@
 // import UserHeader from './components/Header/UserHeader';
 import Head from 'next/head';
 import StyledComponentsRegistry from '../lib/AntdRegistry';
-import './styles/globals.css';
+// import './styles/globals.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Script from 'next/script';

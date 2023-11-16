@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './aitoken.css';
 
 export default function AiToken({ numberToken }) {
   return (

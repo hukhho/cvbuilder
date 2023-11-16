@@ -92,7 +92,11 @@ a {
 [hidden] {
   display: none !important;
 }
-
+@layer base {
+  button[type='submit'] {
+    background-color: var(--color-primary);
+  }
+}
 @layer components {
   /* input[type="text"],
   .inputEl {
