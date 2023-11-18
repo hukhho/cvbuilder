@@ -109,15 +109,13 @@ const Experience = ({ params }) => {
                 >
                   <span className="block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
                     Your Experiences
-                    <i
-                      className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 fas fa-caret-down "
-                      id="react-collapsed-toggle-:r5:"
-                      aria-controls="react-collapsed-panel-:r5:"
-                      aria-expanded="true"
-                      role="button"
-                      tabindex="0"
-                      aria-hidden="true"
-                    ></i>
+                    <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ">
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                        onClick={handleDownButton}
+                      />
+                    </div>
                   </span>
                   <div>
                     {selectedExperience && (
