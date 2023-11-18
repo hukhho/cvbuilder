@@ -75,7 +75,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                 style={{
                   marginTop: '-10px',
                 }}
-                class="inputEl contact-section inputEl st-current"
+                className="inputEl contact-section inputEl st-current"
                 id="contact-section-form-0"
                 placeholder="Charles Bloomberg"
               />
@@ -98,7 +98,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                 style={{
                   marginTop: '-10px',
                 }}
-                class="inputEl contact-section inputEl st-current"
+                className="inputEl contact-section inputEl st-current"
                 id="contact-section-form-1"
                 placeholder="charlesbloomberg@wisc.edu"
               />
@@ -122,7 +122,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                 style={{
                   marginTop: '-10px',
                 }}
-                class="inputEl contact-section inputEl st-current"
+                className="inputEl contact-section inputEl st-current"
                 id="contact-section-form-2"
                 placeholder="(621) 799-5548"
               />
@@ -146,7 +146,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                 style={{
                   marginTop: '-10px',
                 }}
-                class="inputEl contact-section inputEl st-current"
+                className="inputEl contact-section inputEl st-current"
                 id="contact-section-form-3"
                 placeholder="in/cbloomberg"
               />
@@ -159,8 +159,8 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                   <div className="flex gap-2 items-center text-xs">
-                    <span class="st-current">
-                      <strong class="">Personal website</strong> or relevant link
+                    <span className="st-current">
+                      <strong className="">Personal website</strong> or relevant link
                     </span>
                   </div>
                 </label>
@@ -170,7 +170,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                 style={{
                   marginTop: '-10px',
                 }}
-                class="inputEl contact-section inputEl st-current"
+                className="inputEl contact-section inputEl st-current"
                 id="contact-section-form-4"
                 placeholder="https://www.charlesbloomberg.com"
               />
@@ -183,7 +183,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                   <div className="flex gap-2 items-center text-xs">
-                    <span class="st-current">
+                    <span className="st-current">
                       <strong>CITY/PROVINCE</strong>
                     </span>
                   </div>
@@ -194,7 +194,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                 style={{
                   marginTop: '-10px',
                 }}
-                class="inputEl contact-section inputEl st-current"
+                className="inputEl contact-section inputEl st-current"
                 id="contact-section-form-4"
                 placeholder="Ho Chi Minh City"
               />
@@ -211,7 +211,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                   data-size="large"
                   data-theme="default"
                   data-busy="false"
-                  class='contact-section form[data-theme="basic"] button'
+                  className='contact-section form[data-theme="basic"] button'
                   id="contact-section-save-to-list"
                   type="submit"
                 >

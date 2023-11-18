@@ -274,7 +274,7 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
       )}
 
       {isShowContent && (
-        <div class="relative mt-10 border-2 border-gray-300 rounded-md">
+        <div className="relative mt-10 border-2 border-gray-300 rounded-md">
           <div>
             <Button
               style={{

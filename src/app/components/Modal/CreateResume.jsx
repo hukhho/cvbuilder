@@ -75,11 +75,11 @@ export default function MyModal({ onCreated }) {
           data-size="default"
           data-theme="default"
           data-busy="false"
-          class="cta-button button cta "
+          className="cta-button button cta "
           id="navi-create-new-resume"
           onClick={openModal}
         >
-          <i class="fad fa-file-plus" aria-hidden="true" />
+          <i className="fad fa-file-plus" aria-hidden="true" />
           <span>Create new resume</span>
         </button>
       </div>
@@ -114,8 +114,8 @@ export default function MyModal({ onCreated }) {
                     as="h2"
                     className="w-full flex leading-7 text-xl font-semibold bg-slate-50 rounded-t-lg text-gray-900 items-center px-6 py-5 border-b border-slate-200"
                   >
-                    <div class="grow font-semibold">Create a resume</div>
-                    <i class="fal fa-times cursor-pointer" aria-hidden="true" />
+                    <div className="grow font-semibold">Create a resume</div>
+                    <i className="fal fa-times cursor-pointer" aria-hidden="true" />
                   </Dialog.Title>
                   <div className="p-6">
                     <form onSubmit={handleFormSubmit}>

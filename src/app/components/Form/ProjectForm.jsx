@@ -235,7 +235,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
         >
           <Input
             style={{}}
-            class="inputEl experience-section inputEl st-current"
+            className="inputEl experience-section inputEl st-current"
             id="project-section-form-0"
             placeholder="Volunteer"
           />
@@ -252,7 +252,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
         >
           <Input
             style={{}}
-            class="inputEl experience-section inputEl st-current"
+            className="inputEl experience-section inputEl st-current"
             id="project-section-form-1"
             placeholder="Habitat for Humanity"
           />
@@ -316,7 +316,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
             >
               <Input
                 style={{}}
-                class="inputEl experience-section inputEl st-current"
+                className="inputEl experience-section inputEl st-current"
                 id="experience-section-form-1"
                 placeholder="New York, NY"
               />{' '}
@@ -368,7 +368,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
           data-size="large"
           data-theme="default"
           data-busy="false"
-          class="projects-section button "
+          className="projects-section button "
           id="projects-section-save-to-list"
           type="submit"
         >

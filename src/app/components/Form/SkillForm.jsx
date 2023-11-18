@@ -88,7 +88,7 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
           data-size="large"
           data-theme="default"
           data-busy="false"
-          class="skills-section form-submit button "
+          className="skills-section form-submit button "
           id="skills-section-save-to-list"
           type=""
           on

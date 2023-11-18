@@ -63,11 +63,11 @@ const StandarList = ({ data, onDelete, onEdit, selectedExperience, cvId, title, 
     >
       <div className="flex-col justify-start items-start  flex">
         <div className="self-stretch justify-start items-start inline-flex">
-          <div class="flex flex-col" style={{ textAlign: 'left' }}>
-            <span class="block max-w-full whitespace-no-wrap overflow-hidden text-ellipsis">
+          <div className="flex flex-col" style={{ textAlign: 'left' }}>
+            <span className="block max-w-full whitespace-no-wrap overflow-hidden text-ellipsis">
               {title}
             </span>
-            <span class="block max-w-full whitespace-no-wrap overflow-hidden text-ellipsis opacity-80">
+            <span className="block max-w-full whitespace-no-wrap overflow-hidden text-ellipsis opacity-80">
               {subtitle}
             </span>
           </div>

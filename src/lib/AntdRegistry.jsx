@@ -14,6 +14,7 @@ const StyledComponentsRegistry = ({ children }) => {
   const cache = createCache();
   const { isLoading } = useAuth0();
 
+  // Use useServerInsertedHTML only on the server side
   useServerInsertedHTML(() => (
     <style id="antd" dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }} />
   ));

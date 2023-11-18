@@ -234,7 +234,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
         >
           <Input
             style={{}}
-            class="inputEl experience-section inputEl st-current"
+            className="inputEl experience-section inputEl st-current"
             id="experience-section-form-1"
             placeholder="Selected Member"
           />
@@ -251,7 +251,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
         >
           <Input
             style={{}}
-            class="inputEl experience-section inputEl st-current"
+            className="inputEl experience-section inputEl st-current"
             id="experience-section-form-1"
             placeholder="Economics Student Association"
           />
@@ -309,7 +309,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
             >
               <Input
                 style={{}}
-                class="inputEl experience-section inputEl st-current"
+                className="inputEl experience-section inputEl st-current"
                 id="experience-section-form-1"
                 placeholder="University of Wisconsin, Madison"
               />{' '}
@@ -356,7 +356,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
           data-size="large"
           data-theme="default"
           data-busy="false"
-          class="involvement-section button "
+          className="involvement-section button "
           id="involvement-section-save-to-list"
           type="submit"
         >

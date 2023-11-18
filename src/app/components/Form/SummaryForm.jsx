@@ -53,10 +53,10 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
           label={
             <label
               style={{}}
-              class="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+              className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
               for="summary-section-form-0"
             >
-              <div class="flex gap-2 items-center">
+              <div className="flex gap-2 items-center">
                 <span>
                   Write a professional <strong>summary</strong>
                 </span>
@@ -93,7 +93,7 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
             data-size="large"
             data-theme="default"
             data-busy="false"
-            class="summary-section button"
+            className="summary-section button"
             id="summary-section-save-to-list"
             type="submit"
           >
@@ -107,7 +107,7 @@ const SummaryForm = ({ cvId, onCreated, data }) => {
           data-size="large"
           data-theme="default"
           data-busy="false"
-          class="summary-section button"
+          className="summary-section button"
           id="summary-section-save-to-list"
         >
             SAVE SUMMARY INFO

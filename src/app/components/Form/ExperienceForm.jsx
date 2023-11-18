@@ -192,7 +192,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               fontWeight: '600',
               lineHeight: '23.4px',
             }}
-            class="inputEl experience-section inputEl st-current"
+            className="inputEl experience-section inputEl st-current"
             id="experience-section-form-0"
             placeholder="Marketing Analyst"
           />
@@ -211,7 +211,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         >
           <Input
             style={{}}
-            class="inputEl experience-section inputEl st-current"
+            className="inputEl experience-section inputEl st-current"
             id="experience-section-form-1"
             placeholder="Google"
           />
@@ -246,16 +246,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                     onChange={date => setStartDate(date)}
                     placeholderText={format(new Date(), 'MMMM yyyy')}
                   />
-                  <div
-                    style={{ position: 'absolute', marginLeft: '193px', marginTop: -36 }}
-                    plain
-                  >
+                  <div style={{ position: 'absolute', marginLeft: '193px', marginTop: -36 }}>
                     -
                   </div>
                 </div>
                 <div style={{}}></div>
 
-                <div style={{ }}>
+                <div style={{}}>
                   <DatePicker
                     dateFormat="MMMM yyyy"
                     selected={isCurrentlyWorking ? new Date() : endDate}
@@ -286,7 +283,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             >
               <Input
                 style={{}}
-                class="inputEl experience-section inputEl st-current"
+                className="inputEl experience-section inputEl st-current"
                 id="experience-section-form-1"
                 placeholder="New York, NY"
               />{' '}
@@ -328,40 +325,19 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             onInput={handleTextareaInput}
             value={inputValue}
           />
-
-          {/* <textarea
-            className="inputEl text-area"
-            style={stylesInput4}
-            placeholder="• Organized and implemented Google Analytics data tracking campaigns to maximize the effectiveness of email remarketing initiatives that were deployed using Salesforce's marketing cloud software."
-            ref={inputRef}
-            onKeyPress={handleKeyPress}
-            onChange={handleInputChange}
-            value={inputValue}
-            contentEditable="true"
-          /> */}
           <Input type="hidden" value={inputValue} />
-          {/* <Input
-            className="inputEl"
-            style={stylesInput4}
-            placeholder="• Organised and implemented Google Analytics data tracking campaigns to maximize the effectiveness of email remarketing initiatives that were deployed using Salesforce's marketing cloud software."
-            onInput={handleDescriptionChange}
-          /> */}
         </Form.Item>
-
-        <Button
-          htmlType="submit"
-          className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
-          style={{
-            width: '842.22px',
-            height: '47.86px',
-            backgroundColor: 'rgb(77, 112, 235)',
-            color: 'white',
-          }}
+        <button
+          href=""
+          data-size="large"
+          data-theme="default"
+          data-busy="false"
+          className="experience-section button"
+          id="experience-section-save-to-list"
+          type="submit"
         >
-          <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-            {isEditMode ? 'UPDATE ' : 'SAVE TO EXPERIENCE LIST'}
-          </div>
-        </Button>
+          Save to Experience list
+        </button>
       </Form>
     </div>
   );

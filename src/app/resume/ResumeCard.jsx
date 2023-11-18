@@ -62,7 +62,7 @@ const ResumeCard = ({ resume }) => {
       style={{ width: '240px', height: '320px' }}
     >
       <Space.Compact block>
-        <span class="" style={{ width: '90%', fontWeight: 700, fontSize: 16 }}>
+        <span className="" style={{ width: '90%', fontWeight: 700, fontSize: 16 }}>
           {resume.resumeName}
         </span>
         <Popover className="relative">

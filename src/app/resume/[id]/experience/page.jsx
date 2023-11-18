@@ -107,10 +107,10 @@ const Experience = ({ params }) => {
                     boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.1)',
                   }}
                 >
-                  <span class="block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
+                  <span className="block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
                     Your Experiences
                     <i
-                      class="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 fas fa-caret-down "
+                      className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 fas fa-caret-down "
                       id="react-collapsed-toggle-:r5:"
                       aria-controls="react-collapsed-panel-:r5:"
                       aria-expanded="true"
