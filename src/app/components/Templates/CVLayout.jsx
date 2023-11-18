@@ -115,7 +115,7 @@ const CVLayout = React.forwardRef(
     }, []);
 
     const cvHeightSize = layoutStyles.paperSize === 'A4' ? '297mm' : '11in';
-    // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
+    const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
 
     // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
     const stylesTransform = {
@@ -182,8 +182,8 @@ const CVLayout = React.forwardRef(
               style={{
                 ...fontStyles,
                 fontSize: CvStyles.fontSize,
-                // lineHeight: CvStyles.lineHeight,
-                // width: cvWidthSize,
+                lineHeight: CvStyles.lineHeight,
+                width: cvWidthSize,
                 // fontFamily: 'Merriweather, serif',
                 padding: '1.3cm 0cm 0cm',
                 borderColor: 'rgb(0, 0, 0)',

@@ -35,7 +35,6 @@ const ContactForm = ({ cvId, onCreated, data }) => {
       };
 
       console.log('Form fields set with data:', data);
-
       // Use mockData if no data is provided
       const initialData = mockData;
       console.log('initialData: ', initialData);
@@ -45,14 +44,12 @@ const ContactForm = ({ cvId, onCreated, data }) => {
 
   const handleSubmit = async values => {
     try {
-      const userId = 1;
-
-      await updateContact(userId, values);
+      const result = await updateContact(values);
       form.resetFields();
       onCreated();
+      openNotification('bottomRight', `Save changed: ${result.id}`);
     } catch (error) {
-      openNotification('bottomRight', `Server hu roi bam cai gi: ${error}`);
-
+      openNotification('bottomRight', `Error: ${error}`);
       console.log('Submit. Error:', error);
     }
   };

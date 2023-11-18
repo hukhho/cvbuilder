@@ -6,10 +6,27 @@ import './setting.css';
 import './input.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import createResumeService from './createResumeService';
+import { notification } from 'antd';
 
-export default function MyModal() {
+export default function MyModal({ onCreated }) {
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Thong bao',
+      description: message,
+      placement,
+    });
+  };
   const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [formData, setFormData] = useState({
+    resumeName: '',
+    jobTitle: '',
+    companyName: '',
+    jobDescription: '',
+  });
 
   function closeModal() {
     setIsOpen(false);
@@ -19,21 +36,41 @@ export default function MyModal() {
     setIsOpen(true);
   }
 
-  const [inputValue, setInputValue] = useState();
   const handleInputChange = event => {
     setInputValue(event.target.value);
+    const { id, value } = event.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value,
+    }));
   };
+
   const handleTextareaInput = event => {
     const textarea = event.target;
     textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
     textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
   };
 
+  const handleFormSubmit = async event => {
+    event.preventDefault();
+    // Here you can perform any actions with the form data, such as sending it to the server
+    console.log('Form data submitted:', formData);
+
+    try {
+      const result = await createResumeService(formData);
+      openNotification('bottomRight', `Create: ${result.id}`);
+      onCreated()
+      closeModal();
+    } catch (error) {
+      openNotification('bottomRight', `Error: ${error}`);
+    }
+  };
   return (
     <>
+      {contextHolder}
       <div className="inset-0 flex items-center justify-center">
         <button
-          style={{width: '208px'}}
+          style={{ width: '208px' }}
           href=""
           data-size="default"
           data-theme="default"
@@ -81,11 +118,11 @@ export default function MyModal() {
                     <i class="fal fa-times cursor-pointer" aria-hidden="true" />
                   </Dialog.Title>
                   <div className="p-6">
-                    <form>
+                    <form onSubmit={handleFormSubmit}>
                       <div className="input">
                         <label
                           className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                          htmlFor="nae4l"
+                          htmlFor="resumeName" // Add htmlFor with the correct id
                         >
                           <div className="flex gap-2 items-center">
                             <span>Resume name</span> *
@@ -94,9 +131,11 @@ export default function MyModal() {
                         </label>
                         <div className="relative">
                           <input
+                            name="resumeName"
                             className="inputEl new-resume-form"
-                            id="vgtbpl"
+                            id="resumeName" // Add id attribute here
                             required=""
+                            onChange={handleInputChange}
                             aria-label="Resume name"
                             defaultValue=""
                           />
@@ -126,93 +165,96 @@ export default function MyModal() {
                           </Switch>
                         </div>
                       </div>
+                      {!enabled && (
+                        <div className="warning-target">
+                          <i className="fas fa-check-circle" aria-hidden="true" />
+                          <FontAwesomeIcon
+                            style={{ color: '#48c9b0', marginRight: '10px' }}
+                            icon={faCircleCheck}
+                          />
+                          <p>
+                            A targeted resume is a resume tailored to a specific job opening. You
+                            have a significantly higher chance of getting an interview when you make
+                            it clear you have the experience required for the job.
+                          </p>
+                        </div>
+                      )}
 
-                      <div className="warning-target">
-                        <i className="fas fa-check-circle" aria-hidden="true" />
-                        <FontAwesomeIcon
-                          style={{ color: '#48c9b0', marginRight: '10px' }}
-                          icon={faCircleCheck}
-                        />
-                        <p>
-                          A targeted resume is a resume tailored to a specific job opening. You have
-                          a significantly higher chance of getting an interview when you make it
-                          clear you have the experience required for the job.
-                        </p>
-                      </div>
-
-                      <div>
-                        <div className="input">
-                          <label
-                            className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                            htmlFor="lrv89"
-                          >
-                            <div className="flex gap-2 items-center">
-                              <span>Job Title </span>
+                      {enabled && (
+                        <div>
+                          <div className="input">
+                            <label
+                              className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+                              htmlFor="jobTitle"
+                            >
+                              <div className="flex gap-2 items-center">
+                                <span>Job Title </span>
+                              </div>
+                              <div id="null-portal-root" />
+                            </label>
+                            <div className="relative">
+                              <input
+                                className="inputEl new-resume-form"
+                                id="jobTitle"
+                                aria-label="Job Title "
+                                defaultValue=""
+                                onChange={handleInputChange}
+                              />
                             </div>
-                            <div id="null-portal-root" />
-                          </label>
-                          <div className="relative">
-                            <input
-                              className="inputEl new-resume-form"
-                              id="huw0d5"
-                              aria-label="Job Title "
-                              defaultValue=""
-                            />
+                          </div>
+                          <div className="input">
+                            <label
+                              className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+                              htmlFor="companyName"
+                            >
+                              <div className="flex gap-2 items-center">
+                                <span>Company name</span>
+                              </div>
+                              <div id="null-portal-root" />
+                            </label>
+                            <div className="relative">
+                              <input
+                                className="inputEl new-resume-form "
+                                id="companyName"
+                                aria-label="Company name"
+                                defaultValue=""
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="input ">
+                            <label
+                              className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+                              htmlFor="jobDescription"
+                            >
+                              <div className="flex gap-2 items-center">
+                                <span>Job Description </span>
+                              </div>
+                              <div id="jobDescription-portal-root" />
+                            </label>
+                            <div className="relative">
+                              <textarea
+                                className="inputEl new-resume-form"
+                                id="jobDescription"
+                                aria-label="Job Description "
+                                rows={3}
+                                onChange={handleInputChange}
+                                onInput={handleTextareaInput}
+                                value={inputValue}
+                                style={{
+                                  height: 'auto',
+                                  overflow: 'hidden',
+                                  resize: 'none',
+                                  maxHeight: 200,
+                                  overflowY: 'auto',
+                                  background: 'white',
+                                  height: 120,
+                                }}
+                              />
+                            </div>
                           </div>
                         </div>
-                        <div className="input">
-                          <label
-                            className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                            htmlFor="8l586r"
-                          >
-                            <div className="flex gap-2 items-center">
-                              <span>Company name</span>
-                            </div>
-                            <div id="null-portal-root" />
-                          </label>
-                          <div className="relative">
-                            <input
-                              className="inputEl new-resume-form "
-                              id="gyu7"
-                              aria-label="Company name"
-                              defaultValue=""
-                            />
-                          </div>
-                        </div>
-                        <div className="input ">
-                          <label
-                            className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                            htmlFor="jobDescription"
-                          >
-                            <div className="flex gap-2 items-center">
-                              <span>Job Description </span>
-                            </div>
-                            <div id="jobDescription-portal-root" />
-                          </label>
-                          <div className="relative">
-                            <textarea
-                              className="inputEl new-resume-form"
-                              id="jobDescription"
-                              aria-label="Job Description "
-                              rows={3}
-                              onChange={handleInputChange}
-                              onInput={handleTextareaInput}
-                              value={inputValue}
-                              style={{
-                                height: 'auto',
-                                overflow: 'hidden',
-                                resize: 'none',
-                                maxHeight: 200,
-                                overflowY: 'auto',
-                                background: 'white',
-                                height: 120,
-                              }}
-                              defaultValue=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-
+                      )}
                       <button
                         href=""
                         data-size="default"
@@ -220,20 +262,11 @@ export default function MyModal() {
                         data-busy="false"
                         className="form-submission button cta "
                         id="create-resume-form-submitted"
+                        type="submit"
                       >
                         Save
                       </button>
                     </form>
-                  </div>
-
-                  <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Chưa gắn API ĐÂU :))
-                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

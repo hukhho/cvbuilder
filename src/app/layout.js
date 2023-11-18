@@ -8,6 +8,8 @@ import StyledComponentsRegistry from '../lib/AntdRegistry';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import Script from 'next/script';
+import { PageLoader } from './components/PageLoader';
+import { NavBarButtons } from './components/NavBarButtons';
 
 // Prevent fontawesome from dynamically adding its CSS
 config.autoAddCss = true;
@@ -37,8 +39,9 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
           rel="stylesheet"
         />
-
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          {children}
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

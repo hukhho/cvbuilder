@@ -8,7 +8,7 @@ import CVCard from '../components/Card/CVCard';
 import Link from 'next/link'; // Import Link from Next.js for navigation
 import { getCoverLetters } from '../utils/indexService';
 
-const Home = () => {
+const CoverLetterIndex = () => {
   const [resumes, setResumes] = useState([]);
   const [mockCards, setMockCards] = useState([]);
   const [enabledCategories, setEnabledCategories] = useState({
@@ -67,4 +67,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default CoverLetterIndex;

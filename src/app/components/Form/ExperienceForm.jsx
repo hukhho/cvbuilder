@@ -2,63 +2,18 @@
 
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
-import { Button, Form, Input, InputNumber, Space, Switch, Typography } from 'antd';
+import { Button, Divider, Form, Input, InputNumber, Space, Switch, Typography } from 'antd';
 import moment from 'moment';
 import './test.css';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
 import './date.css';
+import './datepicker.css';
+
 import { format, parse } from 'date-fns';
 import { lobster } from '@/app/font';
 import { Box } from '@chakra-ui/react';
 const { RangePicker } = DatePicker;
-
-const stylesInput = {
-  width: '842.22px',
-  height: '56.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-const stylesInput2 = {
-  width: '444.22px',
-  height: '55.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-const stylesInput1 = {
-  width: '180.22px',
-  height: '55.19px',
-  // padding: '-50.30px 0.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-const stylesInput4 = {
-  width: '842.22px',
-  height: '132.19px',
-  padding: '10.30px 0.50px 10.89px 10px',
-  marginLeft: '0px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-  textAlign: 'left', // Set text alignment to left
-};
 
 const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [form] = Form.useForm();
@@ -216,10 +171,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
   return (
     <div className="" style={{ width: '842px' }}>
-      {/* <h1 style={{ fontFamily: "'Dancing Script', 'Helvetica Neue', cursive" }}>
-        This is a test heading
-      </h1> */}
-
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="role"
@@ -268,9 +219,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Form.Item name="endDate" hidden>
           <Input type="hidden" />
         </Form.Item>
-        <Space.Compact block>
+        <Space.Compact style={{ width: '842px' }} block>
           <div style={{ width: '50%' }}>
-            {' '}
             <Form.Item
               label={
                 <label style={{}}>
@@ -281,7 +231,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               }
             >
               <Space align="center">
-                <div className="datepicker" style={{ marginLeft: '10px', minWidth: '197px' }}>
+                <div className="datepicker relative" style={{ marginLeft: '9px' }}>
                   <DatePicker
                     wrapperClassName=""
                     dateFormat="MMMM yyyy"
@@ -290,9 +240,14 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                     onChange={date => setStartDate(date)}
                     placeholderText={format(new Date(), 'MMMM yyyy')}
                   />
+                   <Divider style={{ position: 'absolute', marginLeft: '97px' }} plain>
+                  -
+                </Divider>
                 </div>
-                <div style={{ marginLeft: -20 }}>-</div>
-                <div style={{ minWidth: '197px' }}>
+                <div style={{}}></div>
+                
+               
+                <div style={{}}>
                   <DatePicker
                     dateFormat="MMMM yyyy"
                     selected={isCurrentlyWorking ? new Date() : endDate}
@@ -304,6 +259,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                   />
                 </div>
               </Space>
+
               <Box className="flex datepicker relative"></Box>
             </Form.Item>
           </div>

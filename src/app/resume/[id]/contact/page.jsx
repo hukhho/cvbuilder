@@ -21,8 +21,7 @@ const Contact = ({ params }) => {
 
   const fetchData = async () => {
     try {
-      const userId = 1;
-      const data = await getContact(1, cvId);
+      const data = await getContact(cvId);
       console.log('fetchData ', data);
       setContactData(data); // Updated to set "contactData"
     } catch (error) {

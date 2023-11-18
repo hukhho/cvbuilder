@@ -1,8 +1,18 @@
 // combinedService.js
 import axiosInstance from './axiosInstance';
 
-const getResumes = async userId => {
+const getUserIdFromCookie = () => {
+  const userId = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('userId'))
+    .split('=')[1];
+
+  return userId;
+};
+
+const getResumes = async () => {
   try {
+    const userId = getUserIdFromCookie();
     const response = await axiosInstance.get(`/user/${userId}/cvs`);
     return response.data;
   } catch (error) {
@@ -10,7 +20,7 @@ const getResumes = async userId => {
   }
 };
 
-const getCoverLetters = async userId => {
+const getCoverLetters = async () => {
   try {
     // const response = await axiosInstance.get(`/user/${userId}/coverletters`);
 
@@ -19,13 +29,11 @@ const getCoverLetters = async userId => {
         id: 1,
         title: 'Cover Letter 1',
         description: 'This is a mock cover letter',
-        userId: 1,
       },
       {
         id: 2,
         title: 'Cover Letter 2',
         description: 'This is a mock cover letter',
-        userId: 1,
       },
     ];
 

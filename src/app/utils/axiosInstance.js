@@ -11,10 +11,13 @@ const instance = axios.create({
 
 // If you need to set up interceptors (e.g., for handling errors or setting auth headers), you can do it here.
 // For example:
-// instance.interceptors.request.use(config => {
-//     const token = document.cookie.split('; ').find(row => row.startsWith('token')).split('=')[1];
-//     config.headers.Authorization = `Bearer ${token}`;
-//     return config;
-// });
+instance.interceptors.request.use(config => {
+  const token = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('token'))
+    .split('=')[1];
+  config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 export default instance;

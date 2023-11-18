@@ -1,0 +1,52 @@
+.name {
+    width: 100%;
+    & .title {
+      font-weight: var(--font-weight-bold);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      width: 100%;
+      & > span {
+        float: right;
+        font: var(--font-ui);
+        font-size: var(--scale-000);
+        text-transform: uppercase;
+        color: var(--color-text-light);
+        margin: 4px 0.5rem;
+        padding: 0.3em 0.5em;
+        border-radius: var(--radius-2);
+        transition: all 200ms ease;
+        white-space: nowrap;
+        background: var(--color-grey-50);
+        &:global(.new) {
+          background-color: var(--color-green);
+          color: #fff;
+        }
+      }
+    }
+  }
+  .badgeWrapper {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+  }
+  .badge {
+    color: #fff;
+    background-color: var(--color-primary);
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    text-transform: uppercase;
+    &.rev {
+      border-radius: 0 0.25rem 0.25rem 0;
+      margin-left: -5px;
+    }
+  }
+  
