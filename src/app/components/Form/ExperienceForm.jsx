@@ -175,10 +175,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Form.Item
           name="role"
           label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                WHAT WAS YOUR <strong>ROLE</strong> AT THE COMPANY?
-              </span>
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                <span>
+                  WHAT WAS YOUR <strong>ROLE</strong> AT THE COMPANY?{' '}
+                </span>
+              </div>
             </label>
           }
         >
@@ -198,10 +200,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Form.Item
           name="companyName"
           label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                FOR WHICH <strong>COMPANY</strong> DID YOU WORK?
-              </span>
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                <span>
+                  FOR WHICH <strong>COMPANY</strong> DID YOU WORK?
+                </span>
+              </div>
             </label>
           }
         >
@@ -223,15 +227,17 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           <div style={{ width: '50%' }}>
             <Form.Item
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>WHERE</strong> WAS THE COMPANY LOCATED?
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span>
+                      <strong>HOW LONG</strong> WERE YOU WITH THE COMPANY?
+                    </span>
+                  </div>
                 </label>
               }
             >
-              <Space align="center">
-                <div className="datepicker relative" style={{ marginLeft: '9px' }}>
+              <Space align="center datepicker relative">
+                <div className="" style={{ width: '197px', marginLeft: '9px' }}>
                   <DatePicker
                     wrapperClassName=""
                     dateFormat="MMMM yyyy"
@@ -240,14 +246,16 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                     onChange={date => setStartDate(date)}
                     placeholderText={format(new Date(), 'MMMM yyyy')}
                   />
-                   <Divider style={{ position: 'absolute', marginLeft: '97px' }} plain>
-                  -
-                </Divider>
+                  <div
+                    style={{ position: 'absolute', marginLeft: '193px', marginTop: -36 }}
+                    plain
+                  >
+                    -
+                  </div>
                 </div>
                 <div style={{}}></div>
-                
-               
-                <div style={{}}>
+
+                <div style={{ }}>
                   <DatePicker
                     dateFormat="MMMM yyyy"
                     selected={isCurrentlyWorking ? new Date() : endDate}
@@ -267,10 +275,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             <Form.Item
               name="location"
               label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>WHERE</strong> WAS THE COMPANY LOCATED?
-                  </span>
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span>
+                      <strong>WHERE</strong> WAS THE COMPANY LOCATED?
+                    </span>
+                  </div>
                 </label>
               }
             >
@@ -288,10 +298,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           name="description"
           style={{}}
           label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                <strong>WHAT DID YOU DO</strong> AT THE COMPANY?
-              </span>
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                <span>
+                  <strong>WHAT DID YOU DO</strong> AT THE COMPANY?
+                </span>
+              </div>
             </label>
           }
         >

@@ -27,7 +27,7 @@ function VideoComponent() {
             className="w-css-reset"
             src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.webp?image_crop_resized=640x360"
             alt="Video Thumbnail"
-            style={{ height: '185px', width: '320px' }}
+            style={{ height: '185px', width: '320px', borderRadius: '10px' }}
           />
         </button>
       )}

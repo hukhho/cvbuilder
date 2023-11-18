@@ -33,7 +33,7 @@ const ResumeCard = ({ resume }) => {
 
   return (
     <Card
-      className=""
+      className="bg-white "
       cover={
         <div
           className="relative group"

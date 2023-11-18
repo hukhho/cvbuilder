@@ -64,6 +64,8 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
     <Layout
       style={{
         backgroundColor: '#fbfbfb',
+        minWidth: '100vw',
+        overflow: 'auto',
       }}
       hasSider
     >
@@ -140,13 +142,15 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
 
         <Content
           style={{
-            background: '#fbfbfb',
+            minHeight: '100vh',
+            minWidth: '100%',
+            overflow: 'initial',
           }}
         >
           <div
             style={{
               padding: 0,
-              marginLeft: '75px',
+              marginLeft: '30px',
               marginRight: '75px',
               textAlign: 'center',
               background: '#fbfbfb',

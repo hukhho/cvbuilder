@@ -53,7 +53,15 @@ const ResumeIndex = () => {
 
   return (
     <main>
-      <ConfigProvider>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: 'red',
+            borderRadius: '6px',
+            colorBgContainer: '#fbfbfb',
+          },
+        }}
+      >
         <UserLayout
           onCreated={onCreated}
           selected="1"
