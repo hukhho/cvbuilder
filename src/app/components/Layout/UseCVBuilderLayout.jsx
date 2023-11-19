@@ -64,14 +64,18 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
     <Layout
       style={{
         backgroundColor: '#fbfbfb',
-        minWidth: '100vw',
-        overflow: 'auto',
+        minWidth: '100%',
+        minHeight: '100%',
+        overflow: 'initial',
       }}
       hasSider
     >
       <Sider
         style={{
           // backgroundColor: '#3C2E8D',
+          overflow: 'hidden',
+          height: '100vh',
+          position: 'fixed',
           backgroundImage:
             "url('https://photos.pinksale.finance/file/pinksale-logo-upload/1699259953581-c26be60cfd1ba40772b5ac48b95ab19b.png')",
         }}
@@ -129,6 +133,9 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         className="site-layout"
         style={{
           background: '#fbfbfb',
+          minWidth: '100vh',
+          overflow: 'initial',
+          marginLeft: '100px'
         }}
       >
         <Header
@@ -143,13 +150,17 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
         <Content
           style={{
             minHeight: '100vh',
-            minWidth: '100%',
+            minWidth: '100vh',
             overflow: 'initial',
+            background: '#fbfbfb',
           }}
         >
           <div
             style={{
               padding: 0,
+              width: '100%',
+              height: '100%',
+              overflow: 'hidden',
               marginLeft: '30px',
               marginRight: '75px',
               textAlign: 'center',

@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider } from 'antd';
+import { Button, Card, ConfigProvider, Space } from 'antd';
 import dynamic from 'next/dynamic';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -107,35 +107,38 @@ const Experience = ({ params }) => {
                     boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.1)',
                   }}
                 >
-                  <span className="block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
-                    Your Experiences
-                    <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ">
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
-                        onClick={handleDownButton}
-                      />
-                    </div>
+                  <span className="flex block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
+                    <Space align="center">
+                      Your Experiences
+                      <div className="text-gray-300 align-middle cursor-pointer leading-3 outline-0 ">
+                        <FontAwesomeIcon
+                          icon={faCaretDown}
+                          className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                          onClick={handleDownButton}
+                        />
+                      </div>
+                    </Space>
                   </span>
                   <div>
-                    {selectedExperience && (
+                    {isShow && selectedExperience && (
                       <ListError errors={selectedExperience?.bulletPointDtos} />
                     )}
                   </div>
 
                   <div style={{ paddingTop: '16px' }}>
-                    {experiences.map(experience => (
-                      <StandarList
-                        key={experience.id}
-                        data={experience}
-                        selectedExperience={selectedExperience}
-                        cvId={cvId}
-                        onDelete={handleDeleteExperience}
-                        onEdit={handleEditExperience}
-                        title={experience.role}
-                        subtitle={experience.companyName}
-                      />
-                    ))}
+                    {isShow &&
+                      experiences.map(experience => (
+                        <StandarList
+                          key={experience.id}
+                          data={experience}
+                          selectedExperience={selectedExperience}
+                          cvId={cvId}
+                          onDelete={handleDeleteExperience}
+                          onEdit={handleEditExperience}
+                          title={experience.role}
+                          subtitle={experience.companyName}
+                        />
+                      ))}
                   </div>
                 </Card>
                 {/* 
