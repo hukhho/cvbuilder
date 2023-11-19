@@ -135,7 +135,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
           background: '#fbfbfb',
           minWidth: '100vh',
           overflow: 'initial',
-          marginLeft: '100px'
+          marginLeft: '100px',
         }}
       >
         <Header
