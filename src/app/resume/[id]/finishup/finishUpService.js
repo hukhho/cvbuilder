@@ -4,9 +4,9 @@ import { mockData } from './mockData';
 
 export const getFinishUp = async cvId => {
   try {
-    // const response = await axiosInstance.get(`/user/cv/${cvId}/finish-up`);
-    return mockData.data.resume;
-    // return response.data;
+    const response = await axiosInstance.get(`/user/cv/${cvId}/finish-up`);
+    // return mockData.data.resume;
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -14,7 +14,19 @@ export const getFinishUp = async cvId => {
 
 export const getAudit = async cvId => {
   try {
-    const response = await axiosInstance.get(`/user/1/cv/${cvId}/evaluate`);
+    const userId =
+      typeof document !== 'undefined'
+        ? document.cookie
+            .split('; ')
+            .find(row => row.startsWith('userId'))
+            .split('=')[1]
+        : null;
+
+    if (!userId) {
+      throw new Error('User ID not found.');
+    }
+
+    const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}/evaluate`);
     // return mockData.data.resume;
     return response.data;
   } catch (error) {

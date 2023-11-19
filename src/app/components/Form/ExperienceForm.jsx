@@ -7,8 +7,8 @@ import moment from 'moment';
 import './test.css';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
-import './date.css';
-import './datepicker.css';
+// import './date.css';
+// import './datepicker.css';
 
 import { format, parse } from 'date-fns';
 import { lobster } from '@/app/font';
@@ -224,7 +224,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           <Input type="hidden" />
         </Form.Item>
         <Space.Compact style={{ width: '842px' }} block>
-          <div style={{ width: '50%' }}>
+          <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
@@ -236,36 +236,32 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                 </label>
               }
             >
-              <Space align="center datepicker relative">
-                <div className="" style={{ width: '197px', marginLeft: '9px' }}>
-                  <DatePicker
-                    wrapperClassName=""
-                    dateFormat="MMMM yyyy"
-                    showMonthYearPicker
-                    selected={startDate}
-                    onChange={date => setStartDate(date)}
-                    placeholderText={format(new Date(), 'MMMM yyyy')}
-                  />
-                  <div style={{ position: 'absolute', marginLeft: '193px', marginTop: -36 }}>
-                    -
+              <Space align="center">
+                <div className="datepicker">
+                  <div className="" style={{ marginLeft: '0' }}>
+                    <DatePicker
+                      wrapperClassName=""
+                      dateFormat="MMMM yyyy"
+                      showMonthYearPicker
+                      selected={startDate}
+                      onChange={date => setStartDate(date)}
+                      placeholderText={format(new Date(), 'MMMM yyyy')}
+                    />
+                  </div>
+                  <div style={{ marginTop: '13px', marginLeft: '6px', marginRight: '6px' }}>-</div>
+                  <div style={{}}>
+                    <DatePicker
+                      dateFormat="MMMM yyyy"
+                      selected={isCurrentlyWorking ? new Date() : endDate}
+                      showMonthYearPicker
+                      calendarContainer={MyContainer}
+                      onChange={date => setEndDate(date)}
+                      customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
+                      placeholderText={format(new Date(), 'MMMM yyyy')}
+                    />
                   </div>
                 </div>
-                <div style={{}}></div>
-
-                <div style={{}}>
-                  <DatePicker
-                    dateFormat="MMMM yyyy"
-                    selected={isCurrentlyWorking ? new Date() : endDate}
-                    showMonthYearPicker
-                    calendarContainer={MyContainer}
-                    onChange={date => setEndDate(date)}
-                    customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
-                    placeholderText={format(new Date(), 'MMMM yyyy')}
-                  />
-                </div>
               </Space>
-
-              <Box className="flex datepicker relative"></Box>
             </Form.Item>
           </div>
           <div style={{ width: '50%' }}>
@@ -273,12 +269,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               name="location"
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
-                  <div className="flex gap-2 items-center text-xs">
-                    <span>
-                      <strong>WHERE</strong> WAS THE COMPANY LOCATED?
-                    </span>
-                  </div>
-                </label>
+                <div className="flex gap-2 items-center text-xs">
+                  <span>
+                  <strong>WHERE</strong> WAS THE COMPANY LOCATED?
+                  </span>
+                </div>
+              </label>
+              
               }
             >
               <Input
@@ -286,7 +283,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                 className="inputEl experience-section inputEl st-current"
                 id="experience-section-form-1"
                 placeholder="New York, NY"
-              />{' '}
+              />
             </Form.Item>
           </div>
         </Space.Compact>

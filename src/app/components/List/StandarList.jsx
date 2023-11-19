@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { updateExperience } from './experienceService';
 
-const StandarList = ({ data, onDelete, onEdit, selectedExperience, cvId, title, subtitle }) => {
+const StandarList = ({
+  data,
+  onDelete,
+  onEdit,
+  selectedExperience,
+  cvId,
+  title,
+  subtitle,
+  updateExperience,
+}) => {
   const { id, companyName, location, role, description, startDate, endDate } = data;
 
   const [isSelected, setIsSelected] = useState(selectedExperience?.id === id);
@@ -92,6 +100,7 @@ const StandarList = ({ data, onDelete, onEdit, selectedExperience, cvId, title, 
             <button
               type="button"
               onClick={handleDeleteClick}
+              disabled={isSelected}
               data-busy="false"
               className="text-white disabled:bg-gray-100 font-[700] uppercase disabled:text-gray-300 focus:ring-0 focus:outline-none  experience-section inline-flex items-center mr-2 bg-red-600 text-white px-2 py-1 rounded text-[11px] "
               id="experience-section-delete-0 "

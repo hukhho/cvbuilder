@@ -5,49 +5,12 @@ import { Button, Form, Input, InputNumber, Space, Switch, Typography } from 'ant
 import moment from 'moment';
 import DataService from '@/app/utils/dataService';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
-import './test.css';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
-import './date.css';
 import { format, parse } from 'date-fns';
 import './customtext.css';
 import { Box } from '@chakra-ui/react';
 
-const stylesInput = {
-  width: '769.22px',
-  height: '56.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-const stylesInput1 = {
-  width: '180.22px',
-  height: '55.19px',
-  // padding: '-50.30px 0.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-const stylesInput4 = {
-  width: '769.22px',
-  height: '132.19px',
-  padding: '10.30px 0.50px 10.89px 10px',
-  marginLeft: '0px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-  textAlign: 'left', // Set text alignment to left
-};
 const ProjectForm = ({ cvId, onCreated, data }) => {
   const dataService = new DataService('projects', cvId);
   const [form] = Form.useForm();
@@ -193,7 +156,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
                 checked={isCurrentlyWorking}
                 onChange={handleSwitchChange}
               />
-              Currently work here
+              Currently work here {isCurrentlyWorking ? 'Yes' : 'No'}
             </div>
             <div className="mt-5" />
           </div>
@@ -203,21 +166,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
   };
 
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button
-      style={{
-        width: '180.22px',
-        height: '55.19px',
-        marginLeft: '20px',
-        fontSize: '16px',
-        fontWeight: '600',
-        fontFamily: 'Source Sans Pro, sans-serif',
-        textAlign: 'left', // Set text alignment to left
-      }}
-      onClick={onClick}
-      ref={ref}
-    >
-      Present
-    </button>
+    <input className="inputEl" onClick={onClick} ref={ref} value="Present"></input>
   ));
 
   return (
@@ -265,8 +214,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
         </Form.Item>
 
         <Space.Compact block>
-          <div style={{ width: '50%' }}>
-            {' '}
+          <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
               label={
                 <label style={{}}>
@@ -276,31 +224,32 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
                 </label>
               }
             >
-              <Space align="center">
-                <div className="datepicker" style={{ marginLeft: '10px', minWidth: '197px' }}>
-                  <DatePicker
-                    wrapperClassName=""
-                    dateFormat="MMMM yyyy"
-                    showMonthYearPicker
-                    selected={startDate}
-                    onChange={date => setStartDate(date)}
-                    placeholderText={format(new Date(), 'MMMM yyyy')}
-                  />
-                </div>
-                <div style={{ marginLeft: -20 }}>-</div>
-                <div style={{ minWidth: '197px' }}>
-                  <DatePicker
-                    dateFormat="MMMM yyyy"
-                    selected={isCurrentlyWorking ? new Date() : endDate}
-                    showMonthYearPicker
-                    calendarContainer={MyContainer}
-                    onChange={date => setEndDate(date)}
-                    customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
-                    placeholderText={format(new Date(), 'MMMM yyyy')}
-                  />
+              <Space align="start">
+                <div className="relative datepicker" style={{}}>
+                  <div className="" style={{ marginLeft: '0' }}>
+                    <DatePicker
+                      wrapperClassName=""
+                      dateFormat="MMMM yyyy"
+                      showMonthYearPicker
+                      selected={startDate}
+                      onChange={date => setStartDate(date)}
+                      placeholderText={format(new Date(), 'MMMM yyyy')}
+                    />
+                  </div>
+                  <div style={{ marginTop: '13px', marginLeft: '6px', marginRight: '6px' }}>-</div>
+                  <div style={{}}>
+                    <DatePicker
+                      dateFormat="MMMM yyyy"
+                      selected={isCurrentlyWorking ? new Date() : endDate}
+                      showMonthYearPicker
+                      calendarContainer={MyContainer}
+                      onChange={date => setEndDate(date)}
+                      customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
+                      placeholderText={format(new Date(), 'MMMM yyyy')}
+                    />
+                  </div>
                 </div>
               </Space>
-              <Box className="flex datepicker relative"></Box>
             </Form.Item>
           </div>
           <div style={{ width: '50%' }}>
@@ -318,9 +267,8 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
                 style={{}}
                 className="inputEl experience-section inputEl st-current"
                 id="experience-section-form-1"
-                placeholder="New York, NY"
-              />{' '}
-
+                placeholder="https://cvbuilder.ai"
+              />
             </Form.Item>
           </div>
         </Space.Compact>

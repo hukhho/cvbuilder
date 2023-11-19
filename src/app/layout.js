@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="pro-ui">
+      <body className="pro-ui" style={{ background: '#fbfbfb' }}>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap"
@@ -35,9 +35,7 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
           rel="stylesheet"
         />
-        <StyledComponentsRegistry>
-          {children}
-        </StyledComponentsRegistry>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );

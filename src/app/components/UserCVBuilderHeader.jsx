@@ -12,7 +12,7 @@ const categories = [
   { name: 'SKILLS', link: 'skill' },
   { name: 'SUMMARY', link: 'summary' },
   { name: 'FINISH UP', link: 'finishup' },
-  { name: 'AI COVER LETTER', link: 'ai-cover-letter' },
+  // { name: 'AI COVER LETTER', link: 'ai-cover-letter' },
 ];
 
 const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
@@ -24,10 +24,12 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
   return (
     <div className="w-[1255px] h-[25px] relative flex space-x-8">
       <div className="flex items-center">
-        <div className="w-[150px] h-[23.09px] pl-[6.28px] pr-[5.75px] pt-[4.76px] pb-[5.33px] bg-neutral-500 bg-opacity-10 rounded-[3.15px] justify-start items-start inline-flex">
+        <div className=" pl-[6.28px] pr-[5.75px] pt-[4.76px] pb-[5.33px] bg-neutral-500 bg-opacity-10 rounded-[3.15px] justify-start items-start inline-flex">
           <div
-            className="text-neutral-600 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3"
+            className="text-neutral-600 text-xs font-bold uppercase leading-3 truncate ..."
             style={{
+              maxWidth: '100px',
+              fontFamily: '"Source Sans Pro", sans-serif',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
@@ -37,7 +39,7 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
               letterSpacing: 'normal',
             }}
           >
-            Pham Viet Thuan Thien - CV
+            cvName
           </div>
         </div>
       </div>

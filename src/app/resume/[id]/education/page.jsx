@@ -4,16 +4,19 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider } from 'antd';
+import { Button, Card, ConfigProvider, Space } from 'antd';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import EducationForm from '@/app/components/Form/EducationForm';
 
-import { deleteEducation, getAllEducations } from './educationService';
+import { deleteEducation, getAllEducations, updateEducation } from './educationService';
 import EducationList from './EducationList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import ListError from '@/app/components/ListError/ListError';
+import StandarList from '@/app/components/List/StandarList';
+import VideoComponent from '@/app/components/VideoComponent';
 
 const { Meta } = Card;
 
@@ -34,7 +37,9 @@ const Education = ({ params }) => {
     try {
       const data = await getAllEducations(cvId);
       console.log('data getAllEducations ', data);
+      setSelectedEducation(null)
       setEducations(data);
+      
     } catch (error) {
       console.error('There was an error fetching the educations', error);
     }
@@ -45,6 +50,7 @@ const Education = ({ params }) => {
   }, []);
 
   const handleEditEducation = education => {
+    console.log("selected: ", selectedEducation)
     setSelectedEducation(education);
   };
   const handleHideEducation = education => {
@@ -69,62 +75,61 @@ const Education = ({ params }) => {
       <ConfigProvider>
         <UserCVBuilderLayout
           userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
+            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id}  />
           }
           content={
-            <div className="flex h-screen ">
-              <div className="flex flex-col p-4">
-                <div className="h-1/3">
-                  <p>
-                    <Image
-                      src="https://embed-ssl.wistia.com/deliveries/8dad09e9908219fa4e652dd01ca44c9e.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=ebeaede0"
-                      width={320}
-                      height={182}
-                      alt="Video"
-                    />
-                  </p>
-                </div>
-                <div className="h-3/4">
-                  <div>
-                    <div className=" p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex">
-                      <div className="w-[266px] h-[50.50px] relative border-b border-gray-300">
-                        <div className="left-0 top-[1.47px] absolute text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
-                          Your Education
-                        </div>
-                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ml-8">
-                          <button>
-                            <FontAwesomeIcon
-                              icon={faCaretDown}
-                              className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
-                              onClick={handleDownButton}
-                            />
-                          </button>
-                        </div>
-                      </div>
-                      {educations.map(education => (
-                        <EducationList
-                          key={education.id}
-                          education={education}
-                          onDeleteEducation={handleDeleteEducation}
-                          onEditEducation={handleEditEducation}
-                          onHideEducation={handleHideEducation}
-                        />
-                      ))}
-                      <div className="w-[266px] pl-[63.27px] pr-[64.73px] pt-[12.86px] pb-[13.19px] bg-indigo-500 rounded-md justify-center items-center inline-flex">
-                        <div className="text-center text-white text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-                          Create new education
-                        </div>
-                      </div>
-                    </div>
+            <div className="flex h-screen w-full">
+              <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
+                <div style={{ height: '185px', width: '320px' }}>
+                  <div style={{ maxHeight: '185px' }}>
+                    <VideoComponent />
                   </div>
                 </div>
+                <Card
+                  style={{
+                    width: '320px',
+                    marginTop: '16px',
+                    textAlign: 'left',
+                    borderRadius: '8px',
+                    boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <span className="flex block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
+                    <Space align="center">
+                      Your Educations
+                      <div className="text-gray-300 align-middle cursor-pointer leading-3 outline-0 ">
+                        <FontAwesomeIcon
+                          icon={faCaretDown}
+                          className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                          onClick={handleDownButton}
+                        />
+                      </div>
+                    </Space>
+                  </span>
+                  <div>
+                    {/* {isShow && selectedEducation && <ListError errors={selectedEducation?.bulletPointDtos} />} */}
+                  </div>
+
+                  <div style={{ paddingTop: '16px' }}>
+                    {isShow &&
+                      educations.map(project => (
+                        <StandarList
+                          key={project.id}
+                          data={project}
+                          selectedExperience={selectedEducation}
+                          cvId={cvId}
+                          onDelete={handleDeleteEducation}
+                          onEdit={handleEditEducation}
+                          title={project.degree}
+                          subtitle={''}
+                          updateExperience={updateEducation}
+                        />
+                      ))}
+                  </div>
+                </Card>
               </div>
               <div className="flex flex-col px-4">
-                <EducationForm
-                  cvId={cvId}
-                  onEducationCreated={fetchEducations}
-                  education={selectedEducation}
-                />
+                <EducationForm cvId={cvId} onEducationCreated={fetchEducations} education={selectedEducation} />
               </div>
             </div>
           }

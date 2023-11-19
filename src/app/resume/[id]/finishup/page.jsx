@@ -415,12 +415,7 @@ export default function FinishUp({ params }) {
                   >
                     <ScoreFinishUp data={auditData} />
                   </Modal>
-                  <div
-                    style={{
-                      background: 'white',
-                      width: '100%',
-                    }}
-                  >
+                  <div style={{}}>
                     <div>
                       <FinishupToolbar
                         handleChangeTemplateSelected={value => setTemplateSelected(value)}
@@ -460,12 +455,7 @@ export default function FinishUp({ params }) {
                       </div>
                     </div>
                   </div>
-                  <div
-                    style={{
-                      background: 'white',
-                      width: '100%',
-                    }}
-                  >
+                  <div style={{}}>
                     <CVLayout
                       ref={cvLayoutRef}
                       key={[templateSelected, toolbarState]}

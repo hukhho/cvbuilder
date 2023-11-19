@@ -21,11 +21,16 @@ const Auth0ProviderWithNavigate = ({ children }) => {
   // const redirectUri = `${currentProtocol}//${currentHost}/callback`;
 
   // console.log("hello: ", test, test1)
+  let redirectUri = 'https://cvbuilder.monoinfinity.net/callback';
+
+  if (typeof window !== 'undefined') {
+    // Only access window object in client-side code
+    redirectUri = `${window.location.origin}/callback`;
+  }
 
   const domain = 'dev-gzgdh7hw4udvv70u.us.auth0.com';
   const clientId = '6zBHDZwp850oG9WU28BHXobK7vkFByPl';
-  // const redirectUri = 'http://localhost:3000/callback';
-  const redirectUri = 'https://cvbuilder.monoinfinity.net/callback';
+  // const redirectUri = 'https://cvbuilder.monoinfinity.net/callback';
   const audience = 'https://cvbuilder.monoinfinity.net/';
 
   useEffect(() => {

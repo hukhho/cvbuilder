@@ -14,12 +14,12 @@ import VideoComponent from '@/app/components/VideoComponent';
 
 import SortCheckbox from './SortCheckbox';
 import ExperienceList from './ExperienceList';
-import { deleteExperience, getAllExperiences } from './experienceService';
+import { deleteExperience, getAllExperiences, updateExperience } from './experienceService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import ListError from '@/app/components/ListError/ListError';
 import Head from 'next/head';
-import StandarList from './StandarList';
+import StandarList from '../../../components/List/StandarList';
 
 const { Meta } = Card;
 
@@ -91,7 +91,7 @@ const Experience = ({ params }) => {
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
           content={
-            <div className="flex h-screen w-full">
+            <div className="flex w-full">
               <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
@@ -137,51 +137,11 @@ const Experience = ({ params }) => {
                           onEdit={handleEditExperience}
                           title={experience.role}
                           subtitle={experience.companyName}
+                          updateExperience={updateExperience}
                         />
                       ))}
                   </div>
                 </Card>
-                {/* 
-                <div className="mb-8 p-[27px] bg-white rounded-[9px] shadow flex-col justify-start items-start gap-[17px] inline-flex">
-                  <div style={{ width: '320px', marginTop: '0px', marginBottom: '0px' }}>
-                    <div style={{ maxWidth: '320px' }} className="">
-                      <div className="w-[266px] h-[50.50px] flex border-b border-gray-300">
-                        <div className="left-0 top-[1.47px] text-slate-700 text-lg font-bold font-['Source Sans Pro'] leading-7">
-                          Your Experiences
-                        </div>
-                        <div className="text-gray-300 p-2 align-middle cursor-pointer leading-3 outline-0 ">
-                          <FontAwesomeIcon
-                            icon={faCaretDown}
-                            className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
-                            onClick={handleDownButton}
-                          />
-                        </div>
-                      </div>
-
-                      {isShow && (
-                        <>
-                          {selectedExperience && (
-                            <ListError errors={selectedExperience?.bulletPointDtos} />
-                          )}
-                          {experiences.map(experience => (
-                            <StandarList
-                              key={experience.id}
-                              data={experience}
-                              selectedExperience={selectedExperience}
-                              cvId={cvId}
-                              onDelete={handleDeleteExperience}
-                              onEdit={handleEditExperience}
-                              title={experience.role}
-                              subtitle={experience.companyName}
-                            />
-                          ))}
-                        </>
-                      )}
-
-                
-                    </div>
-                  </div>
-                </div> */}
               </div>
               <div className="flex flex-col px-4">
                 <ExperienceForm

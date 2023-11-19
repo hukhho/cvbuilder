@@ -73,6 +73,10 @@
     min-width: 264px;
     max-width: 264px;
   }
+  /* .react-datepicker__input-container {
+    color: red;
+    width: 197px;
+  } */
   :global(.react-datepicker__input-container) > input.disabled {
     opacity: 0;
   }

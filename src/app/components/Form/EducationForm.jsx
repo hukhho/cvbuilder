@@ -2,19 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, InputNumber, Typography } from 'antd';
 import { createEducation, updateEducation } from '@/app/resume/[id]/education/educationService';
 import './customtext.css';
-import './test.css';
 
-const stylesInput = {
-  width: '769.22px',
-  height: '56.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
 const EducationForm = ({ cvId, onEducationCreated, education }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
@@ -60,94 +48,118 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
   };
 
   return (
-    <div className="w-2/3 ">
+    <div className="" style={{ width: '775px' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="degree"
           label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                What is your <strong>degree</strong> or other <strong>qualification</strong> and{' '}
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                What is your <strong>degree</strong>or other <strong>qualification</strong>and
                 <strong>major</strong>?
-              </span>
-            </label>
-          }
-        >
-          <Input style={stylesInput} placeholder="Sortware Engineer" />
-        </Form.Item>
-        <Form.Item
-          name="collegeName"
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                <strong>WHERE</strong> DID YOU EARN YOUR DEGREE/QUALIFICATION?
-              </span>
-            </label>
-          }
-        >
-          <Input style={stylesInput} placeholder="FPT University, Thu Duc" />
-        </Form.Item>
-        <Form.Item
-          name="location"
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                <strong>WHERE</strong> IS THE INSTITUTION LOCATED?
-              </span>
-            </label>
-          }
-        >
-          <Input style={stylesInput} placeholder="Thu Duc, HCM" />
-        </Form.Item>
-        <Form.Item
-          name="endYear"
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                <strong>WHEN</strong> DID YOU EARN YOUR DEGREE/QUALIFICATION?
-              </span>
-            </label>
-          }
-        >
-          <Input style={stylesInput} placeholder="2023" />
-        </Form.Item>
-        <Form.Item
-          name="minor"
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                DID YOU <strong>MINOR</strong> IN ANYTHING?
-              </span>
-            </label>
-          }
-        >
-          <Input style={stylesInput} placeholder="SE" />
-        </Form.Item>
-        <Form.Item
-          name="gpa"
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                <strong>GPA</strong> (IF APPLICABLE)
-              </span>
-            </label>
-          }
-        >
-          <Input style={stylesInput} placeholder="3.82 GPA" />
-        </Form.Item>
-        <Form.Item
-          name="description"
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                What is your <strong>degree</strong> or other <strong>qualification</strong> and{' '}
-                <strong>major</strong>?
-              </span>
+              </div>
             </label>
           }
         >
           <Input
-            style={stylesInput}
+            style={{ marginTop: '-10px' }}
+            className="inputEl education-section inputEl st-current"
+            placeholder="Software Engineer"
+          />
+        </Form.Item>
+        <Form.Item
+          name="collegeName"
+          label={
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                <strong>WHERE</strong> DID YOU EARN YOUR DEGREE/QUALIFICATION?
+              </div>
+            </label>
+          }
+        >
+          <Input
+            style={{ marginTop: '-10px' }}
+            className="inputEl education-section inputEl st-current"
+            placeholder="FPT University, Thu Duc"
+          />
+        </Form.Item>
+        <Form.Item
+          name="location"
+          label={
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                <strong>WHERE</strong> IS THE INSTITUTION LOCATED?
+              </div>
+            </label>
+          }
+        >
+          <Input
+            style={{ marginTop: '-10px' }}
+            className="inputEl education-section inputEl st-current"
+            placeholder="Thu Duc, HCM"
+          />
+        </Form.Item>
+        <Form.Item
+          name="endYear"
+          label={
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                <strong>WHEN</strong> DID YOU EARN YOUR DEGREE/QUALIFICATION?
+              </div>
+            </label>
+          }
+        >
+          <Input
+            style={{ marginTop: '-10px' }}
+            className="inputEl education-section inputEl st-current"
+            placeholder="2023"
+          />
+        </Form.Item>
+        <Form.Item
+          name="minor"
+          label={
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                DID YOU <strong>MINOR</strong> IN ANYTHING?
+              </div>
+            </label>
+          }
+        >
+          <Input
+            style={{ marginTop: '-10px' }}
+            className="inputEl education-section inputEl st-current"
+            placeholder="SE"
+          />{' '}
+        </Form.Item>
+        <Form.Item
+          name="gpa"
+          label={
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                <strong>GPA</strong> (IF APPLICABLE)
+              </div>
+            </label>
+          }
+        >
+          <Input
+            style={{ marginTop: '-10px' }}
+            className="inputEl education-section inputEl st-current"
+            placeholder="3.82"
+          />{' '}
+        </Form.Item>
+        <Form.Item
+          name="description"
+          label={
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+              <div className="flex gap-2 items-center text-xs">
+                OPEN FIELD FOR ADDITIONAL INFORMATION
+              </div>
+            </label>
+          }
+        >
+          <Input
+            style={{ marginTop: '-10px' }}
+            className="inputEl education-section inputEl st-current"
             value={inputValue}
             onChange={handleInputChange}
             placeholder="Awarded full schoolarship for 4 years due to grades."

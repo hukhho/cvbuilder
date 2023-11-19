@@ -20,6 +20,16 @@ const getResumes = async () => {
   }
 };
 
+const getResume = async cvId => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCoverLetters = async () => {
   try {
     // const response = await axiosInstance.get(`/user/${userId}/coverletters`);
@@ -44,4 +54,4 @@ const getCoverLetters = async () => {
   }
 };
 
-export { getResumes, getCoverLetters };
+export { getResumes, getResume, getCoverLetters };

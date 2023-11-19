@@ -5,10 +5,8 @@ import { Button, Form, Input, InputNumber, Space, Switch, Typography } from 'ant
 import moment from 'moment';
 import DataService from '@/app/utils/dataService';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
-import './test.css';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
-import './date.css';
 import { format, parse } from 'date-fns';
 import './customtext.css';
 import { Box } from '@chakra-ui/react';
@@ -202,21 +200,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
   };
 
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button
-      style={{
-        width: '180.22px',
-        height: '55.19px',
-        marginLeft: '20px',
-        fontSize: '16px',
-        fontWeight: '600',
-        fontFamily: 'Source Sans Pro, sans-serif',
-        textAlign: 'left', // Set text alignment to left
-      }}
-      onClick={onClick}
-      ref={ref}
-    >
-      Present
-    </button>
+    <input className="inputEl" onClick={onClick} ref={ref} value="Present"></input>
   ));
 
   return (
@@ -258,8 +242,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
         </Form.Item>
 
         <Space.Compact block>
-          <div style={{ width: '50%' }}>
-            {' '}
+          <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
               label={
                 <label style={{}}>
@@ -269,40 +252,41 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
                 </label>
               }
             >
-              <Space align="center">
-                <div className="datepicker" style={{ marginLeft: '10px', minWidth: '197px' }}>
-                  <DatePicker
-                    wrapperClassName=""
-                    dateFormat="MMMM yyyy"
-                    showMonthYearPicker
-                    selected={startDate}
-                    onChange={date => setStartDate(date)}
-                    placeholderText={format(new Date(), 'MMMM yyyy')}
-                  />
-                </div>
-                <div style={{ marginLeft: -20 }}>-</div>
-                <div style={{ minWidth: '197px' }}>
-                  <DatePicker
-                    dateFormat="MMMM yyyy"
-                    selected={isCurrentlyWorking ? new Date() : endDate}
-                    showMonthYearPicker
-                    calendarContainer={MyContainer}
-                    onChange={date => setEndDate(date)}
-                    customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
-                    placeholderText={format(new Date(), 'MMMM yyyy')}
-                  />
+              <Space align="start">
+                <div className="relative datepicker" style={{}}>
+                  <div className="" style={{ marginLeft: '0' }}>
+                    <DatePicker
+                      wrapperClassName=""
+                      dateFormat="MMMM yyyy"
+                      showMonthYearPicker
+                      selected={startDate}
+                      onChange={date => setStartDate(date)}
+                      placeholderText={format(new Date(), 'MMMM yyyy')}
+                    />
+                  </div>
+                  <div style={{ marginTop: '13px', marginLeft: '6px', marginRight: '6px' }}>-</div>
+                  <div style={{}}>
+                    <DatePicker
+                      dateFormat="MMMM yyyy"
+                      selected={isCurrentlyWorking ? new Date() : endDate}
+                      showMonthYearPicker
+                      calendarContainer={MyContainer}
+                      onChange={date => setEndDate(date)}
+                      customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
+                      placeholderText={format(new Date(), 'MMMM yyyy')}
+                    />
+                  </div>
                 </div>
               </Space>
-              <Box className="flex datepicker relative"></Box>
             </Form.Item>
           </div>
           <div style={{ width: '50%' }}>
             <Form.Item
-              name="location"
+              name="college"
               label={
                 <label style={{}}>
                   <span className="custom-text whitespace-nowrap">
-                    AT WHICH COLLEGE WAS THE ORGANIZATION LOCATED?
+                    AT <strong>WHICH COLLEGE</strong> WAS THE ORGANIZATION LOCATED?
                   </span>
                 </label>
               }
@@ -312,11 +296,11 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
                 className="inputEl experience-section inputEl st-current"
                 id="experience-section-form-1"
                 placeholder="University of Wisconsin, Madison"
-              />{' '}
+              />
             </Form.Item>
           </div>
         </Space.Compact>
-
+       
         <Form.Item
           name="description"
           label={

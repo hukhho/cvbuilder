@@ -23,7 +23,8 @@ import {
   faFileCirclePlus,
 } from '@fortawesome/free-solid-svg-icons';
 import './input.css';
-import Head from 'next/head';
+import './date.css';
+import './datepicker.css';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -64,44 +65,53 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
     <Layout
       style={{
         backgroundColor: '#fbfbfb',
-        minWidth: '100%',
-        minHeight: '100%',
-        overflow: 'initial',
       }}
       hasSider
     >
       <Sider
         style={{
-          // backgroundColor: '#3C2E8D',
-          overflow: 'hidden',
+          overflow: 'initial',
           height: '100vh',
           position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          zIndex: 99,
           backgroundImage:
             "url('https://photos.pinksale.finance/file/pinksale-logo-upload/1699259953581-c26be60cfd1ba40772b5ac48b95ab19b.png')",
         }}
-        collapsible
         collapsed={collapsed}
-        onCollapse={setCollapsed}
       >
-        <div className="demo-logo-vertical" />
-
-        <Link href="/">
-          <svg
-            style={{
-              width: '80px',
-              height: '80px',
-              marginLeft: '20px',
-            }}
-            xmlns="https://www.w3.org/2000/svg"
-            viewBox="0 0 389 185"
-            className="src-components-Sidebar--tdHjSULsyBY="
-          >
-            <path
-              fill="#48c9b0"
-              d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z"
-            />
-          </svg>
-        </Link>
+        <div className="demo-logo-vertical" style={{ marginTop: '30px' }} />
+        <Space
+          direction="vertical"
+          size="middle"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <Link href="/">
+            <svg
+              style={{
+                width: '80px',
+                height: '80px',
+                marginLeft: '50px',
+              }}
+              xmlns="https://www.w3.org/2000/svg"
+              viewBox="0 0 389 185"
+              className="src-components-Sidebar--tdHjSULsyBY="
+            >
+              <path
+                fill="#48c9b0"
+                d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z"
+              />
+            </svg>
+          </Link>
+        </Space>
 
         <Space
           direction="vertical"
@@ -132,9 +142,8 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
       <Layout
         className="site-layout"
         style={{
+          position: 'relative',
           background: '#fbfbfb',
-          minWidth: '100vh',
-          overflow: 'initial',
           marginLeft: '100px',
         }}
       >
@@ -149,8 +158,6 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
 
         <Content
           style={{
-            minHeight: '100vh',
-            minWidth: '100vh',
             overflow: 'initial',
             background: '#fbfbfb',
           }}
@@ -158,11 +165,10 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
           <div
             style={{
               padding: 0,
-              width: '100%',
-              height: '100%',
-              overflow: 'hidden',
+              overflow: 'initial',
               marginLeft: '30px',
               marginRight: '75px',
+              marginBottom: '100px',
               textAlign: 'center',
               background: '#fbfbfb',
             }}

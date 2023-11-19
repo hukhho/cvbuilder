@@ -10,17 +10,26 @@ import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 // import DataService from '../../../utils/dataService';
 import ContactForm from '@/app/components/Form/ContactForm';
 import getContact from './contactService';
+import { notFound } from 'next/navigation';
+import { getResume } from '@/app/utils/indexService';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]); // Renamed to "contactData"
+  // const [resume, setResume] = useState();
+
   const [enabledCategories, setEnabledCategories] = useState({
     CONTACT: true,
   });
 
   const cvId = params.id;
-
   const fetchData = async () => {
     try {
+      // const resume = await getResume(cvId);
+      // if (!resume) {
+      //   return notFound();
+      // } else {
+
+      // }
       const data = await getContact(cvId);
       console.log('fetchData ', data);
       setContactData(data); // Updated to set "contactData"
@@ -41,7 +50,7 @@ const Contact = ({ params }) => {
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
           content={
-            <div className="flex h-screen ">
+            <div className="flex ">
               <div className="flex flex-col p-4">
                 <ContactForm cvId={cvId} onCreated={fetchData} data={contactData} />
               </div>
