@@ -64,20 +64,20 @@
     padding: 0;
     letter-spacing: 0.004em;
     margin: 0 auto;
-    font-size: 0.85em;
+    /* font-size: 0.85em; */
     font-weight: 100;
     line-height: 1.5;
     text-align: left;
     display: block;
   }
   
-  .omega hr {
+  /* .omega hr {
     height: 0;
     border-top: 1px solid rgba(44, 62, 80, 0.1);
     border-bottom: 0;
     padding: 0 0;
     margin: 10px auto;
-  }
+  } */
   
   .omega .item {
     line-height: 1.25 !important;

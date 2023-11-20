@@ -29,6 +29,7 @@ import './editable.moduel.css';
 import './alpha.css';
 import './beta.css';
 import './omega.css';
+import './lambda.css';
 import './template.css';
 
 import { NextPageContext } from 'next';
@@ -37,7 +38,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 const CVLayout = React.forwardRef(
-  ({ children, onSectionsOrderChange, layoutStyles, stars }, ref) => {
+  ({ children, onSectionsOrderChange, layoutStyles, templateType, stars }, ref) => {
     const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
 
     // Define font styles for different fonts
@@ -64,6 +65,7 @@ const CVLayout = React.forwardRef(
       // fontFamily: `${layoutStyles.fontFamily}, serif`,
       ...fontStyles, // Merge font styles with other styles
     };
+    console.log('CvStyles', CvStyles);
 
     useEffect(() => {
       const resumeId = document.getElementById('resume');
@@ -119,7 +121,8 @@ const CVLayout = React.forwardRef(
 
     // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
     const stylesTransform = {
-      transform: `scale(${layoutStyles.zoom})`,
+      // transform: `scale(${layoutStyles.zoom})`,
+      transform: 'scale(1)',
       transformOrigin: 'left top',
     };
 
@@ -150,15 +153,22 @@ const CVLayout = React.forwardRef(
     useImperativeHandle(ref, () => ({
       CaptureScreenshot,
     }));
-
+    const isClassicalTemplate = templateType === 'classical';
+    const templateName =
+      templateType === 'classical' ? 'omega' : templateType === 'modern' ? 'beta' : 'lambda';
     return (
       <div className="preview card">
-        <div className="flex bg-gray-100 rounded-md p-4 m-auto" id="resume-preview">
+        <div
+          className="bg-gray-100 rounded-md p-4 select-none text-[#2e3d50]"
+          id="resume-preview"
+          style={stylesTransform}
+        >
           <div
             className="design-studio-break-page"
             style={{
               top: 'calc(10.4882in)',
               fontFamily: '"Source Sans Pro", sans-serif',
+              lineHeight: 20,
               zIndex: 99,
             }}
           >
@@ -169,13 +179,17 @@ const CVLayout = React.forwardRef(
             ref={captureRef}
             style={{
               backgroundColor: 'rgb(255, 255, 255)',
-              minHeight: cvHeightSize,
+              minHeight: '11in',
               paddingBottom: '1.3cm',
             }}
           >
             <div
               id="resume"
-              className="relative bg-white transition-colors resume alpha"
+              className={
+                `relative bg-white transition-colors resume ` +
+                `${templateName} ` +
+                `${templateName === 'beta' ? 'border-t-[12px] border-solid box-border' : ''} `
+              }
               data-type="designStudio"
               data-format="letter"
               data-template="standard"
@@ -184,9 +198,12 @@ const CVLayout = React.forwardRef(
                 fontSize: CvStyles.fontSize,
                 lineHeight: CvStyles.lineHeight,
                 width: cvWidthSize,
+                transform: 'initial',
+                transformOrigin: 'initial',
                 // fontFamily: 'Merriweather, serif',
                 padding: '1.3cm 0cm 0cm',
-                borderColor: 'rgb(0, 0, 0)',
+                // borderColor: 'rgb(0, 0, 0)',
+                borderColor: 'rgb(60, 120, 216)',
                 textAlign: 'left',
               }}
             >
@@ -204,7 +221,7 @@ const CVLayout = React.forwardRef(
                           <div key={index}>
                             {React.cloneElement(child, {
                               layoutStyles,
-                            })}
+                            })}{' '}
                             {layoutStyles.hasDivider && (
                               <div
                                 style={{ color: 'red', padding: '0cm 1.4cm', margin: '10px 0px' }}
@@ -215,11 +232,7 @@ const CVLayout = React.forwardRef(
                           </div> // Render without drag if canBeDrag is false
                         ) : (
                           <div key={index}>
-                            <SortableItem key={index}>
-                              {React.cloneElement(child, {
-                                layoutStyles,
-                              })}
-                            </SortableItem>
+                            <SortableItem key={index}>{child}</SortableItem>
                             {index < components.length - 1 && layoutStyles.hasDivider && (
                               <div
                                 style={{ color: 'blue', padding: '0cm 1.4cm', margin: '10px 0px' }}

@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button, Card, ConfigProvider, Divider, Modal } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -20,20 +20,6 @@ import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
 import './gen.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
-
-const DEFAULT_TOOLBAR = {
-  fontSize: '9pt',
-  lineHeight: 1.4,
-  fontFamily: 'Merriweather',
-  fontWeight: 'normal',
-  zoom: '100%',
-  paperSize: 'letter',
-  hasDivider: true,
-  hasIndent: false,
-  fontColor: 'rgb(0, 0, 0)',
-};
-
-const DEFAULT_TEMPLATE = 'classical';
 
 const mockData = {
   data: {
@@ -210,8 +196,8 @@ export default function FinishUp({ params }) {
   //   setShowFinishupCV(false);
   // }, []);
 
-  const [templateSelected, setTemplateSelected] = useState(DEFAULT_TEMPLATE);
-  const [toolbarState, setToolbarState] = useState(DEFAULT_TOOLBAR);
+  const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
+  const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
 
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
@@ -251,83 +237,68 @@ export default function FinishUp({ params }) {
     setToolbarState(values);
   };
 
-  const sections = useMemo(
-    () => [
-      {
-        id: 'information',
-        component: (
-          <InformationSection
-            canBeDrag={false}
-            templateType={templateSelected}
-            userInfo={finishUpData}
-            layoutStyles={toolbarState}
-          />
-        ),
-        canBeDrag: false, // Set to true if this section can be dragged
-        canBeDisplayed: true,
-      },
-      {
-        id: 'summary',
-        component: (
-          <SummarySection
-            layoutStyles={toolbarState}
-            templateType={templateSelected}
-            summary={summary}
-          />
-        ),
-        canBeDrag: true, // Set to true if this section can be dragged
-        canBeDisplayed: true,
-      },
-      {
-        id: 'experiences',
-        component: (
-          <ExperiencesSection
-            templateType={templateSelected}
-            experiences={experiences}
-            layoutStyles={toolbarState}
-            onChangeOrder={sortedExperiences => {
-              // You can perform any necessary actions with the sorted experiences here.
-            }}
-          />
-        ),
-        canBeDrag: true, // Set to true if this section can be dragged
-        canBeDisplayed: experiences !== null,
-      },
-      {
-        id: 'educations',
-        component: (
-          <EducationsSection
-            layoutStyles={toolbarState}
-            templateType={templateSelected}
-            educations={educations}
-          />
-        ),
-        canBeDrag: true, // Set to true if this section can be dragged
-        canBeDisplayed: educations !== null,
-      },
-      {
-        id: 'skills',
-        component: (
-          <SkillsSection
-            layoutStyles={toolbarState}
-            templateType={templateSelected}
-            skills={skills}
-            onChangeOrder={handleSkillsOrderChange}
-          />
-        ),
-        canBeDrag: true, // Set to true if this section can be dragged
-        canBeDisplayed: skills !== null,
-      },
-    ],
-    [toolbarState, templateSelected],
-  );
+  const sections = [
+    {
+      id: 'information',
+      component: (
+        <InformationSection
+          canBeDrag={false}
+          templateType={templateSelected}
+          userInfo={finishUpData}
+          layoutStyles={toolbarState}
+        />
+      ),
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: true,
+    },
+    {
+      id: 'summary',
+      component: <SummarySection templateType={templateSelected} summary={summary} />,
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: true,
+    },
+    {
+      id: 'experiences',
+      component: (
+        <ExperiencesSection
+          templateType={templateSelected}
+          experiences={experiences}
+          onChangeOrder={sortedExperiences => {
+            console.log('New order of experiences:', sortedExperiences);
+            // You can perform any necessary actions with the sorted experiences here.
+          }}
+        />
+      ),
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: experiences !== null,
+    },
+    {
+      id: 'educations',
+      component: <EducationsSection templateType={templateSelected} educations={educations} />,
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: educations !== null,
+    },
+    {
+      id: 'skills',
+      component: (
+        <SkillsSection
+          templateType={templateSelected}
+          skills={skills}
+          onChangeOrder={handleSkillsOrderChange}
+        />
+      ),
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: skills !== null,
+    },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const cvId = params.id;
         const data = await getFinishUp(cvId);
-        console.log('🚀 ~ file: page.jsx:330 ~ fetchData ~ data:', data);
+
+        console.log('FinishUp data: ', data);
 
         setFinishUpData(data);
 
@@ -354,10 +325,12 @@ export default function FinishUp({ params }) {
       setShowFinishupCV(false);
 
       await syncUp(cvId123); // Call the syncUp function
+      console.log('Synchronization completed.');
 
       const fetchData = async () => {
         try {
           const data = await getFinishUp(cvId123);
+          console.log('FinishUp data: ', data);
 
           setFinishUpData(data);
 
@@ -400,7 +373,7 @@ export default function FinishUp({ params }) {
           content={
             <div className="flex">
               {showFinishupCV && (
-                <div className="mr-2 flex flex-col flex-1">
+                <div className="mr-2 flex flex-col">
                   {/* <Button type="primary" onClick={() => setOpen(true)}>
                     Open Modal of 1000px width
                   </Button> */}
@@ -415,14 +388,21 @@ export default function FinishUp({ params }) {
                   >
                     <ScoreFinishUp data={auditData} />
                   </Modal>
-                  <div style={{}}>
-                    <div>
+                  <div
+                    style={
+                      {
+                        // background: 'white',
+                        // width: '100%',
+                      }
+                    }
+                  >
+                    <div style={{ width: '895px' }}>
                       <FinishupToolbar
                         handleChangeTemplateSelected={value => setTemplateSelected(value)}
                         handleOpenModal={() => setOpen(true)}
                         toolbarState={toolbarState}
                         onToolbarChange={handleToolbarChange}
-                        currentTemplate={DEFAULT_TOOLBAR}
+                        currentTemplate={mockData.data.resume.resumeStyle}
                       />
                       <div className="flex" style={{ justifyItems: 'center' }}>
                         <button
@@ -455,22 +435,21 @@ export default function FinishUp({ params }) {
                       </div>
                     </div>
                   </div>
-                  <div style={{}}>
-                    <CVLayout
-                      ref={cvLayoutRef}
-                      key={[templateSelected, toolbarState]}
-                      layoutStyles={toolbarState}
-                      sectionsOrder={sectionsOrder}
-                      onSectionsOrderChange={handleSectionsOrderChange}
-                    >
-                      {sections.map(section => section.canBeDisplayed && section.component)}
-                    </CVLayout>
-                  </div>
+                  <CVLayout
+                    ref={cvLayoutRef}
+                    key={[templateSelected, toolbarState]}
+                    templateType={templateSelected}
+                    layoutStyles={toolbarState}
+                    sectionsOrder={sectionsOrder}
+                    onSectionsOrderChange={handleSectionsOrderChange}
+                  >
+                    {sections.map(section => section.canBeDisplayed && section.component)}
+                  </CVLayout>
                 </div>
               )}
               {showFinishupCV && (
                 <div
-                  className="flex flex-col items-start ml-auto"
+                  className="flex flex-col items-start"
                   style={{ position: 'static', width: '360px' }}
                 >
                   <div className="">

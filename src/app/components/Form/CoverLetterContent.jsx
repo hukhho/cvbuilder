@@ -8,7 +8,7 @@ import { createCoverLetter } from './coverLetterService';
 
 import { Slider, SliderFilledTrack, SliderThumb, SliderTrack, Tooltip } from '@chakra-ui/react';
 import './customtext.css';
-import './select.css';
+// import './select.css';
 import './coverletter.css';
 
 const stylesInput = {

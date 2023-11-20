@@ -3,49 +3,80 @@
 import { Divider, Typography } from 'antd';
 
 const SummarySection = ({ summary, templateType, layoutStyles }) => {
+  if (templateType === 'modern') {
+    return (
+      <>
+        <div className="uppercase false " style={{ fontWeight: 600, padding: '0cm 1.4cm' }}>
+          <span
+            className="editableContent cursor-text  designStudio "
+            id="summary-heading"
+            tabIndex={0}
+            contentEditable="true"
+            style={{ color: 'rgb(46, 61, 80)', fontSize: '1.15em', display: 'block' }}
+          >
+            Summary
+          </span>
+        </div>
+
+        <div
+          className="relative whitespace-pre-line cursor-text focus:outline-none"
+          style={{
+            color: 'rgb(46, 61, 80)',
+            fontWeight: 400,
+            fontSize: '0.85em',
+            lineHeight: '1.6em',
+            padding: '0cm 1.4cm',
+          }}
+        >
+          <p
+            className="editableContent cursor-text  designStudio "
+            id="summary-summary"
+            contentEditable="true"
+          >
+            {summary}
+          </p>
+        </div>
+      </>
+    );
+  }
   return (
-    <div
-      className="experience relative group"
-      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
-    >
+    <div className="experience leading-snug relative group ">
       <div
         className="uppercase mb-[4px]   "
         style={{
           fontWeight: 600,
           padding: '0cm 1.4cm',
+          lineHeight: '1.35em',
         }}
       >
         <span
-          className={`editableContent cursor-text designStudio ${
-            templateType === 'classical' ? 'section-header' : ''
-          }`}
+          className="editableContent cursor-text designStudio"
           id="experience-heading"
           contentEditable="true"
           style={{
+            color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
-            color: layoutStyles.fontColor,
           }}
         >
           Summary
         </span>
+        <hr class="border-0 border-b-[1px] border-black mt-[1px]"></hr>
       </div>
       {/* <Divider className="divider-section" /> */}
       <div>
         <div
           className="relative whitespace-pre-line cursor-text focus:outline-none"
           style={{
+            color: 'rgb(46, 61, 80)',
             fontWeight: 100,
             fontSize: '0.85em',
+            lineHeight: '1.6em',
             padding: '0cm 1.4cm',
           }}
         >
           <div className="relative">
-            <p className="editableContent ghost-hightlight w-full designStudio ">
-              <span>
-                <span className="">{summary}</span>
-              </span>
-            </p>
+            <p className="editableContent cursor-text  designStudio ">{summary}</p>
           </div>
           {/* <p
             className="editableContent cursor-text  designStudio "

@@ -89,7 +89,7 @@
     white-space: pre-line;
     padding: 0;
     margin: 0 auto;
-    font-size: 0.95em;
+    /* font-size: 0.95em; */
     font-weight: 100;
     line-height: 1.5;
     text-align: left;
@@ -99,10 +99,11 @@
   
   .beta hr {
     height: 0;
-    border-top: 1px solid rgba(44, 62, 80, 0.1);
+    display: none;
+    /* border-top: 1px solid rgba(44, 62, 80, 0.1); */
     border-bottom: 0;
     padding: 0 0;
-    margin: 10px auto;
+    /* margin: 10px auto; */
   }
   
   .beta .item {

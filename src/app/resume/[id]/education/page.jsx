@@ -110,7 +110,7 @@ const Education = ({ params }) => {
                     {/* {isShow && selectedEducation && <ListError errors={selectedEducation?.bulletPointDtos} />} */}
                   </div>
 
-                  <div style={{ paddingTop: '16px' }}>
+                  <div style={{ paddingTop: '0px' }}>
                     {isShow &&
                       educations.map(project => (
                         <StandarList

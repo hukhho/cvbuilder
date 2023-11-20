@@ -4,7 +4,6 @@ import DataService from '@/app/utils/dataService';
 import updateContact from './updateContactService';
 
 import './customtext.css';
-import './select.css';
 import ButtonContact from './ButtonContact';
 
 const ContactForm = ({ cvId, onCreated, data }) => {

@@ -125,7 +125,7 @@ const Experience = ({ params }) => {
                     )}
                   </div>
 
-                  <div style={{ paddingTop: '16px' }}>
+                  <div style={{ paddingTop: '0px' }}>
                     {isShow &&
                       experiences.map(experience => (
                         <StandarList

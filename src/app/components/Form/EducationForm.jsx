@@ -6,9 +6,10 @@ import './customtext.css';
 const EducationForm = ({ cvId, onEducationCreated, education }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
-
+  console.log('EducationForm.education', education);
   useEffect(() => {
     if (education) {
+      console.log('EducationForm.education.minor', education.minor);
       form.setFieldsValue(education);
       setIsEditMode(true); // Set to edit mode if education prop is provided
     } else {
@@ -128,8 +129,8 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           <Input
             style={{ marginTop: '-10px' }}
             className="inputEl education-section inputEl st-current"
-            placeholder="SE"
-          />{' '}
+            placeholder="2023"
+          />
         </Form.Item>
         <Form.Item
           name="gpa"
@@ -144,9 +145,10 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           <Input
             style={{ marginTop: '-10px' }}
             className="inputEl education-section inputEl st-current"
-            placeholder="3.82"
-          />{' '}
+            placeholder="2023"
+          />
         </Form.Item>
+
         <Form.Item
           name="description"
           label={

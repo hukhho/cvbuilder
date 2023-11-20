@@ -16,11 +16,15 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
   const inputRef = useRef(null);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(data?.description ? data.description : '');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
-
+  const resizeTextArea = () => {
+    inputRef.current.style.height = 'auto';
+    inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+  };
+  useEffect(resizeTextArea, [inputValue]);
   useEffect(() => {
     if (data) {
       setIsEditMode(true); // Set to edit mode if experience prop is provided
@@ -115,11 +119,6 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
         input.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
       }
     }
-  };
-  const handleTextareaInput = event => {
-    const textarea = event.target;
-    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
   };
 
   const handleInputChange = event => {
@@ -301,7 +300,6 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
             ref={inputRef}
             onKeyPress={handleKeyPress}
             onChange={handleInputChange}
-            onInput={handleTextareaInput}
             value={inputValue}
           />
           <Input type="hidden" value={inputValue} />

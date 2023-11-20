@@ -52,7 +52,7 @@ const Certification = ({ params }) => {
   const handleDeleteData = async itemId => {
     // Renamed the parameter to "itemId"
     try {
-      await dataService.delete(cvId, itemId);
+      await dataService.delete(itemId);
       const updatedData = await dataService.getAll(cvId);
       setData(updatedData);
     } catch (error) {
@@ -99,8 +99,7 @@ const Certification = ({ params }) => {
                   <div>
                     {/* {isShow && selectedEducation && <ListError errors={selectedEducation?.bulletPointDtos} />} */}
                   </div>
-
-                  <div style={{ paddingTop: '16px' }}>
+                  <div style={{ paddingTop: '0px' }}>
                     {isShow &&
                       data.map(project => (
                         <StandarList

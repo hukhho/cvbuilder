@@ -102,7 +102,7 @@ const Involvement = ({ params }) => {
                     {isShow && selectedData && <ListError errors={selectedData?.bulletPointDtos} />}
                   </div>
 
-                  <div style={{ paddingTop: '16px' }}>
+                  <div style={{ paddingTop: '0px' }}>
                     {isShow &&
                       involvementData.map(project => (
                         <StandarList

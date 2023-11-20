@@ -32,7 +32,7 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
           <StandardItem
             key={edu.id}
             role={degree}
-            firstItem={`Minor in ${minor}`}
+            firstItem={minor}
             secondItem={collegeName}
             threeItem={location}
             fourItem={endYear}

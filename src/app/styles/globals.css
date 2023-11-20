@@ -298,3 +298,7 @@ a {
 
   /*--gradient-color-3: #f33a3e;*/
 }
+
+[contenteditable] {
+  outline: 0px solid transparent;
+}

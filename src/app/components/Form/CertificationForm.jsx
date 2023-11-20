@@ -47,10 +47,10 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
     // Check if the newValue starts with a bullet point
     if (!newValue.startsWith('• ')) {
       setInputValue(`• ${newValue}`);
-      form.setFieldValue('description', `• ${newValue}`);
+      form.setFieldValue('certificateRelevance', `• ${newValue}`);
     } else {
       setInputValue(newValue);
-      form.setFieldValue('description', newValue);
+      form.setFieldValue('certificateRelevance', newValue);
     }
   };
 

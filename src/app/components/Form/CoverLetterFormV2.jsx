@@ -8,7 +8,7 @@ import { createCoverLetter } from './coverLetterService';
 // import { convertToSliderValue, convertToSliderLabel } from './CreativitySlider';
 
 import './customtext.css';
-import './select.css';
+// import './select.css';
 import './coverletter.css';
 import updateCoverLetter from './updateCoverLetterService';
 

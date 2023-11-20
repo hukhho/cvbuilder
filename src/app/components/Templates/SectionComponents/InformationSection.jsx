@@ -12,47 +12,100 @@ const ContactInfoItem = ({ icon, text }) => (
 );
 
 const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
-  const { fullName, email, phone, personalWebsite, address, linkedIn } = userInfo;
+  const { name, email, phone, personalWebsite, address, linkedIn } = userInfo;
 
   const isClassicalTemplate = templateType === 'classical';
 
   const isModernTemplate = templateType === 'modern';
-
+  if (isModernTemplate) {
+    return (
+      <div className="pb-[20px]">
+        <div
+          className="flex flex-row items-end gap-4 pb-2"
+          style={{ paddingLeft: '1.4cm', paddingRight: '1.4cm' }}
+        >
+          <div className="grow">
+            <h1
+              className="font-bold text-left"
+              style={{
+                color: 'rgb(46, 61, 80)',
+                fontSize: '2.1em',
+                fontFamily: '"Source Sans Pro", sans-serif',
+                lineHeight: 'inherit',
+              }}
+            >
+              {name}
+            </h1>
+            <div className="w-[75%] h-[2px] bg-[#d9d9d9] mt-[0.5em] mb-[1.2em]" />
+            <div
+              className="pt-[2px] text-left false"
+              style={{
+                color: 'rgb(46, 61, 80)',
+                fontWeight: 400,
+                fontSize: '0.85em',
+              }}
+            >
+              {/* <ul className="inline-block mr-1">
+                  <li className="inline-block [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-1">
+                    New York City
+                  </li>
+                  <li className="inline-block [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-1">
+                    United States
+                  </li>
+                </ul> */}
+              <span className="inline-block mr-1">
+                <svg
+                  xmlns="https://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="contact-icon inline-block mr-1"
+                  width="0.9em"
+                  height="0.9em"
+                  style={{ fill: 'rgb(46, 61, 80)' }}
+                >
+                  <path d="M20.016 8.016V6L12 11.016 3.984 6v2.016L12 12.985zm0-4.032q.797 0 1.383.609t.586 1.406v12q0 .797-.586 1.406t-1.383.609H3.985q-.797 0-1.383-.609t-.586-1.406v-12q0-.797.586-1.406t1.383-.609h16.031z" />
+                </svg>
+                {email}
+              </span>
+              <span className="inline-block mr-1">
+                {phone && (
+                  <svg
+                    xmlns="https://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="contact-icon inline-block mr-1"
+                    width="0.9em"
+                    height="0.9em"
+                    style={{ fill: 'rgb(46, 61, 80)' }}
+                  >
+                    <path d="M19.5 0h-15A1.5 1.5 0 0 0 3 1.5v21A1.5 1.5 0 0 0 4.5 24h15a1.5 1.5 0 0 0 1.5-1.5v-21A1.5 1.5 0 0 0 19.5 0zM18 18H6V3h12z" />
+                  </svg>
+                )}
+                {phone}
+              </span>
+              <span className="inline-block mr-1">
+                {linkedIn && (
+                  <svg
+                    xmlns="https://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="contact-icon inline-block mr-1"
+                    width="0.9em"
+                    height="0.9em"
+                    style={{ fill: 'rgb(46, 61, 80)' }}
+                  >
+                    <path d="M21.75 0H2.25A2.257 2.257 0 0 0 0 2.25v19.5A2.257 2.257 0 0 0 2.25 24h19.5A2.257 2.257 0 0 0 24 21.75V2.25A2.257 2.257 0 0 0 21.75 0zM9 19.5H6V9h3zm-1.5-12C6.67 7.5 6 6.83 6 6s.67-1.5 1.5-1.5S9 5.17 9 6s-.67 1.5-1.5 1.5zm12 12h-3v-6c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v6h-3V9h3v1.861C14.119 10.013 15.066 9 16.125 9c1.866 0 3.375 1.678 3.375 3.75z" />
+                  </svg>
+                )}
+                {linkedIn}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
-    //   _     _                   _
-    //   _ __ | |__ (_)_ __     ___ __ _(_)   ___ ___  _ __     ___ __ _  ___
-    //  | '_ \| '_ \| | '_ \   / __/ _` | |  / __/ _ \| '_ \   / __/ _` |/ __|
-    //  | | | | | | | | | | | | (_| (_| | | | (_| (_) | | | | | (_| (_| | (__
-    //  |_| |_|_| |_|_|_| |_|  \___\__,_|_|  \___\___/|_| |_|  \___\__,_|\___|
-
-    // <div
-    //   className={`information-section-container mb-4 ${isClassicalTemplate ? 'text-center' : ''}`}
-    // >
-    //   <div className={`name ${isClassicalTemplate ? 'justify-center' : ''}`}>
-    //     <Typography.Title level={2} style={{ margin: 0, fontSize: '1.6em', fontFamily: 'inherit' }}>
-    //       {name}
-    //     </Typography.Title>
-    //     {isModernTemplate && (
-    //       <Divider
-    //         style={{
-    //           margin: '10px 0 0 0',
-    //           borderTop: '2px solid #423b3b',
-    //         }}
-    //       />
-    //     )}
-    //     <div className={`contact-info ${isClassicalTemplate ? 'justify-center' : ''}`}>
-    //       {address && <ContactInfoItem icon={faAddressCard} text={address} />}
-    //       {email && <ContactInfoItem icon={faEnvelope} text={email} />}
-    //       {phone && <ContactInfoItem icon={faPhone} text={phone} />}
-    //       {linkedIn && <ContactInfoItem icon={faLinkedin} text={linkedIn} />}
-    //       {personalWebsite && <ContactInfoItem icon={faGlobe} text={personalWebsite} />}
-    //       {}
-    //     </div>
-    //   </div>
-    // </div>
     <div
       className={`${isClassicalTemplate ? 'justify-center' : ''}`}
-      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
+      style={{ lineHeight: layoutStyles.lineHeight }}
     >
       <div
         className="flex flex-row items-end gap-4 pb-2"
@@ -62,13 +115,15 @@ const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
           <h1
             className={`${isClassicalTemplate ? 'text-center' : ''} font-bold`}
             style={{
+              // ...layoutStyles,
               fontSize: '1.65em',
-              fontFamily: 'Merriweather, serif',
+              // fontFamily: 'Merriweather, serif',
+              fontFamily: layoutStyles.fontFamily,
               lineHeight: 'inherit',
               color: layoutStyles.fontColor,
             }}
           >
-            {fullName}
+            {name}
           </h1>
           <div
             className={`${isClassicalTemplate ? 'text-center' : ''} pt-[2px] false`}
@@ -77,24 +132,47 @@ const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
               fontSize: '0.75em',
             }}
           >
-            {/* <ul className="inline-block mr-1">
-              <li className="inline-block [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-1">
-                New York City
-              </li>
-              <li className="inline-block [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-1">
-                United States
-              </li>
-            </ul> */}
             <span className="inline-block mr-1">
               {/* <i className="mr-1">•</i> */}
+              <svg
+                xmlns="https://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                className="contact-icon inline-block mr-1"
+                width="0.9em"
+                height="0.9em"
+                style={{ fill: 'rgb(46, 61, 80)' }}
+              >
+                <path d="M20.016 8.016V6L12 11.016 3.984 6v2.016L12 12.985zm0-4.032q.797 0 1.383.609t.586 1.406v12q0 .797-.586 1.406t-1.383.609H3.985q-.797 0-1.383-.609t-.586-1.406v-12q0-.797.586-1.406t1.383-.609h16.031z" />
+              </svg>
               {email}
             </span>
             <span className="inline-block mr-1">
-              <i className="mr-1">•</i>
+              <svg
+                xmlns="https://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                className="contact-icon inline-block mr-1"
+                width="0.9em"
+                height="0.9em"
+                style={{ fill: 'rgb(46, 61, 80)' }}
+              >
+                <path d="M19.5 0h-15A1.5 1.5 0 0 0 3 1.5v21A1.5 1.5 0 0 0 4.5 24h15a1.5 1.5 0 0 0 1.5-1.5v-21A1.5 1.5 0 0 0 19.5 0zM18 18H6V3h12z" />
+              </svg>
               {phone}
             </span>
             <span className="inline-block mr-1">
-              <i className="mr-1">•</i>
+              {personalWebsite && (
+                <svg
+                  xmlns="https://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="contact-icon inline-block mr-1"
+                  width="0.9em"
+                  height="0.9em"
+                  style={{ fill: 'rgb(46, 61, 80)' }}
+                >
+                  <path d="M21.75 0H2.25A2.257 2.257 0 0 0 0 2.25v19.5A2.257 2.257 0 0 0 2.25 24h19.5A2.257 2.257 0 0 0 24 21.75V2.25A2.257 2.257 0 0 0 21.75 0zM9 19.5H6V9h3zm-1.5-12C6.67 7.5 6 6.83 6 6s.67-1.5 1.5-1.5S9 5.17 9 6s-.67 1.5-1.5 1.5zm12 12h-3v-6c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v6h-3V9h3v1.861C14.119 10.013 15.066 9 16.125 9c1.866 0 3.375 1.678 3.375 3.75z" />
+                </svg>
+              )}
+
               {personalWebsite}
             </span>
           </div>

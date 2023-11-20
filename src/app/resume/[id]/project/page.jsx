@@ -115,7 +115,7 @@ const Project = ({ params }) => {
                   )}
                 </div>
 
-                <div style={{ paddingTop: '16px' }}>
+                <div style={{ paddingTop: '0px' }}>
                   {isShow &&
                     projectData.map(project => (
                       <StandarList

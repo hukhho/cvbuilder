@@ -21,19 +21,20 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const ExperiencesSection = ({ experiences, onChangeOrder, templateType, layoutStyles }) => {
+const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
+  console.log('ExperiencesSection::: ', experiences);
   const experienceItems = (
     <>
       {experiences.map(exp => {
-        const { startDate, endDate, description, companyName, role, location } = exp;
+        const { duration, description, companyName, role, location } = exp;
+
         return (
           <StandardItem
             key={exp.id}
             templateType={templateType}
             role={role}
             location={location}
-            startTime={startDate}
-            endTime={endDate}
+            duration={duration}
             orgName={companyName}
             renderRightSubtitle
             description={description}
@@ -82,32 +83,31 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, layoutSt
   }, []);
 
   return (
-    <div
-      className="experience relative group"
-      style={{ zoom: layoutStyles.zoom, lineHeight: layoutStyles.lineHeight }}
-    >
+    <div className="experience leading-snug relative group">
       <div
-        className="uppercase"
+        className="uppercase mb-[4px]   "
         style={{
-          marginBottom: '4px',
           fontWeight: 600,
           padding: '0cm 1.4cm',
+          lineHeight: '1.35em',
         }}
       >
         <span
-          className={`editableContent cursor-text designStudio ${
-            templateType === 'classical' ? 'section-header' : ''
-          }`}
+          className="editableContent cursor-text designStudio "
           id="experience-heading"
-          contentEditable="true"
+          // contentEditable="true"
           style={{
-            color: layoutStyles.fontColor,
+            color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
           }}
         >
           Experience
         </span>
+        <hr class="border-0 border-b-[1px] border-black mt-[1px]" />
+
+        <div />
+        {/* <div className='section-header'></div> */}
       </div>
 
       {/* <Divider className="section-header" /> */}

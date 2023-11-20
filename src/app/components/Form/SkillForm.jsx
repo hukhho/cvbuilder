@@ -1,32 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Input, InputNumber, Typography } from 'antd';
 import DataService from '@/app/utils/dataService';
 
 import './customtext.css';
 
-const stylesInput = {
-  width: '769.22px',
-  height: '56.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
 const SkillsForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
+  const [inputValue, setInputValue] = useState();
 
   const dataService = new DataService('skills', cvId);
 
+  const textAreaRef = useRef(null);
+  const resizeTextArea = () => {
+    textAreaRef.current.style.height = 'auto';
+    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+  };
+  const resizeTextAreaInit = () => {
+    textAreaRef.current.style.height = '200px';
+    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+  };
+  useEffect(() => {
+    resizeTextAreaInit();
+    resizeTextArea();
+  }, [inputValue]);
+
   useEffect(() => {
     if (data) {
+      resizeTextAreaInit();
       form.setFieldsValue(data);
       setIsEditMode(true); // Set to edit mode if education prop is provided
+      setInputValue(data.description);
     } else {
       form.resetFields();
+      setInputValue('');
       setIsEditMode(false); // Set to create mode if education prop is not provided
     }
   }, [data, form]);
@@ -46,17 +53,12 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
       console.log('Submit. Error:', error);
     }
   };
-  const [inputValue, setInputValue] = useState();
   const handleInputChange = event => {
-    setInputValue(event.target.value);
-  };
-  const handleTextareaInput = event => {
-    const textarea = event.target;
-    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
+    const newValue = event.target.value;
+    setInputValue(newValue);
   };
   return (
-    <div className="w-2/3" style={{ minWidth: '852.13px' }}>
+    <div className="" style={{ minWidth: '852.13px' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="description"
@@ -76,9 +78,9 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
             rows={1}
             placeholder="Front End: HTML, CSS, Javascript"
             name="skill"
+            ref={textAreaRef}
             style={{ height: 'auto', overflow: 'hidden', resize: 'none' }}
             onChange={handleInputChange}
-            onInput={handleTextareaInput}
             value={inputValue}
           />
           {/* <Input className="inputEl" placeholder="Project Management Professional (PMP)" /> */}
@@ -90,8 +92,8 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
           data-busy="false"
           className="skills-section form-submit button "
           id="skills-section-save-to-list"
-          type=""
-          on
+          type="submit"
+          onSubmit={handleSubmit}
         >
           Save to Skills list
         </button>

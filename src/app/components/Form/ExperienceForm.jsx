@@ -4,7 +4,6 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
 import { Button, Divider, Form, Input, InputNumber, Space, Switch, Typography } from 'antd';
 import moment from 'moment';
-import './test.css';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
 // import './date.css';
@@ -19,10 +18,17 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
   const inputRef = useRef(null);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(experience?.description ? experience.description : '');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
+
+  const resizeTextArea = () => {
+    inputRef.current.style.height = 'auto';
+    inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+  };
+  useEffect(resizeTextArea, [inputValue]);
+  
 
   useEffect(() => {
     if (experience) {
@@ -57,11 +63,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     }
   }, [experience, form]);
 
-  const handleTextareaInput = event => {
-    const textarea = event.target;
-    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
-  };
   const handleSubmit = async values => {
     try {
       values.description = inputValue;
@@ -269,13 +270,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               name="location"
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
-                <div className="flex gap-2 items-center text-xs">
-                  <span>
-                  <strong>WHERE</strong> WAS THE COMPANY LOCATED?
-                  </span>
-                </div>
-              </label>
-              
+                  <div className="flex gap-2 items-center text-xs">
+                    <span>
+                      <strong>WHERE</strong> WAS THE COMPANY LOCATED?
+                    </span>
+                  </div>
+                </label>
               }
             >
               <Input
@@ -319,7 +319,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             ref={inputRef}
             onKeyPress={handleKeyPress}
             onChange={handleInputChange}
-            onInput={handleTextareaInput}
             value={inputValue}
           />
           <Input type="hidden" value={inputValue} />

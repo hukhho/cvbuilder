@@ -66,18 +66,22 @@ const StandarList = ({
 
   return (
     <div
-      style={{ fontFamily: '"Source Sans Pro", sans-serif', fontSize: 16, fontWeight: 400 }}
-      className="flex-col justify-start items-start  flex"
+      style={{
+        fontFamily: '"Source Sans Pro", sans-serif',
+        fontSize: 16,
+        fontWeight: 400,
+        // wordWrap: 'break-word', // or use overflowWrap: 'break-word;'
+      }}
+      className="mt-4"
     >
-      <div className="flex-col justify-start items-start  flex">
-        <div className="self-stretch justify-start items-start inline-flex">
-          <div className="flex flex-col" style={{ textAlign: 'left' }}>
-            <span className="block max-w-full whitespace-no-wrap overflow-hidden text-ellipsis">
-              {title}
-            </span>
-            <span className="block max-w-full whitespace-no-wrap overflow-hidden text-ellipsis opacity-80">
+      <div className="">
+        <div className="">
+          <div className="" style={{ textAlign: 'left' }}>
+            <p className="whitespace-no-wrap text-clip overflow-hidden ...">{title}</p>
+
+            <p className="whitespace-no-wrap text-clip overflow-hidden ... opacity-80">
               {subtitle}
-            </span>
+            </p>
           </div>
         </div>
         <div

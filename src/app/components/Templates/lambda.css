@@ -1,0 +1,325 @@
+@page {
+  margin: 1.2cm 0;
+}
+@page:first {
+  margin-top: 0;
+}
+
+.resume {
+  padding: 1.3cm 1.4cm 1.3cm 1.4cm;
+  position: relative;
+}
+.print .ghost-hightlight {
+  display: none;
+}
+.print .resume {
+  padding: 1.12cm 1.2cm 0 1.2cm !important;
+}
+.print .handle-sort-wrapper {
+  display: none;
+}
+.print .resume {
+  letter-spacing: 0.003em !important;
+}
+.print .handle {
+  display: none;
+}
+.lambda {
+  font-family: "Source Sans Pro", sans-serif;
+  color: #2e3d50;
+  -webkit-font-feature-settings:
+    "liga" 0,
+    "onum" 1,
+    "kern" 1;
+  -o-font-feature-settings:
+    "liga" 0,
+    "onum" 1,
+    "kern" 1;
+  font-feature-settings:
+    "liga" 0,
+    "onum" 1,
+    "kern" 1;
+}
+
+.lambda h1 {
+  font-family: "Source Sans Pro", sans-serif;
+  line-height: inherit;
+}
+.lambda .draggable-item > .handle-sort-wrapper {
+  position: absolute;
+}
+.lambda .draggable-item section .handle-sort-wrapper {
+  position: absolute;
+}
+.lambda .draggable-item > .handle-sort-wrapper > span {
+  visibility: hidden;
+}
+.lambda .draggable-item section .handle-sort-wrapper > span {
+  visibility: hidden;
+}
+.lambda .section-header {
+  font-family: "Source Sans Pro", sans-serif;
+  display: block;
+  font-size: 1.35em;
+  letter-spacing: 0;
+  font-weight: normal;
+  margin: 14px 0 0 0;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: none;
+}
+.lambda .editableContent {
+  font-family: "Source Sans Pro", sans-serif;
+  font-feature-settings:
+    "liga" 0,
+    "onum" 1,
+    "kern" 1;
+  overflow: hidden;
+}
+
+.lambda p {
+  white-space: pre-line;
+  padding: 0;
+  margin: 0 auto;
+  font-size: 0.95em;
+  font-weight: 100;
+  line-height: 1.5;
+  text-align: left;
+  display: block;
+  position: relative;
+}
+
+.lambda .item,
+.lambda .skills .item {
+  line-height: 1.25 !important;
+  margin-bottom: 9px;
+}
+.lambda .skills .item {
+  margin-bottom: 0;
+}
+.lambda .name {
+  color: #4d70eb;
+  font-family: "Source Sans Pro", sans-serif;
+  margin: 0 auto;
+  display: block;
+  text-align: left;
+  width: 100%;
+  font-size: 2.5em;
+  padding: 0 0 3px 0;
+  font-weight: 700;
+}
+.lambda .contact {
+  color: #999999;
+  margin-top: 2px;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.lambda .contact-item {
+  font-family: "Source Sans Pro", sans-serif;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1em;
+  font-weight: 500;
+  padding: 2px 3px 8px 3px;
+}
+
+.lambda .contact-item-location {
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 1em;
+  font-weight: 500;
+  padding: 2px 3px 8px 0;
+}
+
+.lambda .contact-icon {
+  width: 0.9em;
+  height: 0.9em;
+  margin-right: 3px;
+  fill: currentColor;
+}
+
+.lambda[data-icons="false"] .contact-icon {
+  display: none;
+}
+
+.lambda[data-icons="false"] .contact-item:before {
+  content: "•";
+  display: block;
+  padding: 0 7px 0 3px;
+}
+
+.lambda .contact span i {
+  position: relative;
+  top: 1px;
+  margin: 0 3px 0 0;
+}
+
+.lambda .summary {
+  display: block;
+}
+.lambda .summary-paragraph {
+  margin-top: 0.7em !important;
+}
+.lambda .item > div > span {
+  line-height: 2em;
+}
+.lambda .item span {
+  margin: 0 0 -6px;
+  font-size: 1em;
+  font-weight: 600;
+  text-align: left;
+  display: inline-flex;
+  align-items: baseline;
+  padding: 0;
+  line-height: initial;
+}
+
+.lambda .highlight {
+  color: #4d70eb;
+}
+
+.lambda .item .ghost-hightlight span > span,
+.lambda .minor .minor-text {
+  font-size: 1em;
+  font-weight: 400 !important;
+}
+.lambda .item span > span:after {
+  display: none;
+}
+.lambda .minor {
+  font-feature-settings:
+    "liga" 0,
+    "onum" 1,
+    "kern" 1;
+  display: inline-flex !important;
+  position: relative;
+  overflow: hidden;
+}
+.lambda .minor .minor-text {
+  font-weight: normal;
+}
+.lambda .item p {
+  display: block;
+  text-align: left;
+  white-space: pre-line;
+  padding: 0;
+  margin: 0 auto;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.6em;
+}
+.lambda .ghost-hightlight {
+  position: absolute !important;
+}
+.lambda .ghost-hightlight > span {
+  line-height: 1.6em;
+  font-size: 1em !important;
+  font-weight: 400 !important;
+  display: inline !important;
+  float: none !important;
+  color: transparent;
+}
+.lambda .draggable-item {
+  position: relative;
+}
+.lambda .handle {
+  top: 0 !important;
+}
+.lambda > div > div > div > .handle {
+  top: 0px !important;
+  font-size: 1.2em;
+  height: calc(100% - 27px);
+}
+.lambda .summary .item {
+  margin-top: -6px;
+}
+
+.lambda .education .item > div {
+  display: inline-block;
+}
+
+.lambda .education-location,
+.lambda .education-date {
+  font-weight: 400 !important;
+}
+.lambda .item span:after {
+  content: "|";
+  position: relative;
+  left: 0;
+  box-sizing: border-box;
+  padding: 0 3px 0;
+  color: #000;
+}
+.lambda .item .baseline {
+  display: block !important;
+}
+.lambda .item .baseline > span:not(:last-child):after {
+  content: ",";
+  margin-left: -3px;
+  color: #999999;
+}
+.lambda .item span:last-child:after {
+  content: "";
+  position: relative;
+  padding: 0;
+}
+.lambda .item .baseline > span {
+  color: #999;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.lambda .hero.havePicture {
+  display: flex;
+  align-items: flex-end;
+}
+
+.lambda .hero.havePicture .name {
+  text-align: left;
+}
+
+.lambda .hero.havePicture .contact {
+  text-align: left;
+  justify-content: left;
+}
+
+.lambda .picture {
+  width: 2.5cm;
+  min-width: 2.5cm;
+  height: 3cm;
+  margin: 0 20px 10px 0;
+  border-radius: 15px;
+  overflow: hidden;
+  color: #f1f1f1;
+  background: #f1f1f1;
+}
+.lambda .picture img {
+  object-fit: cover;
+  object-position: center;
+  width: 2.5cm;
+  height: 3cm;
+}
+.lambda .no-picture {
+  color: var(--color-grey);
+  border: 2px dashed var(--color-grey);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  text-transform: uppercase;
+  font: var(--font-heading);
+  font-size: var(--scale-000);
+  line-height: 1.5em;
+}
+
+.lambda .hide-picture {
+  display: none;
+}
+
+.heading {
+  font-weight: 600 !important;
+}

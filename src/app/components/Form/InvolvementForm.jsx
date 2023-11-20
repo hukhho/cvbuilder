@@ -11,50 +11,21 @@ import { format, parse } from 'date-fns';
 import './customtext.css';
 import { Box } from '@chakra-ui/react';
 
-const stylesInput = {
-  width: '769.22px',
-  height: '56.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-const stylesInput1 = {
-  width: '180.22px',
-  height: '55.19px',
-  // padding: '-50.30px 0.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-const stylesInput4 = {
-  width: '769.22px',
-  height: '132.19px',
-  padding: '10.30px 0.50px 10.89px 10px',
-  marginLeft: '0px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-  textAlign: 'left', // Set text alignment to left
-};
 const InvolvementForm = ({ cvId, onCreated, data }) => {
   const dataService = new DataService('involvements', cvId);
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
   const inputRef = useRef(null);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(data?.description ? data.description : '');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
+
+  const resizeTextArea = () => {
+    inputRef.current.style.height = 'auto';
+    inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+  };
+  useEffect(resizeTextArea, [inputValue]);
 
   useEffect(() => {
     if (data) {
@@ -151,11 +122,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
       }
     }
   };
-  const handleTextareaInput = event => {
-    const textarea = event.target;
-    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
-  };
+  
   const handleInputChange = event => {
     const newInputValue = event.target.value;
 
@@ -329,7 +296,6 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
             ref={inputRef}
             onKeyPress={handleKeyPress}
             onChange={handleInputChange}
-            onInput={handleTextareaInput}
             value={inputValue}
           />
           <Input type="hidden" value={inputValue} />

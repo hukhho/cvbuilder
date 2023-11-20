@@ -219,6 +219,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
               bottom: 0,
               paddingLeft: 0,
               paddingRight: 0,
+              zIndex: 99
             }}
           >
             <div style={{ ...styles.compareBox }}>
