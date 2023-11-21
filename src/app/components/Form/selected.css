@@ -1,0 +1,3 @@
+.ghost textarea::selection {
+    background-color: red;
+}

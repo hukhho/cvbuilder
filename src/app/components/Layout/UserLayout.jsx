@@ -219,7 +219,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
               bottom: 0,
               paddingLeft: 0,
               paddingRight: 0,
-              zIndex: 99
+              zIndex: 99,
             }}
           >
             <div style={{ ...styles.compareBox }}>
@@ -407,7 +407,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
             >
               {userHeader}
               {windowWidth >= 967 ? (
-                <div style={{ position: 'absolute', top: '-15px', right: 50 }}>
+                <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
                   <Space align="center">
                     <Avatar src={avatar} size={50} />
                     <span className="mock-block">{email}</span>

@@ -11,52 +11,54 @@ import './customtext.css';
 // import './select.css';
 import './coverletter.css';
 import updateCoverLetter from './updateCoverLetterService';
+import { getResumes } from '@/app/utils/indexService';
 
 const { TextArea } = Input;
 
-const stylesInput = {
-  width: '100%',
-  height: '56.19px',
-  padding: '17.30px 15.50px 15.89px',
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: '2px solid #e5e5e5',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: 'Source Sans Pro, sans-serif',
-};
-
-const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
+const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
   const [form] = Form.useForm();
+  const [listResumes, setListResumes] = useState();
+  const fetchResumes = async () => {
+    try {
+      // Simulate fetching resumes (replace with your actual fetch logic)
+      const fetchedResumes = await getResumes();
 
-  useEffect(() => {
-    console.log('ContactForm data: ', data);
-
-    if (data) {
-      const mockData = {
-        name: data.name,
-      };
-
-      console.log('Form fields set with data:', data);
-
-      // Use mockData if no data is provided
-      const initialData = mockData;
-      console.log('initialData: ', initialData);
-      // form.setFieldsValue(initialData);
+      // Update state with fetched resumes and mock cards
+      setListResumes(fetchedResumes);
+    } catch (error) {
+      console.error('There was an error fetching resumes', error);
     }
-  }, [data, form]);
+  };
+  useEffect(() => {
+    fetchResumes();
+  }, []);
+  // useEffect(() => {
+  //   if (data) {
+  //     const mockData = {
+  //       name: data.name,
+  //     };
+  //     console.log('Form fields set with data:', data);
+  //     // Use mockData if no data is provided
+  //     const initialData = mockData;
+  //     console.log('initialData: ', initialData);
+  //     // form.setFieldsValue(initialData);
+  //   }
+  // }, [data, form]);
 
   const [content, setContent] = useState();
   const [loading, setLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isShowContent, setIsShowContent] = useState(false);
 
+  const [slider, setSlider] = useState(0.1);
+
   const handleSubmit = async values => {
     try {
-      const userId = 1;
-      setLoading(true);
-      const contentResponse = await createCoverLetter(userId, values);
+      values.temperature = slider;
       console.log('handleSubmit, values: ', values);
+
+      setLoading(true);
+      const contentResponse = await createCoverLetter(coverLetterId, values);
       console.log('content state: ', content);
       console.log('content.data.reply: ', contentResponse.reply);
 
@@ -70,16 +72,14 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
       onCreated();
     } catch (error) {
       console.log('Submit. Error:', error);
+      setLoading(false);
     }
   };
 
   const handleSubmitSave = async values => {
     try {
-      const userId = 1;
       setLoading(true);
-
       console.log('save values: ', values);
-
       const submitUpdate = {
         title: 'title',
         data: '2023-10-23T13:40:14.035Z',
@@ -87,7 +87,7 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
         description: content,
       };
 
-      const response = await updateCoverLetter(userId, cvId, submitUpdate);
+      const response = await updateCoverLetter(coverLetterId, submitUpdate);
 
       console.log('handleSubmit, values: ', values);
       console.log('content state: ', content);
@@ -131,34 +131,34 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
           >
             <Input style={stylesInput} placeholder="0.2" />
           </Form.Item> */}
-          {listResumes.length > 0 && (
-            <Form.Item
-              name="cvId"
-              label={
-                <label style={{}}>
-                  <span className="custom-text whitespace-nowrap">
-                    <strong>CHOOSE CV</strong>
-                  </span>
-                </label>
+
+          <Form.Item
+            name="cvId"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  <strong>CHOOSE CV</strong>
+                </span>
+              </label>
+            }
+          >
+            <Select
+              showSearch
+              style={{ width: '100%' }}
+              placeholder="Select a resume"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.children?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
               }
             >
-              <Select
-                showSearch
-                style={{ width: '100%' }}
-                placeholder="Select a resume"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option?.children?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
-                }
-              >
-                {listResumes.map(resume => (
-                  <Select.Option key={resume.id} value={resume.id}>
-                    {resume.id} - {resume.resumeName}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
+              {listResumes?.map(resume => (
+                <Select.Option key={resume.id} value={resume.id}>
+                  {resume.resumeName}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
           {/* <Form.Item
             name="cvId"
             label={
@@ -181,7 +181,7 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
               </label>
             }
           >
-            <Input style={stylesInput} placeholder="Software Engineer" />
+            <Input className="inputEl" placeholder="Software Engineer" />
           </Form.Item>
 
           <Form.Item
@@ -194,7 +194,7 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
               </label>
             }
           >
-            <Input style={stylesInput} placeholder="Google" />
+            <Input placeholder="Google" />
           </Form.Item>
 
           {/* <Form.Item
@@ -234,14 +234,13 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
           >
             <TextArea
               style={{
-                padding: '17.30px 15.50px 15.89px',
-                backgroundColor: 'white',
-                borderRadius: '4px',
-                border: '2px solid #e5e5e5',
-                fontSize: '16px',
-                fontWeight: '600',
-                fontFamily: 'Source Sans Pro, sans-serif',
+                fontWeight: '400',
+                background: 'white',
+                height: 'auto',
+                overflow: 'hidden',
+                resize: 'none',
               }}
+              className="inputEl"
               rows={6}
               placeholder="Copy and paste the job description"
             />
@@ -256,18 +255,11 @@ const CoverLetterFormV2 = ({ cvId, onCreated, data, listResumes }) => {
             tooltip={{
               formatter,
             }}
+            value={slider}
+            onChange={val => setSlider(val)}
           />
 
-          <Button
-            htmlType="submit"
-            className="form-button"
-            style={{
-              width: '100%',
-              backgroundColor: loading ? 'gray' : 'rgb(77, 112, 235)',
-              color: 'white',
-            }}
-            disabled={loading}
-          >
+          <Button htmlType="submit" className="form-button button" disabled={loading}>
             {loading ? 'WAIT TO CREATING COVER LETTER' : 'CREATE CONTENT COVER LETTER '}
           </Button>
         </Form>

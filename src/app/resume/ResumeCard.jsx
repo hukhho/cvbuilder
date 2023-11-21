@@ -24,6 +24,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import styled from 'styled-components';
+import UpdateResume from '../components/Modal/UpdateResume';
 // This creates a custom component that wraps an <a> tag
 const RedLink = styled.a`
   color: black;
@@ -31,6 +32,15 @@ const RedLink = styled.a`
 const ResumeCard = ({ resume }) => {
   const [enabled, setEnabled] = useState(false);
 
+  const [isUpdateResumeOpen, setIsUpdateResumeOpen] = useState(false);
+
+  const openUpdateResumeModal = () => {
+    setIsUpdateResumeOpen(true);
+  };
+
+  const closeUpdateResumeModal = () => {
+    setIsUpdateResumeOpen(false);
+  };
   return (
     <Card
       className="bg-white "
@@ -39,15 +49,24 @@ const ResumeCard = ({ resume }) => {
           className="relative group"
           style={{ width: '240px', height: '240px', overflow: 'hidden' }}
         >
+          <UpdateResume
+            isOpen={isUpdateResumeOpen}
+            onOpenModal={closeUpdateResumeModal}
+            onClose={closeUpdateResumeModal}
+            resume={resume}
+            onCreated={() => {
+              console.log('update');
+            }}
+          />
           <div className="w-full h-full opacity-100 group-hover:opacity-50 transition-opacity">
             <Link href={`/resume/${resume.id}/contact`} passHref legacyBehavior>
               <RedLink>
-                  <FinishUpPreview cvId={resume.id} />
+                <FinishUpPreview cvId={resume.id} />
               </RedLink>
             </Link>
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-opacity-75 p-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <button className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
+            <button onClick={openUpdateResumeModal} className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
               <FontAwesomeIcon icon={faCog} />
             </button>
             <button className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
@@ -73,8 +92,16 @@ const ResumeCard = ({ resume }) => {
             <Card>
               <div className="flex flex-col" style={{ color: '#565656' }}>
                 <Space align="center">
-                  <FontAwesomeIcon icon={faEdit} />
-                  Edit
+                  <button onClick={openUpdateResumeModal}>
+                    <div className="flex">
+                      <FontAwesomeIcon icon={faEdit} />
+                      <div className="ml-4" style={{ marginTop: -3 }}>
+                        Edit
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* <button onClick={openUpdateResumeModal}></button> */}
                 </Space>
                 <Space align="center">
                   <FontAwesomeIcon icon={faCopy} />

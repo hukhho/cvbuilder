@@ -1,0 +1,309 @@
+@custom-media --tablet (min-width: 50em);
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: var(--grid-gap-offset);
+}
+
+.form {
+  margin: var(--grid-gap);
+}
+
+/**
+ * Form container
+ */
+.form {
+  flex: 1;
+  position: relative;
+  &[data-theme="basic"] {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.hiddenForm {
+  position: absolute;
+  background: #e9f3fc8c;
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  & p {
+    margin: 0;
+  }
+  & h4 {
+    margin-bottom: 0;
+    text-transform: capitalize;
+  }
+}
+
+.form-submit {
+  width: 100% !important;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 150ms ease;
+  &:hover {
+    color: white;
+  }
+}
+
+.form[data-theme="basic"] .form-input,
+.form[data-theme="basic"] .form-submit-wrapper {
+  flex-basis: 100%;
+  padding: 0.5rem;
+  @media (--tablet) {
+    flex-basis: 50%;
+  }
+}
+
+.form[data-theme="default"] .form-input {
+  margin: 1rem 0;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.form[data-theme="default"] .form-submit-wrapper {
+  width: 100%;
+}
+
+.form[data-theme="basic"] .form-submit-wrapper {
+  align-self: flex-end;
+  padding-bottom: 0.6rem;
+  & .form-submit {
+    padding: 1.225rem 1.5rem;
+  }
+}
+
+.textarea {
+  display: block;
+}
+
+.form[data-theme="full"] {
+  & .textarea {
+    margin-bottom: 18px;
+  }
+}
+.form[data-theme="full-resignation"] {
+  & .textarea {
+    margin-bottom: 18px;
+  }
+}
+
+.powered-by {
+  font-size: 12px;
+  text-align: right;
+  display: block;
+}
+
+.exploration {
+  & span {
+    margin-top: 9px;
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: sub;
+  }
+  & .wrapper {
+    margin: 0 0 10px;
+    padding: 0px 0 10px;
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+    border-bottom: 1px solid var(--color-grey-100);
+    flex-direction: column;
+    & span {
+      font-size: 16px;
+      font-weight: 100;
+    }
+    & .item {
+      text-transform: capitalize;
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 100;
+      color: rgb(117, 117, 117);
+      padding-left: 17px;
+      & span {
+        font-size: 14px;
+        margin: 0 8px 0 0;
+        filter: blur(3px);
+        user-select: none;
+        cursor: pointer;
+      }
+      & i {
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+  }
+  & .need-field {
+    margin: 1rem 0;
+    font-family: "Source Sans Pro", sans-serif;
+    & h6 {
+      font-size: 18px;
+      line-height: 28px;
+      color: #bababa;
+      font-weight: 600;
+      margin: 10px 0;
+    }
+    & button {
+      position: relative;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      font: var(--font-ui);
+      font-size: var(--scale-000);
+      border-radius: var(--radius-3);
+      background: var(--color-primary);
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+      padding: 1.1em 1.5em 1em;
+      min-width: 7rem;
+      text-align: center;
+      white-space: nowrap;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      user-select: none;
+      color: white;
+      transition: all ease 150ms;
+    }
+  }
+}
+
+.wordCloud {
+  max-width: 747px;
+  & label {
+    font: var(--font-ui);
+    font-weight: 400;
+    font-size: var(--scale-000);
+    color: var(--color-text-light);
+    margin-bottom: 1em;
+    text-transform: uppercase;
+    outline: none;
+    cursor: pointer;
+    & b {
+      color: var(--color-text);
+    }
+    & i {
+      color: #adb1b8;
+      transition: all 0.2s ease-in-out;
+      padding: 10px;
+      line-height: 0;
+      cursor: pointer;
+      outline: none;
+      font-size: 15px;
+    }
+  }
+  & svg {
+    & text:nth-child(odd) {
+      fill: rgb(77, 156, 222) !important;
+    }
+    & text:nth-child(even) {
+      fill: rgb(72, 201, 176) !important;
+    }
+  }
+  & :global(.explore-show-false) {
+    & i {
+      transform: rotate(-90deg);
+    }
+  }
+  & .wc-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.free-keyword {
+  position: relative;
+  & .free-keyword-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+  }
+  & button {
+    width: 100%;
+  }
+  & i {
+    padding: 0 0 0 10px;
+  }
+  & p {
+    font-family: "Source Sans Pro", sans-serif;
+    color: var(--color-grey-500);
+  }
+}
+
+.video-wrapper {
+  margin: 18px;
+  width: 320px !important;
+  height: 185px !important;
+  box-shadow: var(--elevation-flat);
+  border-radius: var(--radius-3);
+  overflow: hidden;
+  position: relative;
+  background: #ffffff; /* Old browsers */
+  background: -moz-radial-gradient(
+    center,
+    ellipse cover,
+    #ffffff 0%,
+    #ffffff 46%,
+    #e9e7e8 100%
+  ); /* FF3.6-15 */
+  background: -webkit-radial-gradient(
+    center,
+    ellipse cover,
+    #ffffff 0%,
+    #ffffff 46%,
+    #e9e7e8 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(
+    ellipse at center,
+    #ffffff 0%,
+    #ffffff 46%,
+    #e9e7e8 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e9e7e8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.video-module {
+  width: 320px !important;
+  height: 185px !important;
+}
+
+.chronoSwitchWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em 0 0;
+  color: var(--color-grey-300);
+}
+:global(.half) {
+  width: 50%;
+  display: inline-block;
+  margin: 0 0 0 !important;
+}
+
+:global(.summary-wrapper) {
+  display: flex;
+  & > form {
+    width: 100%;
+    max-width: calc(100% - 356px);
+  }
+  & > div > div {
+    width: 320px;
+    margin: 43px 1em 1.5em 1em;
+    padding: 1.5em !important;
+  }
+}
+
+/*:global(.pro-ui) {*/
+/*  & .list-item-action-delete {*/
+/*    background: red !important;*/
+/*  }*/
+/*}*/

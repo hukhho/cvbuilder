@@ -263,7 +263,110 @@ const StandardItem = props => {
             </div>
           );
         case 'modern-2':
-          return <div />;
+          return (
+            <div
+              className="ncQ-wVn_6 leading-snug relative group "
+              style={{ paddingLeft: '1.4cm', paddingRight: '1.4cm', marginBottom: 11 }}
+            >
+              <i
+                className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
+                aria-hidden="true"
+              />
+              <div className="">
+                <span
+                  className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
+                  style={{ color: 'rgb(77, 112, 235)' }}
+                >
+                  <span
+                    className="editableContent cursor-text mr-1.5 ml-0 designStudio "
+                    id="ncQ-wVn_6-role"
+                    contentEditable="true"
+                    style={{ display: 'inline' }}
+                  >
+                    {firstItem}
+                  </span>
+                </span>
+                <span
+                  className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
+                  style={{ color: 'rgb(46, 61, 80)' }}
+                >
+                  <span
+                    className="editableContent cursor-text mr-1.5 ml-2 designStudio "
+                    id="ncQ-wVn_6-company"
+                    contentEditable="true"
+                    style={{ display: 'inline' }}
+                  >
+                    {secondItem}
+                  </span>
+                </span>
+                <div>
+                  <span
+                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                    style={{ color: 'rgb(153, 153, 153)' }}
+                  >
+                    <span
+                      className="editableContent cursor-text  designStudio "
+                      id="ncQ-wVn_6-duration"
+                      contentEditable="true"
+                      style={{ display: 'inline' }}
+                    >
+                      {threeItem}
+                    </span>
+                  </span>
+                  <span
+                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                    style={{ color: 'rgb(153, 153, 153)' }}
+                  >
+                    <span
+                      className="editableContent cursor-text  designStudio "
+                      id="ncQ-wVn_6-location"
+                      contentEditable="true"
+                      style={{ display: 'inline' }}
+                    >
+                      {fourItem}
+                    </span>
+                  </span>
+                  <span
+                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                    style={{ color: 'rgb(153, 153, 153)' }}
+                  >
+                    <span
+                      className="editableContent cursor-text  designStudio "
+                      id="ncQ-wVn_6-location"
+                      contentEditable="true"
+                      style={{ display: 'inline' }}
+                    >
+                      {fiveItem}
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                className="text-[0.85em] relative whitespace-pre-line "
+                style={{
+                  color: 'rgb(46, 61, 80)',
+                  lineHeight: '1.6em',
+                  fontSize: '0.85em',
+                  fontWeight: 400,
+                }}
+              >
+                <div className="relative">
+                  {/* <p className="editableContent ghost-hightlight w-full designStudio ">
+                    <span>
+                      <span className="">{</span>
+                    </span>
+                  </p> */}
+                </div>
+                <p
+                  className="editableContent cursor-text  designStudio "
+                  id="ncQ-wVn_6-description"
+                  contentEditable="true"
+                >
+                  {description}
+                </p>
+              </div>
+            </div>
+          );
         default:
           return null;
       }
@@ -474,7 +577,97 @@ const StandardItem = props => {
             </div>
           );
         case 'modern-2':
-          return <div />;
+          return (
+            <div
+              className="smpl125032021 leading-snug relative group "
+              style={{ paddingLeft: '1.4cm', paddingRight: '1.4cm' }}
+            >
+              <i
+                className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
+                aria-hidden="true"
+              />
+              <div className="">
+                <span
+                  className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
+                  style={{ color: 'rgb(77, 112, 235)' }}
+                >
+                  <span
+                    className="editableContent cursor-text mr-1.5 ml-0 designStudio "
+                    id="smpl125032021-role"
+                    contentEditable="true"
+                    style={{ display: 'inline' }}
+                  >
+                    {role}
+                  </span>
+                </span>
+                <span
+                  className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
+                  style={{ color: 'rgb(46, 61, 80)' }}
+                >
+                  <span
+                    className="editableContent cursor-text mr-1.5 ml-2 designStudio "
+                    id="smpl125032021-company"
+                    contentEditable="true"
+                    style={{ display: 'inline' }}
+                  >
+                    {orgName}
+                  </span>
+                </span>
+                <div>
+                  <span
+                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                    style={{ color: 'rgb(153, 153, 153)' }}
+                  >
+                    <span
+                      className="editableContent cursor-text  designStudio "
+                      id="smpl125032021-duration"
+                      contentEditable="true"
+                      style={{ display: 'inline' }}
+                    >
+                      {duration}
+                    </span>
+                  </span>
+                  <span
+                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                    style={{ color: 'rgb(153, 153, 153)' }}
+                  >
+                    <span
+                      className="editableContent cursor-text  designStudio "
+                      id="smpl125032021-location"
+                      contentEditable="true"
+                      style={{ display: 'inline' }}
+                    >
+                      {location}
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                className="text-[0.85em] relative whitespace-pre-line "
+                style={{
+                  color: 'rgb(46, 61, 80)',
+                  lineHeight: '1.6em',
+                  fontSize: '0.85em',
+                  fontWeight: 400,
+                }}
+              >
+                {/* <div className="relative">
+                  <p className="editableContent ghost-hightlight w-full designStudio ">
+                    <span>
+                      <span className="">• cc</span>
+                    </span>
+                  </p>
+                </div> */}
+                <p
+                  className="editableContent cursor-text  designStudio "
+                  id="smpl125032021-description"
+                  contentEditable="true"
+                >
+                  {description}
+                </p>
+              </div>
+            </div>
+          );
         default:
           return null;
       }

@@ -11,7 +11,36 @@ export const getFinishUp = async cvId => {
     throw error;
   }
 };
+export const getAts = async cvId => {
+  try {
+    const response = await axiosInstance.get(`/users/cv/${cvId}/job-description`);
+    // return mockData.data.resume;
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getVersionsList = async cvId => {
+  try {
+    const userId =
+      typeof document !== 'undefined'
+        ? document.cookie
+            .split('; ')
+            .find(row => row.startsWith('userId'))
+            .split('=')[1]
+        : null;
 
+    if (!userId) {
+      throw new Error('User ID not found.');
+    }
+
+    const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}/histories`);
+    // return mockData.data.resume;
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 export const getAudit = async cvId => {
   try {
     const userId =

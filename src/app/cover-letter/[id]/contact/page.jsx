@@ -27,7 +27,6 @@ const Contact = ({ params }) => {
 
   const fetchData = async () => {
     try {
-      const userId = 1;
       const data = await getContact(1);
 
       console.log('fetchData ', data);
@@ -58,7 +57,7 @@ const Contact = ({ params }) => {
             <div className="flex h-screen ">
               <div className="flex flex-col p-4" style={{ width: '800px' }}>
                 <CoverLetterFormV2
-                  cvId={cvId}
+                  coverLetterId={params.id}
                   onCreated={fetchData}
                   data={contactData}
                   listResumes={listResumes}

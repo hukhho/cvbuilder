@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable */
 
 'use client';
 
@@ -14,12 +14,16 @@ import ExperiencesSection from '@/app/components/Templates/SectionComponents/Exp
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import { getAudit, getFinishUp, syncUp } from './finishUpService';
+import { getAudit, getFinishUp, getVersionsList, syncUp } from './finishUpService';
 import ScoreFinishUp from './Score';
 import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
 import './gen.css';
+import './version.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
+import Ats from './Ats';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const mockData = {
   data: {
@@ -363,6 +367,21 @@ export default function FinishUp({ params }) {
       cvLayoutRef.current.CaptureScreenshot();
     }
   };
+
+  const [isShowVersion, setIsShowVersion] = useState(false);
+  const [versions, setVersions] = useState();
+  const handleShowVersion = async () => {
+    setIsShowVersion(true);
+    const result = await getVersionsList(params.id);
+    setVersions(result);
+    console.log('version::result: ', result);
+  };
+  const handleHideVersion = () => {
+    setIsShowVersion(false);
+  };
+  const handleChooseVersion = versionId => {
+    console.log('versionId: ', versionId);
+  };
   return (
     <main>
       <ConfigProvider>
@@ -478,42 +497,64 @@ export default function FinishUp({ params }) {
                       </button>
                     </div>
                   </div>
-                  <div style={{ color: 'black', textAlign: 'left' }}>
-                    <div className="keyword-card card share-card ">
-                      <div className="keyword-wrapper">
-                        <div className="keyword-side">
-                          <h4>
-                            <span className="uppercase" style={{ color: 'black' }}>
-                              AI Keyword Targeting
-                            </span>
-                            <sup
-                              aria-hidden="true"
-                              style={{ paddingLeft: 4, color: 'rgb(204, 204, 204)' }}
-                            >
-                              v2
-                            </sup>
-                          </h4>
-                        </div>
-                        <div style={{}} className="keyword-list">
-                          <span className="keyword-infos">
-                            Want to improve your chances of getting this role? Consider adding the
-                            following keywords to your resume:
-                          </span>
-                          <div>
-                            <div>
-                              <span>
-                                java <i className="fas fa-times" aria-hidden="true" />
-                              </span>
-                              <span>
-                                <i className="fas fa-circle" aria-hidden="true" />
-                              </span>
-                            </div>
+                  <Ats cvId={params.id} />
+
+                  <button
+                    onClick={handleShowVersion}
+                    className="fixed z-50 right-0 bg-white pl-2 pr-1 py-2 border-l border-y border-gray-200 rounded-tl rounded-bl"
+                  >
+                    <FontAwesomeIcon icon={faHistory} />
+                  </button>
+                  {isShowVersion && (
+                    <div className="templateSelector" data-dock="true">
+                      <div className="drop-shadow selector">
+                        <div className="header">
+                          <div className="flex">
+                            <h3>
+                              <i className="fas fa-history mr-1" aria-hidden="true" /> Version
+                              History
+                              <sup className="ml-1 text-gray-400">beta</sup>
+                            </h3>
+                            <button onClick={handleHideVersion}>
+                              {' '}
+                              <FontAwesomeIcon className="close" icon={faTimes} />
+                            </button>
                           </div>
                         </div>
-                        <button className="keyword-button button">Update job description</button>
+                        <div className="selector-list">
+                          <nav className="flex flex-col pt-4 space-y-6" aria-label="Progress">
+                            <div className="flex flex-col space-y-3">
+                              <ol role="list">
+                                {versions?.map(version => (
+                                  <li key={version.id} className="pb-10 relative">
+                                    <div
+                                      className="absolute left-2.5 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
+                                      aria-hidden="true"
+                                    />
+                                    <a
+                                      onClick={() => handleChooseVersion(version.id)}
+                                      className="group relative flex items-center"
+                                    >
+                                      <span className="flex h-7 items-center">
+                                        <span className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 bg-white border-rezi-blue">
+                                          <span className="h-2.5 w-2.5 rounded-full bg-rezi-blue" />
+                                        </span>
+                                      </span>
+                                      <span className="ml-4 flex min-w-0 flex-col">
+                                        <span className="flex flex-col text-sm font-medium">
+                                          <span>{version.timestamp}</span>
+                                        </span>
+                                      </span>
+                                    </a>
+                                  </li>
+                                ))}
+                              </ol>
+                            </div>
+                          </nav>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               )}
             </div>
