@@ -71,3 +71,24 @@ export const syncUp = async cvId => {
     throw error;
   }
 };
+
+export const saveCv = async (cvId, resumeData) => {
+  try {
+    const userId =
+      typeof document !== 'undefined'
+        ? document.cookie
+            .split('; ')
+            .find(row => row.startsWith('userId'))
+            .split('=')[1]
+        : null;
+
+    if (!userId) {
+      throw new Error('User ID not found.');
+    }
+
+    const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/cv-body`, resumeData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

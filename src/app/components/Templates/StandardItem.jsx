@@ -1,9 +1,13 @@
 'use client';
 
 import { Divider, Typography } from 'antd';
+import { useRef } from 'react';
+import ContentEditable from 'react-contenteditable';
 
 const StandardItem = props => {
   const {
+    type,
+    typeId,
     role,
     orgName,
     duration,
@@ -17,8 +21,35 @@ const StandardItem = props => {
     threeItem,
     fourItem,
     fiveItem,
+    handleRoleChange,
+    handleOrgNameChange,
+    handleDescriptionChange,
   } = props;
   console.log('StandardItem::: ', props);
+  const roleState = useRef(role);
+  const orgNameState = useRef(orgName);
+  const descriptionState = useRef(description);
+
+  const handleChange = (evt, targetName) => {
+    console.log('handleChange: ', evt.target.value);
+    if (targetName === 'role') {
+      orgNameState.current = evt.target.value;
+      handleRoleChange(type, typeId, evt.target.value);
+    } else if (targetName === 'orgName') {
+      orgNameState.current = evt.target.value;
+      handleOrgNameChange(type, typeId, evt.target.value);
+    } else if (targetName === 'description') {
+      descriptionState.current = evt.target.value;
+      handleDescriptionChange(type, typeId, evt.target.value);
+    }
+  };
+
+  const handleBlur = (evt, targetName) => {
+    if (targetName === 'role') {
+      console.log('handleBlur: ', roleState.current);
+    }
+  };
+
   const renderTitle = () => {
     if (titleProps) {
       return (
@@ -44,7 +75,7 @@ const StandardItem = props => {
             <p
               className="editableContent cursor-text  designStudio  "
               id="XHKKXx5eVL-skill"
-              contentEditable="true"
+              // // contentEditable="true"
             >
               {titleProps}
             </p>
@@ -70,7 +101,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
                         id="LfWZnVqHS-qualification"
-                        contentEditable="true"
+                        // // contentEditable="true"
                       >
                         {role}
                       </span>
@@ -86,7 +117,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                         id="LfWZnVqHS-minor"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'initial' }}
                       >
                         {firstItem}
@@ -99,7 +130,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                         id="LfWZnVqHS-institution"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'initial' }}
                       >
                         {secondItem}
@@ -112,7 +143,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                         id="LfWZnVqHS-location"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'initial' }}
                       >
                         {threeItem}
@@ -125,7 +156,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                         id="LfWZnVqHS-date"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'initial' }}
                       >
                         {fourItem}
@@ -138,7 +169,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                         id="LfWZnVqHS-gpa"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'initial' }}
                       >
                         {fiveItem}
@@ -160,7 +191,7 @@ const StandardItem = props => {
                 <p
                   className="editableContent cursor-text  designStudio "
                   id="LfWZnVqHS-description"
-                  contentEditable="true"
+                  // // contentEditable="true"
                 >
                   {description}
                 </p>
@@ -184,7 +215,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-role"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {role}
@@ -194,7 +225,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-company"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {firstItem}
@@ -204,7 +235,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-location"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {secondItem}
@@ -214,7 +245,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-duration"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {threeItem}
@@ -224,7 +255,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-duration"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {fourItem}
@@ -234,7 +265,7 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-duration"
-                        contentEditable="true"
+                        // // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {fiveItem}
@@ -253,7 +284,7 @@ const StandardItem = props => {
                     <p
                       className="editableContent cursor-text  designStudio "
                       id="smpl029042021-description"
-                      contentEditable="true"
+                      // // contentEditable="true"
                     >
                       {description}
                     </p>
@@ -280,7 +311,7 @@ const StandardItem = props => {
                   <span
                     className="editableContent cursor-text mr-1.5 ml-0 designStudio "
                     id="ncQ-wVn_6-role"
-                    contentEditable="true"
+                    // // contentEditable="true"
                     style={{ display: 'inline' }}
                   >
                     {firstItem}
@@ -293,7 +324,7 @@ const StandardItem = props => {
                   <span
                     className="editableContent cursor-text mr-1.5 ml-2 designStudio "
                     id="ncQ-wVn_6-company"
-                    contentEditable="true"
+                    // // contentEditable="true"
                     style={{ display: 'inline' }}
                   >
                     {secondItem}
@@ -307,7 +338,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text  designStudio "
                       id="ncQ-wVn_6-duration"
-                      contentEditable="true"
+                      // // contentEditable="true"
                       style={{ display: 'inline' }}
                     >
                       {threeItem}
@@ -320,7 +351,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text  designStudio "
                       id="ncQ-wVn_6-location"
-                      contentEditable="true"
+                      // // contentEditable="true"
                       style={{ display: 'inline' }}
                     >
                       {fourItem}
@@ -333,7 +364,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text  designStudio "
                       id="ncQ-wVn_6-location"
-                      contentEditable="true"
+                      // // contentEditable="true"
                       style={{ display: 'inline' }}
                     >
                       {fiveItem}
@@ -360,7 +391,7 @@ const StandardItem = props => {
                 <p
                   className="editableContent cursor-text  designStudio "
                   id="ncQ-wVn_6-description"
-                  contentEditable="true"
+                  // // contentEditable="true"
                 >
                   {description}
                 </p>
@@ -396,13 +427,24 @@ const StandardItem = props => {
                             className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
                             style={{ color: 'rgb(0, 0, 0)' }}
                           >
-                            <span
+                            <ContentEditable
+                              className="editableContent cursor-text text-[1em]  ml-0 designStudio "
+                              html={roleState.current}
+                              onBlur={e => handleBlur(e, 'role')}
+                              onChange={e => handleChange(e, 'role')}
+                            />
+                            {/* <span
                               className="editableContent cursor-text text-[1em]  ml-0 designStudio "
                               id="smpl125032021-role"
-                              contentEditable="true"
+                              // // contentEditable="true"
                             >
+                              <ContentEditable
+                                html={roleState.current}
+                                onBlur={e => handleBlur(e, 'role')}
+                                onChange={e => handleChange(e, 'role')}
+                              />
                               {role}
-                            </span>
+                            </span> */}
                           </div>
                         </span>
                       </div>
@@ -412,17 +454,32 @@ const StandardItem = props => {
                             className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
                             style={{ fontSize: '0.85em' }}
                           >
-                            <span
+                            <ContentEditable
+                              className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
+                              style={{
+                                display: 'inline',
+                                verticalAlign: 'initial',
+                              }}
+                              html={orgNameState.current}
+                              onBlur={e => handleBlur(e, 'orgName')}
+                              onChange={e => handleChange(e, 'orgName')}
+                            />
+                            {/* <span
                               className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                               id="smpl125032021-company"
-                              contentEditable="true"
+                              // contentEditable="true"
                               style={{
                                 display: 'inline',
                                 verticalAlign: 'initial',
                               }}
                             >
+                              <ContentEditable
+                                html={orgNameState.current}
+                                onBlur={e => handleBlur(e, 'orgName')}
+                                onChange={e => handleChange(e, 'orgName')}
+                              />
                               {orgName}
-                            </span>
+                            </span> */}
                           </span>
                         </div>
                         <div>
@@ -433,7 +490,7 @@ const StandardItem = props => {
                             <span
                               className="editableContent cursor-text ml-0 designStudio "
                               id="smpl125032021-duration"
-                              contentEditable="true"
+                              // contentEditable="true"
                             >
                               {duration}
                             </span>
@@ -445,7 +502,7 @@ const StandardItem = props => {
                             <span
                               className="editableContent cursor-text ml-2 designStudio "
                               id="smpl125032021-location"
-                              contentEditable="true"
+                              // contentEditable="true"
                             >
                               {location}
                             </span>
@@ -467,13 +524,24 @@ const StandardItem = props => {
                           </span>
                         </p>
                       </div> */}
-                      <p
+                      <ContentEditable
+                        className="editableContent cursor-text  designStudio "
+                        html={descriptionState.current}
+                        onBlur={e => handleBlur(e, 'description')}
+                        onChange={e => handleChange(e, 'description')}
+                      />
+                      {/* <p
                         className="editableContent cursor-text  designStudio "
                         id="smpl125032021-description"
-                        contentEditable="true"
+                        // contentEditable="true"
                       >
+                        <ContentEditable
+                          html={descriptionState.current}
+                          onBlur={e => handleBlur(e, 'description')}
+                          onChange={e => handleChange(e, 'description')}
+                        />
                         {description}
-                      </p>
+                      </p> */}
                     </div>
                   </li>
                 </ul>
@@ -519,7 +587,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                       id="smpl029042021-role"
-                      contentEditable="true"
+                      // contentEditable="true"
                       style={{ display: 'inline', verticalAlign: 'baseline' }}
                     >
                       {role}
@@ -529,7 +597,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                       id="smpl029042021-company"
-                      contentEditable="true"
+                      // contentEditable="true"
                       style={{ display: 'inline', verticalAlign: 'baseline' }}
                     >
                       {orgName}
@@ -539,7 +607,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                       id="smpl029042021-location"
-                      contentEditable="true"
+                      // contentEditable="true"
                       style={{ display: 'inline', verticalAlign: 'baseline' }}
                     >
                       {location}
@@ -549,7 +617,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                       id="smpl029042021-duration"
-                      contentEditable="true"
+                      // contentEditable="true"
                       style={{ display: 'inline', verticalAlign: 'baseline' }}
                     >
                       {duration}
@@ -568,7 +636,7 @@ const StandardItem = props => {
                   <p
                     className="editableContent cursor-text  designStudio "
                     id="smpl029042021-description"
-                    contentEditable="true"
+                    // contentEditable="true"
                   >
                     {description}
                   </p>
@@ -594,7 +662,7 @@ const StandardItem = props => {
                   <span
                     className="editableContent cursor-text mr-1.5 ml-0 designStudio "
                     id="smpl125032021-role"
-                    contentEditable="true"
+                    // contentEditable="true"
                     style={{ display: 'inline' }}
                   >
                     {role}
@@ -607,7 +675,7 @@ const StandardItem = props => {
                   <span
                     className="editableContent cursor-text mr-1.5 ml-2 designStudio "
                     id="smpl125032021-company"
-                    contentEditable="true"
+                    // contentEditable="true"
                     style={{ display: 'inline' }}
                   >
                     {orgName}
@@ -621,7 +689,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text  designStudio "
                       id="smpl125032021-duration"
-                      contentEditable="true"
+                      // contentEditable="true"
                       style={{ display: 'inline' }}
                     >
                       {duration}
@@ -634,7 +702,7 @@ const StandardItem = props => {
                     <span
                       className="editableContent cursor-text  designStudio "
                       id="smpl125032021-location"
-                      contentEditable="true"
+                      // contentEditable="true"
                       style={{ display: 'inline' }}
                     >
                       {location}
@@ -661,7 +729,7 @@ const StandardItem = props => {
                 <p
                   className="editableContent cursor-text  designStudio "
                   id="smpl125032021-description"
-                  contentEditable="true"
+                  // contentEditable="true"
                 >
                   {description}
                 </p>

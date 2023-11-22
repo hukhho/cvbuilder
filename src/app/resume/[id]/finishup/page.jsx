@@ -14,7 +14,7 @@ import ExperiencesSection from '@/app/components/Templates/SectionComponents/Exp
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import { getAudit, getFinishUp, getVersionsList, syncUp } from './finishUpService';
+import { getAudit, getFinishUp, getVersionsList, saveCv, syncUp } from './finishUpService';
 import ScoreFinishUp from './Score';
 import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
@@ -241,6 +241,88 @@ export default function FinishUp({ params }) {
     setToolbarState(values);
   };
 
+  const componentIDs = {
+    experience: {},
+    education: {},
+    // Add other types here
+  };
+  const handleRoleChange = (type, typeId, newRole) => {
+    console.log('handleRoleChange newRole', newRole, type, typeId);
+    switch (type) {
+      case 'experience':
+        console.log('handleRoleChange newRole experience', newRole, type, typeId);
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === typeId) {
+            return {
+              ...experience,
+              role: newRole,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+
+        setFinishUpData(newFinishUpData);
+        console.log('New finishup data after updatedExperiences:', newFinishUpData);
+    }
+  };
+  const handleOrgNameChange = (type, typeId, newData) => {
+    console.log('handleOrgNameChange newData', newData, type, typeId);
+    switch (type) {
+      case 'experience':
+        console.log('handleOrgNameChange newData experience', newData, type, typeId);
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === typeId) {
+            return {
+              ...experience,
+              companyName: newData,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+
+        setFinishUpData(newFinishUpData);
+        console.log('New finishup data after updatedExperiences:', newFinishUpData);
+    }
+  };
+  const handleDescriptionChange = (type, typeId, newData) => {
+    console.log('handleOrgNameChange newData', newData, type, typeId);
+    switch (type) {
+      case 'experience':
+        console.log('handleOrgNameChange newData experience', newData, type, typeId);
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === typeId) {
+            return {
+              ...experience,
+              description: newData,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+
+        setFinishUpData(newFinishUpData);
+        console.log('New finishup data after updatedExperiences:', newFinishUpData);
+    }
+  };
+  const handleSummaryChange = (newData) => {
+
+    let newFinishUpData = { ...finishUpData };
+    newFinishUpData.summary = newData;
+
+    setFinishUpData(newFinishUpData);
+    console.log('New finishup data after handleSummaryChange:', newFinishUpData);
+  };
   const sections = [
     {
       id: 'information',
@@ -257,7 +339,13 @@ export default function FinishUp({ params }) {
     },
     {
       id: 'summary',
-      component: <SummarySection templateType={templateSelected} summary={summary} />,
+      component: (
+        <SummarySection
+          templateType={templateSelected}
+          summary={summary}
+          handleSummaryChange={handleSummaryChange}
+        />
+      ),
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -268,9 +356,19 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           experiences={experiences}
           onChangeOrder={sortedExperiences => {
-            console.log('New order of experiences:', sortedExperiences);
-            // You can perform any necessary actions with the sorted experiences here.
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+            console.log('Finishup data:', finishUpData);
+            let newFinishUpData = { ...finishUpData };
+            newFinishUpData.experiences = sortedExperiences;
+
+            setFinishUpData(newFinishUpData);
+            console.log('New finishup data:', newFinishUpData);
           }}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
@@ -322,6 +420,39 @@ export default function FinishUp({ params }) {
 
     fetchData();
   }, []);
+
+  const handleSave = async () => {
+    try {
+      const cvId123 = params.id;
+      setShowFinishupCV(false);
+
+      await saveCv(cvId123, finishUpData); // Call the syncUp function
+      console.log('Save completed.');
+
+      const fetchData = async () => {
+        try {
+          const data = await getFinishUp(cvId123);
+          console.log('FinishUp data: ', data);
+
+          setFinishUpData(data);
+
+          setShowFinishupCV(true);
+
+          setTemplateSelected(data.templateType);
+          setToolbarState(data.cvStyle);
+
+          setSummary(data.summary);
+        } catch (error) {
+          console.error('Error fetching FinishUp data:', error);
+        }
+      };
+
+      fetchData();
+    } catch (error) {
+      console.error('Error during synchronization:', error);
+      // Handle errors or display an error message.
+    }
+  };
 
   const handleSyncUp = async () => {
     try {
@@ -450,6 +581,20 @@ export default function FinishUp({ params }) {
                           onClick={() => handleDownloadButtonClick()}
                         >
                           Download
+                        </button>
+                        <button
+                          style={{
+                            width: '60px',
+                            height: '30px',
+                            marginTop: '10px',
+                            marginLeft: '10px',
+                            marginBottom: '10px',
+                          }}
+                          className="button"
+                          type=""
+                          onClick={() => handleSave()}
+                        >
+                          Save
                         </button>
                       </div>
                     </div>

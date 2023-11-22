@@ -21,18 +21,29 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const ExperiencesSection = ({ experiences, onChangeOrder, templateType }) => {
+const ExperiencesSection = ({
+  experiences,
+  onChangeOrder,
+  templateType,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
+}) => {
   console.log('ExperiencesSection::: ', experiences);
   const experienceItems = (
     <>
       {experiences.map(exp => {
         const { duration, description, companyName, role, location } = exp;
-
         return (
           <StandardItem
+            type="experience"
+            typeId={exp.id}
             key={exp.id}
             templateType={templateType}
             role={role}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
             location={location}
             duration={duration}
             orgName={companyName}
