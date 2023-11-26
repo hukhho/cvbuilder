@@ -31,6 +31,8 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
         return (
           <StandardItemReviewers
             key={edu.id}
+            dataId={edu.id}
+            type="education"
             role={degree}
             location={location}
             startTime={startDate}
@@ -97,7 +99,6 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
             templateType === 'classical' ? 'section-header' : ''
           }`}
           id="education-heading"
-          contentEditable="true"
           style={{
             fontSize: '1.15em',
             display: 'block',

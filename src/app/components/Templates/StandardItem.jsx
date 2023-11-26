@@ -110,71 +110,81 @@ const StandardItem = props => {
                 </div>
                 <div className="flex gap-2 justify-between font-semibold">
                   <div style={{ color: 'rgb(46, 61, 80)' }}>
-                    <span
-                      className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                      style={{ fontSize: '0.85em' }}
-                    >
+                    {firstItem && (
                       <span
-                        className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                        id="LfWZnVqHS-minor"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'initial' }}
+                        className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
+                        style={{ fontSize: '0.85em' }}
                       >
-                        {firstItem}
+                        <span
+                          className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
+                          id="LfWZnVqHS-minor"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'initial' }}
+                        >
+                          {firstItem}
+                        </span>
                       </span>
-                    </span>
-                    <span
-                      className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                      style={{ fontSize: '0.85em' }}
-                    >
+                    )}
+                    {secondItem && (
                       <span
-                        className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                        id="LfWZnVqHS-institution"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'initial' }}
+                        className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
+                        style={{ fontSize: '0.85em' }}
                       >
-                        {secondItem}
+                        <span
+                          className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
+                          id="LfWZnVqHS-institution"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'initial' }}
+                        >
+                          {secondItem}
+                        </span>
                       </span>
-                    </span>
-                    <span
-                      className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                      style={{ fontSize: '0.85em' }}
-                    >
+                    )}
+                    {threeItem && (
                       <span
-                        className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                        id="LfWZnVqHS-location"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'initial' }}
+                        className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
+                        style={{ fontSize: '0.85em' }}
                       >
-                        {threeItem}
+                        <span
+                          className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
+                          id="LfWZnVqHS-location"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'initial' }}
+                        >
+                          {threeItem}
+                        </span>
                       </span>
-                    </span>
-                    <span
-                      className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                      style={{ fontSize: '0.85em' }}
-                    >
+                    )}
+                    {fourItem && (
                       <span
-                        className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                        id="LfWZnVqHS-date"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'initial' }}
+                        className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
+                        style={{ fontSize: '0.85em' }}
                       >
-                        {fourItem}
+                        <span
+                          className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
+                          id="LfWZnVqHS-date"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'initial' }}
+                        >
+                          {fourItem}
+                        </span>
                       </span>
-                    </span>
-                    <span
-                      className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
-                      style={{ fontSize: '0.85em' }}
-                    >
+                    )}
+                    {fiveItem && (
                       <span
-                        className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                        id="LfWZnVqHS-gpa"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'initial' }}
+                        className="before:first:hidden before:content-['•_'] before:mr-0.5 font-normal"
+                        style={{ fontSize: '0.85em' }}
                       >
-                        {fiveItem}
+                        <span
+                          className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
+                          id="LfWZnVqHS-gpa"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'initial' }}
+                        >
+                          {fiveItem}
+                        </span>
                       </span>
-                    </span>
+                    )}
                   </div>
                   <div style={{ color: 'rgb(46, 61, 80)' }} />
                 </div>
@@ -221,56 +231,66 @@ const StandardItem = props => {
                         {role}
                       </span>
                     </span>
-                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                      <span
-                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                        id="smpl029042021-company"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'baseline' }}
-                      >
-                        {firstItem}
+                    {firstItem && (
+                      <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                        <span
+                          className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                          id="smpl029042021-company"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'baseline' }}
+                        >
+                          {firstItem}
+                        </span>
                       </span>
-                    </span>
-                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                      <span
-                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                        id="smpl029042021-location"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'baseline' }}
-                      >
-                        {secondItem}
+                    )}
+                    {secondItem && (
+                      <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                        <span
+                          className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                          id="smpl029042021-location"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'baseline' }}
+                        >
+                          {secondItem}
+                        </span>
                       </span>
-                    </span>
-                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                      <span
-                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                        id="smpl029042021-duration"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'baseline' }}
-                      >
-                        {threeItem}
+                    )}
+                    {threeItem && (
+                      <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                        <span
+                          className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                          id="smpl029042021-duration"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'baseline' }}
+                        >
+                          {threeItem}
+                        </span>
                       </span>
-                    </span>
-                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                      <span
-                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                        id="smpl029042021-duration"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'baseline' }}
-                      >
-                        {fourItem}
+                    )}
+                    {fourItem && (
+                      <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                        <span
+                          className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                          id="smpl029042021-duration"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'baseline' }}
+                        >
+                          {fourItem}
+                        </span>
                       </span>
-                    </span>
-                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                      <span
-                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                        id="smpl029042021-duration"
-                        // // contentEditable="true"
-                        style={{ display: 'inline', verticalAlign: 'baseline' }}
-                      >
-                        {fiveItem}
+                    )}
+                    {fiveItem && (
+                      <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                        <span
+                          className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                          id="smpl029042021-duration"
+                          // // contentEditable="true"
+                          style={{ display: 'inline', verticalAlign: 'baseline' }}
+                        >
+                          {fiveItem}
+                        </span>
                       </span>
-                    </span>
+                    )}
                   </div>
                   <div
                     className="text-[0.85em] relative whitespace-pre-line "
@@ -304,72 +324,83 @@ const StandardItem = props => {
                 aria-hidden="true"
               />
               <div className="">
-                <span
-                  className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
-                  style={{ color: 'rgb(77, 112, 235)' }}
-                >
+                {firstItem && (
                   <span
-                    className="editableContent cursor-text mr-1.5 ml-0 designStudio "
-                    id="ncQ-wVn_6-role"
-                    // // contentEditable="true"
-                    style={{ display: 'inline' }}
+                    className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
+                    style={{ color: 'rgb(77, 112, 235)' }}
                   >
-                    {firstItem}
+                    <span
+                      className="editableContent cursor-text mr-1.5 ml-0 designStudio "
+                      id="ncQ-wVn_6-role"
+                      // // contentEditable="true"
+                      style={{ display: 'inline' }}
+                    >
+                      {firstItem}
+                    </span>
                   </span>
-                </span>
-                <span
-                  className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
-                  style={{ color: 'rgb(46, 61, 80)' }}
-                >
+                )}
+                {secondItem && (
                   <span
-                    className="editableContent cursor-text mr-1.5 ml-2 designStudio "
-                    id="ncQ-wVn_6-company"
-                    // // contentEditable="true"
-                    style={{ display: 'inline' }}
+                    className="inline text-[1em] whitespace-pre-wrap font-semibold before:first:hidden before:absolute before:content-['|_']"
+                    style={{ color: 'rgb(46, 61, 80)' }}
                   >
-                    {secondItem}
+                    <span
+                      className="editableContent cursor-text mr-1.5 ml-2 designStudio "
+                      id="ncQ-wVn_6-company"
+                      // // contentEditable="true"
+                      style={{ display: 'inline' }}
+                    >
+                      {secondItem}
+                    </span>
                   </span>
-                </span>
+                )}
+
                 <div>
-                  <span
-                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
-                    style={{ color: 'rgb(153, 153, 153)' }}
-                  >
+                  {threeItem && (
                     <span
-                      className="editableContent cursor-text  designStudio "
-                      id="ncQ-wVn_6-duration"
-                      // // contentEditable="true"
-                      style={{ display: 'inline' }}
+                      className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                      style={{ color: 'rgb(153, 153, 153)' }}
                     >
-                      {threeItem}
+                      <span
+                        className="editableContent cursor-text  designStudio "
+                        id="ncQ-wVn_6-duration"
+                        // // contentEditable="true"
+                        style={{ display: 'inline' }}
+                      >
+                        {threeItem}
+                      </span>
                     </span>
-                  </span>
-                  <span
-                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
-                    style={{ color: 'rgb(153, 153, 153)' }}
-                  >
+                  )}
+                  {fourItem && (
                     <span
-                      className="editableContent cursor-text  designStudio "
-                      id="ncQ-wVn_6-location"
-                      // // contentEditable="true"
-                      style={{ display: 'inline' }}
+                      className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                      style={{ color: 'rgb(153, 153, 153)' }}
                     >
-                      {fourItem}
+                      <span
+                        className="editableContent cursor-text  designStudio "
+                        id="ncQ-wVn_6-location"
+                        // // contentEditable="true"
+                        style={{ display: 'inline' }}
+                      >
+                        {fourItem}
+                      </span>
                     </span>
-                  </span>
-                  <span
-                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
-                    style={{ color: 'rgb(153, 153, 153)' }}
-                  >
+                  )}
+                  {fiveItem && (
                     <span
-                      className="editableContent cursor-text  designStudio "
-                      id="ncQ-wVn_6-location"
-                      // // contentEditable="true"
-                      style={{ display: 'inline' }}
+                      className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                      style={{ color: 'rgb(153, 153, 153)' }}
                     >
-                      {fiveItem}
+                      <span
+                        className="editableContent cursor-text  designStudio "
+                        id="ncQ-wVn_6-location"
+                        // // contentEditable="true"
+                        style={{ display: 'inline' }}
+                      >
+                        {fiveItem}
+                      </span>
                     </span>
-                  </span>
+                  )}
                 </div>
               </div>
               <div
@@ -423,90 +454,70 @@ const StandardItem = props => {
                     <div className="">
                       <div className="flex gap-2">
                         <span className="text-[#000000]" style={{ color: 'rgb(0, 0, 0)' }}>
-                          <div
-                            className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                            style={{ color: 'rgb(0, 0, 0)' }}
-                          >
-                            <ContentEditable
-                              className="editableContent cursor-text text-[1em]  ml-0 designStudio "
-                              html={roleState.current}
-                              onBlur={e => handleBlur(e, 'role')}
-                              onChange={e => handleChange(e, 'role')}
-                            />
-                            {/* <span
-                              className="editableContent cursor-text text-[1em]  ml-0 designStudio "
-                              id="smpl125032021-role"
-                              // // contentEditable="true"
+                          {roleState && (
+                            <div
+                              className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
+                              style={{ color: 'rgb(0, 0, 0)' }}
                             >
                               <ContentEditable
+                                className="editableContent cursor-text text-[1em]  ml-0 designStudio "
                                 html={roleState.current}
                                 onBlur={e => handleBlur(e, 'role')}
                                 onChange={e => handleChange(e, 'role')}
                               />
-                              {role}
-                            </span> */}
-                          </div>
+                            </div>
+                          )}
                         </span>
                       </div>
                       <div className="flex gap-2 justify-between font-semibold">
                         <div>
-                          <span
-                            className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
-                            style={{ fontSize: '0.85em' }}
-                          >
-                            <ContentEditable
-                              className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                              style={{
-                                display: 'inline',
-                                verticalAlign: 'initial',
-                              }}
-                              html={orgNameState.current}
-                              onBlur={e => handleBlur(e, 'orgName')}
-                              onChange={e => handleChange(e, 'orgName')}
-                            />
-                            {/* <span
-                              className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
-                              id="smpl125032021-company"
-                              // contentEditable="true"
-                              style={{
-                                display: 'inline',
-                                verticalAlign: 'initial',
-                              }}
+                          {orgNameState && (
+                            <span
+                              className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
+                              style={{ fontSize: '0.85em' }}
                             >
                               <ContentEditable
+                                className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
+                                style={{
+                                  display: 'inline',
+                                  verticalAlign: 'initial',
+                                }}
                                 html={orgNameState.current}
                                 onBlur={e => handleBlur(e, 'orgName')}
                                 onChange={e => handleChange(e, 'orgName')}
                               />
-                              {orgName}
-                            </span> */}
-                          </span>
+                            </span>
+                          )}
                         </div>
                         <div>
-                          <div
-                            className="inline-block before:first:hidden before:absolute"
-                            style={{ fontSize: '0.85em' }}
-                          >
-                            <span
-                              className="editableContent cursor-text ml-0 designStudio "
-                              id="smpl125032021-duration"
-                              // contentEditable="true"
+                          {duration && (
+                            <div
+                              className="inline-block before:first:hidden before:absolute"
+                              style={{ fontSize: '0.85em' }}
                             >
-                              {duration}
-                            </span>
-                          </div>
-                          <div
-                            className="inline-block before:first:hidden before:absolute before:content-[',_']"
-                            style={{ fontSize: '0.85em' }}
-                          >
-                            <span
-                              className="editableContent cursor-text ml-2 designStudio "
-                              id="smpl125032021-location"
-                              // contentEditable="true"
+                              <span
+                                className="editableContent cursor-text ml-0 designStudio "
+                                id="smpl125032021-duration"
+                                // contentEditable="true"
+                              >
+                                {duration}
+                              </span>
+                            </div>
+                          )}
+                          {location && (
+                            <div
+                              className="inline-block before:first:hidden before:absolute before:content-[',_']"
+                              style={{ fontSize: '0.85em' }}
                             >
-                              {location}
-                            </span>
-                          </div>
+                              <span
+                                className="editableContent cursor-text ml-2 designStudio "
+                                id="smpl125032021-location"
+                                // contentEditable="true"
+                              >
+                                {location}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -524,12 +535,15 @@ const StandardItem = props => {
                           </span>
                         </p>
                       </div> */}
-                      <ContentEditable
-                        className="editableContent cursor-text  designStudio "
-                        html={descriptionState.current}
-                        onBlur={e => handleBlur(e, 'description')}
-                        onChange={e => handleChange(e, 'description')}
-                      />
+                      {descriptionState && (
+                        <ContentEditable
+                          className="editableContent cursor-text  designStudio "
+                          html={descriptionState.current}
+                          onBlur={e => handleBlur(e, 'description')}
+                          onChange={e => handleChange(e, 'description')}
+                        />
+                      )}
+
                       {/* <p
                         className="editableContent cursor-text  designStudio "
                         id="smpl125032021-description"
@@ -682,32 +696,36 @@ const StandardItem = props => {
                   </span>
                 </span>
                 <div>
-                  <span
-                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
-                    style={{ color: 'rgb(153, 153, 153)' }}
-                  >
+                  {duration && (
                     <span
-                      className="editableContent cursor-text  designStudio "
-                      id="smpl125032021-duration"
-                      // contentEditable="true"
-                      style={{ display: 'inline' }}
+                      className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                      style={{ color: 'rgb(153, 153, 153)' }}
                     >
-                      {duration}
+                      <span
+                        className="editableContent cursor-text  designStudio "
+                        id="smpl125032021-duration"
+                        // contentEditable="true"
+                        style={{ display: 'inline' }}
+                      >
+                        {duration}
+                      </span>
                     </span>
-                  </span>
-                  <span
-                    className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
-                    style={{ color: 'rgb(153, 153, 153)' }}
-                  >
+                  )}
+                  {location && (
                     <span
-                      className="editableContent cursor-text  designStudio "
-                      id="smpl125032021-location"
-                      // contentEditable="true"
-                      style={{ display: 'inline' }}
+                      className="text-[1em] inline whitespace-pre-wrap [&:not(:last-child)]:after:content-[','] [&:not(:last-child)]:after:mr-0.5"
+                      style={{ color: 'rgb(153, 153, 153)' }}
                     >
-                      {location}
+                      <span
+                        className="editableContent cursor-text  designStudio "
+                        id="smpl125032021-location"
+                        // contentEditable="true"
+                        style={{ display: 'inline' }}
+                      >
+                        {location}
+                      </span>
                     </span>
-                  </span>
+                  )}
                 </div>
               </div>
               <div

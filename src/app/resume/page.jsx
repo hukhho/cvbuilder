@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, ConfigProvider, Divider, Space } from 'antd';
+import { Card, ConfigProvider, Divider, Empty, Space } from 'antd';
 import { Popover, Switch } from '@headlessui/react';
 import UserLayout from '../components/Layout/UserLayout';
 import UserHeader from '../components/UserHeader';
@@ -69,12 +69,13 @@ const ResumeIndex = () => {
           content={
             <div className="container mx-auto px-4 py-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {resumes.map((item, index) => (
+                {resumes?.map((item, index) => (
                   <div key={index}>
                     {/* {item.id} */}
-                    <ResumeCard resume={item} />
+                    <ResumeCard resume={item} onDeleted={onCreated} />
                   </div>
                 ))}
+                {resumes?.length === 0 && <Empty />}
               </div>
             </div>
           }

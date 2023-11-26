@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 'use client';
 
 import { useCallback, useState } from 'react';
@@ -22,7 +24,7 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
+const SkillsSection = ({ skills, onChangeOrder, templateType, canBeDisplayed }) => {
   const skillItems = (
     <>
       {skills.map(edu => {
@@ -70,6 +72,9 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
     setActiveId(null);
   }, []);
 
+  if (!canBeDisplayed) {
+    return <></>;
+  }
   return (
     <div className="skill leading-snug relative group ">
       <div
@@ -92,7 +97,7 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
         >
           Skills
         </span>
-        <hr class="border-0 border-b-[1px] border-black mt-[1px]" />
+        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
       </div>
       {/* <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
         <hr />

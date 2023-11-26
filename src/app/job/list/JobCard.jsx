@@ -5,7 +5,8 @@ import React from 'react';
 
 const { Title } = Typography;
 
-const JobCard = () => {
+const JobCard = ({ job }) => {
+  console.log('JobCard: ', job);
   return (
     <Card style={{ width: 550, position: 'relative' }}>
       <div style={{ position: 'absolute', top: 10, right: 10 }}>
@@ -17,9 +18,9 @@ const JobCard = () => {
         </div>
         <div className="ml-4" style={{ textAlign: 'left' }}>
           <Title level={5} style={{ color: '#4D70EB' }}>
-            Software Engineer
+            {job?.title}
           </Title>
-          <p>GRAB</p>
+          <p>{job?.companyName}</p>
           <div className="mt-4">
             <div className="flex items-center">
               <svg
@@ -34,7 +35,7 @@ const JobCard = () => {
                   fill="black"
                 />
               </svg>
-              <span className="ml-2">Ho Chi Minh City</span>
+              <span className="ml-2">{job?.location}</span>
             </div>
             <div className="flex items-center">
               <svg
@@ -81,7 +82,7 @@ const JobCard = () => {
                 />
               </svg>
               <div>
-                <span className="ml-2">Negotiable</span>
+                <span className="ml-2">{job?.salary}</span>
               </div>
             </div>
 
@@ -90,9 +91,9 @@ const JobCard = () => {
                 style={{ width: '100px', textAlign: 'center' }}
                 className="border-gray-500 border rounded-full p-1"
               >
-                Front-end
+                {job?.skill}
               </div>
-              <div
+              {/* <div
                 style={{ width: '100px', textAlign: 'center' }}
                 className="border-gray-500 border rounded-full p-1"
               >
@@ -103,7 +104,7 @@ const JobCard = () => {
                 className="border-gray-500 border rounded-full p-1"
               >
                 C#
-              </div>
+              </div> */}
             </div>
             <div className="flex mt-4 items-centers">
               <div>
@@ -128,7 +129,7 @@ const JobCard = () => {
                   />
                 </svg>
               </div>
-              <span>Posted 3 days ago</span>
+              <span>{job?.createDate}</span>
             </div>
           </div>
         </div>

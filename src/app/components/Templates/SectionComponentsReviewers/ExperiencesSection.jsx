@@ -34,6 +34,8 @@ const ExperiencesSection = ({ experiences, onChangeOrder, onComment, templateTyp
           <StandardItemReviewers
             onComment={onComment}
             key={exp.id}
+            dataId={exp.id}
+            type="experience"
             templateType={templateType}
             role={role}
             location={location}
@@ -101,7 +103,6 @@ const ExperiencesSection = ({ experiences, onChangeOrder, onComment, templateTyp
             templateType === 'classical' ? 'section-header' : ''
           }`}
           id="experience-heading"
-          contentEditable="true"
           style={{
             fontSize: '1.15em',
             display: 'block',

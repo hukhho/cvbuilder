@@ -1,0 +1,33 @@
+.card {
+    background: white;
+    box-shadow: var(--elevation-flat);
+    border-radius: var(--radius-3);
+    padding: var(--gutter);
+  }
+  
+  .mobile-card {
+    background: white;
+    box-shadow: var(--elevation-flat);
+    border-radius: var(--radius-3);
+    padding: 1rem;
+    & h1 {
+      font-size: 18px !important;
+    }
+    & p {
+      font-size: 14px !important;
+    }
+  }
+  
+  .mobile-card-no-padding {
+    background: white;
+    box-shadow: var(--elevation-flat);
+    border-radius: var(--radius-3);
+    padding: 0px !important;
+    & h1 {
+      font-size: 18px !important;
+    }
+    & p {
+      font-size: 14px !important;
+    }
+  }
+  

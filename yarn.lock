@@ -6100,7 +6100,7 @@ date-fns@^2.30.0, "date-fns@>= 2.x":
   dependencies:
     "@babel/runtime" "^7.21.0"
 
-dayjs@^1.11.1, "dayjs@>= 1.x":
+dayjs@^1.11.1, dayjs@^1.11.10, "dayjs@>= 1.x":
   version "1.11.10"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.10.tgz"
   integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==
@@ -7927,6 +7927,11 @@ html-tags@^3.1.0:
   version "3.3.1"
   resolved "https://registry.npmjs.org/html-tags/-/html-tags-3.3.1.tgz"
   integrity sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==
+
+html-to-image@^1.11.11:
+  version "1.11.11"
+  resolved "https://registry.npmjs.org/html-to-image/-/html-to-image-1.11.11.tgz"
+  integrity sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==
 
 html-webpack-plugin@^5.5.0:
   version "5.5.3"

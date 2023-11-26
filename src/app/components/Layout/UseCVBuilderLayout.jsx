@@ -31,26 +31,28 @@ const { Title, Paragraph, Text, Link } = Typography;
 const { Header, Content, Footer, Sider } = Layout;
 
 const items = [
+  // {
+  //   key: '1',
+  //   icon: <FontAwesomeIcon icon={faFileCirclePlus} />,
+  //   label: 'CREATE NEW RESUME',
+
+  // },
   {
     key: '1',
-    icon: <FontAwesomeIcon icon={faFileCirclePlus} />,
-    label: 'CREATE NEW RESUME',
-  },
-  {
-    key: '2',
     icon: <FontAwesomeIcon icon={faFile} />,
     label: 'MY DASHBOARD',
-    href: '/create-resume',
+    href: '/resume',
   },
+  // {
+  //   key: '3',
+  //   icon: <FontAwesomeIcon icon={faFileAlt} />,
+  //   label: 'SAMPLE LIBRARY',
+  // },
   {
-    key: '3',
-    icon: <FontAwesomeIcon icon={faFileAlt} />,
-    label: 'SAMPLE LIBRARY',
-  },
-  {
-    key: '4',
+    key: '2',
     icon: <FontAwesomeIcon icon={faFileCircleCheck} />,
     label: 'REVIEW MY RESUME',
+    href: '/review/list/expert',
   },
 ];
 const UserCVBuilderLayout = ({ userHeader, content }) => {

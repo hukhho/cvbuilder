@@ -14,7 +14,7 @@ const updateCoverLetter = async (coverLetterId, data) => {
       throw new Error('User ID not found.');
     }
     const response = await axiosInstance.put(
-      `/chat-gpt/${userId}/cover-letter/${coverLetterId}`,
+      `/chat-gpt/user/cv/${userId}/cover-letter/${coverLetterId}`,
       data,
     );
     return response.data;

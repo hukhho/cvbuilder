@@ -1,20 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { getAts } from './finishUpService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import JobModal from '@/app/components/Modal/JobModal';
+import JobModalCreate from '@/app/components/Modal/JobModalCreate';
 
 const Ats = ({ cvId }) => {
   const [data, setData] = useState();
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+  const [isFetched, setIsFetched] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      console.log('cvId: ', cvId);
+      const result = await getAts(cvId);
+      setData(result.ats);
+      console.log('Ats:data: ', result);
+      setTitle(result.title);
+      setDescription(result.description);
+      setIsFetched(true);
+    } catch (error) {
+      setIsFetched(true);
+      console.error('Error fetching FinishUp data:', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log('cvId: ', cvId);
-        const result = await getAts(cvId);
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching FinishUp data:', error);
-      }
-    };
     fetchData();
   }, []);
+  const handleCLick = () => {
+    const result = [
+      { id: 1, reply: 'Mock 1' },
+      { id: 2, reply: 'Mock 2' },
+      { id: 3, reply: 'Mock 3' },
+      { id: 4, reply: 'Mock 4' },
+      { id: 5, reply: 'Mock 5' },
+    ];
+    setData(result);
+  };
+
+  const onCreated = () => {
+    fetchData();
+  };
 
   return (
     <div style={{ color: 'black', textAlign: 'left' }}>
@@ -37,16 +64,35 @@ const Ats = ({ cvId }) => {
             </span>
             <div>
               <div>
-                <span>
-                  {data} <i className="fas fa-times" aria-hidden="true" />
-                </span>
-                <span>
-                  <i className="fas fa-circle" aria-hidden="true" />
-                </span>
+                {data?.map((content, index) => {
+                  return (
+                    <div key={index} className="bold">
+                      <span>
+                        {content.ats}
+                        <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 ml-4" />
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
-          <button className="keyword-button button">Update job description</button>
+          <div>
+            {isFetched && (title === undefined || title === null) && (
+              <JobModalCreate
+                cvId={cvId}
+                onCreated={onCreated}
+                title={title}
+                description={description}
+              />
+            )}
+          </div>
+          {!(isFetched && (title === undefined || title === null)) && (
+            <JobModal cvId={cvId} onCreated={onCreated} title={title} description={description} />
+          )}
+          {/* <button className="keyword-button button" onClick={handleCLick}>
+            Update job description
+          </button> */}
         </div>
       </div>
     </div>

@@ -36,6 +36,7 @@ import { NextPageContext } from 'next';
 // import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import * as htmlToImage from 'html-to-image';
 
 const CVLayout = React.forwardRef(
   ({ children, onSectionsOrderChange, layoutStyles, templateType, stars }, ref) => {
@@ -71,14 +72,6 @@ const CVLayout = React.forwardRef(
       const resumeId = document.getElementById('resume');
       resumeId?.style.setProperty('--text-indent', hasIndent ? '1em' : '0em');
     }, [hasIndent]);
-
-    // useEffect(() => {
-    //   WebFont.load({
-    //     google: {
-    //       families: ['Source Sans Pro'],
-    //     },
-    //   });
-    // }, []);
 
     const [components, setComponents] = useState(children);
 
@@ -133,22 +126,44 @@ const CVLayout = React.forwardRef(
       useCORS: true, // Enable Cross-Origin Resource Sharing if needed
       logging: true, // Enable logging for debugging (optional)
     };
-    const CaptureScreenshot = () => {
-      html2canvas(captureRef.current, captureOptions).then(canvas => {
-        console.log('canvas', canvas);
-        // Iterate through each element in the captured content
-        canvas.childNodes.forEach(element => {
-          // Apply sectionHeader styles
-          if (element.classList.contains('section-header')) {
-            Object.assign(element.style, sectionHeader);
-          }
-        });
+    // const CaptureScreenshot = () => {
+    //   html2canvas(captureRef.current, captureOptions).then(canvas => {
+    //     console.log('canvas', canvas);
+    //     // Iterate through each element in the captured content
+    //     canvas.childNodes.forEach(element => {
+    //       // Apply sectionHeader styles
+    //       if (element.classList.contains('section-header')) {
+    //         Object.assign(element.style, sectionHeader);
+    //       }
+    //     });
 
-        const imgData = canvas.toDataURL('image/jpeg');
-        const pdf = new jsPDF('p', 'mm', [canvas.width / 10, canvas.height / 10]); // Adjust PDF size accordingly
-        pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 10, canvas.height / 10);
-        pdf.save(`${new Date().toISOString()}.pdf`);
-      });
+    //     const imgData = canvas.toDataURL('image/jpeg');
+    //     const pdf = new jsPDF('p', 'mm', [canvas.width / 10, canvas.height / 10]); // Adjust PDF size accordingly
+    //     pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 10, canvas.height / 10);
+    //     pdf.save(`${new Date().toISOString()}.pdf`);
+    //   });
+    // };
+    const CaptureScreenshot = () => {
+      console.log("cap")
+      try {
+        htmlToImage
+        .toCanvas(captureRef.current, { quality: 1, pixelRatio: 10 })
+        .then(function (canvas) {
+          const imgData = canvas.toDataURL('image/jpeg');
+
+          // Adjust the width and height for A4 size (210mm x 297mm)
+          const pdfWidth = 210;
+          const pdfHeight = 297;
+
+          const pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+          pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`${new Date().toISOString()}.pdf`);
+        });
+        
+      } catch (error) {
+        console.log("Error", error)
+      }
+     
     };
     useImperativeHandle(ref, () => ({
       CaptureScreenshot,

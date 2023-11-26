@@ -1,8 +1,8 @@
+/* eslint-disable */
 'use client';
 
-import { useCallback, useState } from 'react';
 import { Divider, Typography } from 'antd';
-
+import { useCallback, useState } from 'react';
 import StandardItem from '../StandardItem';
 import {
   DndContext,
@@ -21,31 +21,44 @@ import {
 } from '@dnd-kit/sortable';
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
+import StandardItemV2 from '../StandardItemV2';
 
-const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
-  console.log('EducationSection::: ', educations);
-  const educationItems = (
+const ExperiencesSection = ({
+  onComment,
+  experiences,
+  onChangeOrder,
+  templateType,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
+}) => {
+  console.log('ExperiencesSection::: ', experiences);
+  const experienceItems = (
     <>
-      {educations.map(edu => {
-        const { endYear, minor, description, degree, collegeName, location, gpa } = edu;
+      {experiences.map(exp => {
+        const { duration, description, companyName, role, location } = exp;
         return (
-          <StandardItem
-            key={edu.id}
-            role={degree}
-            firstItem={minor}
-            secondItem={collegeName}
-            threeItem={location}
-            fourItem={endYear}
-            fiveItem={gpa}
-            description={description}
+          <StandardItemV2
+            onComment={onComment}
+            key={exp.id}
+            dataId={exp.id}
+            type="experience"
             templateType={templateType}
-            isThreeLine
+            role={role}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
+            location={location}
+            duration={duration}
+            orgName={companyName}
+            renderRightSubtitle
+            description={description}
           />
         );
       })}
     </>
   );
-  const { children } = educationItems.props;
+  const { children } = experienceItems.props;
   const [components, setComponents] = useState(children);
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(
@@ -70,8 +83,8 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
         const newIndex = components.indexOf(over.id);
         const newComponents = arrayMove(components, oldIndex, newIndex);
         const arrKeys = newComponents.map(it => it.key);
-        const sortededucationItems = sortItemsOrderBasedOnKeys(arrKeys, educations);
-        onChangeOrder(sortededucationItems);
+        const sortedExperienceItems = sortItemsOrderBasedOnKeys(arrKeys, experiences);
+        onChangeOrder(sortedExperienceItems);
         setComponents([...newComponents]);
       }
 
@@ -85,7 +98,7 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
   }, []);
 
   return (
-    <div className="education leading-snug relative group ">
+    <div className="experience leading-snug relative group">
       <div
         className="uppercase mb-[4px]   "
         style={{
@@ -95,20 +108,24 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
         }}
       >
         <span
-          className="editableContent cursor-text designStudio"
-          id="education-heading"
-          contentEditable="true"
+          className="editableContent cursor-text designStudio "
+          id="experience-heading"
+          // contentEditable="true"
           style={{
             color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',
             display: 'block',
           }}
         >
-          Education
+          Experience
         </span>
-        <hr class="border-0 border-b-[1px] border-black mt-[1px]" />
+        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
+
+        <div />
+        {/* <div className='section-header'></div> */}
       </div>
-      {/* <Divider className="divider-section" /> */}
+
+      {/* <Divider className="section-header" /> */}
       <div>
         <DndContext
           sensors={sensors}
@@ -130,5 +147,4 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
     </div>
   );
 };
-
-export default EducationsSection;
+export default ExperiencesSection;

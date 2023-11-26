@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Form, Input } from 'antd';
+import { Button, Card, ConfigProvider, Form, Input, notification, Select, Switch } from 'antd';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
@@ -10,7 +10,7 @@ import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import DataService from '../../../utils/dataService';
 import ContactForm from '@/app/components/Form/ContactForm';
 import SummaryForm from '@/app/components/Form/SummaryForm';
-import { getSummary, postSummaryAi } from './summaryService';
+import { getSummary, getSummaryHistory, postSummaryAi } from './summaryService';
 
 import './summary.css';
 import './textarena.css';
@@ -18,18 +18,21 @@ import { getAllExperiences } from '../experience/experienceService';
 import { Listbox } from '@headlessui/react';
 
 const { Meta } = Card;
-const people = [
-  { id: 1, name: 'Durward Reynolds', unavailable: false },
-  { id: 2, name: 'Kenton Towne', unavailable: false },
-  { id: 3, name: 'Therese Wunsch', unavailable: false },
-  { id: 4, name: 'Benedict Kessler', unavailable: true },
-  { id: 5, name: 'Katelyn Rohan', unavailable: false },
-];
+
 const Summary = ({ params }) => {
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Thong bao',
+      description: message,
+      placement,
+    });
+  };
   const [form] = Form.useForm();
   const [summaryData, setSummaryData] = useState([]); // Renamed to summaryData
+  const [summaryHistory, setSummaryHistory] = useState([]);
+
   const [selectedData, setSelectedData] = useState(null);
-  const [selectedPerson, setSelectedPerson] = useState(people[0]);
   const [enabledCategories, setEnabledCategories] = useState({
     SUMMARY: true,
   });
@@ -41,11 +44,17 @@ const Summary = ({ params }) => {
     try {
       const data = await getAllExperiences(cvId);
       console.log('data getAllExperiences ', data);
+
       setExperiences(data);
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
     }
   };
+
+  const options = experiences.map(item => ({
+    value: `${item.role} at ${item.companyName}`,
+    label: `${item.role} at ${item.companyName}`,
+  }));
 
   const [isAiWrite, setIsAiWrite] = useState(false);
   const [aiContent, setAiContent] = useState('');
@@ -63,9 +72,20 @@ const Summary = ({ params }) => {
     }
   };
 
+  const fetchSummaryHistory = async () => {
+    try {
+      const data = await getSummaryHistory(params.id);
+      // console.log('fetchData ', data);
+      // console.log('Summary: ', data.summary);
+      setSummaryHistory(data); // Updated to setSummaryData
+    } catch (error) {
+      console.error('There was an error fetching the data', error);
+    }
+  };
   useEffect(() => {
     fetchData();
     fetchExperiences();
+    fetchSummaryHistory();
   }, []);
 
   const handleEditData = item => {
@@ -87,16 +107,21 @@ const Summary = ({ params }) => {
     setSortByDate(!sortByDate);
   };
 
-  const summaryHistory = [
-    { id: 1, version: 'This is content 1' },
-    { id: 2, version: 'This is content 2' },
-  ];
+  // const summaryHistory = [
+  //   { id: 1, version: 'This is content 1' },
+  //   { id: 2, version: 'This is content 2' },
+  // ];
   const handleSubmit = async values => {
     try {
       console.log('summary page: submit: ', values);
-      postSummaryAi(cvId, values);
+      const result = await postSummaryAi(cvId, values);
+      // console.log(summary, result);
+      openNotification('bottomRight', 'oke');
+      fetchSummaryHistory();
     } catch (error) {
       console.log('Submit. Error:', error);
+      openNotification('bottomRight', `Error: ${error}`);
+      fetchSummaryHistory();
     }
   };
   const handleApplyAi = async content => {
@@ -128,7 +153,13 @@ const Summary = ({ params }) => {
     setIsAiWrite(false);
     setAiContent(null);
   };
-
+  const handleChange = value => {
+    console.log(`selected ${value}`);
+  };
+  const [disabled, setDisabled] = useState(false);
+  const toggle = () => {
+    setDisabled(!disabled);
+  };
   return (
     <main>
       <ConfigProvider>
@@ -138,6 +169,7 @@ const Summary = ({ params }) => {
           }
           content={
             <div className="flex h-screen">
+              {contextHolder}
               <div className="flex flex-col p-4" style={{ width: '900px' }}>
                 <SummaryForm
                   cvId={cvId}
@@ -165,7 +197,7 @@ const Summary = ({ params }) => {
                     </p>{' '}
                   </div>
                   <div>
-                    <div class="flex gap-2 items-center">
+                    <div className="flex gap-2 items-center">
                       <Form
                         onFinish={handleSubmit}
                         form={form}
@@ -179,32 +211,32 @@ const Summary = ({ params }) => {
                               <div className="flex gap-2 items-center text-xs">
                                 Position Highlight
                               </div>
-                              <div>
-                                <div className="">
-                                  {/* <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-                                    <Listbox.Button>{selectedPerson.name}</Listbox.Button>
-                                    <Listbox.Options>
-                                      {people.map(person => (
-                                        <Listbox.Option
-                                          key={person.id}
-                                          value={person}
-                                          disabled={person.unavailable}
-                                        >
-                                          {person.name}
-                                        </Listbox.Option>
-                                      ))}
-                                    </Listbox.Options>
-                                  </Listbox> */}
-                                </div>
+                              <div className="ml-10 flex">
+                                <span className="text-gray-300" style={{ fontSize: 13 }}>
+                                  from resume
+                                </span>
+                                <Switch className="mt-2" onClick={toggle} defaultChecked />
                               </div>
                             </label>
                           }
                         >
-                          <Input
-                            style={{ marginTop: '-10px' }}
-                            className="inputEl st-current"
-                            placeholder="Marketing Asistant at Sony"
-                          />
+                          {!disabled && (
+                            <Select
+                              style={{
+                                height: 50,
+                              }}
+                              className=""
+                              onChange={handleChange}
+                              options={options}
+                            />
+                          )}
+                          {disabled && (
+                            <Input
+                              style={{ marginTop: '-10px' }}
+                              className="inputEl st-current"
+                              placeholder="Marketing Asistant at Sony"
+                            />
+                          )}
                         </Form.Item>
                         <Form.Item
                           name="skill_highlight"

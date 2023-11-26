@@ -4,7 +4,7 @@ import Link from 'next/link';
 const categories = [
   { name: 'RESUMES', link: 'resume' },
   { name: 'COVER LETTERS', link: 'cover-letter' },
-  { name: 'RESIGNATION LETTERS', link: 'resignation-letter' },
+  // { name: 'RESIGNATION LETTERS', link: 'resignation-letter' },
 ];
 
 const UserHeader = ({ initialEnabledCategories }) => {

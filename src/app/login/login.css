@@ -1,0 +1,70 @@
+.logo {
+    height: var(--scale-3);
+    image-rendering: -webkit-optimize-contrast;
+  }
+  .rezi-logo {
+    filter: grayscale(100%);
+    width: 80px;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  .appsumo {
+    height: 42px;
+    filter: grayscale(100%);
+    padding-bottom: 5px;
+  }
+  .logoWrapper {
+    top: var(--gutter);
+    left: 3rem;
+    align-items: baseline;
+  }
+  .form {
+    width: 100%;
+    max-width: 23rem;
+    margin: var(--gutter) auto 0;
+    min-width: 320px;
+  }
+  
+  .switcher {
+    color: var(--color-text-light);
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 600;
+    & a {
+      color: var(--color-primary);
+    }
+  }
+  
+  .column-wrapper {
+    display: block !important;
+    padding: 0 !important;
+    & main {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      height: 100vh;
+      @media screen and (max-width: 1365px) {
+        display: block;
+      }
+      & > div {
+        &:first-child {
+        }
+        &:last-child {
+          @media screen and (min-width: 1365px) {
+            background: url("https://storage.googleapis.com/rezi-3f268.appspot.com/public/white_fresh.webp")
+              130px center / 104% no-repeat rgb(247, 247, 248);
+          }
+          @media screen and (max-width: 1365px) {
+            display: none;
+          }
+        }
+      }
+      & :global(.auth-box) {
+        transform: translateY(26%);
+        margin-top: -2.25em;
+        min-width: 320px;
+        & > div:first-child {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  

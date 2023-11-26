@@ -117,7 +117,7 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
                   name="summary"
                   style={{
                     background: 'transparent',
-                    height: 120,
+                    height: 385,
                     fontWeight: 400,
                     overflow: 'hidden',
                     resize: 'none',

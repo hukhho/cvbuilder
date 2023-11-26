@@ -8,7 +8,7 @@ import UserLayout from '../components/Layout/UserLayout';
 import UserHeader from '../components/UserHeader';
 import CVCard from '../components/Card/CVCard';
 import Link from 'next/link'; // Import Link from Next.js for navigation
-import { getResumes } from '../utils/indexService';
+import { deleteResume, getResumes } from '../utils/indexService';
 import FinishUpPreview from './[id]/finishup/FinishUpPreview';
 import Meta from 'antd/es/card/Meta';
 import './namebadge.css';
@@ -29,7 +29,7 @@ import UpdateResume from '../components/Modal/UpdateResume';
 const RedLink = styled.a`
   color: black;
 `;
-const ResumeCard = ({ resume }) => {
+const ResumeCard = ({ onDeleted, resume }) => {
   const [enabled, setEnabled] = useState(false);
 
   const [isUpdateResumeOpen, setIsUpdateResumeOpen] = useState(false);
@@ -41,6 +41,15 @@ const ResumeCard = ({ resume }) => {
   const closeUpdateResumeModal = () => {
     setIsUpdateResumeOpen(false);
   };
+
+  const handleDeleteResume = async (cvId) => {
+    try {
+      await deleteResume(cvId)
+      onDeleted()
+    } catch (error) {
+      console.log("handleDeleteResume")
+    }
+  }
   return (
     <Card
       className="bg-white "
@@ -69,7 +78,7 @@ const ResumeCard = ({ resume }) => {
             <button onClick={openUpdateResumeModal} className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
               <FontAwesomeIcon icon={faCog} />
             </button>
-            <button className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
+            <button onClick={() => handleDeleteResume(resume.id)} className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
             <button className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">

@@ -129,7 +129,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
           <Input
             style={{ marginTop: '-10px' }}
             className="inputEl education-section inputEl st-current"
-            placeholder="2023"
+            placeholder="SE"
           />
         </Form.Item>
         <Form.Item

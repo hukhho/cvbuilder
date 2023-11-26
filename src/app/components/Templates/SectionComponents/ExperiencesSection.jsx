@@ -115,7 +115,7 @@ const ExperiencesSection = ({
         >
           Experience
         </span>
-        <hr class="border-0 border-b-[1px] border-black mt-[1px]" />
+        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
 
         <div />
         {/* <div className='section-header'></div> */}

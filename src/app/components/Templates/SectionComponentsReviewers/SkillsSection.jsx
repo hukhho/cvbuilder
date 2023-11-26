@@ -29,7 +29,15 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
     <>
       {skills.map(edu => {
         const { description } = edu;
-        return <StandardItem key={edu.id} titleProps={description} templateType={templateType} />;
+        return (
+          <StandardItem
+            key={edu.id}
+            dataId={edu.id}
+            type="skills"
+            titleProps={description}
+            templateType={templateType}
+          />
+        );
       })}
     </>
   );
@@ -85,8 +93,6 @@ const SkillsSection = ({ skills, onChangeOrder, templateType }) => {
         <span
           className="editableContent cursor-text designStudio section-header"
           id="skill-heading"
-          tabIndex={0}
-          contentEditable="true"
           style={{
             color: 'rgb(46, 61, 80)',
             fontSize: '1.15em',

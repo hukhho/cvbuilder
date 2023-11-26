@@ -13,7 +13,16 @@ export const getFinishUp = async cvId => {
 };
 export const getAts = async cvId => {
   try {
-    const response = await axiosInstance.get(`/users/cv/${cvId}/job-description`);
+    const response = await axiosInstance.get(`/users/cv/${cvId}/job-description/ats`);
+    // return mockData.data.resume;
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getReview = async cvId => {
+  try {
+    const response = await axiosInstance.post(`/chat-gpt/cv/${cvId}/review?temperature=0.5`);
     // return mockData.data.resume;
     return response.data;
   } catch (error) {

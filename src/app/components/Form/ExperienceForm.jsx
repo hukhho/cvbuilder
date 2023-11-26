@@ -8,7 +8,7 @@ import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
 // import './date.css';
 // import './datepicker.css';
-
+import './ai.css';
 import { format, parse } from 'date-fns';
 import { lobster } from '@/app/font';
 import {
@@ -29,6 +29,8 @@ const { RangePicker } = DatePicker;
 import './selected.css';
 import { CommentOutlined } from '@ant-design/icons';
 import { createAIWriter } from './aiwriter';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
@@ -109,6 +111,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     }
   };
 
+  const [selectedIndices, setSelectedIndices] = useState([]);
   const handleKeyPress = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -232,6 +235,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         setTooltip({ x, y, text: 'cac' });
         console.log('tooltip: ', tooltip);
       }
+      // Here, you can determine the index of the selected item based on your items array
     }
   };
 
@@ -261,6 +265,9 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     setIsOpen(false);
   };
   const initialFocusRef = React.useRef();
+
+  const [markText, setMarkText] = useState('');
+
   const handleAiWriter = async () => {
     console.log('handleAiWriter');
 
@@ -274,6 +281,47 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     textarea.setSelectionRange(selectionStartState, selectionEndState);
     textarea.focus();
 
+    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+
+    const markedText = `<mark id="ghost_highlight_mark" style="background-color: rgba(77, 112, 235, 0.15);">${selectedText}</mark>`;
+    const updatedText = textarea.value.replace(selectedText, markedText);
+    setMarkText(updatedText);
+    setAiContent(updatedText);
+    // setInputValue();
+    setIsAiWrite(true);
+    setIsAi(true);
+
+    const fakeData = {
+      data: {
+        reply: [
+          '• This content is make from chatgpt 1',
+          '• This content is make from chatgpt 2',
+          '• This content is make from chatgpt 3',
+        ],
+      },
+    };
+    console.log('setReplyContent:');
+    setReplyContent(fakeData.data.reply);
+
+    // Mark the selected text (you can customize this part)
+    // const markedText = `<mark>${selectedText}</mark>`;
+    // setMarkText(markedText);
+
+    // Log the marked text
+    // const items = inputValue.split('\n').map((item, index) => ({ id: index, text: item }));
+    // const newText = items
+    //   .map(item => {
+    //     console.log('item: ', item);
+    //     if (item === selectedText) {
+    //       console.log('itemVIP: ', item);
+    //       return `<mark>${item.text}</mark>`;
+    //     }
+    //     return `-> ${item.text}`;
+    //   })
+    //   .join('\n');
+
+    // setMarkText(selectedIndices);
+    console.log('selectedIndices', selectedIndices);
     // console.log('textarea: ', textarea);
     // // Replace the selected text with "Lorem"
     // const newText = "Lorem";
@@ -310,7 +358,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       console.log('setReplyContent:');
       setReplyContent(fakeData.data.reply);
       setIsOpen(true);
-      
 
       const textarea = inputRef.current;
       console.log('textarea: ', textarea);
@@ -346,7 +393,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       console.log('setReplyContent:');
       setReplyContent(fakeData.data.reply);
       setIsOpen(true);
-      
 
       const textarea = inputRef.current;
       console.log('textarea: ', textarea);
@@ -359,9 +405,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       textarea.focus();
     }
   };
-  
-  
-
 
   const handleInputBlur = () => {
     const textarea = inputRef.current;
@@ -373,14 +416,34 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
     textarea.setSelectionRange(selectionStartState, selectionEndState);
     textarea.focus();
-  }
+  };
 
-  const handleReplaceContent = newContent => {
-    setInputValue(newContent);
-    // If you want to update the selection range, you can do it here.
-    // For example, if you want to place the cursor at the end of the new content:
-    setSelectionStartState(newContent.length);
-    setSelectionEndState(newContent.length);
+  const [isAiWrite, setIsAiWrite] = useState(false);
+  const [aiContent, setAiContent] = useState();
+
+  const handleApplyAiWriter = newContent => {
+    const regex = /<mark[^>]*>([\s\S]*?)<\/mark>/gm;
+    const markedText = `<mark id="ghost_highlight_mark" style="background-color: rgba(77, 112, 235, 0.15);">${newContent}</mark>`;
+
+    setAiContent(aiContent => aiContent.replace(regex, markedText));
+  };
+  const handleApplyAiContent = () => {
+    const regex = /<mark[^>]*>([\s\S]*?)<\/mark>/gm;
+    const cleanedContent = aiContent.replace(regex, '$1');
+    console.log('Cleaned Content: ', cleanedContent);
+
+    setInputValue(cleanedContent);
+    setAiContent();
+    setIsAiWrite(false);
+    setIsAi(false);
+    // setAiContent(aiContent => aiContent.replace(regex, markedText));
+  };
+  const handleCloseAiWriter = () => {
+    // setInputValue(aiContent => aiContent.replace(regex, newContent));
+    setAiContent();
+    setIsAiWrite(false);
+    setIsAi(false);
+    // setAiContent(aiContent => aiContent.replace(regex, markedText));
   };
 
   return (
@@ -515,6 +578,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           }
         >
           <button
+            disabled={isAiWrite}
             type="button"
             onClick={handleAiWriter}
             className="button"
@@ -522,59 +586,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           >
             {AiWriterStatus}
           </button>
-          <Popover
-            isOpen={isOpen}
-            initialFocusRef={initialFocusRef}
-            placement="top"
-            closeOnBlur={false}
-          >
-            <PopoverTrigger>
-              <div></div>
-            </PopoverTrigger>
-            <PopoverContent zIndex={99} style={{}}>
-              <PopoverHeader pt={4} fontWeight="bold" border="0">
-                Manage Your Channels
-              </PopoverHeader>
-              <PopoverArrow bg="blue.800" />
-              <PopoverCloseButton />
-              <PopoverBody>
-                <Code className="bg-green-100 mt-4">
-                  <Code className="bg-green-100 mt-4 flex flex-col" style={{}}>
-                    Giả sử khi fetch xong data từ server:
-                    {replyContent.map((content, index) => (
-                      <React.Fragment key={index}>
-                        <div>{content}</div>
-                        <button
-                          type="button"
-                          className="button"
-                          style={{ background: 'blue' }}
-                          onClick={() => handleReplaceWithLorem(content)}
-                        >
-                          Replace
-                        </button>
-                      </React.Fragment>
-                    ))}
-                  </Code>
-                </Code>
-              </PopoverBody>
-              <PopoverFooter
-                border="0"
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                pb={4}
-              >
-                <Box fontSize="sm">Step 2 of 4</Box>
-                <ButtonGroup size="sm">
-                  <Button onClick={handleClose} colorScheme="green">
-                    Close
-                  </Button>
-                </ButtonGroup>
-              </PopoverFooter>
-            </PopoverContent>
-          </Popover>
 
-          <textarea
+          {/* <textarea
             className="ghost inputEl undefined src-components-Form-Field--Es8ORQL2ofo= "
             id="experience-section-form-4"
             aria-label="**What did you do** at the company?"
@@ -593,7 +606,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             onChange={handleInputChange}
             onSelect={handleSelectionChange} // Triggered when text is selected
             value={inputValue}
-          />
+          /> */}
 
           {/* <textarea
             className="inputEl undefined src-components-Form-Field--Es8ORQL2ofo= "
@@ -616,16 +629,94 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             onSelect={handleSelectionChange} // Triggered when text is selected
             value={inputValue}
           /> */}
+          <div style={{ position: 'relative', display: 'block', zIndex: 0, textAlign: 'left' }}>
+            <div className="summary-section src-components-GeneratorForm--yE-M0KIYLqM= src-components-GeneratorForm--fATEgyCKtc4=   src-components-Form-Textarea--33tYOpt2RMw= ">
+              <label
+                className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+                htmlFor="summary-section-form-0"
+              >
+                {aiContent && (
+                  <div
+                    className="wrapper"
+                    id="experience-section-form-4-ghost"
+                    style={{ height: 'auto', zIndex: 99, width: '100%' }}
+                  >
+                    <span className="" dangerouslySetInnerHTML={{ __html: aiContent }} />
+                    <div className="mt-4">
+                      AI Content:
+                      <div className="flex flex-col">
+                        {replyContent.map((reply, index) => {
+                          return (
+                            <div className="mt-2" style={{ borderRadius: '10px' }}>
+                              {reply}{' '}
+                              <button type="button" onClick={e => handleApplyAiWriter(reply)}>
+                                <FontAwesomeIcon icon={faCopy} />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <span className="src-components-AutocompleteGpt3--g6n8ctA75GA=" />
+                    <div className="flex" style={{ width: '100px' }}>
+                      <button
+                        onClick={handleApplyAiContent}
+                        className="button bg-blue-500 mt-8"
+                        type="button"
+                      >
+                        Apply AI Content
+                      </button>
+                      <button
+                        onClick={handleCloseAiWriter}
+                        className="button bg-red-500 mt-8 ml-8"
+                        type="button"
+                      >
+                        Close AI Writer
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </label>
+              <div className="relative">
+                <textarea
+                  className="inputEl undefined src-components-Form-Field--Es8ORQL2ofo= "
+                  id="summary-section-form-0"
+                  aria-label="Write a professional **summary**"
+                  disabled={isAiWrite}
+                  placeholder={`${
+                    isAiWrite
+                      ? ''
+                      : 'Experienced global early-stage executive with economics and mathematics degree from the University of Wisconsin. Passion for building inspiring companies people love through industry-leading design, development, branding, and making big bets.'
+                  } `}
+                  name="description"
+                  style={{
+                    display: isAiWrite ? 'none' : 'block',
+                    background: isAiWrite ? 'transparent' : 'white',
+                    height: 120,
+                    fontWeight: 400,
+                    overflow: 'hidden',
+                    resize: 'none',
+                  }}
+                  ref={inputRef}
+                  onKeyPress={handleKeyPress}
+                  onSelect={handleSelectionChange} // Triggered when text is selected
+                  onChange={handleInputChange}
+                  value={inputValue}
+                />
+              </div>
+            </div>
+          </div>
 
           <Input type="hidden" value={inputValue} />
         </Form.Item>
 
         <button
+          disable={isAiWrite}
           href=""
           data-size="large"
           data-theme="default"
           data-busy="false"
-          className="experience-section button"
+          className="experience-section button "
           id="experience-section-save-to-list"
           type="submit"
         >
@@ -633,13 +724,14 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         </button>
       </Form>
 
-      <div className="relative">
+      {/* <div className="relative">
         <Card className="flex flex-col mt-2" style={{ textAlign: 'left' }}>
           Dev log:
+          <Code>MarkText: {markText}</Code>
           <Code className="bg-blue-100">Selected: {selectedTextState}</Code>
           <Code className="bg-red-100 mt-2">{message}</Code>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 };

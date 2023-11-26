@@ -54,31 +54,22 @@ export default function FinishUp({ params }) {
           }
           content={
             <div className="flex mt-8">
-              <div className="w-2/3 mr-2 flex flex-col">
+              <div className="mr-2 flex flex-col" style={{}}>
                 <div style={{ marginBottom: '12px' }} className="adjustment">
                   <div
                     style={{
-                      background: 'white',
-                      width: '100%',
+                      width: '200px',
                       height: '120px',
                     }}
                   />
                 </div>
 
-                <div className="">
-                  {/* {tooltip && (
-                    <div className='bg-red-500'>
-                      <p>X: {tooltip.x}</p>
-                      <p>Y: {tooltip.y}</p>
-                      <p>Text: {tooltip.text}</p>
-                    </div>
-                  )}
-                  {currentText && <p>{currentText}</p>} */}
-                  <CoverLetterPreview />
+                <div className="z-10">
+                  <CoverLetterPreview coverLetterId={params.id} />
                 </div>
               </div>
 
-              <div className="w-1/3 flex flex-col items-start">
+              <div className="flex flex-col items-start">
                 <div className="h-1/3">
                   <p>
                     {/* <Image

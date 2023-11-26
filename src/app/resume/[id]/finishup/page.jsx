@@ -24,6 +24,12 @@ import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloade
 import Ats from './Ats';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
+import AiFeedback from './AiFeedback';
+import Involvement from '../involvement/page';
+import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
+import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
+import Certification from '../certification/page';
+import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 
 const mockData = {
   data: {
@@ -205,6 +211,9 @@ export default function FinishUp({ params }) {
 
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
+    let newFinishUpData = { ...finishUpData };
+    newFinishUpData.cvStyle = toolbarState;
+    setFinishUpData(newFinishUpData);
   }, [toolbarState]);
 
   // const { resumeInfo } = finishUpData;
@@ -315,8 +324,7 @@ export default function FinishUp({ params }) {
         console.log('New finishup data after updatedExperiences:', newFinishUpData);
     }
   };
-  const handleSummaryChange = (newData) => {
-
+  const handleSummaryChange = newData => {
     let newFinishUpData = { ...finishUpData };
     newFinishUpData.summary = newData;
 
@@ -381,18 +389,63 @@ export default function FinishUp({ params }) {
       canBeDisplayed: educations !== null,
     },
     {
+      id: 'involvements',
+      component: <InvolvementSection templateType={templateSelected} involvements={involvements} />,
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: involvements !== null,
+    },
+    {
+      id: 'projects',
+      component: <ProjectSection templateType={templateSelected} projects={projects} />,
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: projects != null,
+    },
+    {
+      id: 'certifications',
+      component: (
+        <CertificationSection templateType={templateSelected} certifications={certifications} />
+      ),
+      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDisplayed: certifications !== null,
+    },
+    {
       id: 'skills',
       component: (
         <SkillsSection
           templateType={templateSelected}
           skills={skills}
           onChangeOrder={handleSkillsOrderChange}
+          canBeDisplayed={skills !== null}
         />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: skills !== null,
     },
   ];
+
+  const filteredSections = sections.filter(section => {
+    if (section.id === 'educations') {
+      return educations && educations.length > 0;
+    } else if (section.id === 'experiences') {
+      return experiences && experiences.length > 0;
+    } else if (section.id === 'projects') {
+      return projects && projects.length > 0;
+    } else if (section.id === 'involvements') {
+      return involvements && involvements.length > 0;
+    } else if (section.id === 'certifications') {
+      return certifications && certifications.length > 0;
+    } else if (section.id === 'skills') {
+      return skills && skills.length > 0;
+    } else if (section.id === 'summary') {
+      return summary && summary !== null && summary.trim() !== ''; // Include if 'summary' is not null and not an empty string
+    }
+    return true; // Include other sections by default
+  });
+
+  // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
+
+  // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
+  console.log('filteredSections: ', filteredSections);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -424,8 +477,9 @@ export default function FinishUp({ params }) {
   const handleSave = async () => {
     try {
       const cvId123 = params.id;
+      
       setShowFinishupCV(false);
-
+      finishUpData.templateType = templateSelected;
       await saveCv(cvId123, finishUpData); // Call the syncUp function
       console.log('Save completed.');
 
@@ -607,7 +661,7 @@ export default function FinishUp({ params }) {
                     sectionsOrder={sectionsOrder}
                     onSectionsOrderChange={handleSectionsOrderChange}
                   >
-                    {sections.map(section => section.canBeDisplayed && section.component)}
+                    {filteredSections.map(section => section.canBeDisplayed && section.component)}
                   </CVLayout>
                 </div>
               )}
@@ -642,6 +696,8 @@ export default function FinishUp({ params }) {
                       </button>
                     </div>
                   </div>
+
+                  <AiFeedback cvId={params.id} />
                   <Ats cvId={params.id} />
 
                   <button

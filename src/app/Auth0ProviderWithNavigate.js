@@ -22,10 +22,12 @@ const Auth0ProviderWithNavigate = ({ children }) => {
 
   // console.log("hello: ", test, test1)
   let redirectUri = 'https://cvbuilder.monoinfinity.net/callback';
+  let loginUrl = 'https://cvbuilder.monoinfinity.net/login';
 
   if (typeof window !== 'undefined') {
     // Only access window object in client-side code
     redirectUri = `${window.location.origin}/callback`;
+    loginUrl = `${window.location.origin}/login`;
   }
 
   const domain = 'dev-gzgdh7hw4udvv70u.us.auth0.com';

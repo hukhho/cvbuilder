@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 const categories = [
-  { name: 'REVIEW OPTIONS', link: 'review/new' },
-  { name: 'MY REVIEWS', link: 'review/list' },
+  { name: 'REVIEW OPTIONS', link: 'review/list/expert' },
+  { name: 'MY REVIEWS', link: 'review/list/user' },
 ];
 
 const UserHeaderReview = ({ initialEnabledCategories }) => {

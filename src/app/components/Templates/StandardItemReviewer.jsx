@@ -13,6 +13,8 @@ import { Button, Divider, Typography } from 'antd';
 
 const StandardItemReviewers = props => {
   const {
+    dataId,
+    type,
     onComment,
     role,
     orgName,
@@ -23,20 +25,19 @@ const StandardItemReviewers = props => {
     templateType,
     titleProps,
   } = props;
+  console.log('StandardItemReviewers:onComment:key', dataId);
 
   console.log('StandardItemReviewers:onComment:', onComment);
 
   const dateRangeFormat = () => {
     const dateRange = startTime || null;
-    // if (dateRange === null) return null;
-    // if (endTime) {
-    //   dateRange = dateRange.concat(` - ${endTime}`);
-    // } else {
-    //   dateRange = dateRange.concat(' - Present');
-    // }
-
     return dateRange;
   };
+
+  function generateRandomId() {
+    return `id-${Math.random().toString(36).substr(2, 9)}`;
+  }
+  const randomId = generateRandomId();
 
   const renderTitle = () => {
     if (titleProps) {
@@ -100,7 +101,6 @@ const StandardItemReviewers = props => {
                           <span
                             className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
                             id="smpl125032021-role"
-                            tabIndex={0}
                             contentEditable="true"
                           >
                             {role}
@@ -117,7 +117,6 @@ const StandardItemReviewers = props => {
                           <span
                             className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                             id="smpl125032021-company"
-                            tabIndex={0}
                             style={{
                               display: 'inline',
                               verticalAlign: 'initial',
@@ -135,7 +134,6 @@ const StandardItemReviewers = props => {
                           <span
                             className="editableContent cursor-text leading-snug ml-0 designStudio "
                             id="smpl125032021-duration"
-                            tabIndex={0}
                           >
                             {dateRangeFormat()}
                           </span>
@@ -147,7 +145,6 @@ const StandardItemReviewers = props => {
                           <span
                             className="editableContent cursor-text leading-snug ml-2 designStudio "
                             id="smpl125032021-location"
-                            tabIndex={0}
                           >
                             {location}
                           </span>
@@ -164,20 +161,12 @@ const StandardItemReviewers = props => {
                       fontWeight: 100,
                     }}
                   >
-                    {/* <div className="relative">
-                      <p className="editableContent ghost-hightlight w-full designStudio ">
-                         {description}
-                      </p>
-                    </div> */}
                     <p
-                      className="editableContent cursor-text  designStudio "
-                      id="smpl125032021-description"
-                      tabIndex={0}
-                      onMouseUp={event => onComment(event, 'experience')}
-                    >
-                      {description}
-                      {/* <Button color='red' onClick={handleMouseUp}>ddd</Button> */}
-                    </p>
+                      className="editableContent cursor-text designStudio"
+                      id={randomId}
+                      onMouseUp={event => onComment(event, type, randomId, dataId)}
+                      dangerouslySetInnerHTML={{ __html: description }}
+                    />
                   </div>
                 </li>
               </ul>

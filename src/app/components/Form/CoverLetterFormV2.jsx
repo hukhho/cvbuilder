@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Input, Row, Select, Slider } from 'antd';
+import { Button, Col, DatePicker, Form, Input, notification, Row, Select, Slider } from 'antd';
 
 import DataService from '@/app/utils/dataService';
 import { createCoverLetter } from './coverLetterService';
@@ -12,10 +12,20 @@ import './customtext.css';
 import './coverletter.css';
 import updateCoverLetter from './updateCoverLetterService';
 import { getResumes } from '@/app/utils/indexService';
+import { useRouter } from 'next/navigation';
 
 const { TextArea } = Input;
 
 const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
+  const router = useRouter();
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Thong bao',
+      description: message,
+      placement,
+    });
+  };
   const [form] = Form.useForm();
   const [listResumes, setListResumes] = useState();
   const fetchResumes = async () => {
@@ -32,25 +42,20 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
   useEffect(() => {
     fetchResumes();
   }, []);
-  // useEffect(() => {
-  //   if (data) {
-  //     const mockData = {
-  //       name: data.name,
-  //     };
-  //     console.log('Form fields set with data:', data);
-  //     // Use mockData if no data is provided
-  //     const initialData = mockData;
-  //     console.log('initialData: ', initialData);
-  //     // form.setFieldsValue(initialData);
-  //   }
-  // }, [data, form]);
 
   const [content, setContent] = useState();
   const [loading, setLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isShowContent, setIsShowContent] = useState(false);
 
-  const [slider, setSlider] = useState(0.1);
+  const [slider, setSlider] = useState(0.2);
+
+  const [date, setDate] = useState();
+  const onChange = (date, dateString) => {
+    console.log(dateString);
+    setDate(dateString);
+  };
+  const [cvId, setCvId] = useState();
 
   const handleSubmit = async values => {
     try {
@@ -58,7 +63,9 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
       console.log('handleSubmit, values: ', values);
 
       setLoading(true);
-      const contentResponse = await createCoverLetter(coverLetterId, values);
+      openNotification('bottomRight', 'Submiting...');
+
+      const contentResponse = await createCoverLetter(cvId, coverLetterId, values);
       console.log('content state: ', content);
       console.log('content.data.reply: ', contentResponse.reply);
 
@@ -66,12 +73,16 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
       setContent(contentResponse.reply);
       if (contentResponse.reply) {
         setLoading(false);
-        setIsShowContent(true);
+        router.push(`/cover-letter/${coverLetterId}/content`);
+        // setIsShowContent(true);
       }
       console.log('content state: ', content);
-      onCreated();
+
+      // onCreated();
     } catch (error) {
       console.log('Submit. Error:', error);
+      openNotification('bottomRight', `Submit. Error: ${error}`);
+
       setLoading(false);
     }
   };
@@ -93,6 +104,8 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
       console.log('content state: ', content);
       console.log('content.data.reply: ', contentResponse.reply);
     } catch (error) {
+      openNotification('bottomRight', `Submit. Error: ${error}`);
+
       console.log('Submit. Error:', error);
     }
   };
@@ -117,6 +130,8 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
 
   return (
     <div className="w-full">
+      {contextHolder}
+
       {!isShowContent && (
         <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
           {/* <Form.Item
@@ -133,7 +148,6 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
           </Form.Item> */}
 
           <Form.Item
-            name="cvId"
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
@@ -150,6 +164,7 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
               filterOption={(input, option) =>
                 option?.children?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
               }
+              onChange={value => setCvId(value)}
             >
               {listResumes?.map(resume => (
                 <Select.Option key={resume.id} value={resume.id}>
@@ -202,26 +217,27 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                  <strong>Dear</strong>
+                  <strong>DEAR</strong>
                 </span>
               </label>
             }
           >
-            <Input style={stylesInput} placeholder="Google" />
-          </Form.Item>
+            <Input className="inputEl" placeholder="Software Engineer" />
+          </Form.Item> */}
 
-          <Form.Item
-            name="name"
+          {/* <Form.Item
+            name="date"
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
-                  <strong>Name</strong>
+                  <strong>DATE</strong>
                 </span>
               </label>
             }
           >
-            <Input style={stylesInput} placeholder="John Doe" />
+            <DatePicker onChange={onChange} />
           </Form.Item> */}
+
           <Form.Item
             name="description"
             label={

@@ -24,12 +24,6 @@ const Contact = ({ params }) => {
   const cvId = params.id;
   const fetchData = async () => {
     try {
-      // const resume = await getResume(cvId);
-      // if (!resume) {
-      //   return notFound();
-      // } else {
-
-      // }
       const data = await getContact(cvId);
       console.log('fetchData ', data);
       setContactData(data); // Updated to set "contactData"

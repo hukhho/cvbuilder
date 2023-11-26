@@ -15,6 +15,7 @@ import { getResumes } from '@/app/utils/indexService';
 
 import { UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
+import { getReviewRequestsByCandiate } from '../../new/reviewService';
 
 const { Title } = Typography;
 const columns = [
@@ -25,7 +26,7 @@ const columns = [
   },
   {
     title: 'Candidate',
-    dataIndex: 'candidate',
+    dataIndex: 'name',
     render: text => (
       <div>
         {' '}
@@ -53,18 +54,21 @@ const columns = [
       if (text === 'Waiting') {
         return <Badge status="warning" text={text} />;
       }
+      if (text === 'Processing') {
+        return <Badge status="warning" text={text} />;
+      }
       if (text === 'Overdue') {
         return <Badge status="error" text={text} />;
       }
       if (text === 'Done') {
         return <Badge status="success" text={text} />;
       }
-      return <Badge status="done" text={text} />;
+      return <Badge status="warning" text={text} />;
     },
   },
   {
     title: 'Receive day',
-    dataIndex: 'receiveDay',
+    dataIndex: 'receivedDate',
     sorter: {
       compare: (a, b) => a.revicedDay - b.revicedDay,
       multiple: 2,
@@ -79,116 +83,76 @@ const columns = [
     },
   },
 ];
-const data = [];
 const statuses = ['Waiting', 'Overdue', 'Done'];
 const dateRandome = ['3 days ago', 'Next Tuesday'];
 
-for (let i = 0; i < 100; i++) {
-  const price = Math.floor(Math.random() * 10) + 1;
-  const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
-  const status = statuses[Math.floor(Math.random() * statuses.length)];
+// for (let i = 0; i < 100; i++) {
+//   const price = Math.floor(Math.random() * 10) + 1;
+//   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
+//   const status = statuses[Math.floor(Math.random() * statuses.length)];
 
-  data.push({
-    key: i,
-    resumeName: 'Pham Viet Thuan Thien',
-    candidate: '<User Name>',
-    note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-    price,
-    status,
-    receiveDay: due,
-    deadline: due,
-  });
-}
-
-// const data = [
-//   {
-//     key: '1',
+//   data.push({
+//     key: i,
 //     resumeName: 'Pham Viet Thuan Thien',
-//     candidate: '<User Name>',
+//     name: '<User Name>',
 //     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price: 8,
-//     status: 'Waiting',
-//     receiveDay: 'Next Tuesday',
-//     deadline: 'Next Tuesday',
-//   },
-//   {
-//     key: '2',
-//     resumeName: 'Pham Viet Thuan Thien',
-//     candidate: '<User Name>',
-//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price: 8,
-//     status: 'Waiting',
-//     receiveDay: 'Next Tuesday',
-//     deadline: 'Next Tuesday',
-//   },
-//   {
-//     key: '3',
-//     resumeName: 'Pham Viet Thuan Thien',
-//     candidate: '<User Name>',
-//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price: 8,
-//     status: 'Waiting',
-//     receiveDay: 'Next Tuesday',
-//     deadline: 'Next Tuesday',
-//   },
-//   {
-//     key: '4',
-//     resumeName: 'Pham Viet Thuan Thien',
-//     candidate: '<User Name>',
-//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price: 8,
-//     status: 'Done',
-//     receiveDay: 'Next Tuesday',
-//     deadline: 'Next Tuesday',
-//   },
-//   {
-//     key: '5',
-//     resumeName: 'Pham Viet Thuan Thien',
-//     candidate: '<User Name>',
-//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price: 8,
-//     status: 'Overdue',
-//     receiveDay: 'Next Tuesday',
-//     deadline: 'Next Tuesday',
-//   },
-// ];
+//     price,
+//     status,
+//     receiveDate: due,
+//     deadline: due,
+//   });
+// }
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'REVIEW OPTIONS': true,
+    'MY REVIEWS': true,
   });
+  const initialData = [];
 
+  const [data, setData] = useState(initialData);
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
+  const fetchData = async () => {
+    try {
+      console.log("fetchData getReviewRequestsByCandiate")
+      const fetchedDataFromAPI = await getReviewRequestsByCandiate();
+      setData(fetchedDataFromAPI);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    console.log("useEffect")
+
+    fetchData();
+  }, []);
 
   return (
-    <body className="pro-ui">
-      <main>
-        <ConfigProvider>
-          <UserLayout
-            selected="3"
-            // <UserHeaderReview initialEnabledCategories={enabledCategories} />
-            userHeader={<></>}
-            content={
-              <div className="container">
-                <div className="!p-0 mb-5 mt-0 card">
-                  <div style={{ textAlign: 'left' }}>
-                    <Title level={5}>CV Review Table</Title>
-                  </div>
-                  <div>
-                    <Input className="" placeholder="Search the resume" />;
-                  </div>
-                  <div>
-                    <Table columns={columns} dataSource={data} onChange={onChange} />
-                  </div>
-                </div>
+    <ConfigProvider>
+      <UserLayout
+        selected="3"
+        userHeader={
+          <>
+            <UserHeaderReview initialEnabledCategories={enabledCategories} />
+          </>
+        }
+        content={
+          <div className="container mt-16" style={{ width: '80%' }}>
+            <div style={{ textAlign: 'left' }}>
+              <Title level={5}>CV Review Table</Title>
+            </div>
+            <div>
+              <Input className="" placeholder="Search the resume" />;
+            </div>
+            <div className="!p-0 mb-5 card">
+              <div className="">
+                <Table columns={columns} dataSource={data} onChange={onChange} />
               </div>
-            }
-          />
-        </ConfigProvider>
-      </main>
-    </body>
+            </div>
+          </div>
+        }
+      />
+    </ConfigProvider>
   );
 };
 

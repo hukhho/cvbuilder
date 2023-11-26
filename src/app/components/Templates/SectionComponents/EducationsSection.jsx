@@ -28,11 +28,12 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
     <>
       {educations.map(edu => {
         const { endYear, minor, description, degree, collegeName, location, gpa } = edu;
+
         return (
           <StandardItem
             key={edu.id}
             role={degree}
-            firstItem={`Minor in ${minor}`}
+            firstItem={minor ? `Minor in ${minor}` : null}
             secondItem={collegeName}
             threeItem={location}
             fourItem={endYear}
@@ -106,7 +107,7 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
         >
           Education
         </span>
-        <hr class="border-0 border-b-[1px] border-black mt-[1px]" />
+        <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
       </div>
       {/* <Divider className="divider-section" /> */}
       <div>

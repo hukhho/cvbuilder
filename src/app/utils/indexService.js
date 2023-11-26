@@ -30,28 +30,39 @@ const getResume = async cvId => {
   }
 };
 
-const getCoverLetters = async () => {
+const deleteResume = async cvId => {
   try {
-    // const response = await axiosInstance.get(`/user/${userId}/coverletters`);
-
-    const mockCoverLetter = [
-      {
-        id: 1,
-        title: 'Cover Letter 1',
-        description: 'This is a mock cover letter',
-      },
-      {
-        id: 2,
-        title: 'Cover Letter 2',
-        description: 'This is a mock cover letter',
-      },
-    ];
-
-    // return response.data;
-    return mockCoverLetter;
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.delete(`/user/${userId}/cv/${cvId}`);
+    return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export { getResumes, getResume, getCoverLetters };
+const getCoverLetters = async () => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.get(`/chat-gpt/user/${userId}/cv/cover-letters`);
+
+    // const mockCoverLetter = [
+    //   {
+    //     id: 1,
+    //     title: 'Cover Letter 1',
+    //     description: 'This is a mock cover letter',
+    //   },
+    //   {
+    //     id: 2,
+    //     title: 'Cover Letter 2',
+    //     description: 'This is a mock cover letter',
+    //   },
+    // ];
+
+    return response.data;
+    // return mockCoverLetter;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { getResumes, getResume, getCoverLetters, deleteResume };

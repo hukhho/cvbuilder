@@ -4,17 +4,23 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Divider, Input, Modal } from 'antd';
+import { Button, Card, ConfigProvider, Divider, Input, Modal, Result } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import CVLayout from '@/app/components/Templates/CVLayout';
-import InformationSection from '@/app/components/Templates/SectionComponentsReviewers/InformationSection';
-import SummarySection from '@/app/components/Templates/SectionComponentsReviewers/SummarySection';
-import ExperiencesSection from '@/app/components/Templates/SectionComponentsReviewers/ExperiencesSection';
-import EducationsSection from '@/app/components/Templates/SectionComponentsReviewers/EducationsSection';
-import SkillsSection from '@/app/components/Templates/SectionComponentsReviewers/SkillsSection';
+import InformationSection from '@/app/components/Templates/SectionComponentsV2/InformationSection';
+// import SummarySection from '@/app/components/Templates/SectionComponentsV2/SummarySection';
+import ExperiencesSection from '@/app/components/Templates/SectionComponentsV2/ExperiencesSection';
+// import EducationsSection from '@/app/components/Templates/SectionComponentsV2/EducationsSection';
+// import SkillsSection from '@/app/components/Templates/SectionComponentsV2/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import { getAudit, getFinishUp, syncUp } from './finishUpService';
+import {
+  getAudit,
+  getFinishUp,
+  getReviewResponse,
+  syncUp,
+  updateReviewResponse,
+} from './finishUpService';
 import ScoreFinishUp from './Score';
 import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
@@ -23,6 +29,7 @@ import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloade
 import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';
 import { Box, VStack } from '@chakra-ui/react';
 import { CommentOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
 const mockData = {
   data: {
@@ -188,16 +195,13 @@ const mockData = {
 export default function FinishUp({ params }) {
   const [finishUpData, setFinishUpData] = useState(null);
   const [auditData, setAuditData] = useState(null);
+  const [fetchedData, setFetchedData] = useState(null);
 
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState({
     'FINISH UP': true,
   });
-
-  // useEffect(() => {
-  //   setShowFinishupCV(false);
-  // }, []);
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
@@ -223,30 +227,13 @@ export default function FinishUp({ params }) {
   const [textareaState, setTextareaState] = useState('');
   const [isLnPayPending, setIsLnPayPending] = useState(false);
   const [isShowComment, setIsShowComment] = useState(false);
-
-  // function handleMouseUp(event, key) {
-  //   if (key === null || key === undefined) {
-  //     return
-  //   }
-  //   const selection = window.getSelection();
-  //   console.log("selection: ", selection);
-  //   console.log('FinishUp:handleMouseUp::key: ', key, " event: ", event);
-  //   if (selection && selection.toString()) {
-  // const range = selection.getRangeAt(0);
-  // const rect = range.getBoundingClientRect();
-
-  // const x = rect.left + window.scrollX + rect.width / 2;
-  // const y = rect.top + window.scrollY;
-
-  // setCurrentText(selection.toString());
-  // setTooltip({ x, y, text: selection.toString(), key });
-  // setIsShowComment(true);
-  //     console.log("currentText: ", currentText);
-  //   }
-  // }
   const [selectionState, setSelectionState] = useState();
   const [selectedTextState, setSelectedTextState] = useState();
   const [selectionRange, setSelectionRange] = useState(null);
+
+  const [currentId, setCurrentId] = useState(null);
+  const [currentDataType, setCurrentDataType] = useState(null);
+  const [currentDataId, setCurrentDataId] = useState(null);
 
   function handleInputBlur(range) {
     if (range) {
@@ -259,33 +246,98 @@ export default function FinishUp({ params }) {
   function onSubmitComment() {
     handleSubmitComment(selectionState, selectedTextState);
   }
+
   function handleSubmitComment(selection, selectedText) {
-    // Create a span element
-    // const span = document.createElement("span");
-    // span.textContent = selectedText;
     const comment = document.createElement('comment');
     comment.textContent = selectedText;
-    comment.setAttribute('id', 'someid');
-    comment.setAttribute('class', 'select-none');
-    comment.setAttribute('content', 'This is a comment');
-    // Get the range of the selection
+    const commentId = 'comment-' + Date.now(); // Generate a unique comment ID
+    comment.setAttribute('id', commentId);
+    comment.setAttribute('class', 'select-none comment-marker');
+    comment.setAttribute('content', inputValue);
+    const deleteButton = document.createElement('span');
+    deleteButton.textContent = 'x';
+    deleteButton.setAttribute('class', 'delete-button');
+    deleteButton.addEventListener('click', () => handleDeleteComment(commentId));
+    comment.appendChild(deleteButton);
     const range = selection.getRangeAt(0);
-    // Delete the contents of the range and insert the span
     range.deleteContents();
     range.insertNode(comment);
+    setInputValue('');
+    setCurrentText(null);
+    setTooltip(null);
+    setIsShowComment(false);
+
+    const descriptionAfter = document.getElementById(currentId);
+
+    if (descriptionAfter) {
+      const content = descriptionAfter.innerHTML;
+      console.log(
+        'currentDataType: ',
+        currentDataType,
+        'currentDataId: ',
+        currentDataId,
+        'content: ',
+        content,
+      );
+      if (currentDataType === 'experience') {
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === currentDataId) {
+            return {
+              ...experience,
+              description: content,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+        setFinishUpData(newFinishUpData);
+      }
+    } else {
+      console.log('Element with id', currentId, 'not found');
+    }
   }
-  function handleMouseUp(event, key) {
+
+  // Function to handle comment deletion
+  function handleDeleteComment(commentId) {
+    const comment = document.getElementById(commentId);
+
+    if (comment) {
+      const content = comment.innerHTML; // Get the HTML content including child elements
+      const commentContent = content.replace(/<span class="delete-button">x<\/span>/, '');
+
+      const parent = comment.parentNode;
+
+      // Create a new text node from the HTML content
+      const contentNode = document.createTextNode(commentContent);
+
+      // Insert the content node after the comment
+      parent.insertBefore(contentNode, comment.nextSibling);
+
+      // Remove the comment
+      parent.removeChild(comment);
+    }
+  }
+
+  function handleMouseUp(event, key, id, dataId) {
     if (key === null || key === undefined) {
       return;
     }
+
+    setCurrentId(id);
+    setCurrentDataType(key);
+    setCurrentDataId(dataId);
+
     const selection = window.getSelection();
     setSelectionRange(selection.getRangeAt(0));
 
     setSelectionState(selection);
-    const selectedText = selection.toString().trim();
+    const selectedText = selection.toString();
     setSelectedTextState(selectedText);
     console.log('selection: ', selection);
-    console.log('FinishUp:handleMouseUp::key: ', key, ' event: ', event);
+    console.log('FinishUp:handleMouseUp::key: ', key, 'id: ', id, 'dataId: ', dataId);
     if (selection && selection.toString()) {
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
@@ -299,10 +351,6 @@ export default function FinishUp({ params }) {
       console.log('currentText: ', currentText);
     }
     console.log('selectedText: ', selectedText);
-
-    // if (selectedText) {
-    //   handleSubmitComment(selection, selectedText);
-    // }
   }
 
   function closeComment() {
@@ -311,20 +359,6 @@ export default function FinishUp({ params }) {
     setIsShowComment(false);
   }
 
-  // function handleMouseDown() {
-  //   const selection = window.getSelection();
-  //   selectedText = selection.toString();
-  // }
-
-  // function handleMouseDown(event) {
-  //   const isTooltipClicked = event.target.closest('.bg-modal');
-  //   const isInputClicked = event.target.closest('input');
-  //   console.log("isTooltipClicked", isTooltipClicked);
-  //   if (!isTooltipClicked && !isInputClicked) {
-  //     setCurrentText(null);
-  //     setTooltip(null);
-  //   }
-  // }
   useEffect(() => {
     if (isLnPayPending) {
       return;
@@ -375,17 +409,18 @@ export default function FinishUp({ params }) {
           canBeDrag={false}
           templateType={templateSelected}
           userInfo={finishUpData}
+          layoutStyles={toolbarState}
         />
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
-    {
-      id: 'summary',
-      component: <SummarySection templateType={templateSelected} summary={summary} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: true,
-    },
+    // {
+    //   id: 'summary',
+    //   component: <SummarySection templateType={templateSelected} summary={summary} />,
+    //   canBeDrag: true, // Set to true if this section can be dragged
+    //   canBeDisplayed: true,
+    // },
     {
       id: 'experiences',
       component: (
@@ -393,44 +428,59 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           experiences={experiences}
           onComment={handleMouseUp}
-          // onComment={handleExperiencesCommentChange}
           onChangeOrder={sortedExperiences => {
             console.log('New order of experiences:', sortedExperiences);
-            // You can perform any necessary actions with the sorted experiences here.
           }}
         />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: experiences !== null,
     },
-    {
-      id: 'educations',
-      component: <EducationsSection templateType={templateSelected} educations={educations} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: educations !== null,
-    },
-    {
-      id: 'skills',
-      component: (
-        <SkillsSection
-          templateType={templateSelected}
-          skills={skills}
-          onChangeOrder={handleSkillsOrderChange}
-        />
-      ),
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: skills !== null,
-    },
+    // {
+    //   id: 'educations',
+    //   component: <EducationsSection templateType={templateSelected} educations={educations} />,
+    //   canBeDrag: true, // Set to true if this section can be dragged
+    //   canBeDisplayed: educations !== null,
+    // },
+    // {
+    //   id: 'skills',
+    //   component: (
+    //     <SkillsSection
+    //       templateType={templateSelected}
+    //       skills={skills}
+    //       onChangeOrder={handleSkillsOrderChange}
+    //     />
+    //   ),
+    //   canBeDrag: true, // Set to true if this section can be dragged
+    //   canBeDisplayed: skills !== null,
+    // },
   ];
+  const [overall, setOverall] = useState(fetchedData?.overall ? fetchedData.overall : '');
+
+  const handleChangeOverall = event => {
+    setOverall(event.target.value);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cvId = params.id;
-        const data = await getFinishUp(cvId);
+        setShowFinishupCV(false);
+
+        const requestId = params.id;
+        const fetchedDataFromAPI = await getReviewResponse(requestId);
+        setFetchedData(fetchedDataFromAPI);
+        setOverall(fetchedDataFromAPI.overall);
+        const data = fetchedDataFromAPI.feedbackDetail;
+        // const data = await getFinishUp(1)
+        // const fetchedData = await getReviewResponse(expertId, requestId);
 
         console.log('FinishUp data: ', data);
 
+        if (data === null) {
+          setFinishUpData(null);
+          return;
+        }
+        const cvId = data.cvId;
         setFinishUpData(data);
 
         setShowFinishupCV(true);
@@ -447,12 +497,28 @@ export default function FinishUp({ params }) {
       }
     };
     const selection = window.getSelection();
-    const selectedText = selection.toString().trim();
+    const selectedText = selection.toString();
 
     console.log('selectedText: ', selectedText);
 
     fetchData();
   }, []);
+
+  const handleSave = async () => {
+    try {
+      const sendObj = {
+        overall: overall,
+        cv: finishUpData,
+      };
+      console.log('Save: ', sendObj);
+
+      await updateReviewResponse(fetchedData.id, sendObj); // Call the syncUp <function styleName=""></function>
+      console.log('Save completed.');
+    } catch (error) {
+      console.error('Error during synchronization:', error);
+      // Handle errors or display an error message.
+    }
+  };
 
   const handleSyncUp = async () => {
     try {
@@ -486,9 +552,6 @@ export default function FinishUp({ params }) {
       // Handle errors or display an error message.
     }
   };
-  //   <div style={{ marginBottom: '12px' }}>
-  //   <Button onClick={handleSyncUp}>Sync Up</Button>
-  // </div>
 
   const [open, setOpen] = useState(false);
 
@@ -497,6 +560,7 @@ export default function FinishUp({ params }) {
   const handleChange = event => {
     setInputValue(event.target.value);
   };
+
   return (
     <main>
       <ConfigProvider>
@@ -507,11 +571,22 @@ export default function FinishUp({ params }) {
           }
           content={
             <div className="flex mt-8">
+              {finishUpData ? (
+                <></>
+              ) : (
+                <Result
+                  status="404"
+                  title="404"
+                  subTitle="Sorry, the page you visited does not exist."
+                  extra={
+                    <Link href="/">
+                      <Button type="primary">Back Home</Button>
+                    </Link>
+                  }
+                />
+              )}
               {showFinishupCV && (
                 <div className="mr-2 flex flex-col">
-                  {/* <Button type="primary" onClick={() => setOpen(true)}>
-                    Open Modal of 1000px width
-                  </Button> */}
                   <Box
                     top={tooltip?.y}
                     left={tooltip?.x}
@@ -557,14 +632,42 @@ export default function FinishUp({ params }) {
                       </VStack>
                     }
                   </Box>
-                  <CVLayoutReviewerView
-                    key={[templateSelected, toolbarState]}
-                    layoutStyles={toolbarState}
-                    sectionsOrder={sectionsOrder}
-                    onSectionsOrderChange={handleSectionsOrderChange}
-                  >
-                    {sections.map(section => section.canBeDisplayed && section.component)}
-                  </CVLayoutReviewerView>
+                  {finishUpData ? (
+                    <>
+                      <CVLayoutReviewerView
+                        key={[templateSelected, toolbarState]}
+                        layoutStyles={toolbarState}
+                        sectionsOrder={sectionsOrder}
+                        onSectionsOrderChange={handleSectionsOrderChange}
+                      >
+                        {sections.map(section => section.canBeDisplayed && section.component)}
+                      </CVLayoutReviewerView>
+                      <div>
+                        <textarea
+                          className="inputEl"
+                          value={overall}
+                          onChange={e => handleChangeOverall(e)}
+                        >
+                          Comment for Cv
+                        </textarea>
+                        <button
+                          style={{
+                            height: '30px',
+                            marginTop: '10px',
+                            marginLeft: '10px',
+                            marginBottom: '10px',
+                          }}
+                          className="button"
+                          type=""
+                          onClick={() => handleSave()}
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               )}
             </div>

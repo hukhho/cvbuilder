@@ -1,16 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ConfigProvider } from 'antd';
+import { Card, ConfigProvider, Empty } from 'antd';
 import UserLayout from '../components/Layout/UserLayout';
 import UserHeader from '../components/UserHeader';
 import CVCard from '../components/Card/CVCard';
 import Link from 'next/link'; // Import Link from Next.js for navigation
-import { getCoverLetters } from '../utils/indexService';
+import { getCoverLetters, getResumes } from '../utils/indexService';
+import CreateCoverLetter from '../components/Modal/CreateCoverLetter';
+import Meta from 'antd/es/card/Meta';
 
 const CoverLetterIndex = () => {
   const [resumes, setResumes] = useState([]);
-  const [mockCards, setMockCards] = useState([]);
   const [enabledCategories, setEnabledCategories] = useState({
     'COVER LETTERS': true,
   });
@@ -21,29 +22,35 @@ const CoverLetterIndex = () => {
   const fetchResumes = async () => {
     try {
       // Simulate fetching resumes (replace with your actual fetch logic)
-      const fetchedCoverLetter = await getCoverLetters(1);
-      // const similatorFetch =
-      // Add additional data to create mock cards
+      const fetchedCoverLetter = await getCoverLetters();
 
-      const mockCardsData = fetchedCoverLetter.map(cover => ({
-        cvId: cover.id,
-        imageUrl: defaultImageUrl,
-        title: `${cover.title}`, // Add cvId to the card title
-      }));
-
-      // Update state with fetched resumes and mock cards
       setResumes(fetchedCoverLetter);
-
-      setMockCards(mockCardsData);
+      console.log('fetchedCoverLetter: ', fetchedCoverLetter);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
     }
   };
 
+  const onCreated = () => {
+    fetchResumes();
+  };
+
+  const [listResumes, setListResumes] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const resumesList = await getResumes();
+      setListResumes(resumesList);
+    } catch (error) {
+      console.error('There was an error fetching the data', error);
+    }
+  };
+
   useEffect(() => {
     fetchResumes();
-  }, []);
 
+    fetchData();
+  }, []);
   return (
     <main>
       <ConfigProvider>
@@ -52,12 +59,15 @@ const CoverLetterIndex = () => {
           content={
             <div className="container mx-auto px-4 py-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <CreateCoverLetter onCreated={onCreated} listResumes={listResumes} />
+
                 {/* Map over the mockCardData and generate cards with links */}
-                {mockCards.map((card, index) => (
-                  <Link key={index} href={`/cover-letter/${card.cvId}/contact`}>
-                    <CVCard imageUrl={card.imageUrl} title={card.title} />
+                {resumes?.map((card, index) => (
+                  <Link key={index} href={`/cover-letter/${card.id}/contact`}>
+                    <CVCard imageUrl="" title={card.title} />
                   </Link>
                 ))}
+                {resumes?.length === 0 && <Empty />}
               </div>
             </div>
           }
