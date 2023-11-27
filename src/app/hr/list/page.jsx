@@ -9,7 +9,7 @@ import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { getResumes } from '@/app/utils/indexService';
 
@@ -18,6 +18,7 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import { getHrPostList } from '../hrServices';
 import HeaderHR from '@/app/components/HeaderHR';
+import Link from 'next/link';
 
 const { Title } = Typography;
 const columns = [
@@ -68,6 +69,13 @@ const columns = [
     //   multiple: 2,
     // },
   },
+  {
+    title: 'Action',
+    dataIndex: 'id',
+    render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
+
+  },
+ 
   
 ];
 // const statuses = ['Waiting', 'Overdue', 'Done'];

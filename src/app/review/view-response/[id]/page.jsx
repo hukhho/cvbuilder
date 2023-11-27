@@ -4,32 +4,41 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Divider, Modal } from 'antd';
+import { Button, Card, ConfigProvider, Divider, Input, Modal, Result, notification } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import CVLayout from '@/app/components/Templates/CVLayout';
-import InformationSection from '@/app/components/Templates/SectionComponents/InformationSection';
-import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
-import ExperiencesSection from '@/app/components/Templates/SectionComponents/ExperiencesSection';
-import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
-import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
+import InformationSection from '@/app/components/Templates/SectionComponentsV2/InformationSection';
+// import SummarySection from '@/app/components/Templates/SectionComponentsV2/SummarySection';
+import ExperiencesSection from '@/app/components/Templates/SectionComponentsV2/ExperiencesSection';
+// import EducationsSection from '@/app/components/Templates/SectionComponentsV2/EducationsSection';
+// import SkillsSection from '@/app/components/Templates/SectionComponentsV2/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import { getAudit, getFinishUp, getVersionsList, saveCv, syncUp } from './finishUpService';
+import {
+  getAudit,
+  getFinishUp,
+  getReviewResponse,
+  syncUp,
+  updateReviewResponse,
+  updateReviewResponsePublic,
+} from './finishUpService';
 import ScoreFinishUp from './Score';
 import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
 import './gen.css';
-import './version.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
-import Ats from './Ats';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
-import AiFeedback from './AiFeedback';
-import Involvement from '../involvement/page';
-import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
+import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';
+import { Box, VStack } from '@chakra-ui/react';
+import { CommentOutlined } from '@ant-design/icons';
+import Link from 'next/link';
+import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
+import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
+import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
-import Certification from '../certification/page';
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
+import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
+import UserHeaderExpert from '@/app/components/UserHeaderExpert';
+// import { getRequestList } from '../../reviewServices';
 
 const mockData = {
   data: {
@@ -47,7 +56,7 @@ const mockData = {
         lineHeight: 1.4,
         fontFamily: 'Merriweather',
         fontWeight: 'normal',
-        zoom: '100%',
+        zoom: '130%',
         paperSize: 'letter',
         hasDivider: true,
         hasIndent: false,
@@ -193,49 +202,36 @@ const mockData = {
 };
 
 export default function FinishUp({ params }) {
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Thong bao',
+      description: message,
+      placement,
+    });
+  };
+  const [isLoading, setIsLoading] = useState(true);
+
   const [finishUpData, setFinishUpData] = useState(null);
   const [auditData, setAuditData] = useState(null);
+  const [fetchedData, setFetchedData] = useState(null);
 
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState({
-    'FINISH UP': true,
+    'REVIEW REQUESTS': true,
   });
-
-  // useEffect(() => {
-  //   setShowFinishupCV(false);
-  // }, []);
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
 
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
-    let newFinishUpData = { ...finishUpData };
-    newFinishUpData.cvStyle = toolbarState;
-    setFinishUpData(newFinishUpData);
   }, [toolbarState]);
 
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
-
-  const filteredEducations = educations?.filter(education => education.isDisplay === true);
-  const filteredProjects = projects?.filter(project => project.isDisplay === true);
-  const filteredInvolvements = involvements?.filter(involvement => involvement.isDisplay === true);
-  const filteredCertifications = certifications?.filter(
-    certification => certification.isDisplay === true,
-  );
-  const filteredSkills = skills?.filter(skill => skill.isDisplay === true);
-  const filteredExperiences = experiences?.filter(experience => experience.isDisplay === true);
-
-  // Now you have filtered arrays for each category
-  console.log(filteredEducations);
-  console.log(filteredProjects);
-  console.log(filteredInvolvements);
-  console.log(filteredCertifications);
-  console.log(filteredSkills);
-  console.log(filteredExperiences);
 
   // to store order of some user's information
   const [experiencesOrder, setExperiencesOrder] = useState([]);
@@ -243,8 +239,165 @@ export default function FinishUp({ params }) {
   const [skillsOrder, setSkillsOrder] = useState([]);
   const [summary, setSummary] = useState();
 
+  const elementRef = useRef(null); // Reference to the HTML element to be converted
+
+  const [tooltip, setTooltip] = useState(null);
+  const [currentText, setCurrentText] = useState(null);
+  const [textareaState, setTextareaState] = useState('');
+  const [isLnPayPending, setIsLnPayPending] = useState(false);
+  const [isShowComment, setIsShowComment] = useState(false);
+  const [selectionState, setSelectionState] = useState();
+  const [selectedTextState, setSelectedTextState] = useState();
+  const [selectionRange, setSelectionRange] = useState(null);
+
+  const [currentId, setCurrentId] = useState(null);
+  const [currentDataType, setCurrentDataType] = useState(null);
+  const [currentDataId, setCurrentDataId] = useState(null);
+
+  function handleInputBlur(range) {
+    if (range) {
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+
+  function onSubmitComment() {
+    handleSubmitComment(selectionState, selectedTextState);
+  }
+
+  function handleSubmitComment(selection, selectedText) {
+    const comment = document.createElement('comment');
+    comment.textContent = selectedText;
+    const commentId = 'comment-' + Date.now(); // Generate a unique comment ID
+    comment.setAttribute('id', commentId);
+    comment.setAttribute('class', 'select-none comment-marker');
+    comment.setAttribute('content', inputValue);
+    const deleteButton = document.createElement('span');
+    deleteButton.textContent = 'x';
+    deleteButton.setAttribute('class', 'delete-button');
+    deleteButton.addEventListener('click', () => handleDeleteComment(commentId));
+    comment.appendChild(deleteButton);
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(comment);
+    setInputValue('');
+    setCurrentText(null);
+    setTooltip(null);
+    setIsShowComment(false);
+
+    const descriptionAfter = document.getElementById(currentId);
+
+    if (descriptionAfter) {
+      const content = descriptionAfter.innerHTML;
+      console.log(
+        'currentDataType: ',
+        currentDataType,
+        'currentDataId: ',
+        currentDataId,
+        'content: ',
+        content,
+      );
+      if (currentDataType === 'experience') {
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === currentDataId) {
+            return {
+              ...experience,
+              description: content,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+        setFinishUpData(newFinishUpData);
+      }
+    } else {
+      console.log('Element with id', currentId, 'not found');
+    }
+  }
+
+  // Function to handle comment deletion
+  function handleDeleteComment(commentId) {
+    const comment = document.getElementById(commentId);
+
+    if (comment) {
+      const content = comment.innerHTML; // Get the HTML content including child elements
+      const commentContent = content.replace(/<span class="delete-button">x<\/span>/, '');
+
+      const parent = comment.parentNode;
+
+      // Create a new text node from the HTML content
+      const contentNode = document.createTextNode(commentContent);
+
+      // Insert the content node after the comment
+      parent.insertBefore(contentNode, comment.nextSibling);
+
+      // Remove the comment
+      parent.removeChild(comment);
+    }
+  }
+
+  function handleMouseUp(event, key, id, dataId) {
+    if (key === null || key === undefined) {
+      return;
+    }
+
+    setCurrentId(id);
+    setCurrentDataType(key);
+    setCurrentDataId(dataId);
+
+    const selection = window.getSelection();
+    setSelectionRange(selection.getRangeAt(0));
+
+    setSelectionState(selection);
+    const selectedText = selection.toString();
+    setSelectedTextState(selectedText);
+    console.log('selection: ', selection);
+    console.log('FinishUp:handleMouseUp::key: ', key, 'id: ', id, 'dataId: ', dataId);
+    if (selection && selection.toString()) {
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+
+      const x = rect.left + window.scrollX + rect.width / 2;
+      const y = rect.top + window.scrollY;
+
+      setCurrentText(selectedText);
+      setTooltip({ x, y, text: selection.toString(), key });
+      setIsShowComment(true);
+      console.log('currentText: ', currentText);
+    }
+    console.log('selectedText: ', selectedText);
+  }
+
+  function closeComment() {
+    setCurrentText(null);
+    setTooltip(null);
+    setIsShowComment(false);
+  }
+
+  useEffect(() => {
+    if (isLnPayPending) {
+      return;
+    }
+
+    document.addEventListener('mouseup', handleMouseUp);
+    // document.addEventListener('mousedown', handleMouseDown);
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+      // document.removeEventListener('mousedown');
+    };
+  }, [tooltip, isLnPayPending]);
+
   const handleExperiencesOrderChange = newOrder => {
     setExperiencesOrder(newOrder);
+  };
+
+  const handleExperiencesCommentChange = (event, key) => {
+    console.log('handleExperiencesCommentChange: ', event, key);
+    handleMouseUp(event, key);
   };
 
   const handleEducationsOrderChange = useCallback(newOrder => {
@@ -267,87 +420,6 @@ export default function FinishUp({ params }) {
     setToolbarState(values);
   };
 
-  const componentIDs = {
-    experience: {},
-    education: {},
-    // Add other types here
-  };
-  const handleRoleChange = (type, typeId, newRole) => {
-    console.log('handleRoleChange newRole', newRole, type, typeId);
-    switch (type) {
-      case 'experience':
-        console.log('handleRoleChange newRole experience', newRole, type, typeId);
-        const updatedExperiences = experiences.map(experience => {
-          if (experience.id === typeId) {
-            return {
-              ...experience,
-              role: newRole,
-            };
-          } else {
-            return experience;
-          }
-        });
-        console.log('updatedExperiences experience', updatedExperiences);
-        let newFinishUpData = { ...finishUpData };
-        newFinishUpData.experiences = updatedExperiences;
-
-        setFinishUpData(newFinishUpData);
-        console.log('New finishup data after updatedExperiences:', newFinishUpData);
-    }
-  };
-  const handleOrgNameChange = (type, typeId, newData) => {
-    console.log('handleOrgNameChange newData', newData, type, typeId);
-    switch (type) {
-      case 'experience':
-        console.log('handleOrgNameChange newData experience', newData, type, typeId);
-        const updatedExperiences = experiences.map(experience => {
-          if (experience.id === typeId) {
-            return {
-              ...experience,
-              companyName: newData,
-            };
-          } else {
-            return experience;
-          }
-        });
-        console.log('updatedExperiences experience', updatedExperiences);
-        let newFinishUpData = { ...finishUpData };
-        newFinishUpData.experiences = updatedExperiences;
-
-        setFinishUpData(newFinishUpData);
-        console.log('New finishup data after updatedExperiences:', newFinishUpData);
-    }
-  };
-  const handleDescriptionChange = (type, typeId, newData) => {
-    console.log('handleOrgNameChange newData', newData, type, typeId);
-    switch (type) {
-      case 'experience':
-        console.log('handleOrgNameChange newData experience', newData, type, typeId);
-        const updatedExperiences = experiences.map(experience => {
-          if (experience.id === typeId) {
-            return {
-              ...experience,
-              description: newData,
-            };
-          } else {
-            return experience;
-          }
-        });
-        console.log('updatedExperiences experience', updatedExperiences);
-        let newFinishUpData = { ...finishUpData };
-        newFinishUpData.experiences = updatedExperiences;
-
-        setFinishUpData(newFinishUpData);
-        console.log('New finishup data after updatedExperiences:', newFinishUpData);
-    }
-  };
-  const handleSummaryChange = newData => {
-    let newFinishUpData = { ...finishUpData };
-    newFinishUpData.summary = newData;
-
-    setFinishUpData(newFinishUpData);
-    console.log('New finishup data after handleSummaryChange:', newFinishUpData);
-  };
   const sections = [
     {
       id: 'information',
@@ -364,13 +436,7 @@ export default function FinishUp({ params }) {
     },
     {
       id: 'summary',
-      component: (
-        <SummarySection
-          templateType={templateSelected}
-          summary={summary}
-          handleSummaryChange={handleSummaryChange}
-        />
-      ),
+      component: <SummarySection templateType={templateSelected} summary={summary} />,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -380,20 +446,10 @@ export default function FinishUp({ params }) {
         <ExperiencesSection
           templateType={templateSelected}
           experiences={experiences}
+          onComment={handleMouseUp}
           onChangeOrder={sortedExperiences => {
-            for (let i = 0; i < sortedExperiences.length; i++) {
-              sortedExperiences[i].theOrder = i + 1;
-            }
-            console.log('Finishup data:', finishUpData);
-            let newFinishUpData = { ...finishUpData };
-            newFinishUpData.experiences = sortedExperiences;
-
-            setFinishUpData(newFinishUpData);
-            console.log('New finishup data:', newFinishUpData);
+            console.log('New order of experiences:', sortedExperiences);
           }}
-          handleRoleChange={handleRoleChange}
-          handleOrgNameChange={handleOrgNameChange}
-          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
@@ -432,7 +488,6 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           skills={skills}
           onChangeOrder={handleSkillsOrderChange}
-          canBeDisplayed={skills !== null}
         />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
@@ -459,19 +514,50 @@ export default function FinishUp({ params }) {
     return true; // Include other sections by default
   });
 
-  // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
+  const [overall, setOverall] = useState(fetchedData?.overall ? fetchedData.overall : '');
 
-  // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
-  console.log('filteredSections: ', filteredSections);
+  const handleChangeOverall = event => {
+    setOverall(event.target.value);
+  };
+
+  // const [dataRequest, setDataRequest] = useState();
+
+  // const fetchRequest = async () => {
+  //   try {
+  //     console.log('fetchData getReviewRequestsByCandiate');
+  //     const fetchedDataFromAPI = await getRequestList();
+  //     const targetId = params.id; // Assuming params.id is the target ID
+  //     const requestedReview = fetchedDataFromAPI.find(request => request.id == targetId) || null;
+  //     console.log('requestedReview', requestedReview);
+  //     setDataRequest(requestedReview);
+  //   } catch (error) {}
+  // };
+
+  // useEffect(() => {
+  //   fetchRequest();
+  // }, []);
+  const [message, setMessage] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cvId = params.id;
-        const data = await getFinishUp(cvId);
+        setShowFinishupCV(false);
+
+        const requestId = params.id;
+        const fetchedDataFromAPI = await getReviewResponse(requestId);
+        setFetchedData(fetchedDataFromAPI);
+        setOverall(fetchedDataFromAPI.overall);
+        const data = fetchedDataFromAPI.feedbackDetail;
+        // const data = await getFinishUp(1)
+        // const fetchedData = await getReviewResponse(expertId, requestId);
 
         console.log('FinishUp data: ', data);
 
+        if (data === null) {
+          setFinishUpData(null);
+          return;
+        }
+        const cvId = data.cvId;
         setFinishUpData(data);
 
         setShowFinishupCV(true);
@@ -484,47 +570,51 @@ export default function FinishUp({ params }) {
         const data1 = await getAudit(cvId);
         setAuditData(data1);
       } catch (error) {
+        setMessage(error.response.data)
         console.error('Error fetching FinishUp data:', error);
       }
     };
+    const selection = window.getSelection();
+    const selectedText = selection.toString();
+
+    console.log('selectedText: ', selectedText);
 
     fetchData();
   }, []);
 
   const handleSave = async () => {
     try {
-      const cvId123 = params.id;
+      const sendObj = {
+        overall: overall,
+        cv: finishUpData,
+      };
+      console.log('Save: ', sendObj);
 
-      setShowFinishupCV(false);
-      finishUpData.templateType = templateSelected;
-      await saveCv(cvId123, finishUpData); // Call the syncUp function
+      await updateReviewResponsePublic(fetchedData.id, sendObj); // Call the syncUp <function styleName=""></function>
       console.log('Save completed.');
 
-      const fetchData = async () => {
-        try {
-          const data = await getFinishUp(cvId123);
-          console.log('FinishUp data: ', data);
-
-          setFinishUpData(data);
-
-          setShowFinishupCV(true);
-
-          setTemplateSelected(data.templateType);
-          setToolbarState(data.cvStyle);
-
-          setSummary(data.summary);
-        } catch (error) {
-          console.error('Error fetching FinishUp data:', error);
-        }
-      };
-
-      fetchData();
+      openNotification('bottomRight', `Save changed`);
     } catch (error) {
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
     }
   };
+  const handleSaveDraft = async () => {
+    try {
+      const sendObj = {
+        overall: overall,
+        cv: finishUpData,
+      };
+      console.log('Save: ', sendObj);
 
+      await updateReviewResponse(fetchedData.id, sendObj); // Call the syncUp <function styleName=""></function>
+      console.log('Save completed.');
+      openNotification('bottomRight', `Save changed`);
+    } catch (error) {
+      console.error('Error during synchronization:', error);
+      // Handle errors or display an error message.
+    }
+  };
   const handleSyncUp = async () => {
     try {
       const cvId123 = params.id;
@@ -557,91 +647,140 @@ export default function FinishUp({ params }) {
       // Handle errors or display an error message.
     }
   };
-  //   <div style={{ marginBottom: '12px' }}>
-  //   <Button onClick={handleSyncUp}>Sync Up</Button>
-  // </div>
 
   const [open, setOpen] = useState(false);
-  const cvLayoutRef = useRef(null);
 
-  const handleDownloadButtonClick = () => {
-    if (cvLayoutRef.current) {
-      cvLayoutRef.current.CaptureScreenshot();
-    }
+  const [inputValue, setInputValue] = useState('');
+
+  const handleChange = event => {
+    setInputValue(event.target.value);
   };
 
-  const [isShowVersion, setIsShowVersion] = useState(false);
-  const [versions, setVersions] = useState();
-  const handleShowVersion = async () => {
-    setIsShowVersion(true);
-    const result = await getVersionsList(params.id);
-    setVersions(result);
-    console.log('version::result: ', result);
-  };
-  const handleHideVersion = () => {
-    setIsShowVersion(false);
-  };
-  const handleChooseVersion = versionId => {
-    console.log('versionId: ', versionId);
-  };
   return (
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
           userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
+            <></>
+            // <UserHeaderExpert initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
           content={
-            <div className="flex">
+            <div className="flex mt-8">
+              {contextHolder}
+              {
+                message &&   
+                <Result
+                  status="404"
+                  title="404"
+                  subTitle={message}
+                  extra={
+                    <Link href="/review/list/user">
+                      <Button type="primary" className='bg-blue-500'>Back List Review</Button>
+                    </Link>
+                  }
+                />
+              }
+              {finishUpData && showFinishupCV ? (
+                <></>
+              ) : (
+                // <Result
+                //   status="404"
+                //   title="404"
+                //   subTitle="Sorry, the page you visited does not exist."
+                //   extra={
+                //     <Link href="/">
+                //       <Button type="primary">Back Home</Button>
+                //     </Link>
+                //   }
+                // />
+                <></>
+              )}
               {showFinishupCV && (
                 <div className="mr-2 flex flex-col">
-                  {/* <Button type="primary" onClick={() => setOpen(true)}>
-                    Open Modal of 1000px width
-                  </Button> */}
-                  <Modal
-                    title=""
-                    centered
-                    open={open}
-                    onOk={() => setOpen(false)}
-                    onCancel={() => setOpen(false)}
-                    width={1000}
-                    className="custom"
+                  <Box
+                    top={tooltip?.y}
+                    left={tooltip?.x}
+                    display={tooltip?.text ? 'block' : 'none'}
+                    position="absolute"
+                    zIndex={100}
+                    className="select-none"
                   >
-                    <ScoreFinishUp data={auditData} />
-                  </Modal>
-                  <div
-                    style={
-                      {
-                        // background: 'white',
-                        // width: '100%',
-                      }
+                    {
+                      <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
+                        <Box layerStyle="cardLg" p={3}>
+                          <Card
+                            styles={{
+                              background: 'white',
+                              borderRadius: 'lg',
+                              witdh: '5px',
+                              height: '5px',
+                            }}
+                          >
+                            <CommentOutlined /> Comment
+                            {/* <Input
+                                value={inputValue}
+                                onChange={handleChange}
+                                placeholder="Add a comment..."
+                                onFocus={handleMouseDown}
+                              ></Input> */}
+                            <Input
+                              value={inputValue}
+                              onChange={handleChange}
+                              placeholder="Add a comment..."
+                              // onFocus={handleMouseDown}
+                              onBlur={() => handleInputBlur(selectionRange)}
+                            />
+                            <div className="mt-4">
+                              <Button onClick={onSubmitComment}>Submit</Button>
+
+                              <Button onClick={closeComment} className="ml-4">
+                                Close
+                              </Button>
+                            </div>
+                          </Card>
+                        </Box>
+                      </VStack>
                     }
-                  >
-                    <div style={{ width: '895px' }}>
-                      <FinishupToolbar
-                        handleChangeTemplateSelected={value => setTemplateSelected(value)}
-                        handleOpenModal={() => setOpen(true)}
-                        toolbarState={toolbarState}
-                        onToolbarChange={handleToolbarChange}
-                        currentTemplate={mockData.data.resume.resumeStyle}
-                      />
-                      <div className="flex" style={{ justifyItems: 'center' }}>
-                        <button
-                          style={{
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSyncUp()}
+                  </Box>
+                  {finishUpData ? (
+                    <>
+                      <Card>
+                        <div className="flex justify-start">
+                          <div style={{ textAlign: 'left' }}>
+                            {/* <textarea
+                              className="inputEl"
+                              value={overall}
+                              disabled
+                              onChange={e => handleChangeOverall(e)}
+                            >
+                              Comment for Cv
+                            </textarea> */}
+                            Comment: {overall}
+                          </div>
+                        </div>
+                      </Card>
+                      <CVLayoutReviewerView
+                        key={[templateSelected, toolbarState]}
+                        layoutStyles={toolbarState}
+                        sectionsOrder={sectionsOrder}
+                        onSectionsOrderChange={handleSectionsOrderChange}
+                      >
+                        {filteredSections.map(
+                          section => section.canBeDisplayed && section.component,
+                        )}
+                      </CVLayoutReviewerView>
+                      <div>
+                        {/* <textarea
+                          className="inputEl"
+                          value={overall}
+                          disabled
+                          onChange={e => handleChangeOverall(e)}
                         >
-                          Sync Up
-                        </button>
-                        <button
+                          Comment for Cv
+                        </textarea> */}
+
+                        {/* <button
                           style={{
-                            width: '60px',
                             height: '30px',
                             marginTop: '10px',
                             marginLeft: '10px',
@@ -649,13 +788,13 @@ export default function FinishUp({ params }) {
                           }}
                           className="button"
                           type=""
-                          onClick={() => handleDownloadButtonClick()}
+                          onClick={() => handleSaveDraft()}
                         >
-                          Download
+                          Save draft
                         </button>
+
                         <button
                           style={{
-                            width: '60px',
                             height: '30px',
                             marginTop: '10px',
                             marginLeft: '10px',
@@ -665,113 +804,12 @@ export default function FinishUp({ params }) {
                           type=""
                           onClick={() => handleSave()}
                         >
-                          Save
-                        </button>
+                          Submit
+                        </button> */}
                       </div>
-                    </div>
-                  </div>
-                  <CVLayout
-                    ref={cvLayoutRef}
-                    key={[templateSelected, toolbarState]}
-                    templateType={templateSelected}
-                    layoutStyles={toolbarState}
-                    sectionsOrder={sectionsOrder}
-                    onSectionsOrderChange={handleSectionsOrderChange}
-                  >
-                    {filteredSections.map(section => section.canBeDisplayed && section.component)}
-                  </CVLayout>
-                </div>
-              )}
-              {showFinishupCV && (
-                <div
-                  className="flex flex-col items-start"
-                  style={{ position: 'static', width: '360px' }}
-                >
-                  <div className="">
-                    <div style={{ marginLeft: '14px', maxHeight: '185px' }}>
-                      <VideoComponent />
-                    </div>
-                  </div>
-                  <div className="">
-                    <div
-                      className="askForReview card share-card"
-                      style={{ color: 'black', textAlign: 'left' }}
-                    >
-                      <h4>Rezi Expert Review</h4>
-                      <span>
-                        We'll correct all formatting, content, and grammar errors directly in your
-                        resume
-                      </span>
-                      <button
-                        href=""
-                        data-size="default"
-                        data-theme="default"
-                        data-busy="false"
-                        className=" button "
-                      >
-                        Ask for Rezi Expert Review
-                      </button>
-                    </div>
-                  </div>
-
-                  <AiFeedback cvId={params.id} />
-                  <Ats cvId={params.id} />
-
-                  <button
-                    onClick={handleShowVersion}
-                    className="fixed z-50 right-0 bg-white pl-2 pr-1 py-2 border-l border-y border-gray-200 rounded-tl rounded-bl"
-                  >
-                    <FontAwesomeIcon icon={faHistory} />
-                  </button>
-                  {isShowVersion && (
-                    <div className="templateSelector" data-dock="true">
-                      <div className="drop-shadow selector">
-                        <div className="header">
-                          <div className="flex">
-                            <h3>
-                              <i className="fas fa-history mr-1" aria-hidden="true" /> Version
-                              History
-                              <sup className="ml-1 text-gray-400">beta</sup>
-                            </h3>
-                            <button onClick={handleHideVersion}>
-                              {' '}
-                              <FontAwesomeIcon className="close" icon={faTimes} />
-                            </button>
-                          </div>
-                        </div>
-                        <div className="selector-list">
-                          <nav className="flex flex-col pt-4 space-y-6" aria-label="Progress">
-                            <div className="flex flex-col space-y-3">
-                              <ol role="list">
-                                {versions?.map(version => (
-                                  <li key={version.id} className="pb-10 relative">
-                                    <div
-                                      className="absolute left-2.5 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
-                                      aria-hidden="true"
-                                    />
-                                    <a
-                                      onClick={() => handleChooseVersion(version.id)}
-                                      className="group relative flex items-center"
-                                    >
-                                      <span className="flex h-7 items-center">
-                                        <span className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 bg-white border-rezi-blue">
-                                          <span className="h-2.5 w-2.5 rounded-full bg-rezi-blue" />
-                                        </span>
-                                      </span>
-                                      <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="flex flex-col text-sm font-medium">
-                                          <span>{version.timestamp}</span>
-                                        </span>
-                                      </span>
-                                    </a>
-                                  </li>
-                                ))}
-                              </ol>
-                            </div>
-                          </nav>
-                        </div>
-                      </div>
-                    </div>
+                    </>
+                  ) : (
+                    <></>
                   )}
                 </div>
               )}

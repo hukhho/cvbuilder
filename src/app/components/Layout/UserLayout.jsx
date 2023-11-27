@@ -96,6 +96,33 @@ const items = [
       </Link>
     ),
   },
+  {
+    key: '5',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/expert/config">
+        <span style={{ color: '#ffffff', fontSize: 11 }}>EXPERT CONFIG</span>
+      </Link>
+    ),
+  },
+  {
+    key: '6',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/hr/config">
+        <span style={{ color: '#ffffff', fontSize: 11 }}>HR CONFIG</span>
+      </Link>
+    ),
+  },
+  {
+    key: '7',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/candidate/config">
+        <span style={{ color: '#ffffff', fontSize: 11 }}>CANDIDATE CONFIG</span>
+      </Link>
+    ),
+  },
   // {
   //   key: '4',
   //   // icon: <BarChartOutlined />,

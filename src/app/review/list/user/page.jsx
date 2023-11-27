@@ -16,13 +16,14 @@ import { getResumes } from '@/app/utils/indexService';
 import { UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { getReviewRequestsByCandiate } from '../../new/reviewService';
+import Link from 'next/link';
 
 const { Title } = Typography;
 const columns = [
   {
     title: 'Resume Name',
     dataIndex: 'resumeName',
-    render: text => <a>{text}</a>,
+    render: (text, record) => <Link href={`/review/view-response/${record.id}`}>{text} </Link>,
   },
   {
     title: 'Candidate',

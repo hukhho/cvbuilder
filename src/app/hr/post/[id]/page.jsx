@@ -33,29 +33,37 @@ import Search from 'antd/es/input/Search';
 import Link from 'next/link';
 import UserHeaderHR from '@/app/components/UserHeaderHR';
 import moment from 'moment';
-import { postHrPublic } from '../hrServices';
+// import { postHrPublic } from '../hrServices';
 import SuccessModalHrPost from '@/app/components/Modal/SuccessModalHrPost';
 import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
+import { updateHrPublic } from '../../hrServices';
 
 const { Title } = Typography;
-const generateMockExperts = () => {
-  const mockExperts = [];
-  for (let i = 1; i <= 9; i++) {
-    mockExperts.push({
-      id: i,
-      name: `Expert ${i}`,
-      rating: 3.5,
-      jobTitle: 'Product Manager',
-      location: 'FPT',
-      hourlyRate: '50,000 VND',
-      experience: '6 years',
-      numberOfReviews: 5,
-    });
-  }
-  return mockExperts;
+
+const mockData = {
+  id: 1,
+  title: '123',
+  workingType: 'Full time',
+  companyName: 'Zalo',
+  avatar:
+    'https://firebasestorage.googleapis.com/v0/b/cvbuilder-dc116.appspot.com/o/1bd25e29-cc6e-4bf3-9261-5da91a4005cf.jpg?alt=media&token=1bd25e29-cc6e-4bf3-9261-5da91a4005cf.jpg',
+  location: 'HCM',
+  about: null,
+  benefit: '132',
+  description: '123',
+  requirement: '123',
+  salary: 'From $ 1000 to $ 1000',
+  skill: ['[logitech1', ' logitech2', ' logitech3]'],
+  view: 0,
+  liked: false,
+  deadline: '2023-11-30',
+  createDate: '2023-11-26',
+  updateDate: null,
+  status: 'ACTIVE',
+  share: 'Published',
 };
-const HRPost = () => {
+const HRUpdatePost = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     'POST A JOB': true,
   });
@@ -88,10 +96,14 @@ const HRPost = () => {
 
   useEffect(() => {
     // Set the initial value for the deadline field
-    form.setFieldsValue({
-      deadline: moment(deadlineString, 'YYYY-MM-DD'), // Use moment to parse the date string
-    });
+    // form.setFieldsValue({
+    // //   deadline: moment(deadlineString, 'YYYY-MM-DD'), // Use moment to parse the date string
+    // mockData
+    // });
+    mockData.deadline = moment(mockData.deadline, 'YYYY-MM-DD');
+    form.setFieldsValue(mockData);
   }, [form, deadlineString]);
+
   const [salaryName, setSalaryName] = useState('');
   const [salaryFrom, setSalaryFrom] = useState('');
   const [salaryTo, setSalaryTo] = useState('');
@@ -145,22 +157,6 @@ const HRPost = () => {
     console.log(`selected ${value}`);
   };
 
-  const [salaryOptions, setSalaryOptions] = useState();
-  const handleChangeSelectSalary = value => {
-    setSalaryOptions(value);
-    if (value === 1) {
-      setSalaryName("You'll love it");
-    } else if (value === 2) {
-      setSalaryName('Up to $ 1000');
-    } else if (value === 3) {
-      setSalaryName('Extract $ 1000');
-    } else if (value === 0) {
-      setSalaryFrom(1000);
-      setSalaryTo(1000);
-      setSalaryName('From $ 1000 to $ 1000');
-    }
-  };
-
   const optionTags = [];
   for (let i = 10; i < 36; i++) {
     optionTags.push({
@@ -168,6 +164,7 @@ const HRPost = () => {
       label: i.toString(36) + i,
     });
   }
+
   const handleChangeTag = value => {
     console.log(`selected ${value}`);
   };
@@ -181,13 +178,13 @@ const HRPost = () => {
   };
 
   const [openSuccess, setOpenSuccess] = useState(false);
-  
+
   const onFinish = async values => {
     values.salary = salaryName;
     values.deadline = deadlineString;
 
     console.log('Form data:', values);
-    const result = await postHrPublic(values);
+    const result = await updateHrPublic(params.id, values);
     setOpenSuccess(true);
   };
 
@@ -216,8 +213,8 @@ const HRPost = () => {
             <div className="!p-0">
               <div className="mt-8">
                 <Card>
-                  <Title level={4}>Create a job posting</Title>
-                  <p>Create a job posting that help users ...</p>
+                  <Title level={4}>Update a job posting</Title>
+                  <p>Update a job posting</p>
                 </Card>
               </div>
               <div className="mt-16">
@@ -276,74 +273,8 @@ const HRPost = () => {
                   <Form.Item name="about" label="About">
                     <Input.TextArea disabled placeholder="About the company" rows={10} />
                   </Form.Item>
-                  <Form.Item name="" className="" label="SALARY">
-                    <Select
-                      style={{
-                        width: 200,
-                      }}
-                      value={salaryOptions}
-                      onChange={handleChangeSelectSalary}
-                      options={[
-                        {
-                          value: 0,
-                          label: 'Range',
-                        },
-                        {
-                          value: 1,
-                          label: "You'll love it",
-                        },
-                        {
-                          value: 2,
-                          label: 'Up to',
-                        },
-                        {
-                          value: 3,
-                          label: 'Extract',
-                        },
-                      ]}
-                    />
-                    {salaryOptions === 0 && (
-                      <div className="mt-4">
-                        <InputNumber
-                          className="ml-8"
-                          defaultValue={1000}
-                          value={salaryFrom}
-                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                          onChange={value => handleChangeSalaryFrom(value)}
-                        />
-                        <InputNumber
-                          className="ml-2"
-                          defaultValue={2000}
-                          value={salaryTo}
-                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                          onChange={value => handleChangeSalaryTo(value)}
-                        />{' '}
-                      </div>
-                    )}
-                    {salaryOptions === 2 && (
-                      <>
-                        <InputNumber
-                          className="ml-8"
-                          defaultValue={1000}
-                          onChange={value => handleChangeSalaryName(`Up to $${value}`)}
-                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                        />
-                      </>
-                    )}
-                    {salaryOptions === 3 && (
-                      <>
-                        <InputNumber
-                          className="ml-8"
-                          defaultValue={1000}
-                          formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                          onChange={value => handleChangeSalaryName(`Extract $${value}`)}
-                        />
-                      </>
-                    )}
+                  <Form.Item name="" className="salary" label="SALARY">
+                    <Input placeholder="Up to $5000" disabled />
                   </Form.Item>
                   <Form.Item name="benefit" label="Benefit">
                     <Input.TextArea
@@ -371,7 +302,6 @@ const HRPost = () => {
                   <Form.Item name="deadline" label="Deadline">
                     <DatePicker format="YYYY-MM-DD" onChange={onChangeDate} />
                   </Form.Item>
-
                   <div className="ml-20">
                     <Switch defaultChecked onChange={onChangeSwitch} />
                     <span className="ml-4">Not Allow Candidate to apply many time in a job</span>
@@ -379,11 +309,14 @@ const HRPost = () => {
                   <Form.Item name="applyAgain" label="Apply Again">
                     <InputNumber defaultValue={0} />
                   </Form.Item>
-                  <Form.Item label="Button">
+                  <div className="flex ml-32 pb-16">
                     <Button type="primary" htmlType="submit">
-                      Submit
-                    </Button>{' '}
-                  </Form.Item>
+                      Publish a job
+                    </Button>
+                    <Button type="button" className="bg-red-500 ml-10">
+                      Unpublish
+                    </Button>
+                  </div>
                 </Form>
               </div>
             </div>
@@ -394,4 +327,4 @@ const HRPost = () => {
   );
 };
 
-export default HRPost;
+export default HRUpdatePost;

@@ -103,7 +103,7 @@ const Home = ({ params }) => {
   }, []);
 
   const onCreated = async e => {
-    // e.preventDefault(); 
+    // e.preventDefault();
   };
 
   return (
@@ -117,7 +117,7 @@ const Home = ({ params }) => {
               <div style={{ paddingLeft: '', background: 'white' }}>
                 <div className="flex justify-between	mt-16 mr-32">
                   <div className="flex">
-                    <Avatar size={128} style={{}} src="/images/1.jpg" alt="image" />
+                    <Avatar size={128} style={{}} src={expert?.avatar} alt="image" />
                     <div style={{ textAlign: 'left', marginTop: '20px', marginLeft: '20px' }}>
                       <Title level={3}>{expert?.name}</Title>
                       <p>

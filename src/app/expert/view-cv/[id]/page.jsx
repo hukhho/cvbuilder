@@ -731,9 +731,9 @@ export default function FinishUp({ params }) {
                       <Card>
                         <div className="flex justify-start">
                           <div style={{ textAlign: 'left' }}>
-                            <div>Name: {dataRequest.name}</div>
-                            <div>Note: {dataRequest.note}</div>
-                            <div>Deadline: {dataRequest.deadline}</div>
+                            <div>Name: {dataRequest?.name}</div>
+                            <div>Note: {dataRequest?.note}</div>
+                            <div>Deadline: {dataRequest?.deadline}</div>
                           </div>
                         </div>
                       </Card>

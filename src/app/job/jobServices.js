@@ -29,6 +29,16 @@ const getJobList = async () => {
     throw error;
   }
 };
+
+const getJobById = async jobId => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.get(`/user/${userId}/job-posting/${jobId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 // const postHrDraft = async data => {
 //   try {
 //     const userId = getUserIdFromCookie();
@@ -39,4 +49,4 @@ const getJobList = async () => {
 //   }
 // };
 
-export { getJobList };
+export { getJobList, getJobById };

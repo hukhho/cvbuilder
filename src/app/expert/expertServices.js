@@ -32,6 +32,29 @@ const getRequestList = async () => {
   }
 };
 
+const getExpertConfig = async () => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.get(`/expert/${userId}/information/config`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateExpertConfig = async (cvId, data) => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.put(
+      `/expert/${userId}/cv/${cvId}/information/config`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const rejectRequest = async requestId => {
   try {
     const userId = getUserIdFromCookie();
@@ -64,4 +87,4 @@ const acceptRequest = async requestId => {
 //   }
 // };
 
-export { getRequestList, acceptRequest, rejectRequest };
+export { getRequestList, acceptRequest, rejectRequest, getExpertConfig, updateExpertConfig };

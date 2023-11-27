@@ -5,6 +5,7 @@ const categories = [
   { name: 'APPLICATION LIST', link: 'hr/application' },
   { name: 'MANAGE JOBS', link: 'hr/list' },
   { name: 'POST A JOB', link: 'hr/post' },
+  { name: 'BROSWER CVS', link: 'hr/broswer' },
 ];
 
 const HeaderHR = ({ initialEnabledCategories }) => {

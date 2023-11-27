@@ -1,0 +1,126 @@
+@custom-media --desktop (min-width: 50em);
+@custom-media --mobile (min-width: 40em);
+
+:root {
+  /* Custom properties (CSS variables) */
+  --font-ui: sans-serif; /* Replace with your desired font */
+  --scale-000: 16px; /* Replace with your desired font size */
+  --radius-3: 5px; /* Replace with your desired border-radius */
+  --color-primary: #4d70eb; /* Replace with your desired primary color */
+  --color-text: #fff; /* Replace with your desired text color */
+  --font-weight-bold: 700; /* Replace with your desired font-weight */
+  --elevation-flat: 0 1px 0 0 rgba(0, 0, 0, 0.06); /* Replace with your shadow style */
+  --color-violet: #4d70eb; /* Replace with your desired violet color */
+  --color-grey-50: #99a4af; /* Replace with your desired grey color */
+
+  /* Define other custom properties here as needed */
+}
+
+.button {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font: var(--font-ui);
+  font-size: var(--scale-000);
+  border-radius: var(--radius-3);
+  background: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-bold);
+  padding: 1.1em 1.5em 1em;
+  min-width: 7rem;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  color: white;
+  transition: all ease 150ms;
+  @media (--mobile) {
+    width: auto;
+    display: inline-flex;
+  }
+}
+
+/* Sizes */
+.button[data-size="x-small"] {
+  padding: 0.8em 1em;
+  min-width: 0;
+  font-size: 0.6rem;
+}
+
+.button[data-size="small"] {
+  padding: 0.8em 1.3em;
+  min-width: 5rem;
+}
+
+.button[data-size="big"],
+.button[data-size="large"] {
+  padding: 1.45em 1.8em 1.35em;
+}
+
+/* Themes */
+.button[data-theme="inverse"] {
+  background: white;
+  color: var(--color-primary);
+  box-shadow: var(--elevation-flat);
+}
+
+.button[data-theme="secondary"] {
+  background: white;
+  color: var(--color-text);
+  box-shadow: var(--elevation-flat);
+  border: 2px solid var(--color-grey-50);
+}
+
+/* States */
+.button[data-busy="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.button[disabled] {
+  pointer-events: none;
+  background: white !important;
+  color: var(--color-grey-100) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--color-grey-50);
+}
+
+:global(.pro-ui) {
+  & .button {
+    background: var(--color-violet);
+  }
+  & .button[data-theme="secondary"] {
+    background: white;
+  }
+  & .button[data-theme="inverse"] {
+    background: white;
+  }
+}
+/*:global(.company-view) {*/
+/*  & .button {*/
+/*    margin-bottom: 0;*/
+/*    padding: 10px 16px;*/
+/*    flex: 0 0 auto;*/
+/*    border-radius: 5px;*/
+/*    background-color: #4d70eb;*/
+/*    box-shadow: 0 1px 0 0 rgb(0 0 0 / 6%);*/
+/*    transition: transform 200ms ease, border-color 200ms ease, color 200ms ease,*/
+/*      box-shadow 200ms ease, background-color 200ms ease,*/
+/*      -webkit-transform 200ms ease;*/
+/*    color: #fff;*/
+/*    font-family: var(--font-default);*/
+/*    font-size: 15px;*/
+/*    line-height: 1.5;*/
+/*    font-weight: 600;*/
+/*    text-align: center;*/
+/*    text-transform: inherit;*/
+/*    &:hover {*/
+/*      background-color: #99a4af;*/
+/*      color: #fff;*/
+/*    }*/
+/*  }*/
+/*}*/
