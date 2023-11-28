@@ -51,13 +51,16 @@ const columns = [
   },
   {
     title: 'Candidate',
-    dataIndex: 'candidate',
+    dataIndex: 'candidateName',
   },
   {
     title: 'Cv',
-    dataIndex: 'cvId',
-    render: text => <a><Link href={`/hr/view-cv/${text}`}>{text}</Link> </a>,
-
+    dataIndex: 'cvs',
+    render: cvs => (
+      <a>
+        <Link href={`/hr/view-cv/${cvs.historyId}`}>{cvs.historyId}</Link>{' '}
+      </a>
+    ),
   },
   {
     title: 'Cover Letter',
@@ -66,7 +69,7 @@ const columns = [
 
   {
     title: 'Date Application',
-    dataIndex: 'timestamp',
+    dataIndex: 'applyDate',
     // sorter: {
     //   compare: (a, b) => a.revicedDay - b.revicedDay,
     //   multiple: 2,
@@ -75,6 +78,10 @@ const columns = [
   {
     title: 'note',
     dataIndex: 'note',
+  },
+  {
+    title: 'email',
+    dataIndex: 'email',
   },
   // {
   //   title: 'Action',

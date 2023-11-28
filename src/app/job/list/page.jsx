@@ -99,8 +99,6 @@ const Home = () => {
                   <Row gutter={[16, 48]}>
                     {data?.map((job, index) => (
                       <Col key={index} span={12}>
-                       
-
                         <JobCard job={job} jobTitle={job.title} />
                       </Col>
                     ))}

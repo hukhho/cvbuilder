@@ -110,7 +110,7 @@ const Home = ({ params }) => {
 
               <div>
                 <div className="flex relative">
-                  <Title level={3}>Product Specialist, Media</Title>
+                  <Title level={3}>{data?.title}</Title>
                   <div>
                     <div style={{ marginLeft: '500px', textAlign: 'left' }}>
                       {/* <button className="button" on style={{ width: '314px' }}>
@@ -126,7 +126,7 @@ const Home = ({ params }) => {
                 </div>
                 <div className="flex">
                   <Title level={5} style={{ color: '#4D70EB' }}>
-                    Zalo
+                    {data?.companyName}
                   </Title>
                 </div>
                 <div>
@@ -143,7 +143,7 @@ const Home = ({ params }) => {
                         fill="black"
                       />
                     </svg>
-                    <span className="ml-2">District 7, Ho Chi Minh City</span>
+                    <span className="ml-2">{data?.location}</span>
                   </div>
                   <div className="flex items-center">
                     <svg
@@ -167,23 +167,24 @@ const Home = ({ params }) => {
                       />
                     </svg>
                     <div>
-                      <span className="ml-2">1,000 - 3,000 USD GROSS</span>
+                      <span className="ml-2">{data?.salary}</span>
                     </div>
                   </div>
 
                   <div className="flex mt-4 space-x-4 items-center">
+                    
                     <div
                       style={{ width: '120px', textAlign: 'center' }}
                       className="border-gray-500 border rounded-full p-1"
                     >
                       Product Owner{' '}
                     </div>
-                    <div
+                    {/* <div
                       style={{ width: '120px', textAlign: 'center' }}
                       className="border-gray-500 border rounded-full p-1"
                     >
                       UI/UX Designer{' '}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -193,71 +194,12 @@ const Home = ({ params }) => {
                   <div>
                     <Title level={4}>What can we offer?</Title>
                     <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
+                      {data?.benefit}
                     </div>
                   </div>
                   <div className="mt-4">
-                    <Title level={4}>What can we offer?</Title>
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <Title level={4}>What can we offer?</Title>
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>{' '}
-                    <div>
-                      • Competitive salary package with 13th salary, annual performance-based bonus,
-                      and monthly lunch allowance
-                    </div>
+                    <Title level={4}>Requirements</Title>
+                    <div>{data?.requirement}</div>
                   </div>
                 </div>
                 <div>

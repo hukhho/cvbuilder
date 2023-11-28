@@ -124,6 +124,15 @@ const items = [
       </Link>
     ),
   },
+  {
+    key: '8',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/job/list">
+        <span style={{ color: '#ffffff', fontSize: 11 }}>JOB LIST</span>
+      </Link>
+    ),
+  },
   // {
   //   key: '4',
   //   // icon: <BarChartOutlined />,
