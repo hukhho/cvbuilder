@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAts } from './finishUpService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faWarning } from '@fortawesome/free-solid-svg-icons';
 import JobModal from '@/app/components/Modal/JobModal';
 import JobModalCreate from '@/app/components/Modal/JobModalCreate';
 
@@ -69,7 +69,12 @@ const Ats = ({ cvId }) => {
                     <div key={index} className="bold">
                       <span>
                         {content.ats}
-                        <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 ml-4" />
+                        {content.status === 'Warning' && (
+                          <FontAwesomeIcon icon={faWarning} className="text-yellow-500 ml-4" />
+                        )}
+                        {content.status === 'Success' && (
+                          <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 ml-4" />
+                        )}
                       </span>
                     </div>
                   );

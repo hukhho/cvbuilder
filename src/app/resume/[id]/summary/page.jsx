@@ -77,7 +77,10 @@ const Summary = ({ params }) => {
       const data = await getSummaryHistory(params.id);
       // console.log('fetchData ', data);
       // console.log('Summary: ', data.summary);
-      setSummaryHistory(data); // Updated to setSummaryData
+      const sortedData = data.sort((a, b) => b.id - a.id);
+      const lastThreeItems = sortedData.slice(0, 3);
+
+      setSummaryHistory(lastThreeItems); // Updated to setSummaryData
     } catch (error) {
       console.error('There was an error fetching the data', error);
     }
@@ -278,14 +281,14 @@ const Summary = ({ params }) => {
                   </div>
                 </Card>
                 <div className="mt-4">
-                  {summaryHistory.map((summary, index) => {
+                  {summaryHistory?.map((summary, index) => {
                     return (
                       <React.Fragment key={index}>
                         <Card className="flex flex-col" style={{ marginTop: '4px' }}>
                           <div className="text-gray-400">Summary #{summary.id}</div>
-                          {summary.version}{' '}
+                          {summary.summary}{' '}
                           <button
-                            onClick={() => handleApplyAi(summary.version)}
+                            onClick={() => handleApplyAi(summary.summary)}
                             className="button mt-2"
                           >
                             Apply

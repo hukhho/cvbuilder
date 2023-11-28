@@ -37,18 +37,18 @@ const getSummaryHistory = async cvId => {
     if (!userId) {
       throw new Error('User ID not found.');
     }
-    // const response = await axiosInstance.get(`/user/cv/${cvId}/summary/history-summaries`);
-    const minNumber = 1;
-    const maxNumber = 100;
-    const randomInt1 = getRandomInt(minNumber, maxNumber);
-    const randomInt2 = getRandomInt(minNumber, maxNumber);
+    const response = await axiosInstance.get(`/user/cv/${cvId}/summary/history-summaries`);
+    // const minNumber = 1;
+    // const maxNumber = 100;
+    // const randomInt1 = getRandomInt(minNumber, maxNumber);
+    // const randomInt2 = getRandomInt(minNumber, maxNumber);
 
-    const simmulator = [
-      { id: 1, version: `This is content ${randomInt1}` },
-      { id: 2, version: `This is content ${randomInt2}` },
-    ];
-    return simmulator;
-    // return response.data;
+    // const simmulator = [
+    //   { id: 1, version: `This is content ${randomInt1}` },
+    //   { id: 2, version: `This is content ${randomInt2}` },
+    // ];
+    // return simmulator;
+    return response.data;
   } catch (error) {
     throw error;
   }

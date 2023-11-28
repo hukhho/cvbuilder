@@ -30,4 +30,15 @@ const updateCandidateConfig = async data => {
   }
 };
 
-export { getCandidateConfig, updateCandidateConfig };
+const depositMoney = async data => {
+  try {
+    const userId = getUserIdFromCookie();
+    // Assuming userId is a string
+    data.userId = parseInt(userId, 10); // The second argument (10) is the radix/base, use 10 for decimal
+    const response = await axiosInstance.post('/transaction/input-credit', data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export { getCandidateConfig, updateCandidateConfig, depositMoney };

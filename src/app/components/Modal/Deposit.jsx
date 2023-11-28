@@ -1,16 +1,16 @@
 /* eslint-disable */
 
 import { Dialog, Switch, Transition } from '@headlessui/react';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import './setting.css';
 import './input.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
 import { notification } from 'antd';
-import { updateJobDescription } from './updateJobDescription';
+import { depositMoney } from '@/app/candidate/candidateServices';
 
-const JobModal = ({ onCreated, cvId, title, description }) => {
+export default function Deposit({ onCreated }) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -21,12 +21,13 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
   };
   const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const [inputValue, setInputValue] = useState(description);
-  console.log('JobModal', title, description);
+  const [inputValue, setInputValue] = useState('');
 
   const [formData, setFormData] = useState({
-    title: title,
-    description: description,
+    sentId: 'string',
+    expenditure: 0,
+    conversionAmount: 0,
+    userId: 0,
   });
 
   function closeModal() {
@@ -38,11 +39,8 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
   }
 
   const handleInputChange = event => {
+    setInputValue(event.target.value);
     const { id, value } = event.target;
-    console.log('id value: ', id, value);
-    if (id === 'description') {
-      setInputValue(event.target.value);
-    }
     setFormData(prevData => ({
       ...prevData,
       [id]: value,
@@ -61,39 +59,37 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
     console.log('Form data submitted:', formData);
 
     try {
-      const result = await updateJobDescription(cvId, formData);
+      formData.expenditure = Math.floor(formData.expenditure / 1);
+
+      formData.conversionAmount = Math.floor(formData.expenditure / 1000);
+
+      const result = await depositMoney(formData);
       openNotification('bottomRight', `Create: ${result.id}`);
-      onCreated();
-      closeModal();
+      // onCreated();
+      console.log("result: ", result)
+      const newTab = window.open(result, '_blank');
+
+      // closeModal();
     } catch (error) {
-      if (error.response.data.error) {
-        openNotification('bottomRight', `Error: ${error.response.data.error}`);
-      } else if (error.response.data && error.response.status === 400 && error.response.data) {
-        openNotification('bottomRight', `Error: ${error.response.data}`);
-      } else {
-        openNotification('bottomRight', `Something went wrong!`);
-      }
+      openNotification('bottomRight', `Error: ${error}`);
     }
   };
-
-  // useEffect(() => {
-  //   console.log("setInputValue",)
-  //   setInputValue(description);
-  // }, []);
   return (
     <>
       {contextHolder}
       <div className="inset-0 flex items-center justify-center">
         <button
+          style={{ width: '208px' }}
           href=""
           data-size="default"
           data-theme="default"
           data-busy="false"
           className="cta-button button cta "
-          style={{ color: 'white' }}
+          id="navi-create-new-resume"
           onClick={openModal}
         >
-          <span>Update Job Description</span>
+          <i className="fad fa-file-plus" aria-hidden="true" />
+          <span>Deposit Money</span>
         </button>
       </div>
 
@@ -127,7 +123,7 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
                     as="h2"
                     className="w-full flex leading-7 text-xl font-semibold bg-slate-50 rounded-t-lg text-gray-900 items-center px-6 py-5 border-b border-slate-200"
                   >
-                    <div className="grow font-semibold">Update Job Description</div>
+                    <div className="grow font-semibold">Deposit money</div>
                     <i className="fal fa-times cursor-pointer" aria-hidden="true" />
                   </Dialog.Title>
                   <div className="p-6">
@@ -138,54 +134,21 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
                           htmlFor="resumeName" // Add htmlFor with the correct id
                         >
                           <div className="flex gap-2 items-center">
-                            <span>Job title</span> *
+                            <span>Money</span> *
                           </div>
                           <div id="null-portal-root" />
                         </label>
                         <div className="relative">
                           <input
-                            name="title"
+                            name="expenditure"
+                            type="number"
                             className="inputEl new-resume-form"
-                            id="title" // Add id attribute here
+                            id="expenditure" // Add id attribute here
                             required=""
-                            aria-label="Job title"
-                            defaultValue={title}
                             onChange={handleInputChange}
+                            aria-label="Deposit money"
+                            defaultValue={0}
                           />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="input ">
-                          <label
-                            className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                            htmlFor="description"
-                          >
-                            <div className="flex gap-2 items-center">
-                              <span>Job Description </span>
-                            </div>
-                            <div id="description-portal-root" />
-                          </label>
-                          <div className="relative">
-                            <textarea
-                              className="inputEl new-resume-form"
-                              id="description"
-                              aria-label="Job Description "
-                              rows={3}
-                              onChange={handleInputChange}
-                              onInput={handleTextareaInput}
-                              value={inputValue}
-                              style={{
-                                height: 'auto',
-                                overflow: 'hidden',
-                                resize: 'none',
-                                maxHeight: 200,
-                                overflowY: 'auto',
-                                background: 'white',
-                                height: 120,
-                              }}
-                            />
-                          </div>
                         </div>
                       </div>
 
@@ -198,7 +161,7 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
                         id="create-resume-form-submitted"
                         type="submit"
                       >
-                        Save
+                        Deposit
                       </button>
                     </form>
                   </div>
@@ -210,6 +173,4 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
       </Transition>
     </>
   );
-};
-
-export default JobModal;
+}

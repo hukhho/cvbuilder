@@ -7,6 +7,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Card,
   ConfigProvider,
   Form,
   Input,
@@ -30,6 +31,8 @@ import ExpertForm from '@/app/components/Form/ExpertForm';
 import HrForm from '@/app/components/Form/HrForm';
 import { getCandidateConfig } from '../candidateServices';
 import CandidateForm from '@/app/components/Form/CandidateForm';
+import { getProtectedResource } from '@/app/services/message.service';
+import Deposit from '@/app/components/Modal/Deposit';
 // import { getHrConfig } from '../hrServices';
 
 const Home = () => {
@@ -38,6 +41,8 @@ const Home = () => {
   });
   const [form] = Form.useForm();
   const [data, setData] = useState();
+  const [protectedData, setProtectedData] = useState();
+
   const [resumes, setResumes] = useState([]);
 
   const fetchData = async () => {
@@ -47,6 +52,11 @@ const Home = () => {
 
       setData(fetchedDataFromAPI);
       form.setFieldsValue(fetchedDataFromAPI);
+
+
+      const fetchProtected = await getProtectedResource();
+      console.log("fetchProtected: ", fetchProtected)
+      setProtectedData(fetchProtected);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -96,6 +106,12 @@ const Home = () => {
               <div>
                 <div>
                   <CandidateForm data={data} onCreated={onCreated} resumeOptions={resumeOptions} />
+                </div>
+                <div>
+                  <Card className='mt-16' style={{ width: '700px' }}>
+                    Your Balance: <b>{protectedData?.data?.accountBalance}.000 đ</b>
+                    <Deposit />
+                  </Card>
                 </div>
               </div>
             </div>

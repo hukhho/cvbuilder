@@ -25,6 +25,7 @@ import {
 import './input.css';
 import './date.css';
 import './datepicker.css';
+import Image from 'next/image';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -97,7 +98,7 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
           }}
         >
           <Link href="/">
-            <svg
+            {/* <svg
               style={{
                 width: '80px',
                 height: '80px',
@@ -111,7 +112,8 @@ const UserCVBuilderLayout = ({ userHeader, content }) => {
                 fill="#48c9b0"
                 d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z"
               />
-            </svg>
+            </svg> */}
+            <Image style={{}} src="/images/CVbuilder-04.png" width={40} height={80} />
           </Link>
         </Space>
 
