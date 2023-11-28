@@ -16,7 +16,7 @@ const Login = () => {
       <main className="content">
         <div>
           <a className="flex absolute logoWrapper" href="/" aria-label="Logo">
-            <Image src="/images/CVbuilder-05.png" width={100} height={80} />
+            {/* <Image src="/images/CVbuilder-05.png" width={100} height={80} /> */}
           </a>
           <div className="auth-box" style={{ marginTop: '100px' }}>
             <div className="form card">
