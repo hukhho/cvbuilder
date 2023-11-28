@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const categories = [
   { name: 'OPPORTUNITIES', link: 'job/list' },
-  { name: 'MY APPLICATION', link: 'job/my-application' },
+  { name: 'MY APPLICATION', link: 'job/application' },
 ];
 
 const UserHeaderJob = ({ initialEnabledCategories }) => {

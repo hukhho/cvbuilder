@@ -109,14 +109,18 @@ const Home = ({ params }) => {
               <div style={{ textAlign: 'left' }} />
 
               <div>
-                <div className="flex relative">
+                <div className="flex relative mt-16">
                   <Title level={3}>{data?.title}</Title>
                   <div>
                     <div style={{ marginLeft: '500px', textAlign: 'left' }}>
                       {/* <button className="button" on style={{ width: '314px' }}>
                         Apply for this job
                       </button> */}
-                      <ApplyJobModal resumeOptions={resumeOptions} coverOptions={coverOptions} jobId={params.id} />
+                      <ApplyJobModal
+                        resumeOptions={resumeOptions}
+                        coverOptions={coverOptions}
+                        jobId={params.id}
+                      />
                       <div className="mt-4">
                         <HeartOutlined />
                         <span style={{ color: '#4D70EB', marginLeft: '10px' }}>Like</span>
@@ -172,13 +176,17 @@ const Home = ({ params }) => {
                   </div>
 
                   <div className="flex mt-4 space-x-4 items-center">
-                    
-                    <div
-                      style={{ width: '120px', textAlign: 'center' }}
-                      className="border-gray-500 border rounded-full p-1"
-                    >
-                      Product Owner{' '}
-                    </div>
+                    {data?.skill?.map((skill, index) => {
+                      return (
+                        <div
+                          style={{ width: '120px', textAlign: 'center' }}
+                          className="border-gray-500 border rounded-full p-1"
+                        >
+                          {skill}
+                        </div>
+                      );
+                    })}
+
                     {/* <div
                       style={{ width: '120px', textAlign: 'center' }}
                       className="border-gray-500 border rounded-full p-1"
@@ -192,10 +200,15 @@ const Home = ({ params }) => {
               <div className="flex mt-8">
                 <div className="p-8 bg-white" style={{ textAlign: 'left' }}>
                   <div>
+                    <Image src={data?.avatar} width={100} height={100} />
+                  </div>
+                  <div>
                     <Title level={4}>What can we offer?</Title>
-                    <div>
-                      {data?.benefit}
-                    </div>
+                    <div>{data?.benefit}</div>
+                  </div>
+                  <div className="mt-4">
+                    <Title level={4}>Job descriptions</Title>
+                    <div>{data?.description}</div>
                   </div>
                   <div className="mt-4">
                     <Title level={4}>Requirements</Title>
@@ -217,7 +230,14 @@ const Home = ({ params }) => {
                         <CalendarOutlined />
                         <div className="flex flex-col ml-2">
                           <span style={{ fontWeight: 'bold' }}>Posted date</span>
-                          <p>18/05/2022</p>
+                          <p>{data?.createDate}</p>
+                        </div>
+                      </div>
+                      <div className="flex">
+                        <CalendarOutlined />
+                        <div className="flex flex-col ml-2">
+                          <span style={{ fontWeight: 'bold' }}>Deadline</span>
+                          <p>{data?.deadline}</p>
                         </div>
                       </div>
                       <div className="flex">

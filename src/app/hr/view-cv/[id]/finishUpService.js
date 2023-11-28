@@ -2,9 +2,9 @@
 import axiosInstance from '../../../utils/axiosInstance';
 import { mockData } from './mockData';
 
-export const getFinishUp = async cvId => {
+export const getFinishUp = async historyId => {
   try {
-    const response = await axiosInstance.get('/user/1/cv/5/history/60');
+    const response = await axiosInstance.get(`/user/cv/history/${historyId}`);
     // return mockData.data.resume;
     return response.data;
   } catch (error) {

@@ -1,4 +1,5 @@
 // combinedService.js
+import Cookies from 'js-cookie';
 import axiosInstance from './axiosInstance';
 
 const getUserIdFromCookie = () => {
@@ -8,6 +9,14 @@ const getUserIdFromCookie = () => {
     .split('=')[1];
 
   return userId;
+};
+const getCookieToken = () => {
+  // Assuming your authentication token is stored in a cookie named 'auth_token'
+  const token = Cookies.get('token');
+
+  // You can add additional checks or modifications here if needed
+
+  return token || ''; // Return an empty string if the token is not found
 };
 
 const getResumes = async () => {
@@ -75,4 +84,4 @@ const getCoverLetters = async () => {
   }
 };
 
-export { getResumes, getResume, getCoverLetters, deleteResume, duplicateResume };
+export { getResumes, getResume, getCoverLetters, deleteResume, duplicateResume, getCookieToken };
