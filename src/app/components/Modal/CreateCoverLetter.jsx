@@ -75,19 +75,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
     <>
       {contextHolder}
       <div className="inset-0 flex items-center justify-center">
-        {/* <button
-          // style={{ width: '208px' }}
-          // href=""
-          // data-size="default"
-          // data-theme="default"
-          // data-busy="false"
-          // className="cta-button button cta "
-          // id="navi-create-new-resume"
-          onClick={openModal}
-        > */}
-        {/* <i className="fad fa-file-plus" aria-hidden="true" />
-          <span>Làm cái nút cho chạy đã, ok</span> */}
-        <Card
+         <Card
           hoverable
           onClick={openModal}
           style={{ width: 240, background: '#fbfbfb' }} // Adjust this value based on your needs
@@ -103,7 +91,6 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
           /> */}
             </div>
             <Meta title="" description="cover letter" />
-
           </div>
         </Card>{' '}
         {/* </button> */}
@@ -144,6 +131,27 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                   </Dialog.Title>
                   <div className="p-6">
                     <form onSubmit={handleFormSubmit}>
+                    <div className="resume">
+                        <label
+                          className="!leading-[0px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+                          htmlFor="resumeName" // Add htmlFor with the correct id
+                        >
+                          <div className="flex gap-2 items-center">
+                            <span>Choose CV</span> *
+                          </div>
+                          <div id="null-portal-root" />
+                        </label>
+                        <div className="relative">
+                          <Select
+                            style={{
+                              width: 120,
+                            }}
+                            name="cvId"
+                            onChange={handleChange}
+                            options={dropdownOptions}
+                          />
+                        </div>
+                      </div>
                       <div className="input">
                         <label
                           className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
@@ -168,27 +176,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                       </div>
                       <br />
                       <br />
-                      <div className="resume">
-                        <label
-                          className="!leading-[0px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                          htmlFor="resumeName" // Add htmlFor with the correct id
-                        >
-                          <div className="flex gap-2 items-center">
-                            <span>Choose CV</span> *
-                          </div>
-                          <div id="null-portal-root" />
-                        </label>
-                        <div className="relative">
-                          <Select
-                            style={{
-                              width: 120,
-                            }}
-                            name="cvId"
-                            onChange={handleChange}
-                            options={dropdownOptions}
-                          />
-                        </div>
-                      </div>
+                     
 
                       <button
                         href=""

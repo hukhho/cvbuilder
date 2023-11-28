@@ -261,13 +261,13 @@ const HRUpdatePost = ({ params }) => {
                   </Form.Item>
                   <div className="">
                     <Form.Item name="companyName" label="COMPANY NAME">
-                      <Input placeholder="Lorem" disabled />
+                      <Input placeholder="Google" />
                     </Form.Item>
                     <Form.Item name="location" label="COMPANY LOCATION">
-                      <Input placeholder="Lorem" disabled />
+                      <Input placeholder="New York" disabled />
                     </Form.Item>
                     <Form.Item name="avatar" label="COMPANY AVATAR">
-                      <Avatar />
+                      <Input />
                     </Form.Item>
                   </div>
                   <Form.Item name="about" label="About">

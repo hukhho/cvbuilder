@@ -1,6 +1,6 @@
 import axiosInstance from '../../utils/axiosInstance';
 
-const updateCoverLetter = async (coverLetterId, data) => {
+const updateCoverLetter = async (cvId, coverLetterId, data) => {
   try {
     const userId =
       typeof document !== 'undefined'
@@ -14,7 +14,7 @@ const updateCoverLetter = async (coverLetterId, data) => {
       throw new Error('User ID not found.');
     }
     const response = await axiosInstance.put(
-      `/chat-gpt/user/cv/${userId}/cover-letter/${coverLetterId}`,
+      `/chat-gpt/user/cv/${cvId}/cover-letter/${coverLetterId}`,
       data,
     );
     return response.data;

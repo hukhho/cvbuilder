@@ -10,10 +10,10 @@ const getUserIdFromCookie = () => {
   return userId;
 };
 
-const createReview = async (cvId, expertId, data) => {
+const createReview = async (cvId, expertId, optionId, data) => {
   try {
     const response = await axiosInstance.post(
-      `/cv/${cvId}/expert/${expertId}/request-review`,
+      `/cv/${cvId}/expert/${expertId}/request-review/option/${optionId}`,
       data,
     );
     return response.data;

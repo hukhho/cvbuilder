@@ -38,6 +38,7 @@ import ProjectSection from '@/app/components/Templates/SectionComponents/Project
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
+import UserHeaderReview from '@/app/components/UserHeaderReview';
 // import { getRequestList } from '../../reviewServices';
 
 const mockData = {
@@ -219,7 +220,7 @@ export default function FinishUp({ params }) {
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState({
-    'REVIEW REQUESTS': true,
+    'MY REVIEWS': true,
   });
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
@@ -232,6 +233,15 @@ export default function FinishUp({ params }) {
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
+
+  const filteredEducations = educations?.filter(education => education.isDisplay === true);
+  const filteredProjects = projects?.filter(project => project.isDisplay === true);
+  const filteredInvolvements = involvements?.filter(involvement => involvement.isDisplay === true);
+  const filteredCertifications = certifications?.filter(
+    certification => certification.isDisplay === true,
+  );
+  const filteredSkills = skills?.filter(skill => skill.isDisplay === true);
+  const filteredExperiences = experiences?.filter(experience => experience.isDisplay === true);
 
   // to store order of some user's information
   const [experiencesOrder, setExperiencesOrder] = useState([]);
@@ -321,23 +331,18 @@ export default function FinishUp({ params }) {
 
   // Function to handle comment deletion
   function handleDeleteComment(commentId) {
-    const comment = document.getElementById(commentId);
-
-    if (comment) {
-      const content = comment.innerHTML; // Get the HTML content including child elements
-      const commentContent = content.replace(/<span class="delete-button">x<\/span>/, '');
-
-      const parent = comment.parentNode;
-
-      // Create a new text node from the HTML content
-      const contentNode = document.createTextNode(commentContent);
-
-      // Insert the content node after the comment
-      parent.insertBefore(contentNode, comment.nextSibling);
-
-      // Remove the comment
-      parent.removeChild(comment);
-    }
+    // const comment = document.getElementById(commentId);
+    // if (comment) {
+    //   const content = comment.innerHTML; // Get the HTML content including child elements
+    //   const commentContent = content.replace(/<span class="delete-button">x<\/span>/, '');
+    //   const parent = comment.parentNode;
+    //   // Create a new text node from the HTML content
+    //   const contentNode = document.createTextNode(commentContent);
+    //   // Insert the content node after the comment
+    //   parent.insertBefore(contentNode, comment.nextSibling);
+    //   // Remove the comment
+    //   parent.removeChild(comment);
+    // }
   }
 
   function handleMouseUp(event, key, id, dataId) {
@@ -345,31 +350,31 @@ export default function FinishUp({ params }) {
       return;
     }
 
-    setCurrentId(id);
-    setCurrentDataType(key);
-    setCurrentDataId(dataId);
+    // setCurrentId(id);
+    // setCurrentDataType(key);
+    // setCurrentDataId(dataId);
 
-    const selection = window.getSelection();
-    setSelectionRange(selection.getRangeAt(0));
+    // const selection = window.getSelection();
+    // setSelectionRange(selection.getRangeAt(0));
 
-    setSelectionState(selection);
-    const selectedText = selection.toString();
-    setSelectedTextState(selectedText);
-    console.log('selection: ', selection);
-    console.log('FinishUp:handleMouseUp::key: ', key, 'id: ', id, 'dataId: ', dataId);
-    if (selection && selection.toString()) {
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
+    // setSelectionState(selection);
+    // const selectedText = selection.toString();
+    // setSelectedTextState(selectedText);
+    // console.log('selection: ', selection);
+    // console.log('FinishUp:handleMouseUp::key: ', key, 'id: ', id, 'dataId: ', dataId);
+    // if (selection && selection.toString()) {
+    //   const range = selection.getRangeAt(0);
+    //   const rect = range.getBoundingClientRect();
 
-      const x = rect.left + window.scrollX + rect.width / 2;
-      const y = rect.top + window.scrollY;
+    //   const x = rect.left + window.scrollX + rect.width / 2;
+    //   const y = rect.top + window.scrollY;
 
-      setCurrentText(selectedText);
-      setTooltip({ x, y, text: selection.toString(), key });
-      setIsShowComment(true);
-      console.log('currentText: ', currentText);
-    }
-    console.log('selectedText: ', selectedText);
+    //   setCurrentText(selectedText);
+    //   setTooltip({ x, y, text: selection.toString(), key });
+    //   setIsShowComment(true);
+    //   console.log('currentText: ', currentText);
+    // }
+    // console.log('selectedText: ', selectedText);
   }
 
   function closeComment() {
@@ -437,7 +442,7 @@ export default function FinishUp({ params }) {
     {
       id: 'summary',
       component: <SummarySection templateType={templateSelected} summary={summary} />,
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
     {
@@ -445,69 +450,76 @@ export default function FinishUp({ params }) {
       component: (
         <ExperiencesSection
           templateType={templateSelected}
-          experiences={experiences}
+          experiences={filteredExperiences}
           onComment={handleMouseUp}
           onChangeOrder={sortedExperiences => {
             console.log('New order of experiences:', sortedExperiences);
           }}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: experiences !== null,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredExperiences !== null,
     },
     {
       id: 'educations',
-      component: <EducationsSection templateType={templateSelected} educations={educations} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: educations !== null,
+      component: (
+        <EducationsSection templateType={templateSelected} educations={filteredEducations} />
+      ),
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredEducations !== null,
     },
     {
       id: 'involvements',
-      component: <InvolvementSection templateType={templateSelected} involvements={involvements} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: involvements !== null,
+      component: (
+        <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
+      ),
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredInvolvements !== null,
     },
     {
       id: 'projects',
-      component: <ProjectSection templateType={templateSelected} projects={projects} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: projects != null,
+      component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredProjects != null,
     },
     {
       id: 'certifications',
       component: (
-        <CertificationSection templateType={templateSelected} certifications={certifications} />
+        <CertificationSection
+          templateType={templateSelected}
+          certifications={filteredCertifications}
+        />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: certifications !== null,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredCertifications !== null,
     },
     {
       id: 'skills',
       component: (
         <SkillsSection
           templateType={templateSelected}
-          skills={skills}
+          skills={filteredSkills}
           onChangeOrder={handleSkillsOrderChange}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: skills !== null,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredSkills !== null,
     },
   ];
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
-      return educations && educations.length > 0;
+      return filteredEducations && filteredEducations.length > 0;
     } else if (section.id === 'experiences') {
-      return experiences && experiences.length > 0;
+      return filteredExperiences && filteredExperiences.length > 0;
     } else if (section.id === 'projects') {
-      return projects && projects.length > 0;
+      return filteredProjects && filteredProjects.length > 0;
     } else if (section.id === 'involvements') {
-      return involvements && involvements.length > 0;
+      return filteredInvolvements && filteredInvolvements.length > 0;
     } else if (section.id === 'certifications') {
-      return certifications && certifications.length > 0;
+      return filteredCertifications && filteredCertifications.length > 0;
     } else if (section.id === 'skills') {
-      return skills && skills.length > 0;
+      return filteredSkills && filteredSkills.length > 0;
     } else if (section.id === 'summary') {
       return summary && summary !== null && summary.trim() !== ''; // Include if 'summary' is not null and not an empty string
     }
@@ -515,6 +527,7 @@ export default function FinishUp({ params }) {
   });
 
   const [overall, setOverall] = useState(fetchedData?.overall ? fetchedData.overall : '');
+  const request = fetchedData?.request ? fetchedData.request : null;
 
   const handleChangeOverall = event => {
     setOverall(event.target.value);
@@ -570,7 +583,14 @@ export default function FinishUp({ params }) {
         const data1 = await getAudit(cvId);
         setAuditData(data1);
       } catch (error) {
-        setMessage(error.response.data)
+        if (error.response.data.error) {
+          setMessage(error.response.data.error);
+        } else if (error.response.data) {
+          setMessage(error.response.data);
+        } else {
+          setMessage('Something went wrong!!!');
+        }
+
         console.error('Error fetching FinishUp data:', error);
       }
     };
@@ -660,26 +680,24 @@ export default function FinishUp({ params }) {
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
-          userHeader={
-            <></>
-            // <UserHeaderExpert initialEnabledCategories={enabledCategories} cvId={params.id} />
-          }
+          userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
           content={
             <div className="flex mt-8">
               {contextHolder}
-              {
-                message &&   
+              {message && (
                 <Result
                   status="404"
                   title="404"
                   subTitle={message}
                   extra={
                     <Link href="/review/list/user">
-                      <Button type="primary" className='bg-blue-500'>Back List Review</Button>
+                      <Button type="primary" className="bg-blue-500">
+                        Back List Review
+                      </Button>
                     </Link>
                   }
                 />
-              }
+              )}
               {finishUpData && showFinishupCV ? (
                 <></>
               ) : (
@@ -744,6 +762,21 @@ export default function FinishUp({ params }) {
                   </Box>
                   {finishUpData ? (
                     <>
+                      <Link href={'/review/list/user'} passHref>
+                        <button
+                          style={{
+                            width: '120px',
+                            height: '30px',
+                            marginTop: '50px',
+                            marginLeft: '10px',
+                            marginBottom: '10px',
+                          }}
+                          className="button"
+                          type=""
+                        >
+                          Back to list
+                        </button>
+                      </Link>
                       <Card>
                         <div className="flex justify-start">
                           <div style={{ textAlign: 'left' }}>
@@ -756,6 +789,8 @@ export default function FinishUp({ params }) {
                               Comment for Cv
                             </textarea> */}
                             Comment: {overall}
+                            <div>Status: {request?.status}</div>
+                            <div>Price: {request?.price}</div>
                           </div>
                         </div>
                       </Card>

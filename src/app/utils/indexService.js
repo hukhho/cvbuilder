@@ -40,6 +40,16 @@ const deleteResume = async cvId => {
   }
 };
 
+const duplicateResume = async cvId => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.post(`/user/user/${userId}/cv/${cvId}/duplicate`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCoverLetters = async () => {
   try {
     const userId = getUserIdFromCookie();
@@ -65,4 +75,4 @@ const getCoverLetters = async () => {
   }
 };
 
-export { getResumes, getResume, getCoverLetters, deleteResume };
+export { getResumes, getResume, getCoverLetters, deleteResume, duplicateResume };

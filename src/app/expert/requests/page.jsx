@@ -18,6 +18,7 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { acceptRequest, getRequestList, rejectRequest } from '../expertServices';
 import Link from 'next/link';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
+import moment from 'moment';
 
 const { Title } = Typography;
 
@@ -33,11 +34,19 @@ const Home = () => {
       placement,
     });
   };
+  const fetchData = async () => {
+    try {
+      console.log('fetchData getReviewRequestsByCandiate');
+      const fetchedDataFromAPI = await getRequestList();
+      setData(fetchedDataFromAPI);
+    } catch (error) {}
+  };
 
   const handleActionAccept = async requestId => {
     try {
       console.log('handleActionAccept ', requestId);
       const result = await acceptRequest(requestId);
+      fetchData();
       openNotification('bottomRight', `Save changed: ${result}`);
     } catch (error) {
       console.log('error ', error);
@@ -78,7 +87,7 @@ const Home = () => {
     {
       title: 'Price',
       dataIndex: 'price',
-      render: text => <div>{text}$</div>,
+      render: text => <div>{text}.000đ</div>,
       sorter: {
         compare: (a, b) => a.price - b.price,
         multiple: 3,
@@ -100,6 +109,9 @@ const Home = () => {
         if (text === 'Done') {
           return <Badge status="success" text={text} />;
         }
+        if (text === null) {
+          return <Badge status="warning" text="Waiting" />;
+        }
         return <Badge status="warning" text={text} />;
       },
     },
@@ -110,21 +122,39 @@ const Home = () => {
         compare: (a, b) => a.revicedDay - b.revicedDay,
         multiple: 2,
       },
+      render: (text, record) => (
+        <div className="flex flex-col">
+          <div> {moment(record.revicedDay).fromNow()}</div>{' '}
+          <div style={{ color: 'gray', fontSize: '11px' }}>
+            {moment(record.revicedDay).format('HH:mm:ss DD/MM/YYYY')}
+          </div>{' '}
+        </div>
+      ),
     },
     {
       title: 'Deadline',
       dataIndex: 'deadline',
       sorter: {
-        compare: (a, b) => a.deadline - b.deadline,
+        compare: (a, b) => a.deadline.valueOf() - b.deadline.valueOf(),
         multiple: 1,
       },
+      render: (text, record) => (
+        <div className="flex flex-col">
+          <div> {moment(record.deadline).fromNow()}</div>{' '}
+          <div style={{ color: 'gray', fontSize: '11px' }}>
+            {moment(record.deadline).format('HH:mm:ss DD/MM/YYYY')}
+          </div>{' '}
+        </div>
+      ),
     },
     {
       title: 'Action',
       dataIndex: 'id',
       render: text => (
         <div>
-          <a onClick={() => handleActionAccept(text)} className='mr-2'>Accecpt</a>
+          <a onClick={() => handleActionAccept(text)} className="mr-2">
+            Accecpt
+          </a>
           <a onClick={() => handleActionReject(text)}>Reject</a>
         </div>
       ),
@@ -136,14 +166,7 @@ const Home = () => {
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
-  const fetchData = async () => {
-    try {
-      console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getRequestList();
-      setData(fetchedDataFromAPI);
-    } catch (error) {}
-  };
-
+ 
   useEffect(() => {
     console.log('useEffect');
 
@@ -160,7 +183,7 @@ const Home = () => {
           </>
         }
         content={
-          <div className="container mt-16" style={{ width: '80%' }}>
+          <div className="container mt-16" style={{ width: '90%' }}>
             {contextHolder}
             <div style={{ textAlign: 'left' }}>
               <Title level={5}>CV Review Table</Title>

@@ -8,7 +8,7 @@ import UserLayout from '../components/Layout/UserLayout';
 import UserHeader from '../components/UserHeader';
 import CVCard from '../components/Card/CVCard';
 import Link from 'next/link'; // Import Link from Next.js for navigation
-import { deleteResume, getResumes } from '../utils/indexService';
+import { deleteResume, duplicateResume, getResumes } from '../utils/indexService';
 import FinishUpPreview from './[id]/finishup/FinishUpPreview';
 import Meta from 'antd/es/card/Meta';
 import './namebadge.css';
@@ -42,14 +42,22 @@ const ResumeCard = ({ onDeleted, resume }) => {
     setIsUpdateResumeOpen(false);
   };
 
-  const handleDeleteResume = async (cvId) => {
+  const handleDeleteResume = async cvId => {
     try {
-      await deleteResume(cvId)
-      onDeleted()
+      await deleteResume(cvId);
+      onDeleted();
     } catch (error) {
-      console.log("handleDeleteResume")
+      console.log('handleDeleteResume');
     }
-  }
+  };
+  const handleDuplicateResume = async cvId => {
+    try {
+      await duplicateResume(cvId);
+      onDeleted();
+    } catch (error) {
+      console.log('handleDeleteResume');
+    }
+  };
   return (
     <Card
       className="bg-white "
@@ -75,13 +83,22 @@ const ResumeCard = ({ onDeleted, resume }) => {
             </Link>
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-opacity-75 p-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onClick={openUpdateResumeModal} className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
+            <button
+              onClick={openUpdateResumeModal}
+              className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full "
+            >
               <FontAwesomeIcon icon={faCog} />
             </button>
-            <button onClick={() => handleDeleteResume(resume.id)} className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
+            <button
+              onClick={() => handleDeleteResume(resume.id)}
+              className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full "
+            >
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
-            <button className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full ">
+            <button
+              onClick={() => handleDuplicateResume(resume.id)}
+              className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full "
+            >
               <FontAwesomeIcon icon={faCopy} />
             </button>
           </div>

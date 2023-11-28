@@ -17,13 +17,14 @@ import { StarFilled, StarOutlined, UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { getRequestList } from '../expertServices';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
+import Link from 'next/link';
 
 const { Title } = Typography;
 const columns = [
   {
     title: 'Resume Name',
     dataIndex: 'resumeName',
-    render: text => <a>{text}</a>,
+    render: (text, record) => <Link href={`/expert/view-cv/${record.id}`}>{text} </Link>,
   },
   {
     title: 'Candidate',
@@ -41,7 +42,7 @@ const columns = [
   {
     title: 'Price',
     dataIndex: 'price',
-    render: text => <div>{text}$</div>,
+    render: text => <div>{text}.000đ</div>,
     sorter: {
       compare: (a, b) => a.price - b.price,
       multiple: 3,

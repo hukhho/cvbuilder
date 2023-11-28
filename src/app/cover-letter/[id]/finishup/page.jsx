@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Button, Card, ConfigProvider, Divider } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -42,6 +42,14 @@ export default function FinishUp({ params }) {
     setZoom(event.target.value);
   };
 
+  const cvLayoutRef = useRef(null);
+
+  const handleDownloadButtonClick = () => {
+    if (cvLayoutRef.current) {
+      cvLayoutRef.current.CaptureScreenshot();
+    }
+  };
+
   return (
     <main>
       <ConfigProvider>
@@ -64,8 +72,8 @@ export default function FinishUp({ params }) {
                   />
                 </div>
 
-                <div className="z-10">
-                  <CoverLetterPreview coverLetterId={params.id} />
+                <div className="">
+                  <CoverLetterPreview ref={cvLayoutRef} coverLetterId={params.id} />
                 </div>
               </div>
 

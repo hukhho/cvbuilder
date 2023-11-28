@@ -106,6 +106,9 @@ const Home = ({ params }) => {
     // e.preventDefault();
   };
 
+  const lowestPriceData = expert?.price?.[0]?.price ?? null;
+  const biggestPriceData = expert?.price?.[2]?.price ?? null;
+
   return (
     <ConfigProvider>
       <UserLayout
@@ -123,7 +126,7 @@ const Home = ({ params }) => {
                       <p>
                         {expert?.title} at {expert?.company}
                       </p>
-                      <p>{expert?.price} VND / request</p>
+                      <p>From {lowestPriceData}.000 to {biggestPriceData}.000 VND / request</p>
                     </div>
                   </div>
 

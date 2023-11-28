@@ -19,6 +19,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
       placement,
     });
   };
+  console.log('price: ', expert?.price);
   const [form] = Form.useForm();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -47,48 +48,43 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
   };
 
   const [options, setOptions] = useState([]);
+
   useEffect(() => {
-    // Get the current date
-    const today = new Date();
+    if (expert?.price) {
+      const prices = expert?.price;
 
-    // Generate options
-    const newOptions = [
-      { value: null, metadata: '5-d', label: '5 days' },
-      { value: null, metadata: '4-d', label: '4 days' },
-      { value: null, metadata: '3-d', label: '3 days' },
-      { value: null, metadata: '2-d', label: '2 days' },
-      { value: null, metadata: '1-d', label: '1 day' },
-    ].map(option => {
-      const daysToAdd = parseInt(option.metadata, 10);
+      const today = new Date();
+      const newOptions = prices.map(price => {
+        const daysToAdd = price.day;
 
-      const newDate = new Date(today);
-      newDate.setDate(today.getDate() + daysToAdd);
+        const newDate = new Date(today);
+        newDate.setDate(today.getDate() + daysToAdd);
 
-      const newDateStr = newDate.toISOString().split('T')[0];
-      option.value = newDateStr;
-      option.label = `${option.label} (${newDateStr})`;
+        const newDateStr = newDate.toISOString().split('T')[0];
+        return {
+          value: price.id,
+          metadata: `${price.day}-d`,
+          label: `${price.day} days (${newDateStr}) - ${price.price} 000`,
+        };
+      });
 
-      return option;
-    });
-
-    setOptions(newOptions);
+      setOptions(newOptions);
+    }
   }, []);
+
   const resumeOptions = resumes.map(resume => ({
     value: resume.id,
     label: resume.resumeName,
   }));
   const onFinish = async values => {
     // console.log('resumeId: ', resumeId);
-    const dateString = values.deadline;
-    const convertedDate = new Date(dateString);
 
-    console.log(convertedDate.toISOString());
-    values.deadline = convertedDate.toISOString();
-    values.price = expert.price;
+    // values.deadline = convertedDate.toISOString();
     console.log(values);
     try {
-      const result = await createReview(values.resume, expert.id, values);
-      openNotification('bottomRight', `Create: ${result.id}`);
+      const result = await createReview(values.resume, expert.id, values.optionId, values);
+      openNotification('bottomRight', `Send request successful.`);
+      setIsOpen(false);
     } catch (error) {
       openNotification('bottomRight', `Error: ${error.response.data}`);
     }
@@ -151,17 +147,16 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                             </h5>
                             <div>
                               <h1 className="text-4xl">
-                                $ {expert?.price}{' '}
                                 <sup className="text-sm align-top top-0">total</sup>
                               </h1>
                               <span className="text-xs mt-1 mb-6 leading-4 block">
-                                Select your resume,&nbsp;5 days (November 16th 2023), Student
+
                               </span>
                             </div>
                             <ul className="mb-6">
                               <li className="text-xs mb-2 py-0.5 min-w-[200px]">
                                 <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />
-                                Rezi Score 90 or above
+                                 Score 90 or above
                               </li>
                               <li className="text-xs mb-2 py-0.5 min-w-[200px]">
                                 <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />{' '}
@@ -180,7 +175,6 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                             <h4>Questions?</h4>
                             <span className="text-xs mt-1 mb-6 leading-4 block">
                               <a
-                                href="https://www.rezi.ai/rezi-docs/rezi-expert-review-explained"
                                 target="_blank"
                                 style={{ color: 'white' }}
                               >
@@ -190,9 +184,9 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                             </span>
                           </div>
                           <div className="p-9 w-[70%]" style={{ color: 'black' }}>
-                            <h2>Rezi Resume Review</h2>
+                            <h2>Resume Review</h2>
                             <p>
-                              A Rezi expert can help you polish your resume into exactly what
+                              A expert can help you polish your resume into exactly what
                               recruiters are looking for. We'll correct all formatting, content, and
                               grammar errors directly in your resume.
                             </p>
@@ -215,18 +209,19 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                     },
                                   ]}
                                 >
-                                  <Select style={{ width: 200 }} options={resumeOptions} />
+                                  <Select style={{ width: 300 }} options={resumeOptions} />
                                 </Form.Item>
                                 <Form.Item
-                                  name="deadline"
+                                  name="optionId"
                                   label="Deadline"
                                   rules={[
                                     {
                                       required: true,
                                     },
                                   ]}
+
                                 >
-                                  <Select style={{ width: 200 }} options={options} />
+                                  <Select style={{ width: 300 }} options={options} />
                                 </Form.Item>
 
                                 <Form.Item

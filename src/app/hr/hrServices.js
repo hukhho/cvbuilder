@@ -29,6 +29,16 @@ const updateHrPublic = async (postingId, data) => {
   }
 };
 
+// const getJobPosting = async (postingId, data) => {
+//   try {
+//     const userId = getUserIdFromCookie();
+//     const response = await axiosInstance.put(`/hr/${userId}/job-posting/${postingId}`, data);
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
 const getHrPostList = async () => {
   try {
     const userId = getUserIdFromCookie();
@@ -36,6 +46,38 @@ const getHrPostList = async () => {
       `/hr/${userId}/job-postings?sortBy=view&sortOrder=asc`,
     );
     return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getHrApplication = async () => {
+  try {
+    const userId = getUserIdFromCookie();
+    // const response = await axiosInstance.get(
+    //   `/hr/${userId}/job-postings?sortBy=view&sortOrder=asc`,
+    // );
+    // return response.data;
+    return [
+      {
+        id: 1,
+        status: 'Reviced',
+        candidate: 'Pham Viet Thuan Thien',
+        cvId: '1',
+        coverLetterId: '1',
+        timestamp: '2023-11-28',
+        note: 'Lorem',
+      },
+      {
+        id: 2,
+        status: 'Reviced',
+        candidate: 'Pham Viet Thuan Thien2',
+        cvId: '2',
+        coverLetterId: '2',
+        timestamp: '2023-11-28',
+        note: 'Lorem2',
+      },
+    ];
   } catch (error) {
     throw error;
   }
@@ -107,4 +149,5 @@ export {
   updateHrConfig,
   getCandidateList,
   updateHrPublic,
+  getHrApplication,
 };

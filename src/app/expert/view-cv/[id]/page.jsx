@@ -4,7 +4,17 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Divider, Input, Modal, Result, notification } from 'antd';
+import {
+  Alert,
+  Button,
+  Card,
+  ConfigProvider,
+  Divider,
+  Input,
+  Modal,
+  Result,
+  notification,
+} from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import CVLayout from '@/app/components/Templates/CVLayout';
@@ -39,6 +49,7 @@ import CertificationSection from '@/app/components/Templates/SectionComponents/C
 import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import { getRequestList } from '../../expertServices';
+import moment from 'moment';
 
 const mockData = {
   data: {
@@ -211,6 +222,7 @@ export default function FinishUp({ params }) {
     });
   };
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState();
 
   const [finishUpData, setFinishUpData] = useState(null);
   const [auditData, setAuditData] = useState(null);
@@ -232,6 +244,15 @@ export default function FinishUp({ params }) {
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
+
+  const filteredEducations = educations?.filter(education => education.isDisplay === true);
+  const filteredProjects = projects?.filter(project => project.isDisplay === true);
+  const filteredInvolvements = involvements?.filter(involvement => involvement.isDisplay === true);
+  const filteredCertifications = certifications?.filter(
+    certification => certification.isDisplay === true,
+  );
+  const filteredSkills = skills?.filter(skill => skill.isDisplay === true);
+  const filteredExperiences = experiences?.filter(experience => experience.isDisplay === true);
 
   // to store order of some user's information
   const [experiencesOrder, setExperiencesOrder] = useState([]);
@@ -437,7 +458,7 @@ export default function FinishUp({ params }) {
     {
       id: 'summary',
       component: <SummarySection templateType={templateSelected} summary={summary} />,
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
     {
@@ -445,69 +466,76 @@ export default function FinishUp({ params }) {
       component: (
         <ExperiencesSection
           templateType={templateSelected}
-          experiences={experiences}
+          experiences={filteredExperiences}
           onComment={handleMouseUp}
           onChangeOrder={sortedExperiences => {
             console.log('New order of experiences:', sortedExperiences);
           }}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: experiences !== null,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredExperiences !== null,
     },
     {
       id: 'educations',
-      component: <EducationsSection templateType={templateSelected} educations={educations} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: educations !== null,
+      component: (
+        <EducationsSection templateType={templateSelected} educations={filteredEducations} />
+      ),
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredEducations !== null,
     },
     {
       id: 'involvements',
-      component: <InvolvementSection templateType={templateSelected} involvements={involvements} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: involvements !== null,
+      component: (
+        <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
+      ),
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredInvolvements !== null,
     },
     {
       id: 'projects',
-      component: <ProjectSection templateType={templateSelected} projects={projects} />,
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: projects != null,
+      component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredProjects != null,
     },
     {
       id: 'certifications',
       component: (
-        <CertificationSection templateType={templateSelected} certifications={certifications} />
+        <CertificationSection
+          templateType={templateSelected}
+          certifications={filteredCertifications}
+        />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: certifications !== null,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredCertifications !== null,
     },
     {
       id: 'skills',
       component: (
         <SkillsSection
           templateType={templateSelected}
-          skills={skills}
+          skills={filteredSkills}
           onChangeOrder={handleSkillsOrderChange}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
-      canBeDisplayed: skills !== null,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredSkills !== null,
     },
   ];
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
-      return educations && educations.length > 0;
+      return filteredEducations && filteredEducations.length > 0;
     } else if (section.id === 'experiences') {
-      return experiences && experiences.length > 0;
+      return filteredExperiences && filteredExperiences.length > 0;
     } else if (section.id === 'projects') {
-      return projects && projects.length > 0;
+      return filteredProjects && filteredProjects.length > 0;
     } else if (section.id === 'involvements') {
-      return involvements && involvements.length > 0;
+      return filteredInvolvements && filteredInvolvements.length > 0;
     } else if (section.id === 'certifications') {
-      return certifications && certifications.length > 0;
+      return filteredCertifications && filteredCertifications.length > 0;
     } else if (section.id === 'skills') {
-      return skills && skills.length > 0;
+      return filteredSkills && filteredSkills.length > 0;
     } else if (section.id === 'summary') {
       return summary && summary !== null && summary.trim() !== ''; // Include if 'summary' is not null and not an empty string
     }
@@ -569,6 +597,14 @@ export default function FinishUp({ params }) {
         const data1 = await getAudit(cvId);
         setAuditData(data1);
       } catch (error) {
+        if (error.response.data.error) {
+          setErrorMessage(error.response.data.error);
+        } else if (error.response.data) {
+          setErrorMessage(error.response.data);
+        } else {
+          setErrorMessage('Some thing went wrong!');
+        }
+
         console.error('Error fetching FinishUp data:', error);
       }
     };
@@ -595,6 +631,7 @@ export default function FinishUp({ params }) {
     } catch (error) {
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
+      openNotification('bottomRight', error.response.data);
     }
   };
   const handleSaveDraft = async () => {
@@ -635,12 +672,15 @@ export default function FinishUp({ params }) {
 
           setSummary(data.summary);
         } catch (error) {
+          setErrorMessage(error.response.data);
           console.error('Error fetching FinishUp data:', error);
         }
       };
 
       fetchData();
     } catch (error) {
+      setErrorMessage(error.response.data);
+
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
     }
@@ -664,6 +704,9 @@ export default function FinishUp({ params }) {
           content={
             <div className="flex mt-8">
               {contextHolder}
+              {errorMessage && (
+                <Alert message="Error Text" description={errorMessage} type="error" />
+              )}
               {finishUpData && showFinishupCV ? (
                 <></>
               ) : (
@@ -733,7 +776,12 @@ export default function FinishUp({ params }) {
                           <div style={{ textAlign: 'left' }}>
                             <div>Name: {dataRequest?.name}</div>
                             <div>Note: {dataRequest?.note}</div>
-                            <div>Deadline: {dataRequest?.deadline}</div>
+                            <div>
+                              Deadline: <div> {moment(dataRequest?.deadline).fromNow()}</div>{' '}
+                              <div style={{ color: 'gray', fontSize: '11px' }}>
+                                {moment(dataRequest?.deadline).format('HH:mm:ss DD/MM/YYYY')}
+                              </div>{' '}
+                            </div>
                           </div>
                         </div>
                       </Card>

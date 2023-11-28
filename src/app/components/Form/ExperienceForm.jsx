@@ -291,17 +291,17 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     setIsAiWrite(true);
     setIsAi(true);
 
-    const fakeData = {
-      data: {
-        reply: [
-          '• This content is make from chatgpt 1',
-          '• This content is make from chatgpt 2',
-          '• This content is make from chatgpt 3',
-        ],
-      },
-    };
+    // const fakeData = {
+    //   data: {
+    //     reply: [
+    //       '• This content is make from chatgpt 1',
+    //       '• This content is make from chatgpt 2',
+    //       '• This content is make from chatgpt 3',
+    //     ],
+    //   },
+    // };
     console.log('setReplyContent:');
-    setReplyContent(fakeData.data.reply);
+    // setReplyContent(fakeData.data.reply);
 
     // Mark the selected text (you can customize this part)
     // const markedText = `<mark>${selectedText}</mark>`;
@@ -341,18 +341,26 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
     try {
       const data = {
-        content: selectedTextState,
-        improvement: 'experience',
+        jobTitle: experience?.role ? experience?.role : 'ProjectManager',
+        bullet: selectedTextState,
       };
-      await createAIWriter(data);
+      const result = await createAIWriter(data);
+      console.log('result: ', result);
+      // const fakeData = {
+      //   data: {
+      //     reply: [
+      //       '• This content is make from chatgpt 1',
+      //       '• This content is make from chatgpt 2',
+      //       '• This content is make from chatgpt 3',
+      //     ],
+      //   },
+      // };
+      const replyArray = result.reply.split('\n');
 
+      // Create an array of strings with the desired format
       const fakeData = {
         data: {
-          reply: [
-            '• This content is make from chatgpt 1',
-            '• This content is make from chatgpt 2',
-            '• This content is make from chatgpt 3',
-          ],
+          reply: replyArray.map((point, index) => `${point.replace("- ", "• ")}`),
         },
       };
       console.log('setReplyContent:');
@@ -381,28 +389,28 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           error,
       );
 
-      const fakeData = {
-        data: {
-          reply: [
-            '• This content is make from chatgpt 1',
-            '• This content is make from chatgpt 2',
-            '• This content is make from chatgpt 3',
-          ],
-        },
-      };
-      console.log('setReplyContent:');
-      setReplyContent(fakeData.data.reply);
-      setIsOpen(true);
+      // const fakeData = {
+      //   data: {
+      //     reply: [
+      //       '• This content is make from chatgpt 1',
+      //       '• This content is make from chatgpt 2',
+      //       '• This content is make from chatgpt 3',
+      //     ],
+      //   },
+      // };
+      // console.log('setReplyContent:');
+      // setReplyContent(fakeData.data.reply);
+      // setIsOpen(true);
 
-      const textarea = inputRef.current;
-      console.log('textarea: ', textarea);
-      textarea.selectionStart = selectionStartState;
-      console.log('textarea.selectionStart: ', textarea.selectionStart);
-      textarea.selectionEnd = selectionEndState;
-      console.log('textarea.selectionEnd: ', textarea.selectionEnd);
+      // const textarea = inputRef.current;
+      // console.log('textarea: ', textarea);
+      // textarea.selectionStart = selectionStartState;
+      // console.log('textarea.selectionStart: ', textarea.selectionStart);
+      // textarea.selectionEnd = selectionEndState;
+      // console.log('textarea.selectionEnd: ', textarea.selectionEnd);
 
-      textarea.setSelectionRange(selectionStartState, selectionEndState);
-      textarea.focus();
+      // textarea.setSelectionRange(selectionStartState, selectionEndState);
+      // textarea.focus();
     }
   };
 
@@ -637,18 +645,19 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               >
                 {aiContent && (
                   <div
-                    className="wrapper"
+                    className="wrapper flex flex-col"
                     id="experience-section-form-4-ghost"
                     style={{ height: 'auto', zIndex: 99, width: '100%' }}
                   >
                     <span className="" dangerouslySetInnerHTML={{ __html: aiContent }} />
+
                     <div className="mt-4">
                       AI Content:
                       <div className="flex flex-col">
                         {replyContent.map((reply, index) => {
                           return (
                             <div className="mt-2" style={{ borderRadius: '10px' }}>
-                              {reply}{' '}
+                              {reply}
                               <button type="button" onClick={e => handleApplyAiWriter(reply)}>
                                 <FontAwesomeIcon icon={faCopy} />
                               </button>
@@ -657,8 +666,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                         })}
                       </div>
                     </div>
-                    <span className="src-components-AutocompleteGpt3--g6n8ctA75GA=" />
-                    <div className="flex" style={{ width: '100px' }}>
+
+                    <div className="flex" style={{ width: '50px' }}>
                       <button
                         onClick={handleApplyAiContent}
                         className="button bg-blue-500 mt-8"

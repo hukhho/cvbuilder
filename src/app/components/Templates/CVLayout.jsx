@@ -120,7 +120,6 @@ const CVLayout = React.forwardRef(
     };
 
     const elementRef = useRef(null); // Reference to the HTML element to be converted
-    const captureRef = useRef();
     const captureOptions = {
       scale: 10, // Increase the scale for higher resolution
       useCORS: true, // Enable Cross-Origin Resource Sharing if needed
@@ -143,6 +142,7 @@ const CVLayout = React.forwardRef(
     //     pdf.save(`${new Date().toISOString()}.pdf`);
     //   });
     // };
+    const captureRef = useRef();
     const CaptureScreenshot = () => {
       console.log("cap")
       try {

@@ -264,17 +264,17 @@ const HRPost = () => {
                   </Form.Item>
                   <div className="">
                     <Form.Item name="companyName" label="COMPANY NAME">
-                      <Input placeholder="Lorem" disabled />
+                      <Input placeholder="Google" />
                     </Form.Item>
                     <Form.Item name="location" label="COMPANY LOCATION">
-                      <Input placeholder="Lorem" disabled />
+                      <Input placeholder="New York" />
                     </Form.Item>
                     <Form.Item name="avatar" label="COMPANY AVATAR">
-                      <Avatar />
+                      <Input />
                     </Form.Item>
                   </div>
                   <Form.Item name="about" label="About">
-                    <Input.TextArea disabled placeholder="About the company" rows={10} />
+                    <Input.TextArea placeholder="About the company" rows={10} />
                   </Form.Item>
                   <Form.Item name="" className="" label="SALARY">
                     <Select

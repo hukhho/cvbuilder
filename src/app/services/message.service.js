@@ -32,7 +32,7 @@ export const getProtectedResource = async accessToken => {
 
   // const { data, error } = await callExternalApi({ config });
   try {
-    const response = await axiosInstanceAuth.get('/api/messages/protected');
+    const response = await axiosInstanceAuth.get('/api/messages/protected123');
     return {
       data: response.data || null,
       error: null,

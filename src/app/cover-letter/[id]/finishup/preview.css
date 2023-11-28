@@ -379,7 +379,7 @@
 
 .preview {
     background: white;
-    border: 1.5rem solid var(--color-grey-100);
+    /* border: 1.5rem solid #e7e7e7; */
     overflow: hidden;
 
     &[data-size="large"] {

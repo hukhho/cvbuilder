@@ -9,100 +9,82 @@ import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { getResumes } from '@/app/utils/indexService';
 
 import { UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
-import { getReviewRequestsByCandiate } from '../../new/reviewService';
+import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
+import { getHrApplication, getHrPostList } from '../hrServices';
+import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
-import moment from 'moment';
 
 const { Title } = Typography;
 const columns = [
-  {
-    title: 'Resume Name',
-    dataIndex: 'resumeName',
-    render: (text, record) => <Link href={`/review/view-response/${record.id}`}>{text} </Link>,
-  },
-  {
-    title: 'Candidate',
-    dataIndex: 'name',
-    render: text => (
-      <div>
-        {' '}
-        <Avatar icon={<UserOutlined />} /> {text}
-      </div>
-    ),
-  },
-  {
-    title: 'Note',
-    dataIndex: 'note',
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    render: text => <div>{text}$</div>,
-    sorter: {
-      compare: (a, b) => a.price - b.price,
-      multiple: 3,
-    },
-  },
+  // {
+  //   title: 'Job posting',
+  //   dataIndex: 'title',
+  //   render: text => <a>{text}</a>,
+  // },
   {
     title: 'Status',
     dataIndex: 'status',
     render: text => {
-      if (text === 'Waiting') {
-        return <Badge status="warning" text={text} />;
+      if (text === 'Published') {
+        return <Badge status="success" text={text} />;
       }
-      if (text === 'Processing') {
+      if (text === 'Draft') {
         return <Badge status="warning" text={text} />;
       }
       if (text === 'Overdue') {
         return <Badge status="error" text={text} />;
       }
-      if (text === 'Done') {
-        return <Badge status="success" text={text} />;
+      if (text === 'Unpiblish') {
+        return <Badge status="warning" text={text} />;
+      }
+      if (text === 'Disable') {
+        return <Badge status="warning" text={text} />;
       }
       return <Badge status="warning" text={text} />;
     },
   },
   {
-    title: 'Receive day',
-    dataIndex: 'receivedDate',
-    sorter: {
-      compare: (a, b) => a.revicedDay - b.revicedDay,
-      multiple: 2,
-    },
-    render: (text, record) => (
-      <div className="flex flex-col">
-        <div> {moment(record.receivedDate).fromNow()}</div>{' '}
-        <div style={{ color: 'gray', fontSize: '11px' }}>
-          {moment(record.receivedDate).format('HH:mm:ss DD/MM/YYYY')}
-        </div>{' '}
-      </div>
-    ),
+    title: 'Candidate',
+    dataIndex: 'candidate',
   },
   {
-    title: 'Deadline',
-    dataIndex: 'deadline',
-    sorter: {
-      compare: (a, b) => a.deadline - b.deadline,
-      multiple: 1,
-    },
-    render: (text, record) => (
-      <div className="flex flex-col">
-        <div> {moment(record.deadline).fromNow()}</div>{' '}
-        <div style={{ color: 'gray', fontSize: '11px' }}>
-          {moment(record.deadline).format('HH:mm:ss DD/MM/YYYY')}
-        </div>{' '}
-      </div>
-    ),
+    title: 'Cv',
+    dataIndex: 'cvId',
+    render: text => <a><Link href={`/hr/view-cv/${text}`}>{text}</Link> </a>,
+
   },
+  {
+    title: 'Cover Letter',
+    dataIndex: 'coverLetterId',
+  },
+
+  {
+    title: 'Date Application',
+    dataIndex: 'timestamp',
+    // sorter: {
+    //   compare: (a, b) => a.revicedDay - b.revicedDay,
+    //   multiple: 2,
+    // },
+  },
+  {
+    title: 'note',
+    dataIndex: 'note',
+  },
+  // {
+  //   title: 'Action',
+  //   dataIndex: 'id',
+  //   render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
+
+  // },
 ];
-const statuses = ['Waiting', 'Overdue', 'Done'];
-const dateRandome = ['3 days ago', 'Next Tuesday'];
+// const statuses = ['Waiting', 'Overdue', 'Done'];
+// const dateRandome = ['3 days ago', 'Next Tuesday'];
 
 // for (let i = 0; i < 100; i++) {
 //   const price = Math.floor(Math.random() * 10) + 1;
@@ -123,7 +105,7 @@ const dateRandome = ['3 days ago', 'Next Tuesday'];
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'MY REVIEWS': true,
+    'APPLICATION LIST': true,
   });
   const initialData = [];
 
@@ -134,9 +116,11 @@ const Home = () => {
   const fetchData = async () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getReviewRequestsByCandiate();
+      const fetchedDataFromAPI = await getHrApplication();
       setData(fetchedDataFromAPI);
-    } catch (error) {}
+    } catch (error) {
+      console.log('getReviewRequestsByCandiate:Error: ', error);
+    }
   };
 
   useEffect(() => {
@@ -151,16 +135,16 @@ const Home = () => {
         selected="3"
         userHeader={
           <>
-            <UserHeaderReview initialEnabledCategories={enabledCategories} />
+            <HeaderHR initialEnabledCategories={enabledCategories} />
           </>
         }
         content={
           <div className="container mt-16" style={{ width: '80%' }}>
             <div style={{ textAlign: 'left' }}>
-              <Title level={5}>CV Review Table</Title>
+              {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-              <Input className="" placeholder="Search the resume" />;
+              <Input className="" placeholder="Search the candiatename" />;
             </div>
             <div className="!p-0 mb-5 card">
               <div className="">

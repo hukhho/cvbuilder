@@ -1,7 +1,19 @@
 /* eslint-disable no-shadow */
 
 import React, { useEffect, useState } from 'react';
-import { Button, Col, DatePicker, Form, Input, notification, Row, Select, Slider } from 'antd';
+import {
+  Alert,
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  notification,
+  Row,
+  Select,
+  Slider,
+  Spin,
+} from 'antd';
 
 import DataService from '@/app/utils/dataService';
 import { createCoverLetter } from './coverLetterService';
@@ -16,7 +28,7 @@ import { useRouter } from 'next/navigation';
 
 const { TextArea } = Input;
 
-const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
+const CoverLetterFormV2 = ({ coverLetterId, data, onCreated }) => {
   const router = useRouter();
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
@@ -27,21 +39,6 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
     });
   };
   const [form] = Form.useForm();
-  const [listResumes, setListResumes] = useState();
-  const fetchResumes = async () => {
-    try {
-      // Simulate fetching resumes (replace with your actual fetch logic)
-      const fetchedResumes = await getResumes();
-
-      // Update state with fetched resumes and mock cards
-      setListResumes(fetchedResumes);
-    } catch (error) {
-      console.error('There was an error fetching resumes', error);
-    }
-  };
-  useEffect(() => {
-    fetchResumes();
-  }, []);
 
   const [content, setContent] = useState();
   const [loading, setLoading] = useState(false);
@@ -63,21 +60,19 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
       console.log('handleSubmit, values: ', values);
 
       setLoading(true);
+
       openNotification('bottomRight', 'Submiting...');
 
-      const contentResponse = await createCoverLetter(cvId, coverLetterId, values);
+      const contentResponse = await createCoverLetter(values.cvId, coverLetterId, values);
       console.log('content state: ', content);
       console.log('content.data.reply: ', contentResponse.reply);
 
-      // form.resetFields();
-      setContent(contentResponse.reply);
       if (contentResponse.reply) {
-        setLoading(false);
+        openNotification('bottomRight', 'Done, redirecting!!!');
         router.push(`/cover-letter/${coverLetterId}/content`);
-        // setIsShowContent(true);
       }
       console.log('content state: ', content);
-
+      setLoading(false);
       // onCreated();
     } catch (error) {
       console.log('Submit. Error:', error);
@@ -128,6 +123,14 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
     return `${value}`; // Default case
   };
 
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        cvId: data.cvId,
+      });
+    }
+  }, [data, form]);
+
   return (
     <div className="w-full">
       {contextHolder}
@@ -146,8 +149,7 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
           >
             <Input style={stylesInput} placeholder="0.2" />
           </Form.Item> */}
-
-          <Form.Item
+          {/* <Form.Item
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
@@ -172,9 +174,9 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
                 </Select.Option>
               ))}
             </Select>
-          </Form.Item>
+          </Form.Item> */}
 
-          {/* <Form.Item
+          <Form.Item
             name="cvId"
             label={
               <label style={{}}>
@@ -184,8 +186,8 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
               </label>
             }
           >
-            <Input style={stylesInput} placeholder="cvId" />
-          </Form.Item> */}
+            <Input disabled />
+          </Form.Item>
           <Form.Item
             name="title"
             label={
@@ -256,6 +258,10 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
                 overflow: 'hidden',
                 resize: 'none',
               }}
+              autoSize={{
+                minRows: 2,
+                maxRows: 10,
+              }}
               className="inputEl"
               rows={6}
               placeholder="Copy and paste the job description"
@@ -275,9 +281,23 @@ const CoverLetterFormV2 = ({ coverLetterId, onCreated }) => {
             onChange={val => setSlider(val)}
           />
 
-          <Button htmlType="submit" className="form-button button" disabled={loading}>
+          <Button
+            hidden={loading}
+            htmlType="submit"
+            className="form-button button"
+            disabled={loading}
+          >
             {loading ? 'WAIT TO CREATING COVER LETTER' : 'CREATE CONTENT COVER LETTER '}
           </Button>
+          {loading && (
+            <Spin spinning={loading}>
+              <Alert
+                type="info"
+                message="Content Cover Letter is writing..."
+                description="Wait some second..."
+              />
+            </Spin>
+          )}
         </Form>
       )}
 

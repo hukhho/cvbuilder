@@ -9,9 +9,7 @@ export const createAIWriter = async data => {
   try {
     const queryString = convertContactDataToQueryString(data);
 
-    const response = await axiosInstance.post(`/chat-gpt/cover-letter/revise?${queryString}`, {
-      timeout: 20000,
-    });
+    const response = await axiosInstance.post('/chat-gpt/cv/experience/re-writer', data);
     return response.data;
     // return {
     //   reply:

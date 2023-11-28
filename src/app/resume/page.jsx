@@ -35,7 +35,6 @@ const ResumeIndex = () => {
       // Simulate fetching resumes (replace with your actual fetch logic)
       const fetchedResumes = await getResumes();
 
-      // Update state with fetched resumes and mock cards
       setResumes(fetchedResumes);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
@@ -43,8 +42,10 @@ const ResumeIndex = () => {
   };
 
   useEffect(() => {
-    fetchResumes();
-  }, []);
+    if (!resumes.length) {
+      fetchResumes();
+    }
+  }, [resumes]);
 
   const onCreated = () => {
     console.log('onCreated hihi');

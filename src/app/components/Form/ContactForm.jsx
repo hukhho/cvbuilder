@@ -27,10 +27,8 @@ const ContactForm = ({ cvId, onCreated, data }) => {
         email: data.email,
         phone: data.phone,
         linkin: data.linkin,
-        permissionWebsite: data.permissionWebsite,
+        personalWebsite: data.personalWebsite,
         country: data.country,
-        state: data.state,
-        city: data.city,
       };
 
       console.log('Form fields set with data:', data);
@@ -154,7 +152,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
 
           <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
-              name="permissionWebsite"
+              name="personalWebsite"
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                   <div className="flex gap-2 items-center text-xs">

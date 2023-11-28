@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, ConfigProvider, DatePicker, Form, Input, Select } from 'antd';
+import { Button, ConfigProvider, DatePicker, Form, Input, notification, Select } from 'antd';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
@@ -20,13 +20,21 @@ import updateCoverLetter from '@/app/components/Form/updateCoverLetterService';
 const Content = ({ params }) => {
   const router = useRouter();
   const [form] = Form.useForm();
-
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Thong bao',
+      description: message,
+      placement,
+    });
+  };
   const [enabledCategories, setEnabledCategories] = useState({
     CONTENT: true,
   });
   const [contentData, setContentData] = useState();
 
   const [content, setContent] = useState();
+  const [cvId, setCvId] = useState();
   const [loading, setLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isShowContent, setIsShowContent] = useState(false);
@@ -38,13 +46,14 @@ const Content = ({ params }) => {
     console.log(dateString);
     setDate(dateString);
   };
-  const cvId = params.id;
+  const coverLetterId = params.id;
   const fetchContent = async () => {
     try {
       // Simulate fetching resumes (replace with your actual fetch logic)
       const contentFetch = await getContent(params.id);
 
       setContentData(contentFetch.description);
+      setCvId(contentFetch.cvId);
       // Assuming contentFetch.date is in the format '2023-11-01'
       const dateObject = new Date(contentFetch.date);
       contentFetch.date = null;
@@ -73,7 +82,7 @@ const Content = ({ params }) => {
         description: content,
       };
 
-      // const response = await updateCoverLetter(params.id, submitUpdate);
+      const response = await updateCoverLetter(cvId, params.id, submitUpdate);
 
       // console.log('handleSubmit, values: ', values);
       // console.log('content state: ', content);
@@ -91,7 +100,7 @@ const Content = ({ params }) => {
         <UserCVBuilderLayout
           userHeader={
             <UserCoverLetterBuilderHeader
-              coverLetterId={cvId}
+              coverLetterId={coverLetterId}
               initialEnabledCategories={enabledCategories}
             />
           }
@@ -99,6 +108,7 @@ const Content = ({ params }) => {
             <div className="flex h-screen">
               <div className="flex flex-col p-4">
                 <div className="w-full">
+                  {contextHolder}
                   <div className="relative mt-10">
                     <Form
                       onFinish={handleSubmitSave}

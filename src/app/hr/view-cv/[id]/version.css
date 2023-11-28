@@ -1,0 +1,62 @@
+.templateSelector {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    /* background: rgb(0 0 0 / 30%); */
+    height: 100vh;
+    width: 100vw;
+    z-index: 800;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+    &[data-dock="true"] {
+      right: 0;
+      opacity: 1;
+      .selector {
+        right: 0;
+      }
+    }
+    & .selector {
+      background: #fbfbfb;
+      height: 100vh;
+      min-width: 270px;
+      max-width: 270px;
+      width: 40%;
+      position: fixed;
+      top: 0;
+      right: -760px;
+      transition: all 0.5s ease-in-out;
+      &[data-dock="true"] {
+        right: 0;
+      }
+      & .header {
+        background: #fff;
+        padding: 1em;
+        & .arrow {
+          cursor: pointer;
+          position: absolute;
+          font-size: 21px;
+          font-weight: 300;
+          top: 23px;
+          left: 17px;
+        }
+        & .close {
+          cursor: pointer;
+          position: absolute;
+          font-size: 21px;
+          font-weight: 300;
+          top: 20px;
+          right: 17px;
+        }
+        & h3 {
+          font-size: 1em;
+        }
+      }
+      & .selector-list {
+        overflow-x: scroll;
+        height: 100%;
+        background: #fbfbfb;
+        padding: 1em;
+      }
+    }
+  }
+  

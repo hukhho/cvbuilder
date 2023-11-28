@@ -20,17 +20,15 @@ import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
 import './gen.css';
 import './version.css';
-import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
 import Ats from './Ats';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBackwardStep, faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
 import AiFeedback from './AiFeedback';
-import Involvement from '../involvement/page';
 import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
 import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
-import Certification from '../certification/page';
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 import Link from 'next/link';
+import HeaderHR from '@/app/components/HeaderHR';
 
 const mockData = {
   data: {
@@ -200,12 +198,8 @@ export default function FinishUp({ params }) {
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState({
-    'FINISH UP': true,
+    'APPLICATION LIST': true,
   });
-
-  // useEffect(() => {
-  //   setShowFinishupCV(false);
-  // }, []);
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
@@ -372,7 +366,7 @@ export default function FinishUp({ params }) {
           handleSummaryChange={handleSummaryChange}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
     {
@@ -397,7 +391,7 @@ export default function FinishUp({ params }) {
           handleDescriptionChange={handleDescriptionChange}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredExperiences !== null,
     },
     {
@@ -405,7 +399,7 @@ export default function FinishUp({ params }) {
       component: (
         <EducationsSection templateType={templateSelected} educations={filteredEducations} />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
     },
     {
@@ -413,13 +407,13 @@ export default function FinishUp({ params }) {
       component: (
         <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
     },
     {
       id: 'projects',
       component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
     },
     {
@@ -430,7 +424,7 @@ export default function FinishUp({ params }) {
           certifications={filteredCertifications}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
     },
     {
@@ -443,7 +437,7 @@ export default function FinishUp({ params }) {
           canBeDisplayed={filteredSkills !== null}
         />
       ),
-      canBeDrag: true, // Set to true if this section can be dragged
+      canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
     },
   ];
@@ -476,9 +470,9 @@ export default function FinishUp({ params }) {
     const fetchData = async () => {
       try {
         const cvId = params.id;
-        const data = await getFinishUp(cvId);
-
-        console.log('FinishUp data: ', data);
+        const fetched = await getFinishUp(cvId);
+        const data = fetched.cvBody;
+        console.log('FinishUp data.cvBody: ', data);
 
         setFinishUpData(data);
 
@@ -489,8 +483,8 @@ export default function FinishUp({ params }) {
 
         setSummary(data.summary);
 
-        const data1 = await getAudit(cvId);
-        setAuditData(data1);
+        // const data1 = await getAudit(cvId);
+        // setAuditData(data1);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
       }
@@ -498,76 +492,6 @@ export default function FinishUp({ params }) {
 
     fetchData();
   }, []);
-
-  const handleSave = async () => {
-    try {
-      const cvId123 = params.id;
-
-      setShowFinishupCV(false);
-      finishUpData.templateType = templateSelected;
-      await saveCv(cvId123, finishUpData); // Call the syncUp function
-      console.log('Save completed.');
-
-      const fetchData = async () => {
-        try {
-          const data = await getFinishUp(cvId123);
-          console.log('FinishUp data: ', data);
-
-          setFinishUpData(data);
-
-          setShowFinishupCV(true);
-
-          setTemplateSelected(data.templateType);
-          setToolbarState(data.cvStyle);
-
-          setSummary(data.summary);
-        } catch (error) {
-          console.error('Error fetching FinishUp data:', error);
-        }
-      };
-
-      fetchData();
-    } catch (error) {
-      console.error('Error during synchronization:', error);
-      // Handle errors or display an error message.
-    }
-  };
-
-  const handleSyncUp = async () => {
-    try {
-      const cvId123 = params.id;
-      setShowFinishupCV(false);
-
-      await syncUp(cvId123); // Call the syncUp function
-      console.log('Synchronization completed.');
-
-      const fetchData = async () => {
-        try {
-          const data = await getFinishUp(cvId123);
-          console.log('FinishUp data: ', data);
-
-          setFinishUpData(data);
-
-          setShowFinishupCV(true);
-
-          setTemplateSelected(data.templateType);
-          setToolbarState(data.cvStyle);
-
-          setSummary(data.summary);
-        } catch (error) {
-          console.error('Error fetching FinishUp data:', error);
-        }
-      };
-
-      fetchData();
-    } catch (error) {
-      console.error('Error during synchronization:', error);
-      // Handle errors or display an error message.
-    }
-  };
-  //   <div style={{ marginBottom: '12px' }}>
-  //   <Button onClick={handleSyncUp}>Sync Up</Button>
-  // </div>
 
   const [open, setOpen] = useState(false);
   const cvLayoutRef = useRef(null);
@@ -578,80 +502,38 @@ export default function FinishUp({ params }) {
     }
   };
 
-  const [isShowVersion, setIsShowVersion] = useState(false);
-  const [versions, setVersions] = useState();
-  const handleShowVersion = async () => {
-    setIsShowVersion(true);
-    const result = await getVersionsList(params.id);
-    setVersions(result);
-    console.log('version::result: ', result);
-  };
-  const handleHideVersion = () => {
-    setIsShowVersion(false);
-  };
-  const handleChooseVersion = versionId => {
-    console.log('versionId: ', versionId);
-  };
   return (
     <main>
       <ConfigProvider>
         <UserCVBuilderLayout
-          userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
-          }
+          userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
           content={
             <div className="flex">
               {showFinishupCV && (
                 <div className="mr-2 flex flex-col">
-                  {/* <Button type="primary" onClick={() => setOpen(true)}>
-                    Open Modal of 1000px width
-                  </Button> */}
-                  <Modal
-                    title=""
-                    centered
-                    open={open}
-                    onOk={() => setOpen(false)}
-                    onCancel={() => setOpen(false)}
-                    width={1000}
-                    className="custom"
-                  >
-                    <ScoreFinishUp data={auditData} />
-                  </Modal>
-                  <div
-                    style={
-                      {
-                        // background: 'white',
-                        // width: '100%',
-                      }
-                    }
-                  >
+                  <div>
                     <div style={{ width: '895px' }}>
-                      <FinishupToolbar
-                        handleChangeTemplateSelected={value => setTemplateSelected(value)}
-                        handleOpenModal={() => setOpen(true)}
-                        toolbarState={toolbarState}
-                        onToolbarChange={handleToolbarChange}
-                        currentTemplate={mockData.data.resume.resumeStyle}
-                      />
                       <div className="flex" style={{ justifyItems: 'center' }}>
+                        <Link href={'/hr/application'} passHref>
+                          <button
+                            style={{
+                              width: '120px',
+                              height: '30px',
+                              marginTop: '50px',
+                              marginLeft: '10px',
+                              marginBottom: '10px',
+                            }}
+                            className="button"
+                            type=""
+                          >
+                           Back to list
+                          </button>
+                        </Link>
                         <button
                           style={{
                             width: '60px',
                             height: '30px',
-                            marginTop: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSyncUp()}
-                        >
-                          Sync Up
-                        </button>
-                        <button
-                          style={{
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '10px',
+                            marginTop: '50px',
                             marginLeft: '10px',
                             marginBottom: '10px',
                           }}
@@ -660,20 +542,6 @@ export default function FinishUp({ params }) {
                           onClick={() => handleDownloadButtonClick()}
                         >
                           Download
-                        </button>
-                        <button
-                          style={{
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '10px',
-                            marginLeft: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSave()}
-                        >
-                          Save
                         </button>
                       </div>
                     </div>
@@ -688,100 +556,6 @@ export default function FinishUp({ params }) {
                   >
                     {filteredSections.map(section => section.canBeDisplayed && section.component)}
                   </CVLayout>
-                </div>
-              )}
-              {showFinishupCV && (
-                <div
-                  className="flex flex-col items-start"
-                  style={{ position: 'static', width: '360px' }}
-                >
-                  <div className="">
-                    <div style={{ marginLeft: '14px', maxHeight: '185px' }}>
-                      <VideoComponent />
-                    </div>
-                  </div>
-                  <div className="">
-                    <div
-                      className="askForReview card share-card"
-                      style={{ color: 'black', textAlign: 'left' }}
-                    >
-                      <h4>Expert Review</h4>
-                      <span>
-                        We'll correct all formatting, content, and grammar errors directly in your
-                        resume
-                      </span>
-                      <Link href="/review/list/expert" passHref>
-                        <button
-                          data-size="default"
-                          data-theme="default"
-                          data-busy="false"
-                          className=" button "
-                        >
-                          Ask for Expert Review
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
-
-                  <AiFeedback cvId={params.id} />
-                  <Ats cvId={params.id} />
-
-                  <button
-                    onClick={handleShowVersion}
-                    className="fixed z-50 right-0 bg-white pl-2 pr-1 py-2 border-l border-y border-gray-200 rounded-tl rounded-bl"
-                  >
-                    <FontAwesomeIcon icon={faHistory} />
-                  </button>
-                  {isShowVersion && (
-                    <div className="templateSelector" data-dock="true">
-                      <div className="drop-shadow selector">
-                        <div className="header">
-                          <div className="flex">
-                            <h3>
-                              <i className="fas fa-history mr-1" aria-hidden="true" /> Version
-                              History
-                              <sup className="ml-1 text-gray-400">beta</sup>
-                            </h3>
-                            <button onClick={handleHideVersion}>
-                              {' '}
-                              <FontAwesomeIcon className="close" icon={faTimes} />
-                            </button>
-                          </div>
-                        </div>
-                        <div className="selector-list">
-                          <nav className="flex flex-col pt-4 space-y-6" aria-label="Progress">
-                            <div className="flex flex-col space-y-3">
-                              <ol role="list">
-                                {versions?.map(version => (
-                                  <li key={version.id} className="pb-10 relative">
-                                    <div
-                                      className="absolute left-2.5 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
-                                      aria-hidden="true"
-                                    />
-                                    <a
-                                      onClick={() => handleChooseVersion(version.id)}
-                                      className="group relative flex items-center"
-                                    >
-                                      <span className="flex h-7 items-center">
-                                        <span className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 bg-white border-rezi-blue">
-                                          <span className="h-2.5 w-2.5 rounded-full bg-rezi-blue" />
-                                        </span>
-                                      </span>
-                                      <span className="ml-4 flex min-w-0 flex-col">
-                                        <span className="flex flex-col text-sm font-medium">
-                                          <span>{version.timestamp}</span>
-                                        </span>
-                                      </span>
-                                    </a>
-                                  </li>
-                                ))}
-                              </ol>
-                            </div>
-                          </nav>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
