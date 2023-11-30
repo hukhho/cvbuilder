@@ -7,7 +7,26 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ScoreFinishUp = ({ checked, onChange, data }) => {
-  const { content, optimization, practice } = data[0];
+  const {
+    scoreContent,
+    scorePractice,
+    scoreOptimization,
+    scoreFormat,
+    content,
+    optimization,
+    practice,
+  } = data[0];
+  // const { scoreContent, scorePractice, scoreOptimization, scoreFormat } = data;
+
+  // Apply scaling to each score
+  const scaledScoreContent = (parseInt(scoreContent, 10) / 100) * 352;
+  const scaledScorePractice = (parseInt(scorePractice, 10) / 100) * 352;
+  const scaledScoreOptimization = (parseInt(scoreOptimization, 10) / 100) * 352;
+  const scaledScoreFormat = (parseInt(scoreFormat, 10) / 100) * 352;
+
+  // Now you have the scaled scores
+  console.log('data.scoreContent: ', scaledScoreContent);
+
   const [activeSection, setActiveSection] = useState('Content');
   const handleButtonClick = section => {
     setActiveSection(section);
@@ -59,11 +78,12 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                     r={56}
                     cx={60}
                     cy={60}
-                    style={{ strokeDasharray: '249.806, 352' }}
+                    style={{ strokeDasharray: `${scaledScoreContent}, 352` }}
                   />
                 </svg>
               </div>
-              <div className="lh-gauge__percentage">70</div>
+
+              <div className="lh-gauge__percentage">{scoreContent}</div>
               <div className="lh-gauge__label">Content</div>
             </a>
           </div>
@@ -78,11 +98,11 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                     r={56}
                     cx={60}
                     cy={60}
-                    style={{ strokeDasharray: '323.636, 352' }}
+                    style={{ strokeDasharray: `${scaledScoreFormat} , 352` }}
                   />
                 </svg>
               </div>
-              <div className="lh-gauge__percentage">91</div>
+              <div className="lh-gauge__percentage">{scoreFormat}</div>
               <div className="lh-gauge__label">Format</div>
             </a>
           </div>
@@ -97,11 +117,11 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                     r={56}
                     cx={60}
                     cy={60}
-                    style={{ strokeDasharray: '3.45098, 352' }}
+                    style={{ strokeDasharray:  `${scaledScoreOptimization} , 352` }}
                   />
                 </svg>
               </div>
-              <div className="lh-gauge__percentage">0</div>
+              <div className="lh-gauge__percentage">{scoreOptimization}</div>
               <div className="lh-gauge__label">Optimization</div>
             </a>
           </div>
@@ -116,16 +136,16 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                     r={56}
                     cx={60}
                     cy={60}
-                    style={{ strokeDasharray: '335.004, 352' }}
+                    style={{ strokeDasharray:  `${scaledScorePractice} , 352` }}
                   />
                 </svg>
               </div>
-              <div className="lh-gauge__percentage">95</div>
+              <div className="lh-gauge__percentage">{scorePractice}</div>
               <div className="lh-gauge__label">Best practices</div>
             </a>
           </div>
           <div>
-            <a href="#audit-details" className="lh-gauge__wrapper lh-gauge__wrapper--average">
+            {/* <a href="#audit-details" className="lh-gauge__wrapper lh-gauge__wrapper--average">
               <div className="lh-gauge__svg-wrapper ">
                 <svg viewBox="0 0 120 120" className="lh-gauge">
                   <circle className="lh-gauge-base" r={56} cx={60} cy={60} />
@@ -141,7 +161,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
               </div>
               <div className="lh-gauge__percentage">78</div>
               <div className="lh-gauge__label">Application Ready</div>
-            </a>
+            </a> */}
           </div>
         </div>
       </section>

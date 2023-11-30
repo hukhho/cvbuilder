@@ -131,7 +131,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                   </Dialog.Title>
                   <div className="p-6">
                     <form onSubmit={handleFormSubmit}>
-                    <div className="resume">
+                    <div className="">
                         <label
                           className="!leading-[0px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
                           htmlFor="resumeName" // Add htmlFor with the correct id
