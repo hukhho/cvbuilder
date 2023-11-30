@@ -2,7 +2,19 @@
 
 import React, { forwardRef, use, useEffect, useRef, useState } from 'react';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
-import { Button, Card, Divider, Form, Input, InputNumber, Space, Switch, Typography } from 'antd';
+import {
+  Alert,
+  Button,
+  Card,
+  Divider,
+  Form,
+  Input,
+  InputNumber,
+  Space,
+  Spin,
+  Switch,
+  Typography,
+} from 'antd';
 import moment from 'moment';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
@@ -267,6 +279,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const initialFocusRef = React.useRef();
 
   const [markText, setMarkText] = useState('');
+  const [isAiLoading, setIsAiLoading] = useState('');
 
   const handleAiWriter = async () => {
     console.log('handleAiWriter');
@@ -344,8 +357,14 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         jobTitle: experience?.role ? experience?.role : 'ProjectManager',
         bullet: selectedTextState,
       };
+      setReplyContent([]);
+
+      setIsAiLoading(true);
+
       const result = await createAIWriter(data);
       console.log('result: ', result);
+      setIsAiLoading(false);
+
       // const fakeData = {
       //   data: {
       //     reply: [
@@ -355,16 +374,16 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       //     ],
       //   },
       // };
-      const replyArray = result.reply.split('\n');
+      // const replyArray = result.reply.split('\n');
 
       // Create an array of strings with the desired format
-      const fakeData = {
-        data: {
-          reply: replyArray.map((point, index) => `${point.replace("- ", "• ")}`),
-        },
-      };
+      // const fakeData = {
+      //   data: {
+      //     reply: replyArray.map((point, index) => `${point.replace("- ", "• ")}`),
+      //   },
+      // };
       console.log('setReplyContent:');
-      setReplyContent(fakeData.data.reply);
+      setReplyContent(result.reply);
       setIsOpen(true);
 
       const textarea = inputRef.current;
@@ -377,6 +396,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       textarea.setSelectionRange(selectionStartState, selectionEndState);
       textarea.focus();
     } catch (error) {
+      setIsAiLoading(false);
       console.error('Error:', error);
       // setMessage(message + " " + error.message)
       setMessage(
@@ -449,8 +469,11 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const handleCloseAiWriter = () => {
     // setInputValue(aiContent => aiContent.replace(regex, newContent));
     setAiContent();
+    setReplyContent([]);
+
     setIsAiWrite(false);
     setIsAi(false);
+
     // setAiContent(aiContent => aiContent.replace(regex, markedText));
   };
 
@@ -653,8 +676,17 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
                     <div className="mt-4">
                       AI Content:
+                      {isAiLoading && (
+                        <Spin tip="Ai is writing...">
+                          <Alert
+                            message="AI Writer is writing..."
+                            description="Writing..."
+                            type="info"
+                          />
+                        </Spin>
+                      )}
                       <div className="flex flex-col">
-                        {replyContent.map((reply, index) => {
+                        {replyContent?.map((reply, index) => {
                           return (
                             <div className="mt-2" style={{ borderRadius: '10px' }}>
                               {reply}
