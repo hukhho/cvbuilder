@@ -23,6 +23,7 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
 import { updateExpertConfig } from '@/app/expert/expertServices';
 import { updateCandidateConfig } from '@/app/candidate/candidateServices';
+import { getCookieToken } from '@/app/utils/indexService';
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -52,6 +53,27 @@ const CandidateForm = ({ onCreated, data, resumeOptions }) => {
 
   const [form] = Form.useForm();
 
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(data?.avatar);
+  const handleChange = info => {
+    if (info.file.status === 'uploading') {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      const url = info.file.response;
+      console.log('info.file.response: ', url);
+      setLoading(false);
+      setImageUrl(url);
+      // getBase64(info.file.originFileObj, url => {
+      //   setLoading(false);
+      //   setImageUrl(url);
+      //   console.log('url: ', url);
+      // });
+    }
+  };
+
   useEffect(() => {
     console.log('ExpertForm data: ', data);
 
@@ -67,6 +89,7 @@ const CandidateForm = ({ onCreated, data, resumeOptions }) => {
 
   const handleSubmit = async values => {
     try {
+      values.avatar = imageUrl;
       console.log('handleSubmit: ', values);
       const result = await updateCandidateConfig(values);
       openNotification('bottomRight', `Save changes: ${result}`);
@@ -75,22 +98,7 @@ const CandidateForm = ({ onCreated, data, resumeOptions }) => {
       console.log('Submit. Error:', error);
     }
   };
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(form?.getFieldValue('avatar'));
-  const handleChange = info => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, url => {
-        setLoading(false);
-        setImageUrl(url);
-        console.log('url: ', url);
-      });
-    }
-  };
+ 
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -103,6 +111,8 @@ const CandidateForm = ({ onCreated, data, resumeOptions }) => {
       </div>
     </div>
   );
+  const token = getCookieToken(); // Replace with your actual function to get the token
+
   return (
     <div className="" style={{ width: '700px' }}>
       {contextHolder}
@@ -117,16 +127,17 @@ const CandidateForm = ({ onCreated, data, resumeOptions }) => {
             listType="picture-circle"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+            action="https://api-cvbuilder.monoinfinity.net/api/v1/auth/upload/image"
+            headers={{ authorization: `Bearer ${token}` }}
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
             {imageUrl ? (
               <img
-                src="https://lh3.googleusercontent.com/a/ACg8ocIiLohYkD4rDr2uBzWkSPV6PSaXUjbM2MvCUXR5x53kan0C=s96-c"
+                src={imageUrl}
                 alt="avatar"
                 style={{
-                  width: '100%',
+                  width: '100px',
                 }}
               />
             ) : (

@@ -255,39 +255,6 @@ const HrForm = ({ onCreated, data, resumeOptions }) => {
             />
           </Form.Item>
 
-          {/* <Form.Item label="List">
-            <Form.List name={['price', 'list']}>
-              {(subFields, subOpt) => (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    rowGap: 16,
-                  }}
-                >
-                  {subFields.map(subField => (
-                    <Space key={subField.key}>
-                      <Form.Item noStyle name={[subField.name, 'deadline']}>
-                        <Input placeholder="deadline" />
-                      </Form.Item>
-                      <Form.Item noStyle name={[subField.name, 'price']}>
-                        <Input placeholder="price" />
-                      </Form.Item>
-                      <CloseOutlined
-                        onClick={() => {
-                          subOpt.remove(subField.name);
-                        }}
-                      />
-                    </Space>
-                  ))}
-                  <Button type="dashed" onClick={() => subOpt.add()} block>
-                    + Add Sub Item
-                  </Button>
-                </div>
-              )}
-            </Form.List>
-          </Form.Item> */}
-
           <Form.Item>
             <div className="form-submit-wrapper">
               <button

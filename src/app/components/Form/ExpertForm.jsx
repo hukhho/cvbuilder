@@ -19,9 +19,10 @@ import updateContact from './updateContactService';
 
 import './customtext.css';
 import ButtonContact from './ButtonContact';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
 import { updateExpertConfig } from '@/app/expert/expertServices';
+import { getCookieToken } from '@/app/utils/indexService';
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -50,6 +51,26 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
   };
 
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(data?.avatar);
+  const handleChange = info => {
+    if (info.file.status === 'uploading') {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      const url = info.file.response;
+      console.log('info.file.response: ', url);
+      setLoading(false);
+      setImageUrl(url);
+      // getBase64(info.file.originFileObj, url => {
+      //   setLoading(false);
+      //   setImageUrl(url);
+      //   console.log('url: ', url);
+      // });
+    }
+  };
 
   useEffect(() => {
     console.log('ExpertForm data: ', data);
@@ -66,30 +87,16 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
 
   const handleSubmit = async values => {
     try {
+      values.avatar = imageUrl;
       console.log('handleSubmit: ', values);
-      const result = await updateExpertConfig(values.cv, values);
+      const result = await updateExpertConfig(values);
       openNotification('bottomRight', `Save changes: ${result}`);
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`);
       console.log('Submit. Error:', error);
     }
   };
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(form?.getFieldValue('avatar'));
-  const handleChange = info => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, url => {
-        setLoading(false);
-        setImageUrl(url);
-        console.log('url: ', url);
-      });
-    }
-  };
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -102,6 +109,9 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
       </div>
     </div>
   );
+
+  const token = getCookieToken(); // Replace with your actual function to get the token
+
   return (
     <div className="" style={{ width: '700px' }}>
       {contextHolder}
@@ -116,16 +126,17 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
             listType="picture-circle"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+            action="https://api-cvbuilder.monoinfinity.net/api/v1/auth/upload/image"
+            headers={{ authorization: `Bearer ${token}` }}
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
             {imageUrl ? (
               <img
-                src="https://lh3.googleusercontent.com/a/ACg8ocIiLohYkD4rDr2uBzWkSPV6PSaXUjbM2MvCUXR5x53kan0C=s96-c"
+                src={imageUrl}
                 alt="avatar"
                 style={{
-                  width: '100%',
+                  width: '100px',
                 }}
               />
             ) : (
@@ -244,7 +255,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
           </Form.Item>
           <Space align="center">
             <Form.Item
-              name="cv"
+              name="cvId"
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
                   <div className="flex gap-2 items-center text-xs">
@@ -261,11 +272,6 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                   </div>
                 </label>
               }
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
             >
               <Select style={{ width: 300, height: 60, marginTop: 5 }} options={resumeOptions} />
             </Form.Item>
@@ -298,6 +304,40 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               />
             </Form.Item>
           </Space>
+
+          
+          <Form.Item label="Price">
+            <Form.List name={['price']}>
+              {(subFields, subOpt) => (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    rowGap: 16,
+                  }}
+                >
+                  {subFields.map(subField => (
+                    <Space key={subField.key}>
+                      <Form.Item noStyle name={[subField.name, 'day']}>
+                        <Input placeholder="day" />
+                      </Form.Item>
+                      <Form.Item noStyle name={[subField.name, 'price']}>
+                        <Input placeholder="price" />
+                      </Form.Item>
+                      <CloseOutlined
+                        onClick={() => {
+                          subOpt.remove(subField.name);
+                        }}
+                      />
+                    </Space>
+                  ))}
+                  <Button type="dashed" onClick={() => subOpt.add()} block>
+                    + Add Sub Item
+                  </Button>
+                </div>
+              )}
+            </Form.List>
+          </Form.Item>
 
           <Form.Item>
             <div className="form-submit-wrapper">

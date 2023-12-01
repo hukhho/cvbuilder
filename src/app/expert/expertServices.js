@@ -42,13 +42,10 @@ const getExpertConfig = async () => {
   }
 };
 
-const updateExpertConfig = async (cvId, data) => {
+const updateExpertConfig = async data => {
   try {
     const userId = getUserIdFromCookie();
-    const response = await axiosInstance.put(
-      `/expert/${userId}/cv/${cvId}/information/config`,
-      data,
-    );
+    const response = await axiosInstance.put(`/expert/${userId}/cv/information/config`, data);
     return response.data;
   } catch (error) {
     throw error;
