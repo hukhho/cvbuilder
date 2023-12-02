@@ -19,7 +19,7 @@ import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
-import { getHrApplication } from '@/app/hr/hrServices';
+import { getCandidateApplication, getHrApplication } from '@/app/hr/hrServices';
 
 const { Title } = Typography;
 const columns = [
@@ -123,8 +123,9 @@ const Home = () => {
   };
   const fetchData = async () => {
     try {
-      console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getHrApplication();
+      const fetchedDataFromAPI = await getCandidateApplication();
+      console.log('fetchData fetchedDataFromAPI: ', fetchedDataFromAPI);
+
       setData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);

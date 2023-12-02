@@ -16,6 +16,7 @@ import {
   Modal,
   Radio,
   Select,
+  Space,
   Switch,
   TreeSelect,
   Typography,
@@ -33,7 +34,7 @@ import Search from 'antd/es/input/Search';
 import Link from 'next/link';
 import UserHeaderHR from '@/app/components/UserHeaderHR';
 import moment from 'moment';
-import { postHrPublic } from '../hrServices';
+import { getHrConfig, postHrPublic } from '../hrServices';
 import SuccessModalHrPost from '@/app/components/Modal/SuccessModalHrPost';
 import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
@@ -61,37 +62,40 @@ const HRPost = () => {
   });
   const [form] = Form.useForm();
 
-  const [deadlineString, setDeadlineString] = useState('2023-11-28');
-
-  const [experts, setExperts] = useState([]);
-  const [resumes, setResumes] = useState([]);
+  const [deadlineString, setDeadlineString] = useState('2023-11-29');
   const [options, setOptions] = useState([]);
-  const [expertsMock, setExpertsMock] = useState([]);
 
-  const fetchExperts = async () => {
+  const [data, setData] = useState();
+  const [resumes, setResumes] = useState([]);
+
+  const fetchData = async () => {
     try {
-      // Simulate fetching resumes (replace with your actual fetch logic)
-      //   const fetchedExperts = await getExperts();
-      //   const fetchedResumes = await getResumes();
-      //   console.log('fetchedExperts: ', fetchedExperts);
-      // const similatorFetch =
-      //   setExperts(fetchedExperts);
-      //   setResumes(fetchedResumes);
+      const fetchedDataFromAPI = await getHrConfig();
+      console.log('fetchedDataFromAPI: ', fetchedDataFromAPI);
+
+      setData(fetchedDataFromAPI);
+
+      form.setFieldsValue({
+        avatar: fetchedDataFromAPI?.companyLogo,
+        companyName: fetchedDataFromAPI?.companyName,
+        location: fetchedDataFromAPI?.companyLocation,
+        about: fetchedDataFromAPI?.companyDescription,
+      });
     } catch (error) {
-      console.error('There was an error fetching resumes', error);
+      console.log('getReviewRequestsByCandiate:Error: ', error);
     }
   };
 
   useEffect(() => {
-    fetchExperts();
+    console.log('useEffect');
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    // Set the initial value for the deadline field
-    form.setFieldsValue({
-      deadline: moment(deadlineString, 'YYYY-MM-DD'), // Use moment to parse the date string
-    });
-  }, [form, deadlineString]);
+  // useEffect(() => {
+  //   // Set the initial value for the deadline field
+    
+  // }, [form]);
+
   const [salaryName, setSalaryName] = useState('');
   const [salaryFrom, setSalaryFrom] = useState('');
   const [salaryTo, setSalaryTo] = useState('');
@@ -181,7 +185,7 @@ const HRPost = () => {
   };
 
   const [openSuccess, setOpenSuccess] = useState(false);
-  
+
   const onFinish = async values => {
     values.salary = salaryName;
     values.deadline = deadlineString;
@@ -220,19 +224,12 @@ const HRPost = () => {
                   <p>Create a job posting that help users ...</p>
                 </Card>
               </div>
-              <div className="mt-16">
+              <div className="mt-16" style={{ width: 900 }}>
                 <Form
-                  labelCol={{
-                    span: 4,
-                  }}
-                  wrapperCol={{
-                    span: 10,
-                  }}
-                  layout="horizontal"
+                  layout="vertical"
                   initialValues={{
                     size: 'large',
                   }}
-                  style={{}}
                   form={form}
                   onFinish={onFinish}
                 >
@@ -262,17 +259,39 @@ const HRPost = () => {
                       ]}
                     />
                   </Form.Item>
-                  <div className="">
-                    <Form.Item name="companyName" label="COMPANY NAME">
+                  <Space.Compact block>
+                    {' '}
+                    <Form.Item
+                      name="companyName"
+                      label="COMPANY NAME"
+                      style={{
+                        width: '40%',
+                        marginRight: '10px',
+                      }}
+                    >
                       <Input placeholder="Google" />
                     </Form.Item>
-                    <Form.Item name="location" label="COMPANY LOCATION">
+                    <Form.Item
+                      name="location"
+                      label="COMPANY LOCATION"
+                      style={{
+                        width: '40%',
+                        marginRight: '10px',
+                      }}
+                    >
                       <Input placeholder="New York" />
                     </Form.Item>
-                    <Form.Item name="avatar" label="COMPANY AVATAR">
-                      <Input />
+                    <Form.Item
+                      name="avatar"
+                      label="COMPANY AVATAR"
+                      style={{
+                        width: '20%',
+                      }}
+                    >
+                      <Input hidden />
+                      <Avatar size="large" src={data?.companyLogo} />
                     </Form.Item>
-                  </div>
+                  </Space.Compact>
                   <Form.Item name="about" label="About">
                     <Input.TextArea placeholder="About the company" rows={10} />
                   </Form.Item>

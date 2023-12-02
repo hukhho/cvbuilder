@@ -16,7 +16,16 @@ const JobCard = ({ job }) => {
         </div>
         <div className="flex">
           <div>
-            <Image src="/images/grab.png" width={60} height={60} alt="Picture of the job" />
+            {
+              job?.avatar ? (
+                <Image
+                  src={job.avatar.startsWith('https') ? job.avatar : `/${job.avatar}`}
+                  width={60}
+                  height={60}
+                  alt="Picture of the job"
+                />
+              ) : null // or any other fallback content or styling you want when the URL is not available
+            }
           </div>
           <div className="ml-4" style={{ textAlign: 'left' }}>
             <Title level={5} style={{ color: '#4D70EB' }}>

@@ -37,7 +37,7 @@ import moment from 'moment';
 import SuccessModalHrPost from '@/app/components/Modal/SuccessModalHrPost';
 import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
-import { updateHrPublic } from '../../hrServices';
+import { getJobPosting, updateHrPublic } from '../../hrServices';
 
 const { Title } = Typography;
 
@@ -69,17 +69,22 @@ const HRUpdatePost = ({ params }) => {
   });
   const [form] = Form.useForm();
 
-  const [deadlineString, setDeadlineString] = useState('2023-11-28');
+  const [deadlineString, setDeadlineString] = useState();
 
   const [experts, setExperts] = useState([]);
   const [resumes, setResumes] = useState([]);
   const [options, setOptions] = useState([]);
   const [expertsMock, setExpertsMock] = useState([]);
+  const [data, setData] = useState();
 
-  const fetchExperts = async () => {
+  const fetchJobPosting = async () => {
     try {
       // Simulate fetching resumes (replace with your actual fetch logic)
-      //   const fetchedExperts = await getExperts();
+      const fetchedJobPosting = await getJobPosting(params.id);
+      console.log('fetchedJobPosting: ', fetchedJobPosting);
+      setData(fetchedJobPosting)
+      fetchedJobPosting.deadline = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
+      form.setFieldsValue(fetchedJobPosting)
       //   const fetchedResumes = await getResumes();
       //   console.log('fetchedExperts: ', fetchedExperts);
       // const similatorFetch =
@@ -91,18 +96,18 @@ const HRUpdatePost = ({ params }) => {
   };
 
   useEffect(() => {
-    fetchExperts();
+    fetchJobPosting();
   }, []);
 
-  useEffect(() => {
-    // Set the initial value for the deadline field
-    // form.setFieldsValue({
-    // //   deadline: moment(deadlineString, 'YYYY-MM-DD'), // Use moment to parse the date string
-    // mockData
-    // });
-    mockData.deadline = moment(mockData.deadline, 'YYYY-MM-DD');
-    form.setFieldsValue(mockData);
-  }, [form, deadlineString]);
+  // useEffect(() => {
+  //   // Set the initial value for the deadline field
+  //   // form.setFieldsValue({
+  //   // //   deadline: moment(deadlineString, 'YYYY-MM-DD'), // Use moment to parse the date string
+  //   // mockData
+  //   // });
+  //   mockData.deadline = moment(mockData.deadline, 'YYYY-MM-DD');
+  //   // form.setFieldsValue(mockData);
+  // }, [form, deadlineString]);
 
   const [salaryName, setSalaryName] = useState('');
   const [salaryFrom, setSalaryFrom] = useState('');
@@ -267,14 +272,15 @@ const HRUpdatePost = ({ params }) => {
                       <Input placeholder="New York" disabled />
                     </Form.Item>
                     <Form.Item name="avatar" label="COMPANY AVATAR">
-                      <Input />
+                      <Input hidden/> 
+                      <Avatar size="large" src={data?.avatar} />
                     </Form.Item>
                   </div>
                   <Form.Item name="about" label="About">
                     <Input.TextArea disabled placeholder="About the company" rows={10} />
                   </Form.Item>
-                  <Form.Item name="" className="salary" label="SALARY">
-                    <Input placeholder="Up to $5000" disabled />
+                  <Form.Item name="salary" className="salary" label="SALARY">
+                    <Input placeholder="Up to $5000" />
                   </Form.Item>
                   <Form.Item name="benefit" label="Benefit">
                     <Input.TextArea
