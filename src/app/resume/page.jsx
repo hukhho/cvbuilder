@@ -34,7 +34,6 @@ const ResumeIndex = () => {
     try {
       // Simulate fetching resumes (replace with your actual fetch logic)
       const fetchedResumes = await getResumes();
-
       setResumes(fetchedResumes);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
@@ -45,7 +44,7 @@ const ResumeIndex = () => {
     if (!resumes.length) {
       fetchResumes();
     }
-  }, [resumes]);
+  }, []);
 
   const onCreated = () => {
     console.log('onCreated hihi');
@@ -53,36 +52,34 @@ const ResumeIndex = () => {
   };
 
   return (
-    <main>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: 'red',
-            borderRadius: '6px',
-            colorBgContainer: '#fbfbfb',
-          },
-        }}
-      >
-        <UserLayout
-          onCreated={onCreated}
-          selected="1"
-          userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
-          content={
-            <div className="container mx-auto px-4 py-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {resumes?.map((item, index) => (
-                  <div key={index}>
-                    {/* {item.id} */}
-                    <ResumeCard resume={item} onDeleted={onCreated} />
-                  </div>
-                ))}
-                {resumes?.length === 0 && <Empty />}
-              </div>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: 'red',
+          borderRadius: '6px',
+          colorBgContainer: '#fbfbfb',
+        },
+      }}
+    >
+      <UserLayout
+        onCreated={onCreated}
+        selected="1"
+        userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
+        content={
+          <div className="container mx-auto px-4 py-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {resumes?.map((item, index) => (
+                <div key={index}>
+                  {/* {item.id} */}
+                  <ResumeCard resume={item} onDeleted={onCreated} />
+                </div>
+              ))}
+              {resumes?.length === 0 && <Empty />}
             </div>
-          }
-        />
-      </ConfigProvider>
-    </main>
+          </div>
+        }
+      />
+    </ConfigProvider>
   );
 };
 
