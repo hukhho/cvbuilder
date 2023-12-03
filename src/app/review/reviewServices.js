@@ -10,6 +10,18 @@ const getUserIdFromCookie = () => {
   return userId;
 };
 
+const ratingComment = async (responseId, data) => {
+  try {
+    const response = await axiosInstance.post(
+      `cv/user/review-response/${responseId}/comment/rating`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // const postHrPublic = async data => {
 //   try {
 //     const userId = getUserIdFromCookie();
@@ -88,3 +100,4 @@ const getUserIdFromCookie = () => {
 // // };
 
 // export { getRequestList, acceptRequest, rejectRequest, getExpertConfig, updateExpertConfig };
+export { ratingComment };

@@ -20,6 +20,16 @@ const getUserIdFromCookie = () => {
 //   }
 // };
 
+const getExpertPurchases = async () => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.get(`transaction/get-all/{user-id}?user-id=${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getRequestList = async () => {
   try {
     const userId = getUserIdFromCookie();
@@ -84,4 +94,11 @@ const acceptRequest = async requestId => {
 //   }
 // };
 
-export { getRequestList, acceptRequest, rejectRequest, getExpertConfig, updateExpertConfig };
+export {
+  getRequestList,
+  acceptRequest,
+  rejectRequest,
+  getExpertConfig,
+  updateExpertConfig,
+  getExpertPurchases,
+};

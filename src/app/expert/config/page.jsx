@@ -7,6 +7,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Card,
   ConfigProvider,
   Form,
   Input,
@@ -28,14 +29,19 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { getExpertConfig, getRequestList, updateExpertConfig } from '../expertServices';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import ExpertForm from '@/app/components/Form/ExpertForm';
+import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
+import Deposit from '@/app/components/Modal/Deposit';
+import { getProtectedResource } from '@/app/services/message.service';
+import Withdraw from '@/app/components/Modal/Withdraw';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'REVIEW HISTORY': true,
+    ACCOUNT: true,
   });
   const [form] = Form.useForm();
   const [data, setData] = useState();
   const [resumes, setResumes] = useState([]);
+  const [protectedData, setProtectedData] = useState();
 
   const fetchData = async () => {
     try {
@@ -44,6 +50,10 @@ const Home = () => {
 
       setData(fetchedDataFromAPI);
       form.setFieldsValue(fetchedDataFromAPI);
+
+      const fetchProtected = await getProtectedResource();
+      console.log("fetchProtected: ", fetchProtected)
+      setProtectedData(fetchProtected);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -57,7 +67,6 @@ const Home = () => {
       console.error('There was an error fetching resumes', error);
     }
   };
- 
 
   useEffect(() => {
     console.log('useEffect');
@@ -69,7 +78,7 @@ const Home = () => {
     value: resume.id,
     label: resume.resumeName,
   }));
-  
+
   const onFinish = async values => {
     console.log('values: ', values);
     const result = await updateExpertConfig(values.cv, values);
@@ -82,15 +91,15 @@ const Home = () => {
     //   //   note: 'Hello world!',
     //   //   gender: 'male',
     // });
+    fetchData()
     console.log('onCreated');
   };
 
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
-        userHeader={<></>}
-        // userHeader={<UserHeaderExpert initialEnabledCategories={enabledCategories} />}
+        selected="5"
+        userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
             <div className="!p-0 mb-5 mt-16 card">
@@ -101,6 +110,13 @@ const Home = () => {
               <div>
                 <div>
                   <ExpertForm data={data} onCreated={onCreated} resumeOptions={resumeOptions} />
+                </div>
+                <div>
+                  {' '}
+                  <Card className="mt-16" style={{ width: '700px' }}>
+                    Your Balance: <b>{protectedData?.data?.accountBalance}</b>
+                    <Withdraw onCreated={onCreated}/>
+                  </Card>
                 </div>
               </div>
             </div>

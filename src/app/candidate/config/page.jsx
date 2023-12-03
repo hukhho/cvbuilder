@@ -33,11 +33,12 @@ import { getCandidateConfig } from '../candidateServices';
 import CandidateForm from '@/app/components/Form/CandidateForm';
 import { getProtectedResource } from '@/app/services/message.service';
 import Deposit from '@/app/components/Modal/Deposit';
+import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 // import { getHrConfig } from '../hrServices';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'REVIEW HISTORY': true,
+    'ACCOUNT': true,
   });
   const [form] = Form.useForm();
   const [data, setData] = useState();
@@ -93,9 +94,8 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
-        userHeader={<></>}
-        // userHeader={<UserHeaderExpert initialEnabledCategories={enabledCategories} />}
+        selected="7"
+        userHeader={<CandidateConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
             <div className="!p-0 mb-5 mt-16 card">

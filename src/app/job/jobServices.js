@@ -39,6 +39,16 @@ const getJobById = async jobId => {
     throw error;
   }
 };
+
+const likeJob = async jobId => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.post(`/user/${userId}/job-posting/${jobId}/like`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 // const postHrDraft = async data => {
 //   try {
 //     const userId = getUserIdFromCookie();
@@ -49,4 +59,4 @@ const getJobById = async jobId => {
 //   }
 // };
 
-export { getJobList, getJobById };
+export { getJobList, getJobById, likeJob };

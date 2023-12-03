@@ -19,6 +19,15 @@ const getCandidateConfig = async () => {
     throw error;
   }
 };
+const getCandidatePurchases = async () => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.get(`transaction/get-all/{user-id}?user-id=${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const updateCandidateConfig = async data => {
   try {
@@ -41,4 +50,22 @@ const depositMoney = async data => {
     throw error;
   }
 };
-export { getCandidateConfig, updateCandidateConfig, depositMoney };
+
+const withdrawMoney = async data => {
+  try {
+    const userId = getUserIdFromCookie();
+    // Assuming userId is a string
+    data.userId = parseInt(userId, 10); // The second argument (10) is the radix/base, use 10 for decimal
+    const response = await axiosInstance.post('/transaction/withdraw', data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export {
+  getCandidateConfig,
+  updateCandidateConfig,
+  depositMoney,
+  getCandidatePurchases,
+  withdrawMoney,
+};

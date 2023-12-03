@@ -15,6 +15,7 @@ import { getResumes } from '@/app/utils/indexService';
 import { StarFilled, UserOutlined } from '@ant-design/icons';
 import { getExpert } from '../../new/reviewService';
 import ReviewNewModal from '../../new/ReviewNewModal';
+import FinishUpPreviewV2 from '@/app/resume/[id]/finishup/FinishUpPreviewV2';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -126,7 +127,9 @@ const Home = ({ params }) => {
                       <p>
                         {expert?.title} at {expert?.company}
                       </p>
-                      <p>From {lowestPriceData}.000 to {biggestPriceData}.000 VND / request</p>
+                      <p>
+                        From {lowestPriceData}.000 to {biggestPriceData}.000 VND / request
+                      </p>
                     </div>
                   </div>
 
@@ -141,23 +144,29 @@ const Home = ({ params }) => {
                       {' '}
                       <span style={{ borderBottom: '2px solid #4D70EB' }}>Overview</span>
                     </Title>
+                    <div></div>
                   </div>
                   <div>
                     <div />
                   </div>
                   <div className="flex justify-between	">
                     <div style={{ textAlign: 'left', width: '900px' }}>
-                      {expert?.description ? (
-                        <p dangerouslySetInnerHTML={{ __html: expert?.description }} />
-                      ) : (
-                        <Empty />
-                      )}
+                      <div style={{ textAlign: 'left', minHeight: '200px' }}>
+                        {' '}
+                        {expert?.description ? (
+                          <p dangerouslySetInnerHTML={{ __html: expert?.description }} />
+                        ) : (
+                          <Empty />
+                        )}
+                      </div>
+                      {expert?.cvId > 0 && <FinishUpPreviewV2 cvId={expert.cvId} />}
                     </div>
-                    <div style={{ width: '350' }}>
+
+                    <div style={{ width: '300', marginRight: '100px' }}>
                       <Title style={{ color: 'black' }} level={4}>
                         <span style={{}}>Statistic</span>
                       </Title>
-                      <div className="grid grid-rows-2 grid-flow-col gap-4">
+                      <div className="grid grid-rows-3 grid-flow-col gap-4">
                         <div className="flex" style={{ width: 200 }}>
                           <div>
                             <svg
@@ -259,7 +268,12 @@ const Home = ({ params }) => {
               <div>
                 <div
                   className="mt-8 bg-white"
-                  style={{ paddingLeft: '20px', background: 'white', textAlign: 'left' }}
+                  style={{
+                    paddingLeft: '20px',
+                    paddingBottom: '20px',
+                    background: 'white',
+                    textAlign: 'left',
+                  }}
                 >
                   <div>
                     <Title style={{ color: '#4D70EB' }} level={5}>

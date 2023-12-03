@@ -618,6 +618,8 @@ export default function FinishUp({ params }) {
 
   const handleSave = async () => {
     try {
+      await handleSaveDraft();
+      console.log('Save completed.');
       const sendObj = {
         overall: overall,
         cv: finishUpData,
@@ -695,153 +697,143 @@ export default function FinishUp({ params }) {
   };
 
   return (
-    <main>
-      <ConfigProvider>
-        <UserCVBuilderLayout
-          userHeader={
-            <UserHeaderExpert initialEnabledCategories={enabledCategories} cvId={params.id} />
-          }
-          content={
-            <div className="flex mt-8">
-              {contextHolder}
-              {errorMessage && (
-                <Alert message="Error Text" description={errorMessage} type="error" />
-              )}
-              {finishUpData && showFinishupCV ? (
-                <></>
-              ) : (
-                // <Result
-                //   status="404"
-                //   title="404"
-                //   subTitle="Sorry, the page you visited does not exist."
-                //   extra={
-                //     <Link href="/">
-                //       <Button type="primary">Back Home</Button>
-                //     </Link>
-                //   }
-                // />
-                <></>
-              )}
-              {showFinishupCV && (
-                <div className="mr-2 flex flex-col">
-                  <Box
-                    top={tooltip?.y}
-                    left={tooltip?.x}
-                    display={tooltip?.text ? 'block' : 'none'}
-                    position="absolute"
-                    zIndex={100}
-                    className="select-none"
-                  >
-                    {
-                      <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
-                        <Box layerStyle="cardLg" p={3}>
-                          <Card
-                            styles={{
-                              background: 'white',
-                              borderRadius: 'lg',
-                              witdh: '5px',
-                              height: '5px',
-                            }}
-                          >
-                            <CommentOutlined /> Comment
-                            {/* <Input
+    <UserCVBuilderLayout
+      userHeader={
+        <UserHeaderExpert initialEnabledCategories={enabledCategories} cvId={params.id} />
+      }
+      content={
+        <div className="flex mt-8">
+          {contextHolder}
+          {errorMessage && <Alert message="Error Text" description={errorMessage} type="error" />}
+          {finishUpData && showFinishupCV ? (
+            <></>
+          ) : (
+            // <Result
+            //   status="404"
+            //   title="404"
+            //   subTitle="Sorry, the page you visited does not exist."
+            //   extra={
+            //     <Link href="/">
+            //       <Button type="primary">Back Home</Button>
+            //     </Link>
+            //   }
+            // />
+            <></>
+          )}
+          {showFinishupCV && (
+            <div className="mr-2 flex flex-col">
+              <Box
+                top={tooltip?.y}
+                left={tooltip?.x}
+                display={tooltip?.text ? 'block' : 'none'}
+                position="absolute"
+                zIndex={100}
+                className="select-none"
+              >
+                {
+                  <VStack gap={1} bgColor="bg-modal" borderRadius="lg">
+                    <Box layerStyle="cardLg" p={3}>
+                      <Card
+                        styles={{
+                          background: 'white',
+                          borderRadius: 'lg',
+                          witdh: '5px',
+                          height: '5px',
+                        }}
+                      >
+                        <CommentOutlined /> Comment
+                        {/* <Input
                                 value={inputValue}
                                 onChange={handleChange}
                                 placeholder="Add a comment..."
                                 onFocus={handleMouseDown}
                               ></Input> */}
-                            <Input
-                              value={inputValue}
-                              onChange={handleChange}
-                              placeholder="Add a comment..."
-                              // onFocus={handleMouseDown}
-                              onBlur={() => handleInputBlur(selectionRange)}
-                            />
-                            <div className="mt-4">
-                              <Button onClick={onSubmitComment}>Submit</Button>
+                        <Input
+                          value={inputValue}
+                          onChange={handleChange}
+                          placeholder="Add a comment..."
+                          // onFocus={handleMouseDown}
+                          onBlur={() => handleInputBlur(selectionRange)}
+                        />
+                        <div className="mt-4">
+                          <Button onClick={onSubmitComment}>Submit</Button>
 
-                              <Button onClick={closeComment} className="ml-4">
-                                Close
-                              </Button>
-                            </div>
-                          </Card>
-                        </Box>
-                      </VStack>
-                    }
-                  </Box>
-                  {finishUpData ? (
-                    <>
-                      <Card>
-                        <div className="flex justify-start">
-                          <div style={{ textAlign: 'left' }}>
-                            <div>Name: {dataRequest?.name}</div>
-                            <div>Note: {dataRequest?.note}</div>
-                            <div>
-                              Deadline: <div> {moment(dataRequest?.deadline).fromNow()}</div>{' '}
-                              <div style={{ color: 'gray', fontSize: '11px' }}>
-                                {moment(dataRequest?.deadline).format('HH:mm:ss DD/MM/YYYY')}
-                              </div>{' '}
-                            </div>
-                          </div>
+                          <Button onClick={closeComment} className="ml-4">
+                            Close
+                          </Button>
                         </div>
                       </Card>
-                      <CVLayoutReviewerView
-                        key={[templateSelected, toolbarState]}
-                        layoutStyles={toolbarState}
-                        sectionsOrder={sectionsOrder}
-                        onSectionsOrderChange={handleSectionsOrderChange}
-                      >
-                        {filteredSections.map(
-                          section => section.canBeDisplayed && section.component,
-                        )}
-                      </CVLayoutReviewerView>
-                      <div>
-                        <textarea
-                          className="inputEl"
-                          value={overall}
-                          onChange={e => handleChangeOverall(e)}
-                        >
-                          Comment for Cv
-                        </textarea>
-
-                        <button
-                          style={{
-                            height: '30px',
-                            marginTop: '10px',
-                            marginLeft: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSaveDraft()}
-                        >
-                          Save draft
-                        </button>
-
-                        <button
-                          style={{
-                            height: '30px',
-                            marginTop: '10px',
-                            marginLeft: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSave()}
-                        >
-                          Submit
-                        </button>
+                    </Box>
+                  </VStack>
+                }
+              </Box>
+              {finishUpData ? (
+                <>
+                  <Card>
+                    <div className="flex justify-start">
+                      <div style={{ textAlign: 'left' }}>
+                        <div>Name1: {dataRequest?.name}</div>
+                        <div>Note: {dataRequest?.note}</div>
+                        <div>
+                          Deadline: <div> {moment(dataRequest?.deadline).fromNow()}</div>{' '}
+                          <div style={{ color: 'gray', fontSize: '11px' }}>
+                            {moment(dataRequest?.deadline).format('HH:mm:ss DD/MM/YYYY')}
+                          </div>{' '}
+                        </div>
                       </div>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </div>
+                    </div>
+                  </Card>
+                  <CVLayoutReviewerView
+                    key={[templateSelected, toolbarState]}
+                    layoutStyles={toolbarState}
+                    sectionsOrder={sectionsOrder}
+                    onSectionsOrderChange={handleSectionsOrderChange}
+                  >
+                    {filteredSections.map(section => section.canBeDisplayed && section.component)}
+                  </CVLayoutReviewerView>
+                  <div>
+                    <textarea
+                      className="inputEl"
+                      value={overall}
+                      onChange={e => handleChangeOverall(e)}
+                    />
+
+                    <button
+                      style={{
+                        height: '30px',
+                        marginTop: '10px',
+                        marginLeft: '10px',
+                        marginBottom: '10px',
+                      }}
+                      className="button"
+                      type=""
+                      onClick={() => handleSaveDraft()}
+                    >
+                      Save draft
+                    </button>
+
+                    <button
+                      style={{
+                        height: '30px',
+                        marginTop: '10px',
+                        marginLeft: '10px',
+                        marginBottom: '10px',
+                      }}
+                      className="button"
+                      type=""
+                      onClick={() => handleSave()}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <></>
               )}
             </div>
-          }
-        />
-      </ConfigProvider>
-    </main>
+          )}
+        </div>
+      }
+    />
   );
 }

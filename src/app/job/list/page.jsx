@@ -1,31 +1,8 @@
-/* eslint-disable */
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import {
-  Avatar,
-  Badge,
-  Card,
-  Col,
-  ConfigProvider,
-  Input,
-  Row,
-  Select,
-  Table,
-  Typography,
-} from 'antd';
+import { Col, ConfigProvider, Input, Row, Select, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
-import UserHeader from '@/app/components/UserHeader';
-import UserHeaderReview from '@/app/components/UserHeaderReview';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-
-import { getResumes } from '@/app/utils/indexService';
-
-import { HeartOutlined, UserOutlined } from '@ant-design/icons';
-import { text } from '@fortawesome/fontawesome-svg-core';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import JobCard from './JobCard';
@@ -37,30 +14,48 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     OPPORTUNITIES: true,
   });
-  const options = [];
-  for (let i = 10; i < 36; i++) {
-    options.push({
-      label: i.toString(36) + i,
-      value: i.toString(36) + i,
-    });
-  }
-  const handleChange = value => {
-    console.log(`selected ${value}`);
-  };
 
-  const [data, setData] = useState();
+  const [locationOptions, setLocationOptions] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+
+  const handleChange = value => {
+    setSelectedLocations(value);
+    console.log('setSelectedLocations: ', value);
+
+    // Filter data based on selected locations or show all jobs if no locations selected
+    const filteredJobs = data.filter(job => value.length === 0 || value.includes(job.location));
+
+    // Log the filtered jobs (you can update this to set the filtered data to another state)
+    console.log('Filtered jobs:', filteredJobs);
+
+    // Set the filtered data to state
+    setFilteredData(filteredJobs);
+  };
 
   const fetchData = async () => {
     try {
       const fetchedDataFromAPI = await getJobList();
       setData(fetchedDataFromAPI);
       console.log('JobList', fetchedDataFromAPI);
-    } catch (error) {}
+
+      // Extract unique locations from job data
+      const uniqueLocations = Array.from(new Set(fetchedDataFromAPI.map(job => job.location)));
+      // Generate options for Select based on unique locations
+      const locationOptionsTemp = uniqueLocations.map(location => ({
+        label: location,
+        value: location,
+      }));
+      setLocationOptions(locationOptionsTemp);
+      setFilteredData(fetchedDataFromAPI);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   useEffect(() => {
     console.log('useEffect');
-
     fetchData();
   }, []);
 
@@ -75,7 +70,7 @@ const Home = () => {
               <div style={{ textAlign: 'left' }} />
               <div className="flex mt-16">
                 <div style={{ width: 500 }}>
-                  <Input placeholder="Search by title or company" />;
+                  <Input placeholder="Search by title or company" />
                 </div>
                 <div style={{ width: 200 }} className="ml-8">
                   <Select
@@ -85,10 +80,10 @@ const Home = () => {
                       width: '100%',
                     }}
                     placeholder="All Location"
-                    // defaultValue={['a10', 'c12']}
+                    value={selectedLocations}
                     onChange={handleChange}
-                    options={options}
-                  />{' '}
+                    options={locationOptions}
+                  />
                 </div>
               </div>
               <div>
@@ -97,7 +92,7 @@ const Home = () => {
                 </div>
                 <div className="">
                   <Row gutter={[16, 48]}>
-                    {data?.map((job, index) => (
+                    {filteredData.map((job, index) => (
                       <Col key={index} span={12}>
                         <JobCard job={job} jobTitle={job.title} />
                       </Col>

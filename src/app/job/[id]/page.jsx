@@ -25,11 +25,11 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { getCoverLetters, getResumes } from '@/app/utils/indexService';
 
-import { CalendarOutlined, HeartOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, HeartFilled, HeartOutlined, UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
-import { getJobById } from '../jobServices';
+import { getJobById, likeJob } from '../jobServices';
 import ApplyJobModal from '@/app/components/Modal/ApplyJobModal';
 
 const { Title } = Typography;
@@ -73,6 +73,16 @@ const Home = ({ params }) => {
     }
   };
 
+  const likeJobHanlde = async () => {
+    try {
+      // Simulate fetching resumes (replace with your actual fetch logic)
+      const like = await likeJob(params.id);
+      fetchData();
+
+    } catch (error) {
+      console.error('There was an error fetching resumes', error);
+    }
+  };
   const fetchCoverletters = async () => {
     try {
       // Simulate fetching resumes (replace with your actual fetch logic)
@@ -105,7 +115,7 @@ const Home = ({ params }) => {
         userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
-            <div className="!p-0 mb-5 mt-0 card">
+            <div className="!p-0 mb-5 mt-0 ">
               <div style={{ textAlign: 'left' }} />
 
               <div>
@@ -121,10 +131,11 @@ const Home = ({ params }) => {
                         coverOptions={coverOptions}
                         jobId={params.id}
                       />
-                      <div className="mt-4">
-                        <HeartOutlined />
+                      <button className="mt-4" onClick={likeJobHanlde}>
+                        {data?.liked === true && <HeartFilled style={{ color: '#4D70EB' }} />}
+                        {data?.liked === false && <HeartOutlined style={{ color: '#4D70EB' }} />}
                         <span style={{ color: '#4D70EB', marginLeft: '10px' }}>Like</span>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -179,7 +190,7 @@ const Home = ({ params }) => {
                     {data?.skill?.map((skill, index) => {
                       return (
                         <div
-                          style={{ width: '120px', textAlign: 'center' }}
+                          style={{ textAlign: 'center' }}
                           className="border-gray-500 border rounded-full p-1"
                         >
                           {skill}
