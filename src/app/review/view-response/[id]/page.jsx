@@ -410,50 +410,50 @@ export default function FinishUp({ params }) {
   //   fetchRequest();
   // }, []);
   const [message, setMessage] = useState();
+  const fetchData = async () => {
+    try {
+      setShowFinishupCV(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setShowFinishupCV(false);
+      const requestId = params.id;
+      const fetchedDataFromAPI = await getReviewResponse(requestId);
+      setFetchedData(fetchedDataFromAPI);
+      setOverall(fetchedDataFromAPI.overall);
+      const data = fetchedDataFromAPI.feedbackDetail;
+      // const data = await getFinishUp(1)
+      // const fetchedData = await getReviewResponse(expertId, requestId);
 
-        const requestId = params.id;
-        const fetchedDataFromAPI = await getReviewResponse(requestId);
-        setFetchedData(fetchedDataFromAPI);
-        setOverall(fetchedDataFromAPI.overall);
-        const data = fetchedDataFromAPI.feedbackDetail;
-        // const data = await getFinishUp(1)
-        // const fetchedData = await getReviewResponse(expertId, requestId);
+      console.log('FinishUp data: ', data);
 
-        console.log('FinishUp data: ', data);
-
-        if (data === null) {
-          setFinishUpData(null);
-          return;
-        }
-        const cvId = data.cvId;
-        setFinishUpData(data);
-
-        setShowFinishupCV(true);
-
-        setTemplateSelected(data.templateType);
-        setToolbarState(data.cvStyle);
-
-        setSummary(data.summary);
-
-        const data1 = await getAudit(cvId);
-        setAuditData(data1);
-      } catch (error) {
-        if (error.response.data.error) {
-          setMessage(error.response.data.error);
-        } else if (error.response.data) {
-          setMessage(error.response.data);
-        } else {
-          setMessage('Something went wrong!!!');
-        }
-
-        console.error('Error fetching FinishUp data:', error);
+      if (data === null) {
+        setFinishUpData(null);
+        return;
       }
-    };
+      const cvId = data.cvId;
+      setFinishUpData(data);
+
+      setShowFinishupCV(true);
+
+      setTemplateSelected(data.templateType);
+      setToolbarState(data.cvStyle);
+
+      setSummary(data.summary);
+
+      const data1 = await getAudit(cvId);
+      setAuditData(data1);
+    } catch (error) {
+      if (error.response.data.error) {
+        setMessage(error.response.data.error);
+      } else if (error.response.data) {
+        setMessage(error.response.data);
+      } else {
+        setMessage('Something went wrong!!!');
+      }
+
+      console.error('Error fetching FinishUp data:', error);
+    }
+  };
+  useEffect(() => {
+    
     const selection = window.getSelection();
     const selectedText = selection.toString();
 
@@ -536,6 +536,9 @@ export default function FinishUp({ params }) {
     setInputValue(event.target.value);
   };
 
+  const onCreated = () => {
+    fetchData();
+  }
   return (
     <main>
       <ConfigProvider>
@@ -665,7 +668,7 @@ export default function FinishUp({ params }) {
                         )}
                       </CVLayoutReviewerView>
                       <div>
-                        <RatingForm responseId={params.id} />
+                        <RatingForm responseId={fetchedData?.id} onCreated={onCreated} />
                       </div>
                       <div>
                         <Card className="mt-8">

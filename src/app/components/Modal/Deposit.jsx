@@ -66,10 +66,11 @@ export default function Deposit({ onCreated }) {
       const result = await depositMoney(formData);
       openNotification('bottomRight', `Create: ${result.id}`);
       // onCreated();
+      
       console.log("result: ", result)
       const newTab = window.open(result, '_blank');
+      closeModal();
 
-      // closeModal();
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`);
     }
@@ -147,7 +148,8 @@ export default function Deposit({ onCreated }) {
                             required=""
                             onChange={handleInputChange}
                             aria-label="Deposit money"
-                            defaultValue={0}
+                            min={10000}
+                            defaultValue={10000}
                           />
                         </div>
                       </div>

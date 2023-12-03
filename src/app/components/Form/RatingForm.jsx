@@ -55,6 +55,7 @@ const RatingForm = ({ onCreated, data, responseId }) => {
       console.log('handleSubmit: ', values);
       const result = await ratingComment(responseId, values);
       openNotification('bottomRight', `Comment success: ${result}`);
+      onCreated();
     } catch (error) {
       try {
         openNotification('bottomRight', `Error: ${error.response.data}`);

@@ -38,7 +38,7 @@ import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'ACCOUNT': true,
+    ACCOUNT: true,
   });
   const [form] = Form.useForm();
   const [data, setData] = useState();
@@ -54,9 +54,8 @@ const Home = () => {
       setData(fetchedDataFromAPI);
       form.setFieldsValue(fetchedDataFromAPI);
 
-
       const fetchProtected = await getProtectedResource();
-      console.log("fetchProtected: ", fetchProtected)
+      console.log('fetchProtected: ', fetchProtected);
       setProtectedData(fetchProtected);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
@@ -91,6 +90,21 @@ const Home = () => {
     console.log('onCreated');
   };
 
+  const formatBalance = (balance) => {
+    if (balance !== undefined) {
+      // Convert to VND and format
+      const formattedBalance = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+      }).format(balance * 1000);
+  
+      return formattedBalance;
+    }
+  
+    return ''; // Return an empty string if balance is undefined
+  };
+  
+
   return (
     <ConfigProvider>
       <UserLayout
@@ -108,8 +122,8 @@ const Home = () => {
                   <CandidateForm data={data} onCreated={onCreated} resumeOptions={resumeOptions} />
                 </div>
                 <div>
-                  <Card className='mt-16' style={{ width: '700px' }}>
-                    Your Balance: <b>{protectedData?.data?.accountBalance}.000 đ</b>
+                  <Card className="mt-16" style={{ width: '700px' }}>
+                    Your Balance: <b>{formatBalance(protectedData?.data?.accountBalance)}</b>
                     <Deposit />
                   </Card>
                 </div>
