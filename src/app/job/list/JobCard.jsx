@@ -19,7 +19,7 @@ const JobCard = ({ job }) => {
             {
               job?.avatar ? (
                 <Image
-                  src={job.avatar.startsWith('https') ? job.avatar : `/${job.avatar}`}
+                  src={job.avatar.startsWith('https') ? job.avatar : ''}
                   width={60}
                   height={60}
                   alt="Picture of the job"

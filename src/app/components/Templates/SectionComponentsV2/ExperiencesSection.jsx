@@ -25,6 +25,7 @@ import StandardItemV2 from '../StandardItemV2';
 
 const ExperiencesSection = ({
   onComment,
+  onDeleteComment,
   experiences,
   onChangeOrder,
   templateType,
@@ -40,6 +41,7 @@ const ExperiencesSection = ({
         return (
           <StandardItemV2
             onComment={onComment}
+            onDeleteComment={onDeleteComment}
             key={exp.id}
             dataId={exp.id}
             type="experience"

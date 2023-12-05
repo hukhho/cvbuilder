@@ -47,6 +47,19 @@ comment[content] {
   position: relative;
 }
 
+.comment-bubble {
+  height: 100px;
+  width: 200px;
+  margin-top: 10px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  left: 1000px;
+  top: calc(var(--comment-index) * 110px); /* Adjust the vertical separation as needed */
+}
+
+
 /* you can ignore the animation it is not mandatory */
 @keyframes grow {
   0% {

@@ -51,6 +51,17 @@ const depositMoney = async data => {
   }
 };
 
+const queryPayment = async (orderId, requestId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/transaction/query-transaction?orderId=${orderId}&requestId=${requestId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const withdrawMoney = async data => {
   try {
     const userId = getUserIdFromCookie();
@@ -68,4 +79,5 @@ export {
   depositMoney,
   getCandidatePurchases,
   withdrawMoney,
+  queryPayment,
 };

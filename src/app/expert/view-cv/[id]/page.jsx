@@ -225,6 +225,11 @@ export default function FinishUp({ params }) {
   const [errorMessage, setErrorMessage] = useState();
 
   const [finishUpData, setFinishUpData] = useState(null);
+
+  const updateFinishUpData = useCallback(newFinishUpData => {
+    setFinishUpData(newFinishUpData);
+  }, []);
+
   const [auditData, setAuditData] = useState(null);
   const [fetchedData, setFetchedData] = useState(null);
 
@@ -283,14 +288,22 @@ export default function FinishUp({ params }) {
     }
   }
 
-  function onSubmitComment() {
-    handleSubmitComment(selectionState, selectedTextState);
+  async function onSubmitComment() {
+    await handleSubmitComment(selectionState, selectedTextState);
   }
 
-  function handleSubmitComment(selection, selectedText) {
+  async function handleSubmitComment(selection, selectedText) {
     const comment = document.createElement('comment');
     comment.textContent = selectedText;
-    const commentId = 'comment-' + Date.now(); // Generate a unique comment ID
+    const commentId =
+      'comment_type_' +
+      currentDataType +
+      '_id_' +
+      currentDataId +
+      '_desId_' +
+      currentId +
+      '_' +
+      Date.now(); // Generate a unique comment ID
     comment.setAttribute('id', commentId);
     comment.setAttribute('class', 'select-none comment-marker');
     comment.setAttribute('content', inputValue);
@@ -334,14 +347,80 @@ export default function FinishUp({ params }) {
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.experiences = updatedExperiences;
         setFinishUpData(newFinishUpData);
+
+        const fetchData = async () => {
+          try {
+            await handleSaveDraftWithData(newFinishUpData);
+            setShowFinishupCV(false);
+            const requestId = params.id;
+            const fetchedDataFromAPI = await getReviewResponse(requestId);
+            setFetchedData(fetchedDataFromAPI);
+            setOverall(fetchedDataFromAPI.overall);
+            const data = fetchedDataFromAPI.feedbackDetail;
+            // const data = await getFinishUp(1)
+            // const fetchedData = await getReviewResponse(expertId, requestId);
+            console.log('FinishUp data: ', data);
+            if (data === null) {
+              setFinishUpData(null);
+              return;
+            }
+            const cvId = data.cvId;
+            setFinishUpData(data);
+            setShowFinishupCV(true);
+            setTemplateSelected(data.templateType);
+            setToolbarState(data.cvStyle);
+            setSummary(data.summary);
+          } catch (error) {
+            console.error('Error fetching FinishUp data:', error);
+          }
+        };
+
+        fetchData();
       }
+
     } else {
       console.log('Element with id', currentId, 'not found');
     }
   }
+  function onDeleteComment(commentId, type, randomId, dataId) {
+    console.log('onDeleteComment:commentId:', commentId);
+    console.log('onDeleteComment:type:', type);
+    console.log('onDeleteComment:randomId:', randomId);
+    console.log('onDeleteComment:dataId:', dataId);
+    handleDeleteComment(commentId, type, randomId, dataId);
+    // const comment = document.getElementById(commentId);
+    // if (comment) {
+    //   comment.remove();
+    //   if (type === 'experience') {
+    //     const updatedExperiences = experiences.map(experience => {
+    //       if (experience.id === dataId) {
+    //         return {
+    //          ...experience,
+    //           description: experience.description.replace(
+    //             '<comment id="' + commentId + '" class="select-none comment-marker">',
+    //             '',
+    //           ),
+    //         };
+    //       } else {
+    //         return experience;
+    //       }
+    //     });
+    //     console.log('updatedExperiences experience', updatedExperiences);
+    //     let newFinishUpData = { ...finishUpData };
+    //     newFinishUpData.experiences = updatedExperiences;
+    //     setFinishUpData(newFinishUpData);
+    //   }
+    // }
+  }
 
+  useEffect(() => {
+    // This code will run every time finishUpData or showFinishupCV changes
+    // You can add additional logic or fetch data here if needed
+    console.log('State updated, triggering re-render');
+  }, [finishUpData, showFinishupCV]);
   // Function to handle comment deletion
-  function handleDeleteComment(commentId) {
+  function handleDeleteComment(commentId, type, randomId, dataId) {
+    console.log('handleDeleteComment:commentId:', commentId);
     const comment = document.getElementById(commentId);
 
     if (comment) {
@@ -358,6 +437,60 @@ export default function FinishUp({ params }) {
 
       // Remove the comment
       parent.removeChild(comment);
+    }
+
+    //Okey now description will be delete, now update experience description or education desription...
+    const descriptionAfter = document.getElementById(randomId);
+
+    if (descriptionAfter) {
+      const content = descriptionAfter.innerHTML;
+
+      if (type === 'experience') {
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === dataId) {
+            return {
+              ...experience,
+              description: content,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+
+        const fetchData = async () => {
+          try {
+            await handleSaveDraftWithData(newFinishUpData);
+            setShowFinishupCV(false);
+            const requestId = params.id;
+            const fetchedDataFromAPI = await getReviewResponse(requestId);
+            setFetchedData(fetchedDataFromAPI);
+            setOverall(fetchedDataFromAPI.overall);
+            const data = fetchedDataFromAPI.feedbackDetail;
+            // const data = await getFinishUp(1)
+            // const fetchedData = await getReviewResponse(expertId, requestId);
+            console.log('FinishUp data: ', data);
+            if (data === null) {
+              setFinishUpData(null);
+              return;
+            }
+            const cvId = data.cvId;
+            setFinishUpData(data);
+            setShowFinishupCV(true);
+            setTemplateSelected(data.templateType);
+            setToolbarState(data.cvStyle);
+            setSummary(data.summary);
+          } catch (error) {
+            console.error('Error fetching FinishUp data:', error);
+          }
+        };
+
+        fetchData();
+      }
+    } else {
+      console.log('Element with id not found');
     }
   }
 
@@ -468,6 +601,7 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           experiences={filteredExperiences}
           onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
           onChangeOrder={sortedExperiences => {
             console.log('New order of experiences:', sortedExperiences);
           }}
@@ -594,8 +728,8 @@ export default function FinishUp({ params }) {
 
         setSummary(data.summary);
 
-        const data1 = await getAudit(cvId);
-        setAuditData(data1);
+        // const data1 = await getAudit(cvId);
+        // setAuditData(data1);
       } catch (error) {
         if (error.response.data.error) {
           setErrorMessage(error.response.data.error);
@@ -641,6 +775,23 @@ export default function FinishUp({ params }) {
       const sendObj = {
         overall: overall,
         cv: finishUpData,
+      };
+      console.log('Save: ', sendObj);
+
+      await updateReviewResponse(fetchedData.id, sendObj); // Call the syncUp <function styleName=""></function>
+      console.log('Save completed.');
+      openNotification('bottomRight', `Save changed`);
+    } catch (error) {
+      console.error('Error during synchronization:', error);
+      // Handle errors or display an error message.
+    }
+  };
+
+  const handleSaveDraftWithData = async (_finishUpData) => {
+    try {
+      const sendObj = {
+        overall: overall,
+        cv: _finishUpData,
       };
       console.log('Save: ', sendObj);
 

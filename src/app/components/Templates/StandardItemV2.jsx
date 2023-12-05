@@ -1,16 +1,18 @@
 /* eslint-disable */
 'use client';
 
-import { Divider, Typography } from 'antd';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Card, Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 
 const StandardItemV2 = props => {
   const {
     onComment,
+    onDeleteComment,
     dataId,
     type,
-    typeId,
     role,
     orgName,
     duration,
@@ -28,7 +30,6 @@ const StandardItemV2 = props => {
     handleOrgNameChange,
     handleDescriptionChange,
   } = props;
-  console.log('StandardItem::: ', props);
   const roleState = useRef(role);
   const orgNameState = useRef(orgName);
   const descriptionState = useRef(description);
@@ -54,10 +55,37 @@ const StandardItemV2 = props => {
   };
 
   function generateRandomId() {
-    return `id-${Math.random().toString(36).substr(2, 9)}`;
+    return `type-${type}-dataId-${dataId}`;
   }
-  
+
   const randomId = generateRandomId();
+
+  const renderComments = () => {
+    console.log('renderComments: ', description);
+    // Extracting comments from the description using a regular expression
+    const comments = description.match(/<comment.*?<\/comment>/g);
+
+    if (!comments) {
+      return null;
+    }
+
+    return comments.map((comment, index) => {
+      const commentId = comment.match(/id="(.*?)"/)[1];
+      console.log("commentId:", commentId)
+      // Parse comment content using regular expression
+      const contentMatch = comment.match(/content="(.*?)"/);
+      const content = contentMatch ? contentMatch[1] : '';
+
+      return (
+        <Card key={commentId} className="comment-bubble" style={{ '--comment-index': index }}>
+          {content}
+          <button className='ml-4' onClick={() => onDeleteComment(commentId, type, randomId, dataId)}>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </Card>
+      );
+    });
+  };
   const renderTitle = () => {
     if (titleProps) {
       return (
@@ -542,6 +570,7 @@ const StandardItemV2 = props => {
                         onMouseUp={event => onComment(event, type, randomId, dataId)}
                         dangerouslySetInnerHTML={{ __html: description }}
                       />
+                      {renderComments()}
                     </div>
                   </li>
                 </ul>
