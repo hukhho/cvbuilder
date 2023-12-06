@@ -100,13 +100,13 @@ const ListError = ({ errors }) => {
                     >
                       <div className="text-sm leading-7 mr-2.5">
                         <i className="fas fa-check-circle text-teal-400" aria-hidden="true" />
-                        <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#38A169' }} />
+                        <FontAwesomeIcon icon={faCheckCircle} className="text-teal-400" />
                       </div>
                       <div className="w-full" style={{ textAlign: 'left' }}>
                         <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
                           {error.title}
                         </h6>
-                        <p className="text-gray-600 text-xs leading-4 m-0">{error.result}</p>
+                        <p className="text-gray-600 text-xs leading-4 m-0">{error.description}</p>
                       </div>
                       <div className="pl-2 font-semibold min-w-[15px]">
                         <span className="text-teal-400">1</span>
