@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Column } from '@ant-design/plots';
+// import { Column } from '@ant-design/plots';
 
 const DemoColumn = () => {
   const data = [
@@ -66,7 +66,8 @@ const DemoColumn = () => {
       },
     },
   };
-  return <Column {...config} />;
+  //   return <Column {...config} />;
+  return <div>dang fix</div>;
 };
 
 export default DemoColumn;

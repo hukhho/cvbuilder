@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -94,7 +93,7 @@ const Home = () => {
             <div></div>
             <div className="!p-0 mt-16 mb-5 card">
               <div className="">
-                <DemoColumn />
+                {/* <DemoColumn /> */}
               </div>
             </div>
           </div>
