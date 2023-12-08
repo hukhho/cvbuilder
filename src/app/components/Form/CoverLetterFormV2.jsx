@@ -270,7 +270,7 @@ const CoverLetterFormV2 = ({ coverLetterId, data, onCreated }) => {
           </Form.Item>
 
           <Slider
-            min={0}
+            min={0.2}
             max={1}
             step={0.01}
             marks={marks}
@@ -281,14 +281,17 @@ const CoverLetterFormV2 = ({ coverLetterId, data, onCreated }) => {
             onChange={val => setSlider(val)}
           />
 
-          <Button
+          {/* <Button
             hidden={loading}
             htmlType="submit"
             className="form-button button"
             disabled={loading}
           >
             {loading ? 'WAIT TO CREATING COVER LETTER' : 'CREATE CONTENT COVER LETTER '}
-          </Button>
+          </Button> */}
+          <button hidden={loading} className="button mt-8" htmlType="submit">
+            {loading ? 'WAIT TO UPDATE COVER LETTER' : 'CREATE CONTENT COVER LETTER'}
+          </button>
           {loading && (
             <Spin spinning={loading}>
               <Alert

@@ -73,16 +73,16 @@ const Content = ({ params }) => {
   const handleSubmitSave = async values => {
     try {
       // setLoading(true);
-      console.log('save values: ', values);
       const submitUpdate = {
         ...values,
         // title: 'title',
         // data: '2023-10-23T13:40:14.035Z',
         // company: 'Google',
-        description: content,
+        // description: content,
       };
+      console.log('save values: ', submitUpdate);
 
-      const response = await updateCoverLetter(cvId, params.id, submitUpdate);
+      const response = await updateCoverLetter(cvId, params.id, values);
 
       // console.log('handleSubmit, values: ', values);
       // console.log('content state: ', content);

@@ -13,6 +13,7 @@ const updateCoverLetter = async (cvId, coverLetterId, data) => {
     if (!userId) {
       throw new Error('User ID not found.');
     }
+    console.log('updateCoverLetter: ', data);
     const response = await axiosInstance.put(
       `/chat-gpt/user/cv/${cvId}/cover-letter/${coverLetterId}`,
       data,
