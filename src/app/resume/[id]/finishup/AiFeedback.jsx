@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getReview } from './finishUpService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { notification } from 'antd';
+import { notification, Spin } from 'antd';
 
 const AiFeedback = ({ cvId }) => {
   const [data, setData] = useState();
@@ -24,6 +24,7 @@ const AiFeedback = ({ cvId }) => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      openNotification('bottomRight', error?.message);
 
       console.error('Error fetching FinishUp data:', error);
     }
@@ -89,9 +90,21 @@ const AiFeedback = ({ cvId }) => {
               </div>
             </div>
           </div>
-          <button disabled={isLoading} className="keyword-button button" onClick={handleCLick}>
+
+          <button
+            style={{ visibility: isLoading ? 'hidden' : 'visible' }}
+            disabled={isLoading}
+            className="keyword-button button"
+            onClick={handleCLick}
+          >
             Feedback CV
           </button>
+
+          {isLoading && (
+            <Spin tip="AI is writing" size="small">
+              <div className="content" />
+            </Spin>
+          )}
         </div>
       </div>
     </div>

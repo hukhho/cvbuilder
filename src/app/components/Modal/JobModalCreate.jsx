@@ -64,7 +64,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description }) => {
       onCreated();
       closeModal();
     } catch (error) {
-      console.log("Error: ", error.response.data)
+      console.log('Error: ', error.response.data);
       if (error.response && error.response.status === 400 && error.response.data) {
         // The server returned a 400 status code with an error message
         const errorMessage = error.response.data;
@@ -80,15 +80,15 @@ const JobModalCreate = ({ onCreated, cvId, title, description }) => {
       {contextHolder}
       <div className="inset-0 flex items-center justify-center">
         <button
-          href=""
           data-size="default"
           data-theme="default"
           data-busy="false"
-          className="cta-button button cta "
-          style={{ color: 'white' }}
+          className="form-submission button cta "
+          id="create-resume-form-submitted"
+          type="submit"
           onClick={openModal}
         >
-          <span>Create Job Description</span>
+          Create Job Description
         </button>
       </div>
 
@@ -185,7 +185,6 @@ const JobModalCreate = ({ onCreated, cvId, title, description }) => {
                       </div>
 
                       <button
-                        href=""
                         data-size="default"
                         data-theme="default"
                         data-busy="false"

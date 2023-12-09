@@ -4,6 +4,7 @@ import { Dialog, Switch, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import './setting.css';
 import './input.css';
+import './coverletter.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
@@ -75,7 +76,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
     <>
       {contextHolder}
       <div className="inset-0 flex items-center justify-center">
-         <Card
+        {/* <Card
           hoverable
           onClick={openModal}
           style={{ width: 240, background: '#fbfbfb' }} // Adjust this value based on your needs
@@ -83,17 +84,15 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
           <div>
             <div style={{ position: 'relative', width: 200, height: 200, alignContent: 'center' }}>
               Create new cover letter
-              {/* <Image
-            src="https://photos.pinksale.finance/file/pinksale-logo-upload/1692701716873-e9b5323edab631aa000eabb7a8512a33.PNG"
-            alt="example"
-            layout="fill"
-            objectFit="cover"
-          /> */}
             </div>
             <Meta title="" description="cover letter" />
           </div>
-        </Card>{' '}
-        {/* </button> */}
+        </Card> */}
+        <div hoverable onClick={openModal} class="src-containers-Dashboard--oPXEIf9zEiA=">
+          <div id="on-screen-create-new-resume" class="cta-button resumeCta">
+            <span class="resumeCta-label">Create new Cover Letter</span>
+          </div>
+        </div>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
@@ -131,7 +130,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                   </Dialog.Title>
                   <div className="p-6">
                     <form onSubmit={handleFormSubmit}>
-                    <div className="">
+                      <div className="">
                         <label
                           className="!leading-[0px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
                           htmlFor="resumeName" // Add htmlFor with the correct id
@@ -144,7 +143,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                         <div className="relative">
                           <Select
                             style={{
-                              width: 120,
+                              width: '100%',
                             }}
                             name="cvId"
                             onChange={handleChange}
@@ -174,9 +173,6 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                           />
                         </div>
                       </div>
-                      <br />
-                      <br />
-                     
 
                       <button
                         href=""

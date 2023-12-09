@@ -9,6 +9,7 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
 import { notification } from 'antd';
 import { updateJobDescription } from './updateJobDescription';
+import TextArea from 'antd/es/input/TextArea';
 
 const JobModal = ({ onCreated, cvId, title, description }) => {
   const [api, contextHolder] = notification.useNotification();
@@ -22,7 +23,7 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState(description);
-  console.log('JobModal', title, description);
+  console.log('JobModal:::inputValue', inputValue);
 
   const [formData, setFormData] = useState({
     title: title,
@@ -34,6 +35,7 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
   }
 
   function openModal() {
+    setInputValue(description)
     setIsOpen(true);
   }
 
@@ -89,11 +91,10 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
           data-size="default"
           data-theme="default"
           data-busy="false"
-          className="cta-button button cta "
-          style={{ color: 'white' }}
+          className="form-submission button cta "
           onClick={openModal}
         >
-          <span>Update Job Description</span>
+          Update Job Description
         </button>
       </div>
 
@@ -167,22 +168,25 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
                             <div id="description-portal-root" />
                           </label>
                           <div className="relative">
-                            <textarea
+                            <TextArea
                               className="inputEl new-resume-form"
                               id="description"
                               aria-label="Job Description "
-                              rows={3}
                               onChange={handleInputChange}
                               onInput={handleTextareaInput}
                               value={inputValue}
+                              autoSize={{
+                                minRows: 2,
+                                maxRows: 10,
+                              }}
                               style={{
                                 height: 'auto',
                                 overflow: 'hidden',
                                 resize: 'none',
-                                maxHeight: 200,
+                                // maxHeight: 200,
                                 overflowY: 'auto',
                                 background: 'white',
-                                height: 120,
+                                // height: 120,
                               }}
                             />
                           </div>

@@ -16,6 +16,7 @@ import getContent from './contentService';
 import { useRouter } from 'next/navigation';
 import { format, parse } from 'date-fns';
 import updateCoverLetter from '@/app/components/Form/updateCoverLetterService';
+import TextArea from 'antd/es/input/TextArea';
 
 const Content = ({ params }) => {
   const router = useRouter();
@@ -105,11 +106,11 @@ const Content = ({ params }) => {
             />
           }
           content={
-            <div className="flex h-screen">
-              <div className="flex flex-col p-4">
-                <div className="w-full">
+            <div className="flex h-screen mb-8">
+              <div className="flex flex-col p-4 pb-8">
+                <div styles={{ width: '900px' }}>
                   {contextHolder}
-                  <div className="relative mt-10">
+                  <div className=" mt-10" styles={{ width: '900px' }}>
                     <Form
                       onFinish={handleSubmitSave}
                       form={form}
@@ -178,21 +179,33 @@ const Content = ({ params }) => {
                           </label>
                         }
                       >
-                        <textarea
+                        <TextArea
                           className="inputEl"
                           id="content-section-form-0"
                           aria-label="Write a professional **cover letter**"
-                          rows={20}
+                          // rows={20}
+                          autoSize={{
+                            minRows: 20,
+                            maxRows: 50,
+                          }}
                           placeholder="As an accomplished Marketing graduate from Wisconsin University with years of strategic marketing and data analysis experience, ..."
                           name="content"
                           onChange={e => setContentData(e.target.value)}
                           value={contentData}
-                          style={{ background: 'white', height: 545, width: 1000, resize: 'none' }}
+                          style={{
+                            background: 'white',
+                            // height: 120,
+                            width: '900px',
+                            fontWeight: 400,
+                            overflow: 'hidden',
+                            resize: 'none',
+                          }}
+                          // style={{ background: 'white', height: 545, width: 1000, resize: 'none' }}
                           // defaultValue={content}
                         />
                         {/* //<Input style={stylesInput} placeholder="Copy and paste the job description" /> */}
                       </Form.Item>
-                      <button className="button mt-8" type="submit" disabled={loading}>
+                      <button className="button mt-8 mb-16" type="submit" disabled={loading}>
                         {loading ? 'WAIT TO UPDATE COVER LETTER' : 'UPDATE'}
                       </button>
                     </Form>

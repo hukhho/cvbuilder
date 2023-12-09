@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import getContact from '../resume/[id]/contact/contactService';
 
 const categories = [
   { name: 'CONTACT', link: 'contact' },
@@ -17,10 +18,23 @@ const categories = [
 
 const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
   const [enabledCategories, setEnabledCategories] = useState(initialEnabledCategories);
-
+  const [data, setData] = useState();
   console.log('cvId: ', cvId);
   console.log('initialEnabledCategories: ', initialEnabledCategories);
 
+  const fetchData = async () => {
+    try {
+      const fetchedData = await getContact(cvId);
+
+      setData(fetchedData); // Updated to set "contactData"
+    } catch (error) {
+      console.error('There was an error fetching the data', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="w-[1255px] h-[25px] relative flex space-x-8">
       <div className="flex items-center">
@@ -39,7 +53,7 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
               letterSpacing: 'normal',
             }}
           >
-            cvName
+            {data?.resumeName ? data?.resumeName : ''}
           </div>
         </div>
       </div>

@@ -14,8 +14,76 @@ export const getFinishUp = async cvId => {
 export const getAts = async cvId => {
   try {
     const response = await axiosInstance.get(`/users/cv/${cvId}/job-description/ats`);
-    // return mockData.data.resume;
     return response.data;
+
+    // return {
+    //   title: 'Associate Product Manager',
+    //   description:
+    //     'Gather, analyze and create high-level requirements\nParticipate in the product prototyping process, interface mock-up, wireframe, and GUI creation in an Agile environment\nAnalyze market trends and perform competitor analysis\nShare the business value to the development team, so they understand the intent behind the new feature, release, or product\nWork with the assigned Product Managers to define the product roadmap and vision\nPrioritize features by ranking them against the strategic goals and initiatives to make sure the delivery of the product, including managing dependencies in and across releases to complete release phases and milestones\nCoordinating all of the activities required to bring the product to market. This involves bridging gaps between different functions within the company and aligning all of the teams involved (e.g: Marketing, Sales & Sucess, Customer Support, others)\nDetermine which ideas should be promoted into features to push the product strategy forward\nEnsure that feedback and requests are seamlessly integrated into the product planning and development processes\nAt least 1 year of experience in Product Owner, IT Business Analyst, Product Executive or similar roles\nPossess Agile and Scrum practices\nGood presentation and stakeholder management\nAdvanced English and aptitude for learning and understanding new and emerging technologies\nBe familiar with requirement specification techniques: user story, modeling, prototyping.\nPossess great knowledge about requirement elicitation/management\nGood organizational, analytical, as well as oral, and written communication skills',
+    //   ats: [
+    //     {
+    //       ats: 'Gather',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Analyze',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'High-level requirements',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Product prototyping',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Agile environment',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Market trends',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Competitor analysis',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Business value',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Product roadmap',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Vision',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Prioritize features',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Strategic goals',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Dependencies',
+    //       status: 'Warning',
+    //     },
+    //     {
+    //       ats: 'Product Manager',
+    //       status: 'Pass',
+    //     },
+    //     {
+    //       ats: 'Requirement specification techniques',
+    //       status: 'Warning',
+    //     },
+    //   ],
+    // };
+    // return mockData.data.resume;
   } catch (error) {
     throw error;
   }
