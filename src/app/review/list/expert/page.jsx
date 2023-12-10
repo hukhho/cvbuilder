@@ -129,8 +129,7 @@ const Home = () => {
         content={
           <div className="container mx-auto">
             <div className="!p-0">
-              <div className="mt-8">
-                {' '}
+              <div className="mt-16">
                 <Search
                   placeholder="Search by name, title or company"
                   size="large"
@@ -141,10 +140,10 @@ const Home = () => {
                   }}
                 />
               </div>
-              <div className="grid grid-cols-3 gap-4 mt-16">
-                {experts.map(expert => (
-                  <Link href={`/review/${expert.id}/detail`} >
-                    <Card key={expert.id} style={{ width: 297, borderRadius: '8px' }}>
+              <div className="grid grid-cols-3 gap-4 mt-16 mb-16">
+                {experts?.map(expert => (
+                  <Link href={`/review/${expert?.id}/detail`}>
+                    <Card key={expert?.id} style={{ width: 297, borderRadius: '8px' }}>
                       <img
                         style={{
                           width: '279.50px',
@@ -152,16 +151,23 @@ const Home = () => {
                           borderRadius: '8px',
                         }}
                         className="w-[279.50px] h-[267px] relative rounded-lg"
-                        src={expert.avatar}
+                        src={expert?.avatar}
                         alt="avatar"
                       />
                       <div>
                         <div className="flex mt-2">
                           <Title style={{ textAlign: 'left' }} level={5}>
-                            <span>{expert.name}</span>
+                            <span>{expert?.name}</span>
                           </Title>
+                          {/* <div className="ml-4">
+                            {expert?.star} <StarFilled style={{ color: '#FFC107' }} />
+                          </div> */}
                           <div className="ml-4">
-                            {expert.star} <StarFilled style={{ color: '#FFC107' }} />
+                            {expert?.star > 0 && (
+                              <>
+                                {expert?.star} <StarFilled style={{ color: '#FFC107' }} />
+                              </>
+                            )}
                           </div>
                         </div>
                         <div style={{ textAlign: 'left' }}>
@@ -189,7 +195,7 @@ const Home = () => {
                               />
                             </svg>
                             <p className="ml-2">
-                              {expert.jobTitle} at {expert.company}
+                              {expert?.jobTitle} at {expert?.company}
                             </p>
                           </div>
                           <div className="flex">
@@ -213,7 +219,7 @@ const Home = () => {
                                 stroke-linejoin="round"
                               />
                             </svg>
-                            <p className="ml-2"> {expert.price} </p>
+                            <p className="ml-2"> {expert?.price} </p>
                           </div>
                         </div>
                       </div>
@@ -229,12 +235,12 @@ const Home = () => {
                       >
                         <div className="w-1/2">
                           <div className="text-gray-500">Experience</div>
-                          <div style={{ fontWeight: 'bold' }}>{expert.experience} years</div>
+                          <div style={{ fontWeight: 'bold' }}>{expert?.experience} years</div>
                         </div>
 
                         <div className="w-1/2">
                           <div className="text-gray-500">Number of review</div>
-                          <div style={{ fontWeight: 'bold' }}>{expert.numberReview}</div>
+                          <div style={{ fontWeight: 'bold' }}>{expert?.numberReview}</div>
                         </div>
                       </div>
                     </Card>

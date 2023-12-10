@@ -51,6 +51,8 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
 
   useEffect(() => {
     if (expert?.price) {
+      console.log('useEffect: ', expert);
+
       const prices = expert?.price;
 
       const today = new Date();
@@ -69,8 +71,9 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
       });
 
       setOptions(newOptions);
+      console.log('newOptions: ', newOptions);
     }
-  }, []);
+  }, [expert, options]);
 
   const resumeOptions = resumes.map(resume => ({
     value: resume.id,
@@ -110,7 +113,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className=" relative z-10" onClose={closeModal}>
-          <div className="bg-red-500" style={{ width: 5000 }}>
+          <div className="" style={{ width: 900 }}>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -138,6 +141,12 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                     style={{ width: 900 }}
                     className="z-99 relative transform rounded-lg  text-left align-middle shadow-sm transition-all opacity-100 scale-100"
                   >
+                    <button
+                      className="absolute btn btn-sm btn-circle right-7 top-16"
+                      onClick={() => closeModal()}
+                    >
+                      ✕
+                    </button>
                     <div className="container mx-auto px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
                         <div className="flex ">
@@ -147,16 +156,14 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                             </h5>
                             <div>
                               <h1 className="text-4xl">
-                                <sup className="text-sm align-top top-0">total</sup>
+                                {/* <sup className="text-sm align-top top-0"> total</sup> */}
                               </h1>
-                              <span className="text-xs mt-1 mb-6 leading-4 block">
-
-                              </span>
+                              <span className="text-xs mt-1 mb-6 leading-4 block"></span>
                             </div>
                             <ul className="mb-6">
                               <li className="text-xs mb-2 py-0.5 min-w-[200px]">
                                 <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />
-                                 Score 90 or above
+                                Score 90 or above
                               </li>
                               <li className="text-xs mb-2 py-0.5 min-w-[200px]">
                                 <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />{' '}
@@ -174,10 +181,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                             <hr className="mb-6" />
                             <h4>Questions?</h4>
                             <span className="text-xs mt-1 mb-6 leading-4 block">
-                              <a
-                                target="_blank"
-                                style={{ color: 'white' }}
-                              >
+                              <a target="_blank" style={{ color: 'white' }}>
                                 Frequent Questions &amp; Answers{' '}
                                 <i className="fad fa-chevron-right" aria-hidden="true" />
                               </a>
@@ -186,9 +190,9 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                           <div className="p-9 w-[70%]" style={{ color: 'black' }}>
                             <h2>Resume Review</h2>
                             <p>
-                              A expert can help you polish your resume into exactly what
-                              recruiters are looking for. We'll correct all formatting, content, and
-                              grammar errors directly in your resume.
+                              A expert can help you polish your resume into exactly what recruiters
+                              are looking for. We'll correct all formatting, content, and grammar
+                              errors directly in your resume.
                             </p>
                             <div>
                               <Form
@@ -196,7 +200,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                 name="control-hooks"
                                 onFinish={onFinish}
                                 style={{
-                                  marginTop: 100,
+                                  marginTop: 50,
                                   maxWidth: 900,
                                 }}
                               >
@@ -209,7 +213,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                     },
                                   ]}
                                 >
-                                  <Select style={{ width: 300 }} options={resumeOptions} />
+                                  <Select options={resumeOptions} />
                                 </Form.Item>
                                 <Form.Item
                                   name="optionId"
@@ -219,20 +223,11 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                       required: true,
                                     },
                                   ]}
-
                                 >
-                                  <Select style={{ width: 300 }} options={options} />
+                                  <Select options={options} />
                                 </Form.Item>
 
-                                <Form.Item
-                                  name="note"
-                                  label="Note"
-                                  rules={[
-                                    {
-                                      required: true,
-                                    },
-                                  ]}
-                                >
+                                <Form.Item name="note" label="Note">
                                   <Input />
                                 </Form.Item>
 

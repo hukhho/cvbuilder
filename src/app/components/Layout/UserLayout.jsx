@@ -283,7 +283,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
           },
         }}
       >
-        <Layout style={{ background: colorBgContainer }} hasSider>
+        <Layout style={{ background: '#fbfbfb' }} hasSider>
           <Sider
             position="relative"
             width="280px"
@@ -480,7 +480,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
             className="site-layout"
             style={{
               marginLeft: 350,
-              background: colorBgContainer,
+              background: '#fbfbfb',
             }}
           >
             <Header
@@ -488,7 +488,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
                 marginTop: '40px',
                 padding: 0,
                 paddingLeft: 0,
-                background: colorBgContainer,
+                background: '#fbfbfb',
                 position: 'relative',
               }}
             >
@@ -512,7 +512,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
               <div
                 style={{
                   textAlign: 'left',
-                  background: colorBgContainer,
+                  background: '#fbfbfb',
                 }}
               >
                 {content}
