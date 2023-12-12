@@ -83,7 +83,13 @@ const CandidateForm = ({ onCreated, data }) => {
       // // Use mockData if no data is provided
       // const initialData = mockData;
       // console.log('initialData: ', initialData);
-      form.setFieldsValue(data);
+      // If data.cv is an array of objects, extract their ids
+      const cvIds = data.cv?.map(cv => cv.id) ?? [];
+      const formData = {
+        ...data,
+        cv: cvIds, // Set the cv field with an array of ids
+      };
+      form.setFieldsValue(formData);
     }
   }, [data, form]);
 
@@ -103,7 +109,7 @@ const CandidateForm = ({ onCreated, data }) => {
     value: resume.id,
     label: resume.resumeName,
   }));
-  
+
   const handleChangeTag = value => {
     console.log(`selected ${value}`);
   };
