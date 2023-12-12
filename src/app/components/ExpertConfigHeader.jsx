@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const categories = [
   { name: 'ACCOUNT', link: 'expert/config' },
-  // { name: 'PREVIEW YOUR PROFILE', link: 'candidate/preview' },
+  { name: 'PREVIEW YOUR PROFILE', link: 'expert/preview' },
   { name: 'PURCHASE HISTORY', link: 'expert/purchases' },
   { name: 'WITHDRAW MONEY REQUEST', link: 'expert/withdraw' },
 ];

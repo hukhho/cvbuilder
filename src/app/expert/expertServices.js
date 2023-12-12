@@ -93,12 +93,22 @@ const acceptRequest = async requestId => {
 //     throw error;
 //   }
 // };
+const getExpertPreview = async () => {
+  try {
+    const userId = getUserIdFromCookie();
 
+    const response = await axiosInstance.get(`/expert/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 export {
   getRequestList,
   acceptRequest,
   rejectRequest,
   getExpertConfig,
+  getExpertPreview,
   updateExpertConfig,
   getExpertPurchases,
 };
