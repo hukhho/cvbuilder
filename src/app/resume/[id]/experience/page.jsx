@@ -20,10 +20,12 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import ListError from '@/app/components/ListError/ListError';
 import Head from 'next/head';
 import StandarList from '../../../components/List/StandarList';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const { Meta } = Card;
 
 const Experience = ({ params }) => {
+  const router = useRouter();
   const [experiences, setExperiences] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [enabledCategories, setEnabledCategories] = useState({
@@ -33,11 +35,25 @@ const Experience = ({ params }) => {
 
   const cvId = params.id;
 
+  const searchParams = useSearchParams();
+  const typeId = searchParams.get('typeId');
+  const handleRemoveSearchParam = () => {
+    console.log("handleRemoveSearchParam")
+    router.replace(`/resume/${cvId}/experience`, undefined, { shallow: true });
+  };
   const fetchExperiences = async () => {
     try {
       const data = await getAllExperiences(cvId);
       console.log('data getAllExperiences ', data);
-      setSelectedExperience(null);
+      // setSelectedExperience(null);
+
+      if (typeId > 0) {
+        console.log('typeId: ', typeId);
+        let experience = data.find(item => item.id == typeId);
+        console.log('experience::typeId ', experience);
+        setSelectedExperience(experience);
+      }
+
       setExperiences(data);
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
@@ -49,6 +65,8 @@ const Experience = ({ params }) => {
   }, []);
 
   const handleEditExperience = experience => {
+    handleRemoveSearchParam();
+
     setSelectedExperience(experience);
   };
   const handleDeleteExperience = async experienceId => {

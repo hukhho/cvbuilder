@@ -61,26 +61,22 @@ const Home = () => {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
   };
-  const fetchResumes = async () => {
-    try {
-      // Simulate fetching resumes (replace with your actual fetch logic)
-      const fetchedResumes = await getResumes();
-      setResumes(fetchedResumes);
-    } catch (error) {
-      console.error('There was an error fetching resumes', error);
-    }
-  };
+  // const fetchResumes = async () => {
+  //   try {
+  //     // Simulate fetching resumes (replace with your actual fetch logic)
+  //     const fetchedResumes = await getResumes();
+  //     setResumes(fetchedResumes);
+  //   } catch (error) {
+  //     console.error('There was an error fetching resumes', error);
+  //   }
+  // };
 
   useEffect(() => {
     console.log('useEffect');
     fetchData();
-    fetchResumes();
   }, []);
 
-  const resumeOptions = resumes.map(resume => ({
-    value: resume.id,
-    label: resume.resumeName,
-  }));
+
 
   const onCreated = () => {
     // form.setFieldsValue({
@@ -119,7 +115,7 @@ const Home = () => {
               <div></div>
               <div>
                 <div>
-                  <CandidateForm data={data} onCreated={onCreated} resumeOptions={resumeOptions} />
+                  <CandidateForm data={data} onCreated={onCreated} />
                 </div>
                 <div>
                   <Card className="mt-16" style={{ width: '700px' }}>

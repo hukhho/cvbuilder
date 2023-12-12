@@ -6,8 +6,9 @@ import './score.css';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScoreCircle from './ScoreCirle';
+import Link from 'next/link';
 
-const ScoreFinishUp = ({ checked, onChange, data }) => {
+const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
   const {
     scoreContent,
     scorePractice,
@@ -38,6 +39,11 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
     console.log('Score Finish Up: data', data);
     console.log('Score Finish Up: content', content);
   }, [data]);
+
+  const filteredContent = content?.filter(item => item.score < item.max);
+  const filteredOptimization = optimization?.filter(item => item.score < item.max);
+  const filteredPractice = practice?.filter(item => item.score < item.max);
+  const filteredFormat = format?.filter(item => item.score < item.max);
 
   return (
     <div className="score-wrapper">
@@ -223,7 +229,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
           <div className="details-list">
             <ul>
               {activeSection === 'Content' &&
-                content?.map((item, index) => {
+                filteredContent?.map((item, index) => {
                   return (
                     <li>
                       <i>
@@ -234,15 +240,35 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                           {item?.critical && <span className="critical-badge">CRITICAL</span>}
                           <span>
                             Your resume has{' '}
-                            <span className="exp-color">{item?.detail?.length} experiences</span>{' '}
+                            {item?.analyze?.experience > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.experience} experiences
+                              </span>
+                            )}
+                            {item?.analyze?.project > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.project} project
+                              </span>
+                            )}
+                            {item?.analyze?.involvement > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.involvement} involvement
+                              </span>
+                            )}{' '}
                             without {item?.title}
                           </span>
                         </h6>
                         <p>{item?.description}</p>
                         <div>
-                          {item?.detail?.map((itemChild, index) => {
-                            return <div className="badge experience">{itemChild?.title}</div>;
-                          })}
+                          {item?.analyze?.moreInfos?.map((itemChild, index) => (
+                            <Link
+                              key={index}
+                              href={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                              as={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                            >
+                              <div className="badge experience">{itemChild?.title}</div>
+                            </Link>
+                          ))}
                         </div>
                       </div>
                     </li>
@@ -250,7 +276,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                 })}
 
               {activeSection === 'Optimization' &&
-                optimization?.map((item, index) => {
+                filteredOptimization?.map((item, index) => {
                   return (
                     <li>
                       <i>
@@ -259,13 +285,37 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                       <div>
                         <h6>
                           {item?.critical && <span className="critical-badge">CRITICAL</span>}
-                          <span>{item?.title}</span>
+                          <span>
+                            Your resume has{' '}
+                            {item?.analyze?.experience > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.experience} experiences
+                              </span>
+                            )}
+                            {item?.analyze?.project > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.project} project
+                              </span>
+                            )}
+                            {item?.analyze?.involvement > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.involvement} involvement
+                              </span>
+                            )}{' '}
+                            without {item?.title}
+                          </span>
                         </h6>
                         <p>{item?.description}</p>
                         <div>
-                          {item?.detail?.map((itemChild, index) => {
-                            return <div className="badge experience">{itemChild?.title}</div>;
-                          })}
+                          {item?.analyze?.moreInfos?.map((itemChild, index) => (
+                            <Link
+                              key={index}
+                              href={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                              as={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                            >
+                              <div className="badge experience">{itemChild?.title}</div>
+                            </Link>
+                          ))}
                         </div>
                       </div>
                     </li>
@@ -273,7 +323,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                 })}
 
               {activeSection === 'Practice' &&
-                practice?.map((item, index) => {
+                filteredPractice?.map((item, index) => {
                   return (
                     <li>
                       <i>
@@ -282,13 +332,37 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                       <div>
                         <h6>
                           {item?.critical && <span className="critical-badge">CRITICAL</span>}
-                          <span>{item?.title}</span>
+                          <span>
+                            Your resume has{' '}
+                            {item?.analyze?.experience > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.experience} experiences
+                              </span>
+                            )}
+                            {item?.analyze?.project > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.project} project
+                              </span>
+                            )}
+                            {item?.analyze?.involvement > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.involvement} involvement
+                              </span>
+                            )}{' '}
+                            without {item?.title}
+                          </span>
                         </h6>
                         <p>{item?.description}</p>
                         <div>
-                          {item?.detail?.map((itemChild, index) => {
-                            return <div className="badge experience">{itemChild?.title}</div>;
-                          })}
+                          {item?.analyze?.moreInfos?.map((itemChild, index) => (
+                            <Link
+                              key={index}
+                              href={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                              as={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                            >
+                              <div className="badge experience">{itemChild?.title}</div>
+                            </Link>
+                          ))}
                         </div>
                       </div>
                     </li>
@@ -296,7 +370,7 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                 })}
 
               {activeSection === 'Format' &&
-                format?.map((item, index) => {
+                filteredFormat?.map((item, index) => {
                   return (
                     <li>
                       <i>
@@ -305,13 +379,37 @@ const ScoreFinishUp = ({ checked, onChange, data }) => {
                       <div>
                         <h6>
                           {item?.critical && <span className="critical-badge">CRITICAL</span>}
-                          <span>{item?.title}</span>
+                          <span>
+                            Your resume has{' '}
+                            {item?.analyze?.experience > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.experience} experiences
+                              </span>
+                            )}
+                            {item?.analyze?.project > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.project} project
+                              </span>
+                            )}
+                            {item?.analyze?.involvement > 0 && (
+                              <span className="exp-color before:first:hidden before:content-[',_'] before:mr-0.5">
+                                {item?.analyze?.involvement} involvement
+                              </span>
+                            )}{' '}
+                            without {item?.title}
+                          </span>
                         </h6>
                         <p>{item?.description}</p>
                         <div>
-                          {item?.detail?.map((itemChild, index) => {
-                            return <div className="badge experience">{itemChild?.title}</div>;
-                          })}
+                          {item?.analyze?.moreInfos?.map((itemChild, index) => (
+                            <Link
+                              key={index}
+                              href={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                              as={`/resume/${cvId}/${itemChild?.typeName}?typeId=${itemChild?.typeId}`}
+                            >
+                              <div className="badge experience">{itemChild?.title}</div>
+                            </Link>
+                          ))}
                         </div>
                       </div>
                     </li>

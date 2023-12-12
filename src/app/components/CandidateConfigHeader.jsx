@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const categories = [
   { name: 'ACCOUNT', link: 'candidate/config' },
-  // { name: 'PREVIEW YOUR PROFILE', link: 'candidate/preview' },
+  { name: 'PREVIEW YOUR PROFILE', link: 'candidate/preview' },
   { name: 'PURCHASE HISTORY', link: 'candidate/purchases' },
 ];
 

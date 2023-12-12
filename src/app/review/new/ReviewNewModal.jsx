@@ -37,8 +37,14 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
     setIsOpen(true);
   }
 
+  // Handle change for standard select elements
+  const handleSelectChange = event => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
+  // Handle change for input
   const handleInputChange = event => {
-    setInputValue(event.target.value);
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleTextareaInput = event => {
@@ -73,7 +79,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
       setOptions(newOptions);
       console.log('newOptions: ', newOptions);
     }
-  }, [expert, options]);
+  }, []);
 
   const resumeOptions = resumes.map(resume => ({
     value: resume.id,
@@ -203,31 +209,60 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                   marginTop: 50,
                                   maxWidth: 900,
                                 }}
+                                layout="vertical"
+                                requiredMark={false}
                               >
                                 <Form.Item
                                   name="resume"
-                                  label="Resume"
                                   rules={[
                                     {
                                       required: true,
                                     },
                                   ]}
+                                  label={
+                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                                      <div className="flex gap-2 items-center text-xs">
+                                        <span>
+                                          <strong>Select resume for review *</strong>
+                                        </span>
+                                      </div>
+                                    </label>
+                                  }
                                 >
-                                  <Select options={resumeOptions} />
+                                  <Select size="large" options={resumeOptions} />
                                 </Form.Item>
                                 <Form.Item
                                   name="optionId"
-                                  label="Deadline"
+                                  label={
+                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                                      <div className="flex gap-2 items-center text-xs">
+                                        <span>
+                                          <strong>Deadline *</strong>
+                                        </span>
+                                      </div>
+                                    </label>
+                                  }
                                   rules={[
                                     {
                                       required: true,
                                     },
                                   ]}
                                 >
-                                  <Select options={options} />
+                                  <Select size="large" options={options} />
                                 </Form.Item>
 
-                                <Form.Item name="note" label="Note">
+                                <Form.Item
+                                  name="note"
+                                  label={
+                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                                      <div className="flex gap-2 items-center text-xs">
+                                        <span>
+                                          <strong>Note</strong>
+                                        </span>
+                                      </div>
+                                    </label>
+                                  }
+                                >
                                   <Input />
                                 </Form.Item>
 

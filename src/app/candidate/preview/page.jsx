@@ -18,12 +18,13 @@ import {
 import { getResumes } from '@/app/utils/indexService';
 
 import { StarFilled, UserOutlined } from '@ant-design/icons';
-import { getExpert } from '../../new/reviewService';
-import ReviewNewModal from '../../new/ReviewNewModal';
 import FinishUpPreviewV2 from '@/app/resume/[id]/finishup/FinishUpPreviewV2';
 import Statitics from './Statitics';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import Link from 'next/link';
+import { getExpert } from '@/app/review/new/reviewService';
+import { getCandidateConfig } from '../candidateServices';
+import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -44,7 +45,7 @@ const generateMockExperts = () => {
 };
 const Home = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'REVIEW OPTIONS': true,
+    'PREVIEW YOUR PROFILE': true,
   });
 
   const [experts, setExperts] = useState([]);
@@ -82,7 +83,7 @@ const Home = ({ params }) => {
   const fetchExperts = async () => {
     try {
       // Simulate fetching resumes (replace with your actual fetch logic)
-      const fetchedExpert = await getExpert(params.id);
+      const fetchedExpert = await getCandidateConfig();
 
       setExpert(fetchedExpert);
       console.log('fetchedExpert: ', fetchedExpert);
@@ -115,19 +116,14 @@ const Home = ({ params }) => {
     // e.preventDefault();
   };
 
-  // const lowestPriceData = expert?.price?.[0]?.price ?? null;
-  // const biggestPriceData = expert?.price?.[2]?.price ?? null;
-
-  const sortedPrices = expert?.price?.slice().sort((a, b) => a.price - b.price) ?? [];
-
-  const lowestPriceData = sortedPrices[0]?.price ?? null;
-  const biggestPriceData = sortedPrices[sortedPrices.length - 1]?.price ?? null;
+  const lowestPriceData = expert?.price?.[0]?.price ?? null;
+  const biggestPriceData = expert?.price?.[2]?.price ?? null;
 
   return (
     <ConfigProvider>
       <UserCVBuilderLayout
         selected="3"
-        userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
+        userHeader={<CandidateConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mx-auto">
             <div className="!p-0 relative">
@@ -141,8 +137,8 @@ const Home = ({ params }) => {
                   </Link>
                 </div>
                 <div className="absolute top-10 right-5" style={{ textAlign: 'left' }}>
-                  <ReviewNewModal onCreated={onCreated} resumes={resumes} expert={expert} />
-                  <Statitics expert={expert} />
+                  {/* <ReviewNewModal onCreated={onCreated} resumes={resumes} expert={expert} /> */}
+                  {/* <Statitics expert={expert} /> */}
                 </div>
                 <div className="flex justify-between mt-16 mr-32 p-8">
                   <div className="flex mt-8">
@@ -150,16 +146,7 @@ const Home = ({ params }) => {
                     <div style={{ textAlign: 'left', marginTop: '20px', marginLeft: '20px' }}>
                       <Title level={3}>{expert?.name}</Title>
                       <p>
-                        {expert?.title} at {expert?.company}
-                      </p>
-                      {/* <p>
-
-                        From {lowestPriceData}.000 to {biggestPriceData}.000 VND / request
-                      </p> */}
-                      <p>
-                        {lowestPriceData && biggestPriceData && lowestPriceData === biggestPriceData
-                          ? `${lowestPriceData} VND / request`
-                          : `From ${lowestPriceData} to ${biggestPriceData} VND / request`}
+                        {expert?.jobTitle} at {expert?.company}
                       </p>
                     </div>
                   </div>
@@ -177,74 +164,23 @@ const Home = ({ params }) => {
                   </div>
                   <div className="flex justify-between	">
                     <div style={{ textAlign: 'left', width: '900px' }}>
-                      <div style={{ textAlign: 'left', minHeight: '200px' }}>
+                      <div style={{ textAlign: 'left', minHeight: '100px' }}>
                         {' '}
-                        {expert?.description ? (
-                          <p dangerouslySetInnerHTML={{ __html: expert?.description }} />
+                        {expert?.about ? (
+                          <p dangerouslySetInnerHTML={{ __html: expert?.about }} />
                         ) : (
                           <Empty />
                         )}
                       </div>
-                      {expert?.cvId > 0 && <FinishUpPreviewV2 cvId={expert.cvId} />}
+                      {expert?.cv?.map(cvItem => (
+                        <FinishUpPreviewV2 key={cvItem.id} cvId={cvItem.id} />
+                      ))}
                     </div>
                   </div>
 
                   {/* <div className="mt-8">
                     <img src="/images/resume.jpg" alt="image" />
                   </div> */}
-                </div>
-              </div>
-
-              <div>
-                <div
-                  className="mt-8 bg-white"
-                  style={{
-                    paddingLeft: '20px',
-                    paddingBottom: '20px',
-                    background: 'white',
-                    textAlign: 'left',
-                  }}
-                >
-                  <div>
-                    <Title style={{ color: '#4D70EB' }} level={5}>
-                      {' '}
-                      <span style={{ borderBottom: '2px solid #4D70EB' }}>Reviews</span>
-                    </Title>
-                  </div>
-                  {expert?.comments &&
-                    expert?.comments?.map((comment, index) => {
-                      return (
-                        <div className="mt-4" key={index}>
-                          <div className="flex">
-                            <div className="ml-4 flex">
-                              <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
-                                {comment?.score}
-                              </p>{' '}
-                              <StarFilled style={{ color: '#FFC107' }} />
-                            </div>
-                            <div className="ml-4 text-gray-500">{comment?.dateComment}</div>
-                          </div>
-
-                          <div>
-                            {comment?.comment ? (
-                              <span dangerouslySetInnerHTML={{ __html: comment?.comment }} />
-                            ) : (
-                              <Empty />
-                            )}
-
-                            <div className="flex mt-4">
-                              <Avatar shape="square" size="large" src={comment?.avatar} />
-                              <div className="ml-4">
-                                <div>{comment?.name}</div>
-                                <div>
-                                  {/* <p style={{ color: '#4D70EB' }}> job title - Developer ne</p> */}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
                 </div>
               </div>
             </div>

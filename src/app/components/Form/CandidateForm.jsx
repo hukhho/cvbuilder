@@ -41,7 +41,7 @@ const beforeUpload = file => {
   }
   return isJpgOrPng && isLt2M;
 };
-const CandidateForm = ({ onCreated, data, resumeOptions }) => {
+const CandidateForm = ({ onCreated, data }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -98,7 +98,16 @@ const CandidateForm = ({ onCreated, data, resumeOptions }) => {
       console.log('Submit. Error:', error);
     }
   };
- 
+
+  const resumeOptions = data?.cv?.map(resume => ({
+    value: resume.id,
+    label: resume.resumeName,
+  }));
+  
+  const handleChangeTag = value => {
+    console.log(`selected ${value}`);
+  };
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -282,6 +291,32 @@ const CandidateForm = ({ onCreated, data, resumeOptions }) => {
               <Select style={{ width: 300, height: 60, marginTop: 5 }} options={resumeOptions} />
             </Form.Item>
           </Space> */}
+          <Form.Item
+            name="cv"
+            label={
+              <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
+                <div className="flex gap-2 items-center text-xs">
+                  <span className="flex flex-col">
+                    <div>
+                      <strong>Choose CV</strong>
+                    </div>
+                    <div>
+                      <span style={{ textTransform: 'none' }}>
+                        Choose your best CV to show for the recruiter
+                      </span>
+                    </div>
+                  </span>
+                </div>
+              </label>
+            }
+          >
+            <Select
+              style={{ width: 300, height: 60, marginTop: 5 }}
+              mode="tags"
+              onChange={handleChangeTag}
+              options={resumeOptions}
+            />
+          </Form.Item>
           <Form.Item
             label={
               <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">

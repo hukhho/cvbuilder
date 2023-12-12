@@ -615,7 +615,7 @@ export default function FinishUp({ params }) {
                     width={1000}
                     className="custom"
                   >
-                    <ScoreFinishUp data={auditData} />
+                    <ScoreFinishUp data={auditData} cvId={params.id} />
                   </Modal>
                   <div
                     style={
