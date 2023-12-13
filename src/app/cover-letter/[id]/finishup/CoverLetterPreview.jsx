@@ -2,6 +2,8 @@
 
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import './preview.css';
+import './preview1.css';
+
 import getCoverLetter from './getCoverLetter';
 import { Button, Card, Col, InputNumber, Popover, Row, Slider, Tooltip } from 'antd';
 import { Box, ChakraProvider, VStack } from '@chakra-ui/react';
@@ -49,6 +51,7 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
   const divStyle = {
     transformOrigin: 'top left',
     transform: `scale(${zoom / 100})`,
+    marginLeft: '-13px',
   };
 
   // Define the content for editable elements using dangerouslySetInnerHTML
@@ -124,7 +127,8 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
   return (
     <>
       <div className="sample-generator-wrapper">
-        <div className="toolbar flex justify-center gap-x-8 items-center" style={{ width: '100%' }}>
+        <div className="toolbar flex" style={{ width: '100%' }}>
+          
           <div className="flex flex-col items-start">
             <label>Line height</label>
             <Row>
@@ -228,13 +232,14 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
             /> */}
           </div>
         </div>
+
+        
         <div>
           <button
             style={{
               width: '60px',
               height: '30px',
               marginTop: '10px',
-              marginLeft: '10px',
               marginBottom: '10px',
             }}
             className="button"
@@ -243,6 +248,9 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
           >
             Download
           </button>
+        
+
+
         </div>
         <div className="config" data-active="" />
         {/* <div className="break-page">
@@ -250,7 +258,7 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
           <div />
         </div> */}
         <div></div>
-        <div className="wrapper-cover-letter" style={divStyle} ref={captureRef}>
+        <div className="wrapper-cover-letter"  style={divStyle} ref={captureRef}>
           <div className="cover-preview-wrapper">
             <div className="preview">
               <div className="inner">

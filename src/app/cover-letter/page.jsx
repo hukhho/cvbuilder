@@ -9,6 +9,8 @@ import Link from 'next/link'; // Import Link from Next.js for navigation
 import { getCoverLetters, getResumes } from '../utils/indexService';
 import CreateCoverLetter from '../components/Modal/CreateCoverLetter';
 import Meta from 'antd/es/card/Meta';
+import CoverLetterCard from './[id]/finishup/CoverLetterCard';
+import CoverLetterCardComponents from './CoverLetterCardComponents';
 
 const CoverLetterIndex = () => {
   const [resumes, setResumes] = useState([]);
@@ -58,13 +60,13 @@ const CoverLetterIndex = () => {
           userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={
             <div className="container mx-auto px-4 py-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-4">
                 <CreateCoverLetter onCreated={onCreated} listResumes={listResumes} />
-
                 {/* Map over the mockCardData and generate cards with links */}
                 {resumes?.map((card, index) => (
                   <Link key={index} href={`/cover-letter/${card.id}/contact`}>
-                    <CVCard imageUrl="" title={card.title} />
+                    {/* <CVCard imageUrl="" title={card.title} /> */}
+                    <CoverLetterCardComponents resume={card} />
                   </Link>
                 ))}
                 {resumes?.length === 0 && <Empty />}

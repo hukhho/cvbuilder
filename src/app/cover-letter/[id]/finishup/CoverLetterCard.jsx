@@ -10,7 +10,7 @@ import ContentEditable from 'react-contenteditable';
 import * as htmlToImage from 'html-to-image';
 import jsPDF from 'jspdf';
 
-const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
+const CoverLetterCard = React.forwardRef(({ coverLetterId }, ref) => {
   const [lineHeight, setLineHeight] = useState(1.55);
   const [fontSize, setFontSize] = useState(9);
   const [zoom, setZoom] = useState(100);
@@ -38,32 +38,8 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
 
   const divStyle = {
     transformOrigin: 'top left',
-    transform: `scale(${zoom / 100})`,
+    transform: `scale(0.2)`,
   };
-
-  // Define the content for editable elements using dangerouslySetInnerHTML
-  // const content = {
-  //   name: 'Charles Bloomberg',
-  //   address: 'q9',
-  //   phone: '0387788906',
-  //   email: 'hunglinode008@protonmail.com',
-  //   introDate: 'April 20, 2023',
-  //   company: 'hung',
-  //   addressto: 'Dear Google',
-  //   content: 'cccccccccccccccccccc',
-  // };
-
-  // const content2 = await getCoverLetter(1, 1);
-  // const content = {
-  //   name: content2.user.name,
-  //   address: content2.user.address,
-  //   phone: content2.user.phone,
-  //   email: content2.user.email,
-  //   introDate: 'April 20, 2023',
-  //   company: content2.user.company,
-  //   addressto: 'Dear Google',
-  //   content: content2.description,
-  // };
   async function fetchData() {
     try {
       const content2 = await getCoverLetter(coverLetterId);
@@ -114,69 +90,7 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
   return (
     <>
       <div className="sample-generator-wrapper">
-        <div className="toolbar" style={{ width: 500 }}>
-          <div className="slider">
-            <label>
-              Line height <strong>{lineHeight}em</strong>
-            </label>
-            <input
-              type="range"
-              min="1"
-              max="2.5"
-              step="0.01"
-              value={lineHeight}
-              onChange={handleLineHeightChange}
-            />
-          </div>
-          <div className="slider">
-            <label>
-              Font size <strong>{fontSize}pt</strong>
-            </label>
-            <input
-              type="range"
-              min="6"
-              max="14"
-              step="0.1"
-              value={fontSize}
-              onChange={handleFontSizeChange}
-            />
-          </div>
-          <div className="slider">
-            <label>
-              Zoom <strong>{zoom}%</strong>
-            </label>
-            <input
-              type="range"
-              min="20"
-              max="200"
-              step="1"
-              value={zoom}
-              onChange={handleZoomChange}
-            />
-          </div>
-        </div>
-        <div>
-          <button
-            style={{
-              width: '60px',
-              height: '30px',
-              marginTop: '10px',
-              marginLeft: '10px',
-              marginBottom: '10px',
-            }}
-            className="button"
-            type=""
-            onClick={() => handleDownloadButtonClick()}
-          >
-            Download
-          </button>
-        </div>
         <div className="config" data-active="" />
-        {/* <div className="break-page">
-          Break
-          <div />
-        </div> */}
-        <div></div>
         <div className="wrapper-cover-letter" style={divStyle} ref={captureRef}>
           <div className="cover-preview-wrapper">
             <div className="preview">
@@ -189,10 +103,7 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
                       style={{ fontSize: `${fontSize}pt`, lineHeight: `${lineHeight}em` }}
                     >
                       <h1 className="name">
-                        <span
-                          className="editableContent cursor-text"
-                          id="cl-name-name"
-                        >
+                        <span className="editableContent cursor-text" id="cl-name-name">
                           {content?.name}
                         </span>
                       </h1>
@@ -239,11 +150,7 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
                             tagName="article" // Use a custom HTML tag (uses a div by default)
                           /> */}
 
-                          <span
-                            style={{ overflow: 'auto' }}
-                            className=""
-                            id="cl-content-content"
-                          >
+                          <span style={{ overflow: 'auto' }} className="" id="cl-content-content">
                             {content?.content}
                           </span>
                         </p>
@@ -261,4 +168,4 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
   );
 });
 
-export default ResumeGenerator;
+export default CoverLetterCard;
