@@ -61,17 +61,8 @@ export default function FinishUp({ params }) {
             />
           }
           content={
-            <div className="flex mt-8">
+            <div className="flex">
               <div className="mr-2 flex flex-col" style={{}}>
-                <div style={{ marginBottom: '12px' }} className="adjustment">
-                  <div
-                    style={{
-                      width: '200px',
-                      height: '120px',
-                    }}
-                  />
-                </div>
-
                 <div className="">
                   <CoverLetterPreview ref={cvLayoutRef} coverLetterId={params.id} />
                 </div>

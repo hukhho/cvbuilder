@@ -110,7 +110,7 @@ const Content = ({ params }) => {
               <div className="flex flex-col p-4 pb-8">
                 <div styles={{ width: '900px' }}>
                   {contextHolder}
-                  <div className=" mt-10" styles={{ width: '900px' }}>
+                  <div className="" styles={{ width: '900px' }}>
                     <Form
                       onFinish={handleSubmitSave}
                       form={form}

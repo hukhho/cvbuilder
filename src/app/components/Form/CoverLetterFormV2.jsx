@@ -28,7 +28,7 @@ import { useRouter } from 'next/navigation';
 
 const { TextArea } = Input;
 
-const CoverLetterFormV2 = ({ coverLetterId, data, onCreated }) => {
+const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, onCreated }) => {
   const router = useRouter();
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
@@ -178,6 +178,7 @@ const CoverLetterFormV2 = ({ coverLetterId, data, onCreated }) => {
 
           <Form.Item
             name="cvId"
+            style={{ display: 'none' }}
             label={
               <label style={{}}>
                 <span className="custom-text whitespace-nowrap">
@@ -187,6 +188,18 @@ const CoverLetterFormV2 = ({ coverLetterId, data, onCreated }) => {
             }
           >
             <Input disabled />
+          </Form.Item>
+          <Form.Item
+            name="resumeName"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  <strong>Resume Name</strong>
+                </span>
+              </label>
+            }
+          >
+            <Input disabled value={resumeData?.resumeName} />
           </Form.Item>
           <Form.Item
             name="title"

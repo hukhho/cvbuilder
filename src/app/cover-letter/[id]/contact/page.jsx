@@ -12,9 +12,12 @@ import CoverLetterFormV2 from '@/app/components/Form/CoverLetterFormV2';
 
 import { getResumes } from '@/app/utils/indexService';
 import getCoverLetter from '../finishup/getCoverLetter';
+import getContact from '@/app/resume/[id]/contact/contactService';
 
 const Contact = ({ params }) => {
-  const [contactData, setContactData] = useState([]); // Renamed to "contactData"
+  const [contactData, setContactData] = useState([]);
+  const [resumeData, setResumeData] = useState();
+
   const [listResumes, setListResumes] = useState([]);
 
   const [enabledCategories, setEnabledCategories] = useState({
@@ -29,6 +32,10 @@ const Contact = ({ params }) => {
 
       console.log('fetchData ', data);
       setContactData(data); // Updated to set "contactData"
+      if (data?.cvId) {
+        const dataResumes = await getContact(data?.cvId);
+        setResumeData(dataResumes);
+      }
     } catch (error) {
       console.error('There was an error fetching the data', error);
     }
@@ -54,6 +61,7 @@ const Contact = ({ params }) => {
                 <CoverLetterFormV2
                   coverLetterId={params.id}
                   onCreated={fetchData}
+                  resumeData={resumeData}
                   data={contactData}
                   // listResumes={listResumes}
                 />

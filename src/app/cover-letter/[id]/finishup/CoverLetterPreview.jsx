@@ -3,7 +3,7 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import './preview.css';
 import getCoverLetter from './getCoverLetter';
-import { Button, Card, Popover, Tooltip } from 'antd';
+import { Button, Card, Col, InputNumber, Popover, Row, Slider, Tooltip } from 'antd';
 import { Box, ChakraProvider, VStack } from '@chakra-ui/react';
 import { CommentOutlined } from '@ant-design/icons';
 import ContentEditable from 'react-contenteditable';
@@ -24,16 +24,26 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
     addressto: '',
     content: '',
   });
-  const handleLineHeightChange = event => {
-    setLineHeight(event.target.value);
+
+  const handleLineHeightChange = value => {
+    if (isNaN(value)) {
+      return;
+    }
+    setLineHeight(value);
   };
 
-  const handleFontSizeChange = event => {
-    setFontSize(event.target.value);
+  const handleFontSizeChange = value => {
+    if (isNaN(value)) {
+      return;
+    }
+    setFontSize(value);
   };
 
-  const handleZoomChange = event => {
-    setZoom(event.target.value);
+  const handleZoomChange = value => {
+    if (isNaN(value)) {
+      return;
+    }
+    setZoom(value);
   };
 
   const divStyle = {
@@ -114,45 +124,108 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
   return (
     <>
       <div className="sample-generator-wrapper">
-        <div className="toolbar" style={{ width: 500 }}>
-          <div className="slider">
-            <label>
-              Line height <strong>{lineHeight}em</strong>
-            </label>
-            <input
+        <div className="toolbar flex justify-center gap-x-8 items-center" style={{ width: '100%' }}>
+          <div className="flex flex-col items-start">
+            <label>Line height</label>
+            <Row>
+              <Col span={12}>
+                <Slider
+                  min={1}
+                  max={2.5}
+                  step={0.01}
+                  onChange={handleLineHeightChange}
+                  value={typeof lineHeight === 'number' ? lineHeight : 1}
+                />
+              </Col>
+              <Col span={4}>
+                <InputNumber
+                  min={1}
+                  max={2.5}
+                  step={0.01}
+                  style={{
+                    margin: '0 16px',
+                  }}
+                  value={lineHeight}
+                  onChange={handleLineHeightChange}
+                />
+              </Col>
+            </Row>
+            {/* <input
               type="range"
               min="1"
               max="2.5"
               step="0.01"
               value={lineHeight}
               onChange={handleLineHeightChange}
-            />
+            /> */}
           </div>
-          <div className="slider">
-            <label>
-              Font size <strong>{fontSize}pt</strong>
-            </label>
-            <input
+          <div className="flex flex-col ml-16 items-start">
+            <label>Font size</label>
+            <Row>
+              <Col span={12}>
+                <Slider
+                  min={6}
+                  max={14}
+                  step={1}
+                  onChange={handleFontSizeChange}
+                  value={typeof fontSize === 'number' ? fontSize : 9}
+                />
+              </Col>
+              <Col span={4}>
+                <InputNumber
+                  min={6}
+                  max={14}
+                  step={1}
+                  style={{
+                    margin: '0 16px',
+                  }}
+                  value={fontSize}
+                  onChange={handleFontSizeChange}
+                />
+              </Col>
+            </Row>
+            {/* <input
               type="range"
-              min="6"
-              max="14"
-              step="0.1"
-              value={fontSize}
-              onChange={handleFontSizeChange}
-            />
+              min="1"
+              max="2.5"
+              step="0.01"
+              value={lineHeight}
+              onChange={handleLineHeightChange}
+            /> */}
           </div>
-          <div className="slider">
-            <label>
-              Zoom <strong>{zoom}%</strong>
-            </label>
-            <input
+          <div className="flex flex-col ml-16 items-start">
+            <label>Zoom</label>
+            <Row>
+              <Col span={12}>
+                <Slider
+                  min={20}
+                  max={200}
+                  step={1}
+                  onChange={handleZoomChange}
+                  value={typeof zoom === 'number' ? zoom : 100}
+                />
+              </Col>
+              <Col span={4}>
+                <InputNumber
+                  min={20}
+                  max={200}
+                  step={1}
+                  style={{
+                    margin: '0 16px',
+                  }}
+                  value={zoom}
+                  onChange={handleZoomChange}
+                />
+              </Col>
+            </Row>
+            {/* <input
               type="range"
-              min="20"
-              max="200"
-              step="1"
-              value={zoom}
-              onChange={handleZoomChange}
-            />
+              min="1"
+              max="2.5"
+              step="0.01"
+              value={lineHeight}
+              onChange={handleLineHeightChange}
+            /> */}
           </div>
         </div>
         <div>
