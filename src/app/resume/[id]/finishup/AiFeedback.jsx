@@ -62,9 +62,7 @@ const AiFeedback = ({ cvId }) => {
         <div className="keyword-wrapper">
           <div className="keyword-side">
             <h4>
-              <span className="uppercase" style={{ color: 'black' }}>
-                AI Feedback CV
-              </span>
+              AI Feedback CV
               <sup aria-hidden="true" style={{ paddingLeft: 4, color: 'rgb(204, 204, 204)' }}>
                 Beta
               </sup>
@@ -101,7 +99,7 @@ const AiFeedback = ({ cvId }) => {
           </button>
 
           {isLoading && (
-            <Spin tip="AI is writing" size="small">
+            <Spin tip="AI is writing" className="mb-8" size="small">
               <div className="content" />
             </Spin>
           )}

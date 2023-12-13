@@ -41,6 +41,9 @@ const FinishupToolbar = props => {
     handleChangeTemplateSelected,
     handleOpenModal,
     currentTemplate,
+    auditData,
+    onClickDownload,
+    onClickSyncUp,
   } = props;
 
   const [showAdjustment, setShowAdjustment] = useState(false);
@@ -70,9 +73,9 @@ const FinishupToolbar = props => {
   };
 
   const renderAdjustment = () => (
-    <div className="adjustment bg-neutral-50 width-1000 asolute" id="div-toolbar">
+    <div className="adjustment bg-gray-100 asolute " id="div-toolbar">
       <Row className="m-auto">
-        <Col className="element">
+        {/* <Col className="element">
           <Tooltip title="Profile picture">
             <Button size="small" className="ml-1">
               <FontAwesomeIcon icon={faUserCircle} />
@@ -84,7 +87,7 @@ const FinishupToolbar = props => {
             height: 'auto',
           }}
           type="vertical"
-        />
+        /> */}
         <Col className="font-family element">
           <Select
             size="small"
@@ -106,7 +109,7 @@ const FinishupToolbar = props => {
           }}
           type="vertical"
         />
-        <Col className="font-size  element">
+        <Col className="font-size element">
           <div className="flex items-center">
             <Tooltip title="Decrease font size">
               <Button
@@ -215,7 +218,7 @@ const FinishupToolbar = props => {
           }}
           type="vertical"
         />
-        <Col className="zoom element">
+        {/* <Col className="zoom element">
           <Tooltip title="Zoom">
             <div className="flex flex-col">
               <Button
@@ -257,7 +260,7 @@ const FinishupToolbar = props => {
             height: 'auto',
           }}
           type="vertical"
-        />
+        /> */}
 
         <Col className="section-divider element">
           <div className="flex items-center">
@@ -286,7 +289,7 @@ const FinishupToolbar = props => {
           type="vertical"
         />
 
-        <Col className="indent flex element">
+        {/* <Col className="indent flex element">
           <Tooltip title="Indent" placement="top">
             <div
               className="justify-center items-center rounded-full flex "
@@ -310,7 +313,7 @@ const FinishupToolbar = props => {
             height: 'auto',
           }}
           type="vertical"
-        />
+        /> */}
 
         <Col
           className="color element flex"
@@ -344,7 +347,7 @@ const FinishupToolbar = props => {
   return (
     <>
       <div styles={{ width: '200px' }} className="flex px-4 py-1 toolbar">
-        <div className="flex-auto donutContainer mt-4 mb-4 ml-4">
+        <div className="flex-auto donutContainer mt-2 mb-2 ml-4">
           <svg
             width={52}
             height={52}
@@ -373,13 +376,19 @@ const FinishupToolbar = props => {
                 textAnchor="middle"
                 className="donut-text"
               >
-                78
+                {auditData?.totalScore ? `${auditData?.totalScore}` : '0'}
               </text>
             </g>
           </svg>
-          <Button onClick={handleOpenModal} className="font-bold ml-10">
-            Explore My Rezi score
-          </Button>
+
+          <div
+            onClick={handleOpenModal}
+            className="toolbar-button-download text-gray-500"
+            style={{ font: 'Source Sans Pro', fontWeight: 'bold', fontSize: 11 }}
+            data-score="true"
+          >
+            Explore My Score
+          </div>
         </div>
 
         <div className="flex-auto">
@@ -390,44 +399,60 @@ const FinishupToolbar = props => {
           </div> */}
             <div className="flex ml-auto ">
               <div className="flex items-center ml-2">
-                <Button type="text" className="font-bold">
+                {/* <Button type="text" className="font-bold">
                   Auto-Adjust
-                </Button>
+                </Button> */}
+                <Popover content="Sync up your data to this resume" title="Sync up">
+                  <button className="" onClick={onClickSyncUp}>
+                    <i
+                      className="fas fa-magic src-components-GeneratorCompiler---kjja11t6fo="
+                      style={{ marginRight: 5 }}
+                      aria-hidden="true"
+                    />
+                    <span className="toolbar-button-adjustement">SYNC UP</span>
+                  </button>
+                </Popover>
               </div>
               <div className="flex items-center ml-2">
-                <Button
-                  type="text"
-                  className="font-bold"
+                <button
+                  className="toolbar-button-adjustement"
                   onClick={() => {
                     setShowAdjustment(!showAdjustment);
                   }}
                 >
                   Adjustments
                   <FontAwesomeIcon className="ml-1" icon={faChevronDown} />
-                </Button>
+                </button>
               </div>
               <div className="flex items-center ml-2">
-                <Select
-                  className="font-bold"
-                  size="small"
-                  defaultValue={templateType[1]}
-                  label="Templates"
-                  bordered={false}
-                  style={{ width: 120 }}
-                  onChange={handleChangeTemplate}
-                  options={[
-                    { value: templateType[1], label: templateType[1] },
-                    { value: templateType[2], label: templateType[2] },
-                    { value: templateType[3], label: templateType[3] },
-                  ]}
+                <Popover content="Select template for your resume" title="Template">
+                  <Select
+                    className=""
+                    size="small"
+                    defaultValue={templateType[1]}
+                    label="Templates"
+                    bordered={false}
+                    style={{ width: 120 }}
+                    onChange={handleChangeTemplate}
+                    options={[
+                      { value: templateType[1], label: templateType[1] },
+                      { value: templateType[2], label: templateType[2] },
+                      { value: templateType[3], label: templateType[3] },
+                    ]}
+                  >
+                    Templates
+                  </Select>{' '}
+                </Popover>
+              </div>
+              <div className="flex items-center ml-2 mr-10">
+                <button
+                  onClick={onClickDownload}
+                  className="toolbar-button-download"
+                  style={{ font: 'Source Sans Pro', fontWeight: 'bold', fontSize: 11 }}
+                  data-score="true"
                 >
-                  Templates
-                </Select>
-              </div>
-              <div className="flex items-center ml-2">
-                {/* <Button color="primary" className="font-bold">
                   Download
-                </Button> */}
+                </button>
               </div>
             </div>
           </div>

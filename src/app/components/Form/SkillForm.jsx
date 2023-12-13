@@ -75,11 +75,16 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
             id="skills-section-form-0"
             required
             aria-label="Enter the **skills** you possess"
-            rows={1}
+            rows={3}
             placeholder="Front End: HTML, CSS, Javascript"
             name="skill"
             ref={textAreaRef}
-            style={{ height: 'auto', overflow: 'hidden', resize: 'none' }}
+            style={{
+              fontWeight: 400,
+              height: 'auto',
+              overflow: 'hidden',
+              resize: 'none',
+            }}
             onChange={handleInputChange}
             value={inputValue}
           />

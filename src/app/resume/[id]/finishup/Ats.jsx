@@ -114,9 +114,7 @@ const Ats = ({ cvId }) => {
         <div className="keyword-wrapper">
           <div className="keyword-side">
             <h4>
-              <span className="uppercase" style={{ color: 'black' }}>
-                AI Keyword Targeting
-              </span>
+              AI Keyword Targeting
               <sup aria-hidden="true" style={{ paddingLeft: 4, color: 'rgb(204, 204, 204)' }}>
                 v2
               </sup>

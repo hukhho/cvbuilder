@@ -496,7 +496,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
               {windowWidth >= 967 ? (
                 <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
                   <Space align="center">
-                    <Avatar src={avatar} size={50} />
+                    <Avatar src={avatar} size={30} />
                     <span className="mock-block">{email}</span>
                   </Space>
                 </div>

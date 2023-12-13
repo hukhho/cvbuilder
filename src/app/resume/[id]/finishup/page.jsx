@@ -31,6 +31,8 @@ import ProjectSection from '@/app/components/Templates/SectionComponents/Project
 import Certification from '../certification/page';
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 import Link from 'next/link';
+import ExpertReviewCard from './ExpertReviewCard';
+import VideoCard from './VideoCard';
 
 const mockData = {
   data: {
@@ -625,15 +627,18 @@ export default function FinishUp({ params }) {
                       }
                     }
                   >
-                    <div style={{ width: '895px' }}>
+                    <div style={{ width: '100%' }}>
                       <FinishupToolbar
                         handleChangeTemplateSelected={value => setTemplateSelected(value)}
                         handleOpenModal={() => setOpen(true)}
                         toolbarState={toolbarState}
+                        auditData={auditData}
                         onToolbarChange={handleToolbarChange}
+                        onClickDownload={handleDownloadButtonClick}
+                        onClickSyncUp={handleSyncUp}
                         currentTemplate={mockData.data.resume.resumeStyle}
                       />
-                      <div className="flex" style={{ justifyItems: 'center' }}>
+                      {/* <div className="flex" style={{ justifyItems: 'center' }}>
                         <button
                           style={{
                             width: '60px',
@@ -675,7 +680,7 @@ export default function FinishUp({ params }) {
                         >
                           Save
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <CVLayout
@@ -695,34 +700,9 @@ export default function FinishUp({ params }) {
                   className="flex flex-col items-start"
                   style={{ position: 'static', width: '360px' }}
                 >
-                  <div className="">
-                    <div style={{ marginLeft: '14px', maxHeight: '185px' }}>
-                      <VideoComponent />
-                    </div>
-                  </div>
-                  <div className="">
-                    <div
-                      className="askForReview card share-card"
-                      style={{ color: 'black', textAlign: 'left' }}
-                    >
-                      <h4>Expert Review</h4>
-                      <span>
-                        We'll correct all formatting, content, and grammar errors directly in your
-                        resume
-                      </span>
-                      <Link href="/review/list/expert" passHref>
-                        <button
-                          data-size="default"
-                          data-theme="default"
-                          data-busy="false"
-                          className=" button "
-                        >
-                          Ask for Expert Review
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
-
+                 
+                  <VideoCard />
+                  <ExpertReviewCard />
                   <AiFeedback cvId={params.id} />
                   <Ats cvId={params.id} />
 

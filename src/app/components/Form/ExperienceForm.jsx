@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   Divider,
+  Empty,
   Form,
   Input,
   InputNumber,
@@ -42,7 +43,7 @@ import './selected.css';
 import { CommentOutlined } from '@ant-design/icons';
 import { createAIWriter } from './aiwriter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faBolt, faCopy } from '@fortawesome/free-solid-svg-icons';
 const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
@@ -202,7 +203,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   ));
 
   const [selectedTextState, setSelectedTextState] = useState('');
-  const [AiWriterStatus, setAiWriterStatus] = useState('Not Ready');
+  const [AiWriterStatus, setAiWriterStatus] = useState('AI Writer not ready');
   const [isAi, setIsAi] = useState(false);
   const [isCanRewrite, setIsCanRewrite] = useState(false);
   const [selectionRange, setSelectionRange] = useState(null);
@@ -212,18 +213,24 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [selectionState, setSelectionState] = useState();
 
   const handleSelectionChange = () => {
-    console.log('handleSelectionChange');
-    if (selectedTextState.length > 0) {
-      setAiWriterStatus('Rewrite Bullet');
-    } else {
-      setAiWriterStatus('Generate Bullet');
-    }
-
     const textarea = inputRef.current;
     const value = textarea.value;
     const selectedStart = textarea.selectionStart;
     const selectedEnd = textarea.selectionEnd;
+
+    console.log(
+      'handleSelectionChange:selectedStart :',
+      selectedStart,
+      'selectedEnd: ',
+      selectedEnd,
+    );
+    if (selectedStart === selectedEnd) {
+      setAiWriterStatus('AI Writer not ready');
+      setSelectedTextState('');
+      return;
+    }
     setIsCanRewrite(true);
+
     let sentenceStart = selectedStart;
     while (sentenceStart > 0 && value[sentenceStart - 1] !== '\n') {
       sentenceStart--;
@@ -244,10 +251,17 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         const rect = range.getBoundingClientRect();
         const x = rect.left + window.scrollX + rect.width / 2;
         const y = rect.top + window.scrollY + rect.height;
-        setTooltip({ x, y, text: 'cac' });
-        console.log('tooltip: ', tooltip);
       }
-      // Here, you can determine the index of the selected item based on your items array
+      setAiWriterStatus('AI Writer Ready');
+    } else {
+      setAiWriterStatus('AI Writer not ready');
+
+      // if (selectedTextState?.length > 0) {
+      //   setAiWriterStatus('Rewrite Bullet');
+      // } else {
+      //   setAiWriterStatus('AI Writer not ready');
+      //   setSelectedTextState('');
+      // }
     }
   };
 
@@ -275,11 +289,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => {
     setIsOpen(false);
+    resizeTextArea();
   };
   const initialFocusRef = React.useRef();
 
   const [markText, setMarkText] = useState('');
   const [isAiLoading, setIsAiLoading] = useState('');
+  const [aiContentError, setAiContentError] = useState();
 
   const handleAiWriter = async () => {
     console.log('handleAiWriter');
@@ -476,6 +492,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
     // setAiContent(aiContent => aiContent.replace(regex, markedText));
   };
+  const handleBlur = event => {
+    // Check if the relatedTarget is not a button
+    if (!(event.relatedTarget && event.relatedTarget.tagName === 'BUTTON')) {
+      console.log('Textarea has lost focus');
+      setAiWriterStatus('AI Writer not ready');
+    }
+  };
 
   return (
     <div className="" style={{ width: '842px' }}>
@@ -518,7 +541,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
           }
         >
           <Input
-            style={{}}
+            style={{ marginTop: -10 }}
             className="inputEl experience-section inputEl st-current"
             id="experience-section-form-1"
             placeholder="Google"
@@ -544,7 +567,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                 </label>
               }
             >
-              <Space align="center">
+              <Space align="center" style={{ marginTop: -10 }}>
                 <div className="datepicker">
                   <div className="" style={{ marginLeft: '0' }}>
                     <DatePicker
@@ -586,7 +609,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               }
             >
               <Input
-                style={{}}
+                style={{ marginTop: -10 }}
                 className="inputEl experience-section inputEl st-current"
                 id="experience-section-form-1"
                 placeholder="New York, NY"
@@ -594,21 +617,15 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             </Form.Item>
           </div>
         </Space.Compact>
-
-        <Form.Item
-          name="description"
-          style={{}}
-          label={
-            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
-              <div className="flex gap-2 items-center text-xs">
-                <span>
-                  <strong>WHAT DID YOU DO</strong> AT THE COMPANY?
-                </span>
-              </div>
-            </label>
-          }
-        >
-          <button
+        <div className="flex items-end justify-between">
+          <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+            <div className="flex gap-2 items-center text-xs">
+              <span>
+                <strong>WHAT DID YOU DO</strong> AT THE COMPANY?
+              </span>
+            </div>
+          </label>
+          {/* <button
             disabled={isAiWrite}
             type="button"
             onClick={handleAiWriter}
@@ -616,8 +633,21 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             style={{ background: '#4d70eb', marginBottom: 10, width: '50px' }}
           >
             {AiWriterStatus}
-          </button>
+          </button> */}
+          <div className={AiWriterStatus === 'AI Writer not ready' ? 'notReady' : 'redo'}>
+            <button
+              disabled={AiWriterStatus === 'AI Writer not ready' ? true : false}
+              type="button"
+              onClick={handleAiWriter}
+              data-tooltip="Add a Role first"
+            >
+              <FontAwesomeIcon icon={faBolt} />
+              <span>{AiWriterStatus}</span>
+            </button>
+          </div>
+        </div>
 
+        <Form.Item name="description" style={{}}>
           {/* <textarea
             className="ghost inputEl undefined src-components-Form-Field--Es8ORQL2ofo= "
             id="experience-section-form-4"
@@ -668,7 +698,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
               >
                 {aiContent && (
                   <div
-                    className="wrapper flex flex-col"
+                    className="wrapper-ai flex flex-col"
                     id="experience-section-form-4-ghost"
                     style={{ height: 'auto', zIndex: 99, width: '100%' }}
                   >
@@ -689,27 +719,26 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                         {replyContent?.map((reply, index) => {
                           return (
                             <div className="mt-2" style={{ borderRadius: '10px' }}>
-                              {reply}
-                              <button type="button" onClick={e => handleApplyAiWriter(reply)}>
-                                <FontAwesomeIcon icon={faCopy} />
-                              </button>
+                              {reply}x
                             </div>
                           );
                         })}
+                        {!isAiLoading && replyContent?.length === 0 && <Empty />}
                       </div>
                     </div>
 
                     <div className="flex" style={{ width: '50px' }}>
                       <button
                         onClick={handleApplyAiContent}
-                        className="button bg-blue-500 mt-8"
-                        type="button"
+                        className="button cta mt-8"
+                        
+                        type=""
                       >
                         Apply AI Content
                       </button>
                       <button
                         onClick={handleCloseAiWriter}
-                        className="button bg-red-500 mt-8 ml-8"
+                        className="button cta bg-red-500 mt-8 ml-8"
                         type="button"
                       >
                         Close AI Writer
@@ -742,6 +771,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                   onKeyPress={handleKeyPress}
                   onSelect={handleSelectionChange} // Triggered when text is selected
                   onChange={handleInputChange}
+                  onBlur={handleBlur} // Add onBlur event handler here
                   value={inputValue}
                 />
               </div>
@@ -750,7 +780,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
           <Input type="hidden" value={inputValue} />
         </Form.Item>
-
+                  
         <button
           disable={isAiWrite}
           href=""
