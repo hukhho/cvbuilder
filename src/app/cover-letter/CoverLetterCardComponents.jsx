@@ -25,6 +25,7 @@ import {
 import styled from 'styled-components';
 import UpdateResume from '../components/Modal/UpdateResume';
 import CoverLetterCard from './[id]/finishup/CoverLetterCard';
+import UpdateCoverLetter from '../components/Modal/UpdateCoverLetter';
 // This creates a custom component that wraps an <a> tag
 const RedLink = styled.a`
   color: black;
@@ -66,7 +67,7 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
           className="relative group"
           style={{ width: '240px', height: '240px', overflow: 'hidden' }}
         >
-          {/* <UpdateResume
+          <UpdateCoverLetter
             isOpen={isUpdateResumeOpen}
             onOpenModal={closeUpdateResumeModal}
             onClose={closeUpdateResumeModal}
@@ -74,18 +75,25 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
             onCreated={() => {
               console.log('update');
             }}
-          /> */}
+          />
           <div className="w-full h-full opacity-100 group-hover:opacity-50 transition-opacity">
-            <Link href={`/cover-letter/${resume.id}/contact`} passHref legacyBehavior>
+            <Link
+              href={`/cover-letter/${resume.id}/contact`}
+              passHref
+              legacyBehavior
+              style={{ pointerEvents: 'none' }} // Disable pointer events for the link
+            >
               <RedLink>
                 <CoverLetterCard coverLetterId={2} />
-                {/* <FinishUpPreview cvId={resume.id} /> */}
               </RedLink>
             </Link>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-opacity-75 p-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="z-10 absolute bottom-0 left-0 right-0 bg-opacity-75 p-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
             <button
-              onClick={openUpdateResumeModal}
+              onClick={event => {
+                event.preventDefault(); // Prevent link from being followed
+                openUpdateResumeModal();
+              }}
               className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full "
             >
               <FontAwesomeIcon icon={faCog} />

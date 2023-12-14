@@ -89,7 +89,7 @@ const CoverLetterCard = React.forwardRef(({ coverLetterId }, ref) => {
 
   return (
     <>
-      <div className="sample-generator-wrapper">
+      <div className="sample-generator-wrapper" style={{ userSelect: 'none', pointerEvents: 'none' }}>
         <div className="config" data-active="" />
         <div className="wrapper-cover-letter" style={divStyle} ref={captureRef}>
           <div className="cover-preview-wrapper">
