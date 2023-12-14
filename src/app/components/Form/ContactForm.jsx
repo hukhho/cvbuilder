@@ -20,7 +20,6 @@ const ContactForm = ({ cvId, onCreated, data }) => {
 
   useEffect(() => {
     console.log('ContactForm data: ', data);
-
     if (data) {
       const mockData = {
         name: data.name,

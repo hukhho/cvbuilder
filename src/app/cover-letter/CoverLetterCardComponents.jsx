@@ -26,6 +26,7 @@ import styled from 'styled-components';
 import UpdateResume from '../components/Modal/UpdateResume';
 import CoverLetterCard from './[id]/finishup/CoverLetterCard';
 import UpdateCoverLetter from '../components/Modal/UpdateCoverLetter';
+import { deleteCoverLetter } from './coverLetterService';
 // This creates a custom component that wraps an <a> tag
 const RedLink = styled.a`
   color: black;
@@ -45,7 +46,7 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
 
   const handleDeleteResume = async cvId => {
     try {
-      // await deleteResume(cvId);
+      await deleteCoverLetter(cvId);
       onDeleted();
     } catch (error) {
       console.log('handleDeleteResume');
@@ -84,7 +85,7 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
               style={{ pointerEvents: 'none' }} // Disable pointer events for the link
             >
               <RedLink>
-                <CoverLetterCard coverLetterId={2} />
+                <CoverLetterCard coverLetterId={resume.id} />
               </RedLink>
             </Link>
           </div>
@@ -104,12 +105,12 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
             >
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
-            <button
+            {/* <button
               onClick={() => handleDuplicateResume(resume.id)}
               className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full "
             >
               <FontAwesomeIcon icon={faCopy} />
-            </button>
+            </button> */}
           </div>
         </div>
       }
@@ -138,34 +139,14 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
 
                   {/* <button onClick={openUpdateResumeModal}></button> */}
                 </Space>
-                <Space align="center">
-                  <FontAwesomeIcon icon={faCopy} />
-                  Duplicate
-                </Space>
+             
                 <Space align="center">
                   <FontAwesomeIcon icon={faTrashAlt} />
                   Delete
                 </Space>
               </div>
               <Divider />
-              <Space align="center">
-                <FontAwesomeIcon icon={faSearch} />
-                Searchable
-                <Switch
-                  checked={enabled}
-                  onChange={setEnabled}
-                  className={`${
-                    enabled ? 'bg-blue-600' : 'bg-gray-200'
-                  } relative inline-flex h-6 w-11 items-center rounded-full`}
-                >
-                  <span className="sr-only">Enable notifications</span>
-                  <span
-                    className={`${
-                      enabled ? 'translate-x-6' : 'translate-x-1'
-                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                  />
-                </Switch>
-              </Space>
+              
             </Card>
           </Popover.Panel>
         </Popover>

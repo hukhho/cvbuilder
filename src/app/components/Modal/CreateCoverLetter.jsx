@@ -88,7 +88,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
             <Meta title="" description="cover letter" />
           </div>
         </Card> */}
-        <div hoverable onClick={openModal} class="src-containers-Dashboard--oPXEIf9zEiA=">
+        <div hoverable={true} onClick={openModal} class="src-containers-Dashboard--oPXEIf9zEiA=">
           <div id="on-screen-create-new-resume" class="cta-button resumeCta">
             <span class="resumeCta-label">Create new Cover Letter</span>
           </div>

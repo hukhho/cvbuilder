@@ -27,6 +27,7 @@ const CoverLetterIndex = () => {
       const fetchedCoverLetter = await getCoverLetters();
 
       setResumes(fetchedCoverLetter);
+
       console.log('fetchedCoverLetter: ', fetchedCoverLetter);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
@@ -50,7 +51,6 @@ const CoverLetterIndex = () => {
 
   useEffect(() => {
     fetchResumes();
-
     fetchData();
   }, []);
   return (
@@ -64,10 +64,9 @@ const CoverLetterIndex = () => {
                 <CreateCoverLetter onCreated={onCreated} listResumes={listResumes} />
                 {/* Map over the mockCardData and generate cards with links */}
                 {resumes?.map((card, index) => (
-                  <Link key={index} href={`/cover-letter/${card.id}/contact`}>
-                    {/* <CVCard imageUrl="" title={card.title} /> */}
+                  <div key={index}>
                     <CoverLetterCardComponents resume={card} />
-                  </Link>
+                  </div>
                 ))}
                 {resumes?.length === 0 && <Empty />}
               </div>

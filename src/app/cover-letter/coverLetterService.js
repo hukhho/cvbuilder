@@ -1,4 +1,4 @@
-import axiosInstance from '../../../utils/axiosInstance';
+import axiosInstance from '@/app/utils/axiosInstance';
 
 const getUserIdFromCookie = () => {
   const userId = document.cookie
@@ -24,6 +24,18 @@ const deleteCoverLetter = async coverLetterId => {
 const updateCoverLetter = async (coverLetterId, data) => {
   try {
     const userId = getUserIdFromCookie();
+    const response = await axiosInstance.delete(
+      `chat-gpt/user/${userId}/cover-letter/${coverLetterId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateCoverLetterName = async (coverLetterId, data) => {
+  try {
+    const userId = getUserIdFromCookie();
     const response = await axiosInstance.put(
       `chat-gpt/user/${userId}/cover-letter/${coverLetterId}`,
       data,
@@ -34,4 +46,4 @@ const updateCoverLetter = async (coverLetterId, data) => {
   }
 };
 
-export default { deleteCoverLetter, updateCoverLetter }; // Export as default
+export { deleteCoverLetter, updateCoverLetter, updateCoverLetterName };

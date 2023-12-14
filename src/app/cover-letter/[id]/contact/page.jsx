@@ -41,8 +41,19 @@ const Contact = ({ params }) => {
     }
   };
 
+  const fetchResumes = async () => {
+    try {
+      const resumesList = await getResumes();
+      setListResumes(resumesList);
+      console.log('fetchResumes: ', resumesList);
+    } catch (error) {
+      console.error('There was an error fetching the data', error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchResumes();
   }, []);
 
   return (
@@ -62,8 +73,8 @@ const Contact = ({ params }) => {
                   coverLetterId={params.id}
                   onCreated={fetchData}
                   resumeData={resumeData}
+                  listResumes={listResumes}
                   data={contactData}
-                  // listResumes={listResumes}
                 />
               </div>
             </div>
