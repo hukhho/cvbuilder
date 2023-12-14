@@ -129,6 +129,13 @@ const ExperiencesSection = ({
 
       {/* <Divider className="section-header" /> */}
       <div>
+      {/* {components.map((child, index) => (
+              <div key={index}>
+                <SortableItem className="hello" key={index}>
+                  {child}
+                </SortableItem>
+              </div>
+            ))} */}
         <DndContext
           sensors={sensors}
           onDragCancel={handleDragCancel}

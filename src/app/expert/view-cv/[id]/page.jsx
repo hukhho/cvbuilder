@@ -893,17 +893,13 @@ export default function FinishUp({ params }) {
                         }}
                       >
                         <CommentOutlined /> Comment
-                        {/* <Input
-                                value={inputValue}
-                                onChange={handleChange}
-                                placeholder="Add a comment..."
-                                onFocus={handleMouseDown}
-                              ></Input> */}
+                    
                         <Input
                           value={inputValue}
                           onChange={handleChange}
                           placeholder="Add a comment..."
                           // onFocus={handleMouseDown}
+                         
                           onBlur={() => handleInputBlur(selectionRange)}
                         />
                         <div className="mt-4">

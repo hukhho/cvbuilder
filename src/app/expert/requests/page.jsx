@@ -68,7 +68,13 @@ const Home = () => {
     {
       title: 'Resume Name',
       dataIndex: 'resumeName',
-      render: (text, record) => <Link href={`/expert/view-cv/${record.id}`}>{text} </Link>,
+      render: (text, record) => {
+        if (record.status === 'Processing') {
+          return <Link href={`/expert/view-cv/${record.id}`}>{text}</Link>;
+        } else {
+          return <span>{text}</span>; // Just display the text if status is not "Processing"
+        }
+      },
     },
     {
       title: 'Candidate',
@@ -151,17 +157,19 @@ const Home = () => {
       title: 'Action',
       dataIndex: 'status',
       render: (text, record) => {
-        if (text === 'Waiting' || text === null) {
+        if (text === 'Processing') {
+          return <Link href={`/expert/view-cv/${record.id}`}>Edit</Link>;
+        } else if (text === 'Waiting' || text === null) {
           return (
-            <div>
+            <>
               <a onClick={() => handleActionAccept(record.id)} className="mr-2">
                 Accept
               </a>
               <a onClick={() => handleActionReject(record.id)}>Reject</a>
-            </div>
+            </>
           );
         }
-        // If status is not "Waiting" or "Processing", return null or an empty element
+        // If status is not "Waiting," "Processing," or null, return null or an empty element
         return null;
       },
     },
@@ -172,7 +180,7 @@ const Home = () => {
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
- 
+
   useEffect(() => {
     console.log('useEffect');
 

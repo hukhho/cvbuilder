@@ -62,16 +62,37 @@ const StandardItemV2 = props => {
 
   const renderComments = () => {
     console.log('renderComments: ', description);
-    // Extracting comments from the description using a regular expression
-    const comments = description.match(/<comment.*?<\/comment>/g);
 
+    // Extracting comments from the description using a regular expression
+    const commentRegex = /<comment[^>]*>([\s\S]*?)<\/comment>/g;
+    const comments = [];
+    let match;
+    
+    while ((match = commentRegex.exec(description))) {
+      const commentContent = match[0].trim();
+      if (commentContent) {
+        comments.push(commentContent);
+      }
+    }
+    
+    console.log('comments: ', comments);
+    
+    if (comments.length === 0) {
+      return null;
+    }
+    
+  
+    // Extracting comments from the description using a regular expression
+
+    // const comments = description.match(/<comment(.*?)<\/comment>/s);
+    console.log('comments: ', comments);
     if (!comments) {
       return null;
     }
 
     return comments.map((comment, index) => {
       const commentId = comment.match(/id="(.*?)"/)[1];
-      console.log("commentId:", commentId)
+      console.log('commentId:', commentId);
       // Parse comment content using regular expression
       const contentMatch = comment.match(/content="(.*?)"/);
       const content = contentMatch ? contentMatch[1] : '';
@@ -79,7 +100,10 @@ const StandardItemV2 = props => {
       return (
         <Card key={commentId} className="comment-bubble" style={{ '--comment-index': index }}>
           {content}
-          <button className='ml-4' onClick={() => onDeleteComment(commentId, type, randomId, dataId)}>
+          <button
+            className="ml-4"
+            onClick={() => onDeleteComment(commentId, type, randomId, dataId)}
+          >
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </Card>
