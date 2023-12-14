@@ -15,11 +15,11 @@ const updateResumeService = async (cvId, resumeData) => {
   }
 
   try {
-    const response = await axiosInstance.post(`/user/${userId}/cv`, resumeData);
+    const response = await axiosInstance.put(`/user/${cvId}/target`, resumeData);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export default createResumeService;
+export default updateResumeService;

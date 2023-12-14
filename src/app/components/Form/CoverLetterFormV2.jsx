@@ -188,7 +188,7 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
             </Select>
           </Form.Item> */}
         <Form.Item
-          name="resume"
+          name="cvId"
           rules={[
             {
               required: true,

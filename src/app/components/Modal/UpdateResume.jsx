@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
 import { notification } from 'antd';
+import updateResumeService from './updateResumeService';
 
 export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, resume }) {
   const [api, contextHolder] = notification.useNotification();
@@ -21,31 +22,52 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
   useEffect(() => {
     // Handle the modal state from the parent component
     // You can perform additional actions when the modal is opened or closed
-    
+
     console.log('Modal state:', isOpen);
-    
   }, [isOpen]);
   // const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  const [formData, setFormData] = useState();
-  
-  function closeModal() {
-    onClose()
-  }
+  const [formData, setFormData] = useState({
+    resumeName: '',
+    jobTitle: '',
+    companyName: '',
+    jobDescription: '',
+  });
+
+  useEffect(() => {
+    // Update formData with resume data when the resume prop changes
+    setFormData({
+      resumeName: resume?.resumeName || '',
+      jobTitle: resume?.jobTitle || '',
+      companyName: resume?.companyName || '',
+      jobDescription: resume?.jobDescription || '',
+    });
+  }, [resume]);
+
+  function closeModal() {}
 
   // function openModal() {
   //   setIsOpen(true);
   // }
 
   const handleInputChange = event => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleTextAreaChange = event => {
     setInputValue(event.target.value);
-    const { id, value } = event.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: value,
-    }));
+
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleTextareaInput = event => {
@@ -60,8 +82,9 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
     console.log('Form data submitted:', formData);
 
     try {
-      const result = await update(formData);
-      openNotification('bottomRight', `Create: ${result.id}`);
+      formData.jobDescriptionTarget = formData.jobDescription;
+      const result = await updateResumeService(resume.id, formData);
+      openNotification('bottomRight', `Update: ${result.id}`);
       onCreated();
       closeModal();
     } catch (error) {
@@ -71,9 +94,7 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
   return (
     <>
       {contextHolder}
-      <div className="inset-0 flex items-center justify-center">
-       
-      </div>
+      <div className="inset-0 flex items-center justify-center"></div>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -187,6 +208,7 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
                               <input
                                 className="inputEl new-resume-form"
                                 id="jobTitle"
+                                name="jobTitle"
                                 aria-label="Job Title "
                                 defaultValue=""
                                 onChange={handleInputChange}
@@ -207,6 +229,7 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
                               <input
                                 className="inputEl new-resume-form "
                                 id="companyName"
+                                name="companyName"
                                 aria-label="Company name"
                                 defaultValue=""
                                 onChange={handleInputChange}
@@ -227,9 +250,10 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
                               <textarea
                                 className="inputEl new-resume-form"
                                 id="jobDescription"
+                                name="jobDescription"
                                 aria-label="Job Description "
                                 rows={3}
-                                onChange={handleInputChange}
+                                onChange={handleTextAreaChange}
                                 onInput={handleTextareaInput}
                                 value={inputValue}
                                 style={{

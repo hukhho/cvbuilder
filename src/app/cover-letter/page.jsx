@@ -65,7 +65,7 @@ const CoverLetterIndex = () => {
                 {/* Map over the mockCardData and generate cards with links */}
                 {resumes?.map((card, index) => (
                   <div key={index}>
-                    <CoverLetterCardComponents resume={card} />
+                    <CoverLetterCardComponents resume={card} onDeleted={onCreated} />
                   </div>
                 ))}
                 {resumes?.length === 0 && <Empty />}

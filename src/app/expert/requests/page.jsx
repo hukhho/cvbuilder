@@ -149,15 +149,21 @@ const Home = () => {
     },
     {
       title: 'Action',
-      dataIndex: 'id',
-      render: text => (
-        <div>
-          <a onClick={() => handleActionAccept(text)} className="mr-2">
-            Accecpt
-          </a>
-          <a onClick={() => handleActionReject(text)}>Reject</a>
-        </div>
-      ),
+      dataIndex: 'status',
+      render: (text, record) => {
+        if (text === 'Waiting' || text === null) {
+          return (
+            <div>
+              <a onClick={() => handleActionAccept(record.id)} className="mr-2">
+                Accept
+              </a>
+              <a onClick={() => handleActionReject(record.id)}>Reject</a>
+            </div>
+          );
+        }
+        // If status is not "Waiting" or "Processing", return null or an empty element
+        return null;
+      },
     },
   ];
   const initialData = [];

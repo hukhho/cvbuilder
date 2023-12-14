@@ -30,7 +30,7 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
   const [inputValue, setInputValue] = useState('');
 
   const [formData, setFormData] = useState();
-
+  
   function closeModal() {
     onClose();
   }
@@ -60,7 +60,7 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
     console.log('Form data submitted:', formData);
     const result = await (formData)
     try {
-      const result = await updateCoverLetterName(formData);
+      const result = await updateCoverLetterName(resume.id, formData);
       openNotification('bottomRight', `Update: ${result.id}`);
       onCreated();
       closeModal();

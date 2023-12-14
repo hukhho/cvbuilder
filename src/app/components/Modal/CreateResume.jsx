@@ -37,12 +37,21 @@ export default function MyModal({ onCreated }) {
   }
 
   const handleInputChange = event => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleTextAreaChange = event => {
     setInputValue(event.target.value);
-    const { id, value } = event.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: value,
-    }));
+
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleTextareaInput = event => {
@@ -59,7 +68,7 @@ export default function MyModal({ onCreated }) {
     try {
       const result = await createResumeService(formData);
       openNotification('bottomRight', `Create: ${result.id}`);
-      onCreated()
+      onCreated();
       closeModal();
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`);
@@ -133,8 +142,8 @@ export default function MyModal({ onCreated }) {
                           <input
                             name="resumeName"
                             className="inputEl new-resume-form"
-                            id="resumeName" // Add id attribute here
-                            required=""
+                            id="resumeName"
+                            required="true"
                             onChange={handleInputChange}
                             aria-label="Resume name"
                             defaultValue=""
@@ -195,10 +204,11 @@ export default function MyModal({ onCreated }) {
                             <div className="relative">
                               <input
                                 className="inputEl new-resume-form"
+                                name="jobTitle"
                                 id="jobTitle"
+                                onChange={handleInputChange}
                                 aria-label="Job Title "
                                 defaultValue=""
-                                onChange={handleInputChange}
                               />
                             </div>
                           </div>
@@ -216,9 +226,10 @@ export default function MyModal({ onCreated }) {
                               <input
                                 className="inputEl new-resume-form "
                                 id="companyName"
+                                name="companyName"
+                                onChange={handleInputChange}
                                 aria-label="Company name"
                                 defaultValue=""
-                                onChange={handleInputChange}
                               />
                             </div>
                           </div>
@@ -236,9 +247,10 @@ export default function MyModal({ onCreated }) {
                               <textarea
                                 className="inputEl new-resume-form"
                                 id="jobDescription"
+                                name="jobDescription"
                                 aria-label="Job Description "
                                 rows={3}
-                                onChange={handleInputChange}
+                                onChange={handleTextAreaChange}
                                 onInput={handleTextareaInput}
                                 value={inputValue}
                                 style={{
@@ -255,6 +267,7 @@ export default function MyModal({ onCreated }) {
                           </div>
                         </div>
                       )}
+
                       <button
                         href=""
                         data-size="default"
