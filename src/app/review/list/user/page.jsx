@@ -160,7 +160,7 @@ const Home = () => {
               <Title level={5}>CV Review Table</Title>
             </div>
             <div>
-              <Input className="" placeholder="Search the resume" />;
+              <Input className="" placeholder="Search the resume" />
             </div>
             <div className="!p-0 mb-5 card">
               <div className="">

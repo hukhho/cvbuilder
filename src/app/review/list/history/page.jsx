@@ -197,7 +197,7 @@ const Home = () => {
                 <Title level={5}>CV Review Table</Title>
               </div>
               <div>
-                <Input className="" placeholder="Search the resume" />;
+                <Input className="" placeholder="Search the resume" />
               </div>
               <div>
                 <Table columns={columns} dataSource={data} onChange={onChange} />
