@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { updateCertification } from './certificationService';
 import StandarList from '@/app/components/List/StandarList';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const Certification = ({ params }) => {
   const [data, setData] = useState([]);
@@ -63,7 +64,8 @@ const Certification = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

@@ -14,6 +14,7 @@ import DataService from '../../../utils/dataService';
 
 import CourseworkForm from '@/app/components/Form/CourseworkForm';
 import CourseworkList from './CourseworkList';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const { Meta } = Card;
 
@@ -65,7 +66,8 @@ const Coursework = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

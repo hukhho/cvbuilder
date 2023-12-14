@@ -18,6 +18,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { updateInvolvement } from './involvementService';
 import StandarList from '@/app/components/List/StandarList';
 import ListError from '@/app/components/ListError/ListError';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const { Meta } = Card;
 
@@ -65,7 +66,8 @@ const Involvement = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

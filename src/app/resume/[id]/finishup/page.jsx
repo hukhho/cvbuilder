@@ -33,6 +33,7 @@ import CertificationSection from '@/app/components/Templates/SectionComponents/C
 import Link from 'next/link';
 import ExpertReviewCard from './ExpertReviewCard';
 import VideoCard from './VideoCard';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const mockData = {
   data: {
@@ -479,26 +480,26 @@ export default function FinishUp({ params }) {
       try {
         const cvId = params.id;
         const data = await getFinishUp(cvId);
-
         console.log('FinishUp data: ', data);
-
         setFinishUpData(data);
-
         setShowFinishupCV(true);
-
         setTemplateSelected(data.templateType);
         setToolbarState(data.cvStyle);
-
         setSummary(data.summary);
-
-        const data1 = await getAudit(cvId);
-        setAuditData(data1);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
       }
     };
-
+    const fetchAudit = async () => {
+      try {
+        const data1 = await getAudit(cvId);
+        setAuditData(data1);
+      } catch (error) {
+        console.error('Error fetching getAudit data:', error);
+      }
+    };
     fetchData();
+    fetchAudit();
   }, []);
 
   const handleSave = async () => {
@@ -597,7 +598,8 @@ export default function FinishUp({ params }) {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed={true}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
@@ -629,14 +631,17 @@ export default function FinishUp({ params }) {
                   >
                     <div style={{ width: '100%' }}>
                       <FinishupToolbar
-                        handleChangeTemplateSelected={value => setTemplateSelected(value)}
+                        handleChangeTemplateSelected={value => {
+                          console.log('handleChangeTemplateSelected', value);
+                          setTemplateSelected(value);
+                        }}
                         handleOpenModal={() => setOpen(true)}
                         toolbarState={toolbarState}
                         auditData={auditData}
                         onToolbarChange={handleToolbarChange}
                         onClickDownload={handleDownloadButtonClick}
                         onClickSyncUp={handleSyncUp}
-                        currentTemplate={mockData.data.resume.resumeStyle}
+                        currentTemplate={templateSelected}
                       />
                       {/* <div className="flex" style={{ justifyItems: 'center' }}>
                         <button
@@ -700,7 +705,6 @@ export default function FinishUp({ params }) {
                   className="flex flex-col items-start"
                   style={{ position: 'static', width: '360px' }}
                 >
-                 
                   <VideoCard />
                   <ExpertReviewCard />
                   <AiFeedback cvId={params.id} />

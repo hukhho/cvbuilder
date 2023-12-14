@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import StandarList from '@/app/components/List/StandarList';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { updateSkills } from './skillService';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const { Meta } = Card;
 
@@ -76,7 +77,8 @@ const Skill = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

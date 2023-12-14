@@ -17,6 +17,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import ListError from '@/app/components/ListError/ListError';
 import StandarList from '@/app/components/List/StandarList';
 import VideoComponent from '@/app/components/VideoComponent';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const { Meta } = Card;
 
@@ -73,7 +74,8 @@ const Education = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed={true}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id}  />
           }

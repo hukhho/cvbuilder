@@ -2,39 +2,36 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import getContact from '../resume/[id]/contact/contactService';
 
+// Define the categories outside of the component.
 const categories = [
   { name: 'CONTACT', link: 'contact' },
   { name: 'EXPERIENCE', link: 'experience' },
   { name: 'PROJECT', link: 'project' },
   { name: 'EDUCATION', link: 'education' },
   { name: 'CERTIFICATIONS', link: 'certification' },
-  // { name: 'COURSEWORK', link: 'coursework' },
   { name: 'INVOLVEMENT', link: 'involvement' },
   { name: 'SKILLS', link: 'skill' },
   { name: 'SUMMARY', link: 'summary' },
   { name: 'FINISH UP', link: 'finishup' },
-  // { name: 'AI COVER LETTER', link: 'ai-cover-letter' },
 ];
 
 const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
   const [enabledCategories, setEnabledCategories] = useState(initialEnabledCategories);
   const [data, setData] = useState();
-  console.log('cvId: ', cvId);
-  console.log('initialEnabledCategories: ', initialEnabledCategories);
 
-  const fetchData = async () => {
-    try {
-      const fetchedData = await getContact(cvId);
+  // const fetchData = async () => {
+  //   try {
+  //     const fetchedData = await getContact(cvId);
+  //     setData(fetchedData);
+  //   } catch (error) {
+  //     console.error('There was an error fetching the data', error);
+  //   }
+  // };
 
-      setData(fetchedData); // Updated to set "contactData"
-    } catch (error) {
-      console.error('There was an error fetching the data', error);
-    }
-  };
+  // useEffect(() => {
+  //   fetchData();
+  // }, [cvId]); // Dependency array should include cvId.
 
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
     <div className="w-[1255px] h-[25px] relative flex space-x-8">
       <div className="flex items-center">
@@ -53,7 +50,8 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
               letterSpacing: 'normal',
             }}
           >
-            {data?.resumeName ? data?.resumeName : ''}
+            {/* {data?.resumeName ? data?.resumeName : ''} */}
+            Chờ fix
           </div>
         </div>
       </div>

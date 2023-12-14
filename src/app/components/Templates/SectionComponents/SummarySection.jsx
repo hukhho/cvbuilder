@@ -3,6 +3,7 @@
 import { Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
+import Highlighter from 'react-highlight-words';
 
 const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyles }) => {
   const summaryState = useRef(summary);
@@ -43,13 +44,20 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
             padding: '0cm 1.4cm',
           }}
         >
-          <ContentEditable
+          {/* <ContentEditable
             className="editableContent cursor-text  designStudio "
             id="summary-summary"
             html={summaryState.current}
             onBlur={e => handleBlur(e, 'summary')}
             onChange={e => handleChange(e, 'summary')}
+          /> */}
+          <Highlighter
+            highlightClassName="YourHighlightClass"
+            searchWords={['test']}
+            autoEscape={true}
+            textToHighlight={summary}
           />
+          
         </div>
       </>
     );
@@ -77,17 +85,21 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
         }}
       >
         <div className="relative">
-          <p className="editableContent ghost-hightlight w-full designStudio ">
-          
-          </p>
+          <p className="editableContent ghost-hightlight w-full designStudio "></p>
         </div>
-        <ContentEditable
-              className="editableContent cursor-text  designStudio "
-              id="summary-summary"
-              html={summaryState.current}
-              onBlur={e => handleBlur(e, 'summary')}
-              onChange={e => handleChange(e, 'summary')}
-            />
+        {/* <ContentEditable
+          className="editableContent cursor-text  designStudio "
+          id="summary-summary"
+          html={summaryState.current}
+          onBlur={e => handleBlur(e, 'summary')}
+          onChange={e => handleChange(e, 'summary')}
+        /> */}
+         <Highlighter
+            highlightClassName="YourHighlightClass"
+            searchWords={['test']}
+            autoEscape={true}
+            textToHighlight={summary}
+          />
       </div>
     </div>;
   }
@@ -126,13 +138,19 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
           }}
         >
           <div className="relative">
-            <ContentEditable
+            {/* <ContentEditable
               className="editableContent cursor-text  designStudio "
               id="summary-summary"
               html={summaryState.current}
               onBlur={e => handleBlur(e, 'summary')}
               onChange={e => handleChange(e, 'summary')}
-            />
+            /> */}
+             <Highlighter
+            highlightClassName="YourHighlightClass"
+            searchWords={['test']}
+            autoEscape={true}
+            textToHighlight={summary}
+          />
           </div>
         </div>
       </div>

@@ -69,6 +69,7 @@ const FinishupToolbar = props => {
   };
 
   const handleChangeTemplate = value => {
+    console.log('currentTemplate', currentTemplate);
     handleChangeTemplateSelected(value);
   };
 
@@ -425,24 +426,26 @@ const FinishupToolbar = props => {
                 </button>
               </div>
               <div className="flex items-center ml-2">
-                <Popover content="Select template for your resume" title="Template">
-                  <Select
-                    className=""
-                    size="small"
-                    defaultValue={templateType[1]}
-                    label="Templates"
-                    bordered={false}
-                    style={{ width: 120 }}
-                    onChange={handleChangeTemplate}
-                    options={[
-                      { value: templateType[1], label: templateType[1] },
-                      { value: templateType[2], label: templateType[2] },
-                      { value: templateType[3], label: templateType[3] },
-                    ]}
-                  >
-                    Templates
-                  </Select>{' '}
-                </Popover>
+                {/* <Popover content="Select template for your resume" title="Template"> */}
+                <Select
+                  className=""
+                  size="small"
+                  // defaultValue={templateType[1]} // Select classical as the default
+                  label="Templates"
+                  bordered={false}
+                  style={{ width: 120 }}
+                  defaultValue={currentTemplate}
+                  value={currentTemplate}
+                  onChange={handleChangeTemplate}
+                  options={[
+                    { value: 'classical', label: 'classical' },
+                    { value: 'modern', label: 'modern' },
+                    { value: 'modern-2', label: 'modern-2' },
+                  ]}
+                >
+                  Templates
+                </Select>
+                {/* </Popover> */}
               </div>
               <div className="flex items-center ml-2 mr-10">
                 <button

@@ -66,7 +66,6 @@ const columns = [
     title: 'Cover Letter',
     dataIndex: 'coverLetterId',
   },
-
   {
     title: 'Date Application',
     dataIndex: 'applyDate',

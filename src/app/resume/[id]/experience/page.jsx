@@ -21,6 +21,7 @@ import ListError from '@/app/components/ListError/ListError';
 import Head from 'next/head';
 import StandarList from '../../../components/List/StandarList';
 import { useRouter, useSearchParams } from 'next/navigation';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const { Meta } = Card;
 
@@ -104,7 +105,8 @@ const Experience = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed={true}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

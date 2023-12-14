@@ -12,6 +12,7 @@ import ContactForm from '@/app/components/Form/ContactForm';
 import getContact from './contactService';
 import { notFound } from 'next/navigation';
 import { getResume } from '@/app/utils/indexService';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]); // Renamed to "contactData"
@@ -39,7 +40,8 @@ const Contact = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

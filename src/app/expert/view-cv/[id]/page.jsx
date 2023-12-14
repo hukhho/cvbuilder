@@ -353,7 +353,7 @@ export default function FinishUp({ params }) {
         const fetchData = async () => {
           try {
             await handleSaveDraftWithData(newFinishUpData);
-            setShowFinishupCV(false);
+            setShowFinishupCV(true);
             const requestId = params.id;
             const fetchedDataFromAPI = await getReviewResponse(requestId);
             setFetchedData(fetchedDataFromAPI);
@@ -367,8 +367,16 @@ export default function FinishUp({ params }) {
               return;
             }
             const cvId = data.cvId;
+            const temp = finishUpData;
+
+            setShowFinishupCV(false);
+            setFinishUpData(temp);
+
+            await new Promise(resolve => setTimeout(resolve, 10));
+
             setFinishUpData(data);
             setShowFinishupCV(true);
+          
             setTemplateSelected(data.templateType);
             setToolbarState(data.cvStyle);
             setSummary(data.summary);
@@ -442,7 +450,7 @@ export default function FinishUp({ params }) {
         const fetchData = async () => {
           try {
             await handleSaveDraftWithData(newFinishUpData);
-            setShowFinishupCV(false);
+            setShowFinishupCV(true);
             const requestId = params.id;
             const fetchedDataFromAPI = await getReviewResponse(requestId);
             setFetchedData(fetchedDataFromAPI);
@@ -456,11 +464,21 @@ export default function FinishUp({ params }) {
               return;
             }
             const cvId = data.cvId;
+
+            const temp = finishUpData;
+
+            setShowFinishupCV(false);
+            setFinishUpData(temp);
+
+            await new Promise(resolve => setTimeout(resolve, 10));
+
             setFinishUpData(data);
             setShowFinishupCV(true);
+
             setTemplateSelected(data.templateType);
             setToolbarState(data.cvStyle);
             setSummary(data.summary);
+
           } catch (error) {
             console.error('Error fetching FinishUp data:', error);
           }

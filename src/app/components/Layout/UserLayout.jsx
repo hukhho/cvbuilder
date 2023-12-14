@@ -176,7 +176,9 @@ const styles = {
     backgroundImage: `linear-gradient(61.63deg, ${COLORS.Primary} 0%, ${COLORS.Secondary} 50%, ${COLORS.Three} 100%)`,
   },
 };
-const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => {
+const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCollapsed }) => {
+  const [collapsed, setCollapsed] = useState(isCollapsed ? true : false);
+
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
@@ -195,7 +197,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
     };
   }, []);
 
-  const [userRole, setUserRole] = useState('CANDIDATE');
+  const [userRole, setUserRole] = useState();
 
   useEffect(() => {
     let isMounted = true;
@@ -228,8 +230,8 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
           secure: false, // Use 'secure' in production for HTTPS-only cookies
         });
         setUserRole(data.role.roleName);
-        if(data.role.roleName === "ADMIN") {
-          router.push('/admin/dashboard')
+        if (data.role.roleName === 'ADMIN') {
+          router.push('/admin/dashboard');
         }
       }
       if (error) {
@@ -265,8 +267,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
   return (
     // <AuthenticationGuard>
     // <AuthLayout>
-        <AuthenticationGuard>
-
+    <AuthenticationGuard>
       <ConfigProvider
         theme={{
           components: {
@@ -285,6 +286,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
       >
         <Layout style={{ background: '#fbfbfb' }} hasSider>
           <Sider
+            collapsed={collapsed}
             position="relative"
             width="280px"
             style={{
@@ -326,56 +328,79 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
               }}
             >
               <Link href="/">
-                <div style={{ width: '208px', marginTop: '19px' }}>
-                  <svg
-                    width={124}
-                    height={99}
-                    viewBox="0 0 124 99"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                  >
-                    <rect width={124} height={99} fill="url(#pattern0)" />
-                    <defs>
-                      <pattern
-                        id="pattern0"
-                        patternContentUnits="objectBoundingBox"
-                        width={1}
-                        height={1}
-                      >
-                        <use xlinkHref="#image0_8_4" transform="scale(0.00806452 0.010101)" />
-                      </pattern>
-                      <image
-                        id="image0_8_4"
-                        width={124}
-                        height={99}
-                        xlinkHref="data:image/png;base64,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"
+                {collapsed ? (
+                  <div style={{ width: '60px', marginTop: '19px' }}>
+                    <svg
+                      xmlns="https://www.w3.org/2000/svg"
+                      viewBox="0 0 389 185"
+                      className="src-components-Sidebar--tdHjSULsyBY="
+                    >
+                      <path
+                        fill="#48c9b0"
+                        d="M37.6 35.9V185L0 147.3V36.9L36.9 0h55.2L129 36.9v16.3L91.1 90.8v-55zm91.4 91.8v56.2H91.3l-.3-57H74.8L38.7 90.8h53.4z"
                       />
-                    </defs>
-                  </svg>
-
-                  {/* <Image src={'/images/CVbuilder-06.png'} width={100} height={80}/> */}
-                </div>
+                      <path
+                        fill="#16a085"
+                        d="M37.6 46.7 0 36.9l1-1h36.6zm53.5-10.8H80.2L89.5 0H91zm37.1 91 .8.8-37.9 10.1V127h37.1z"
+                      />
+                      <g fill="#fff">
+                        <path d="M242.1 134.3h-26.7l-20.2-31.7h-.2v31.7h-21.4V51.8h32c16.3 0 28.7 7.8 28.7 25.4 0 11.4-6.3 21.2-18.1 23.3zm-47.2-45.5h2.1c7 0 14.9-1.3 14.9-10.3S204 68.2 197 68.2h-2.1zM302.4 109.6h-41.9c0 8.1 4.3 12.5 12.5 12.5 4.3 0 7.3-1.4 9.5-5.1h19.1c-3.2 13.2-15.8 19.3-28.5 19.3-18.6 0-32.5-10.5-32.5-29.9 0-18.7 12.8-30 31.1-30 19.5 0 30.7 12 30.7 31.2zm-18.5-11.5c-1-5.4-5.9-8.9-11.3-8.9-5.8 0-10.6 3.1-11.8 8.9zM359.9 117.8v16.5H303l26.4-39.6h-22.9V78.2h56l-26.3 39.6zM388.2 56.6c0 6.1-5 11.2-11.2 11.2s-11.2-5-11.2-11.2c0-6.1 5-11.2 11.2-11.2s11.2 5.1 11.2 11.2zm-1.2 77.7h-19.9V78.2H387z" />
+                      </g>
+                    </svg>
+                  </div>
+                ) : (
+                  <div style={{ width: '208px', marginTop: '19px' }}>
+                    <svg
+                      width={124}
+                      height={99}
+                      viewBox="0 0 124 99"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                    >
+                      <rect width={124} height={99} fill="url(#pattern0)" />
+                      <defs>
+                        <pattern
+                          id="pattern0"
+                          patternContentUnits="objectBoundingBox"
+                          width={1}
+                          height={1}
+                        >
+                          <use xlinkHref="#image0_8_4" transform="scale(0.00806452 0.010101)" />
+                        </pattern>
+                        <image
+                          id="image0_8_4"
+                          width={124}
+                          height={99}
+                          xlinkHref="data:image/png;base64,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"
+                        />
+                      </defs>
+                    </svg>
+                  </div>
+                )}
               </Link>
             </Space>
-            <Space
-              direction="vertical"
-              size="middle"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                left: 0,
-                bottom: 0,
-                marginTop: -15,
-              }}
-            >
-              <CreateResume onCreated={onCreated} />
-            </Space>
+            {!collapsed && (
+              <Space
+                direction="vertical"
+                size="middle"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  left: 0,
+                  bottom: 0,
+                  marginTop: -15,
+                }}
+              >
+                <CreateResume onCreated={onCreated} />
+              </Space>
+            )}
+
             <Menu
               style={{
                 marginTop: '26px',
-                marginLeft: '10px',
+                marginLeft: collapsed ? 0 : '10px',
                 iconSize: 59,
                 backgroundColor: 'transparent',
                 color: '#ffffff',
@@ -389,43 +414,44 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
               defaultSelectedKeys={[selected]}
               items={filteredItems}
             />
-
-            <Space
-              direction="vertical"
-              size="middle"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <div
-                className="flex justify-center items-center"
+            {!collapsed && (
+              <Space
+                direction="vertical"
+                size="middle"
                 style={{
-                  marginTop: '19px',
-                  fontFamily: 'Source Sans Pro',
-                  fontWeight: 'bold',
-                  fontSize: '11.2',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  left: 0,
+                  bottom: 0,
                 }}
               >
                 <div
-                  className="pl-2  py-2 bg-white bg-opacity-40 rounded-md justify-between items-start flex"
-                  style={{ width: '208px' }}
+                  className="flex justify-center items-center"
+                  style={{
+                    marginTop: '19px',
+                    fontFamily: 'Source Sans Pro',
+                    fontWeight: 'bold',
+                    fontSize: '11.2',
+                  }}
                 >
-                  <div className="whitespace-nowrap text-left text-white text-xs font-black  uppercase leading-3">
-                    AI Credits
-                  </div>
-                  <div className="pr-2 flex ml-4">
-                    <div className="text-white text-xs font-bold uppercase leading-3">3,096</div>
-                    <div className="ml-1 text-white text-xs font-black font-['Font Awesome 5 Free'] uppercase leading-3">
-                      <FontAwesomeIcon icon={faCoins} />{' '}
+                  <div
+                    className="pl-2  py-2 bg-white bg-opacity-40 rounded-md justify-between items-start flex"
+                    style={{ width: '208px' }}
+                  >
+                    <div className="whitespace-nowrap text-left text-white text-xs font-black  uppercase leading-3">
+                      AI Credits
+                    </div>
+                    <div className="pr-2 flex ml-4">
+                      <div className="text-white text-xs font-bold uppercase leading-3">3,096</div>
+                      <div className="ml-1 text-white text-xs font-black font-['Font Awesome 5 Free'] uppercase leading-3">
+                        <FontAwesomeIcon icon={faCoins} />{' '}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Space>
+              </Space>
+            )}
             <div style={{ position: 'absolute', bottom: 30, left: 40, width: '100%' }}>
               <Space
                 direction="vertical"
@@ -455,20 +481,23 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
                         icon={faSignOutAlt}
                         onClick={handleLogout}
                       />
-                      <span
-                        className="icon-button-label ml-2"
-                        style={{
-                          color: 'white',
-                          fontFamily: 'Source Sans Pro, sans-serif',
-                          textTransform: 'uppercase',
-                          cursor: 'pointer',
-                          fontSize: '11.2px',
-                          fontWeight: '700',
-                        }}
-                        onClick={handleLogout}
-                      >
-                        Log out
-                      </span>
+
+                      {!collapsed && (
+                        <span
+                          className="icon-button-label ml-2"
+                          style={{
+                            color: 'white',
+                            fontFamily: 'Source Sans Pro, sans-serif',
+                            textTransform: 'uppercase',
+                            cursor: 'pointer',
+                            fontSize: '11.2px',
+                            fontWeight: '700',
+                          }}
+                          onClick={handleLogout}
+                        >
+                          Log out
+                        </span>
+                      )}
                     </Space>
                   </div>
                 </div>
@@ -493,14 +522,15 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
               }}
             >
               {userHeader}
-              {windowWidth >= 967 ? (
+              {
+                !collapsed && 
                 <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
-                  <Space align="center">
+                  <Space align="center">''
                     <Avatar src={avatar} size={30} />
                     <span className="mock-block">{email}</span>
                   </Space>
                 </div>
-              ) : null}
+             }
             </Header>
             <Content
               style={{
@@ -529,7 +559,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated }) => 
           </Layout>
         </Layout>
       </ConfigProvider>
-      </AuthenticationGuard>
+    </AuthenticationGuard>
   );
 });
 

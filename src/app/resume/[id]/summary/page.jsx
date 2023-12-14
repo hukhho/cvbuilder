@@ -16,6 +16,7 @@ import './summary.css';
 import './textarena.css';
 import { getAllExperiences } from '../experience/experienceService';
 import { Listbox } from '@headlessui/react';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const { Meta } = Card;
 
@@ -166,7 +167,8 @@ const Summary = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

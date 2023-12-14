@@ -25,7 +25,7 @@ const StandardItem = props => {
     handleOrgNameChange,
     handleDescriptionChange,
   } = props;
-  console.log('StandardItem::: ', props);
+  console.log('templateType::: ', templateType);
   const roleState = useRef(role);
   const orgNameState = useRef(orgName);
   const descriptionState = useRef(description);
@@ -607,36 +607,42 @@ const StandardItem = props => {
                       {role}
                     </span>
                   </span>
-                  <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                    <span
-                      className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                      id="smpl029042021-company"
-                      // contentEditable="true"
-                      style={{ display: 'inline', verticalAlign: 'baseline' }}
-                    >
-                      {orgName}
+                  {orgName && (
+                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                      <span
+                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                        id="smpl029042021-company"
+                        // contentEditable="true"
+                        style={{ display: 'inline', verticalAlign: 'baseline' }}
+                      >
+                        {orgName}
+                      </span>
                     </span>
-                  </span>
-                  <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                    <span
-                      className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                      id="smpl029042021-location"
-                      // contentEditable="true"
-                      style={{ display: 'inline', verticalAlign: 'baseline' }}
-                    >
-                      {location}
+                  )}
+                  {location && (
+                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                      <span
+                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                        id="smpl029042021-location"
+                        // contentEditable="true"
+                        style={{ display: 'inline', verticalAlign: 'baseline' }}
+                      >
+                        {location}
+                      </span>
                     </span>
-                  </span>
-                  <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                    <span
-                      className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                      id="smpl029042021-duration"
-                      // contentEditable="true"
-                      style={{ display: 'inline', verticalAlign: 'baseline' }}
-                    >
-                      {duration}
+                  )}
+                  {duration && (
+                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                      <span
+                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                        id="smpl029042021-duration"
+                        // contentEditable="true"
+                        style={{ display: 'inline', verticalAlign: 'baseline' }}
+                      >
+                        {duration}
+                      </span>
                     </span>
-                  </span>
+                  )}
                 </div>
                 <div
                   className="text-[0.85em] relative whitespace-pre-line "

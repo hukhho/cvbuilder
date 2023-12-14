@@ -20,6 +20,7 @@ import ListError from '@/app/components/ListError/ListError';
 import { updateProject } from './projectService';
 import VideoComponent from '@/app/components/VideoComponent';
 import StandarList from '@/app/components/List/StandarList';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const { Meta } = Card;
 
@@ -75,76 +76,71 @@ const Project = ({ params }) => {
 
   return (
     <main>
-    <ConfigProvider>
-      <UserCVBuilderLayout
-        userHeader={
-          <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
-        }
-        content={
-          <div className="flex h-screen w-full">
-            <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
-              <div style={{ height: '185px', width: '320px' }}>
-                <div style={{ maxHeight: '185px' }}>
-                  <VideoComponent />
+      <ConfigProvider>
+        <UserLayout
+          isCollapsed={true}
+          userHeader={
+            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
+          }
+          content={
+            <div className="flex h-screen w-full">
+              <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
+                <div style={{ height: '185px', width: '320px' }}>
+                  <div style={{ maxHeight: '185px' }}>
+                    <VideoComponent />
+                  </div>
                 </div>
-              </div>
-              <Card
-                style={{
-                  width: '320px',
-                  marginTop: '16px',
-                  textAlign: 'left',
-                  borderRadius: '8px',
-                  boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.1)',
-                }}
-              >
-                <span className="flex block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
-                  <Space align="center">
-                    Your Projects
-                    <div className="text-gray-300 align-middle cursor-pointer leading-3 outline-0 ">
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
-                        onClick={handleDownButton}
-                      />
-                    </div>
-                  </Space>
-                </span>
-                <div>
-                  {isShow && selectedData && (
-                    <ListError errors={selectedData?.bulletPointDtos} />
-                  )}
-                </div>
+                <Card
+                  style={{
+                    width: '320px',
+                    marginTop: '16px',
+                    textAlign: 'left',
+                    borderRadius: '8px',
+                    boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <span className="flex block pb-3 text-md font-bold border-b border-gray-300 list-shown-true">
+                    <Space align="center">
+                      Your Projects
+                      <div className="text-gray-300 align-middle cursor-pointer leading-3 outline-0 ">
+                        <FontAwesomeIcon
+                          icon={faCaretDown}
+                          className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                          onClick={handleDownButton}
+                        />
+                      </div>
+                    </Space>
+                  </span>
+                  <div>
+                    {isShow && selectedData && <ListError errors={selectedData?.bulletPointDtos} />}
+                  </div>
 
-                <div style={{ paddingTop: '0px' }}>
-                  {isShow &&
-                    projectData.map(project => (
-                      <StandarList
-                        key={project.id}
-                        data={project}
-                        selectedExperience={selectedData}
-                        cvId={cvId}
-                        onDelete={handleDeleteData}
-                        onEdit={handleEditData}
-                        title={project.title}
-                        subtitle={""}
-                        updateExperience={updateProject}
-                      />
-                    ))}
-                </div>
-              </Card>
+                  <div style={{ paddingTop: '0px' }}>
+                    {isShow &&
+                      projectData.map(project => (
+                        <StandarList
+                          key={project.id}
+                          data={project}
+                          selectedExperience={selectedData}
+                          cvId={cvId}
+                          onDelete={handleDeleteData}
+                          onEdit={handleEditData}
+                          title={project.title}
+                          subtitle={''}
+                          updateExperience={updateProject}
+                        />
+                      ))}
+                  </div>
+                </Card>
+              </div>
+              <div className="flex flex-col px-4">
+                <ProjectForm cvId={cvId} onCreated={fetchData} data={selectedData} />
+              </div>
             </div>
-            <div className="flex flex-col px-4">
-              <ProjectForm
-                cvId={cvId}
-                onCreated={fetchData}
-                data={selectedData}
-              />
-            </div>
-          </div>
-        }
-      />
-    </ConfigProvider>
-  </main>
+          }
+        />
+      </ConfigProvider>
+    </main>
   );
 };
 
