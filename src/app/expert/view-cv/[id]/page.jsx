@@ -50,6 +50,8 @@ import InvolvementSection from '@/app/components/Templates/SectionComponents/Inv
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import { getRequestList } from '../../expertServices';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 const mockData = {
   data: {
@@ -307,11 +309,11 @@ export default function FinishUp({ params }) {
     comment.setAttribute('id', commentId);
     comment.setAttribute('class', 'select-none comment-marker');
     comment.setAttribute('content', inputValue);
-    const deleteButton = document.createElement('span');
-    deleteButton.textContent = 'x';
-    deleteButton.setAttribute('class', 'delete-button');
-    deleteButton.addEventListener('click', () => handleDeleteComment(commentId));
-    comment.appendChild(deleteButton);
+    // const deleteButton = document.createElement('span');
+    // deleteButton.textContent = 'x';
+    // deleteButton.setAttribute('class', 'delete-button');
+    // deleteButton.addEventListener('click', () => handleDeleteComment(commentId));
+    // comment.appendChild(deleteButton);
     const range = selection.getRangeAt(0);
     range.deleteContents();
     range.insertNode(comment);
@@ -377,7 +379,6 @@ export default function FinishUp({ params }) {
 
         fetchData();
       }
-
     } else {
       console.log('Element with id', currentId, 'not found');
     }
@@ -388,36 +389,14 @@ export default function FinishUp({ params }) {
     console.log('onDeleteComment:randomId:', randomId);
     console.log('onDeleteComment:dataId:', dataId);
     handleDeleteComment(commentId, type, randomId, dataId);
-    // const comment = document.getElementById(commentId);
-    // if (comment) {
-    //   comment.remove();
-    //   if (type === 'experience') {
-    //     const updatedExperiences = experiences.map(experience => {
-    //       if (experience.id === dataId) {
-    //         return {
-    //          ...experience,
-    //           description: experience.description.replace(
-    //             '<comment id="' + commentId + '" class="select-none comment-marker">',
-    //             '',
-    //           ),
-    //         };
-    //       } else {
-    //         return experience;
-    //       }
-    //     });
-    //     console.log('updatedExperiences experience', updatedExperiences);
-    //     let newFinishUpData = { ...finishUpData };
-    //     newFinishUpData.experiences = updatedExperiences;
-    //     setFinishUpData(newFinishUpData);
-    //   }
-    // }
+  
   }
 
   useEffect(() => {
-    // This code will run every time finishUpData or showFinishupCV changes
-    // You can add additional logic or fetch data here if needed
+   
     console.log('State updated, triggering re-render');
   }, [finishUpData, showFinishupCV]);
+  
   // Function to handle comment deletion
   function handleDeleteComment(commentId, type, randomId, dataId) {
     console.log('handleDeleteComment:commentId:', commentId);
@@ -787,7 +766,7 @@ export default function FinishUp({ params }) {
     }
   };
 
-  const handleSaveDraftWithData = async (_finishUpData) => {
+  const handleSaveDraftWithData = async _finishUpData => {
     try {
       const sendObj = {
         overall: overall,
@@ -872,7 +851,7 @@ export default function FinishUp({ params }) {
             <></>
           )}
           {showFinishupCV && (
-            <div className="mr-2 flex flex-col">
+            <div className="mr-2 flex flex-col relative">
               <Box
                 top={tooltip?.y}
                 left={tooltip?.x}
@@ -893,13 +872,12 @@ export default function FinishUp({ params }) {
                         }}
                       >
                         <CommentOutlined /> Comment
-                    
                         <Input
                           value={inputValue}
                           onChange={handleChange}
                           placeholder="Add a comment..."
                           // onFocus={handleMouseDown}
-                         
+
                           onBlur={() => handleInputBlur(selectionRange)}
                         />
                         <div className="mt-4">
@@ -915,8 +893,16 @@ export default function FinishUp({ params }) {
                 }
               </Box>
               {finishUpData ? (
-                <>
-                  <Card>
+                <div className="relative">
+                  <div className=" top-10 left-5 " style={{ textAlign: 'left'}}>
+                    <Link href="/expert/requests" passHref>
+                      <button>
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                      </button>
+                      <span className="ml-2">Back</span>
+                    </Link>
+                  </div>
+                  <Card className='mt-4'>
                     <div className="flex justify-start">
                       <div style={{ textAlign: 'left' }}>
                         <div>Name1: {dataRequest?.name}</div>
@@ -973,7 +959,7 @@ export default function FinishUp({ params }) {
                       Submit
                     </button>
                   </div>
-                </>
+                </div>
               ) : (
                 <></>
               )}
