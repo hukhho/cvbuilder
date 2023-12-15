@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { Button, Form, Input, Select, notification } from 'antd';
 import './card.css';
+import '../../components/Form/customtext.css';
 // import './button.css';
 import { applyJob, createReview } from './reviewService';
 
@@ -81,7 +82,7 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
       openNotification('bottomRight', `Create: `);
       setIsOpen(false);
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
       openNotification('bottomRight', `Error: ${error}`);
       setIsOpen(false);
     }
@@ -136,10 +137,10 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                   >
                     <div className="container mx-auto px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
-                        <div className="flex ">
+                        <div className="flex  justify-center">
                           <div className="p-9 w-[70%]" style={{ color: 'black' }}>
                             <h2>Select your CV and Cover Letter</h2>
-                            <p></p>
+                            <p>Choosing the suitable CV and Cover Letter to apply for the job.</p>
                             <div>
                               <Form
                                 form={form}
@@ -147,27 +148,35 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 onFinish={onFinish}
                                 layout="vertical"
                                 style={{
-                                  marginTop: 100,
+                                  marginTop: 20,
                                   maxWidth: 900,
                                 }}
                               >
                                 <Form.Item
+                                  className="custom-label-normal"
                                   name="resume"
-                                  label="Resume"
+                                  label="Select Resume"
                                   rules={[
                                     {
                                       required: true,
                                     },
                                   ]}
                                 >
-                                  <Select style={{ width: 200 }} options={resumeOptions} />
+                                  <Select
+                                    className=""
+                                    style={{ width: '100%', height: 50 }}
+                                    options={resumeOptions}
+                                  />
                                 </Form.Item>
                                 <Form.Item
+                                  className="custom-label-normal"
                                   name="coverletter"
-                                  label="Cover Letter "
-                                 
+                                  label="select Cover Letter "
                                 >
-                                  <Select style={{ width: 200 }} options={coverOptions} />
+                                  <Select
+                                    style={{ width: '100%', height: 50 }}
+                                    options={coverOptions}
+                                  />
                                 </Form.Item>
                                 {/* <Form.Item
                                   name="deadline"
@@ -182,19 +191,23 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 </Form.Item> */}
 
                                 <Form.Item
+                                  className="custom-label-normal"
                                   name="note"
-                                  label="Note"
+                                  label="Notes for Hiring Manager"
                                   rules={[
                                     {
                                       required: true,
                                     },
                                   ]}
                                 >
-                                  <Input placeholder="Anything you'd like us to express for the hiring manager" />
+                                  <Input
+                                    className="custom-search"
+                                    placeholder="Anything you'd like us to express for the hiring manager"
+                                  />
                                 </Form.Item>
 
                                 <Form.Item>
-                                  <Button type="primary" htmlType="submit">
+                                  <Button style={{ height: 35 }} type="primary" htmlType="submit">
                                     Submit
                                   </Button>
                                 </Form.Item>

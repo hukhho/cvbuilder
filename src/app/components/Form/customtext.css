@@ -1,128 +1,168 @@
 /* Define a CSS class with the desired styles */
 .custom-text {
-    margin: 0;
-    blockSize: 15px;
-    border-block-end-color: rgb(229, 231, 235);
-    border-block-end-style: solid;
-    border-block-start-color: rgb(229, 231, 235);
-    border-block-start-style: solid;
-    border-bottom-color: rgb(229, 231, 235);
-    border-bottom-style: solid;
-    border-inline-end-color: rgb(229, 231, 235);
-    border-inline-end-style: solid;
-    border-inline-start-color: rgb(229, 231, 235);
-    border-inline-start-style: solid;
-    border-left-color: rgb(229, 231, 235);
-    border-left-style: solid;
-    border-right-color: rgb(229, 231, 235);
-    border-right-style: solid;
-    border-top-color: rgb(229, 231, 235);
-    border-top-style: solid;
-    box-sizing: border-box;
-    caret-color: rgb(75, 85, 99);
-    color: rgb(75, 85, 99);
-    column-rule-color: rgb(75, 85, 99);
+  margin: 0;
+  blocksize: 15px;
+  border-block-end-color: rgb(229, 231, 235);
+  border-block-end-style: solid;
+  border-block-start-color: rgb(229, 231, 235);
+  border-block-start-style: solid;
+  border-bottom-color: rgb(229, 231, 235);
+  border-bottom-style: solid;
+  border-inline-end-color: rgb(229, 231, 235);
+  border-inline-end-style: solid;
+  border-inline-start-color: rgb(229, 231, 235);
+  border-inline-start-style: solid;
+  border-left-color: rgb(229, 231, 235);
+  border-left-style: solid;
+  border-right-color: rgb(229, 231, 235);
+  border-right-style: solid;
+  border-top-color: rgb(229, 231, 235);
+  border-top-style: solid;
+  box-sizing: border-box;
+  caret-color: rgb(75, 85, 99);
+  color: rgb(75, 85, 99);
+  column-rule-color: rgb(75, 85, 99);
+  cursor: default;
+  display: block;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 13.5px;
+  inline-size: 365.812px;
+  line-height: 15px;
+  min-block-size: auto;
+  min-height: auto;
+  min-inline-size: auto;
+  min-width: auto;
+  outline-color: rgb(75, 85, 99);
+  tab-size: 4;
+  text-decoration: none solid rgb(75, 85, 99);
+  text-decoration-color: rgb(75, 85, 99);
+  text-emphasis-color: rgb(75, 85, 99);
+  text-size-adjust: 100%;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-fill-color: rgb(75, 85, 99);
+  -webkit-text-stroke-color: rgb(75, 85, 99);
+}
+
+.custom-space-item-2 > .ant-space-item,
+.custom-item {
+  width: 45%;
+}
+
+.custom-space-item-3 {
+  > .ant-space-item {
+    width: 55%;
+  }
+  > :nth-child(3) {
+    width: 10%;
+  }
+}
+
+.ant-select-selector {
+  border: 2px solid var(--color-grey-50);
+  border-radius: 5px;
+}
+
+.ant-space-item > input.ant-input {
+  display: block;
+  font: var(--font-input);
+  /*width: 100%;*/
+  color: inherit;
+  /*background: white;*/
+  outline: none;
+  padding: 0.85em 0.75em 0.75em;
+  margin: 0;
+  box-shadow: none;
+  /*padding: 0.85em 0.75em 0.75em;*/
+  /*border: 2px solid var(--color-grey-50);*/
+  /*border-radius: var(--radius-2);*/
+  transition: border 150ms ease;
+  &:focus {
+    border-color: var(--color-primary);
+  }
+  &[disabled] {
+    opacity: 0.6;
+    color: var(--color-text-light);
+  }
+  &::placeholder {
+    opacity: 0.5;
+  }
+  &:read-only {
     cursor: default;
-    display: block;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 13.5px;
-    inline-size: 365.812px;
-    line-height: 15px;
-    min-block-size: auto;
-    min-height: auto;
-    min-inline-size: auto;
-    min-width: auto;
-    outline-color: rgb(75, 85, 99);
-    tab-size: 4;
-    text-decoration: none solid rgb(75, 85, 99);
-    text-decoration-color: rgb(75, 85, 99);
-    text-emphasis-color: rgb(75, 85, 99);
-    text-size-adjust: 100%;
-    text-transform: uppercase;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-fill-color: rgb(75, 85, 99);
-    -webkit-text-stroke-color: rgb(75, 85, 99);
   }
+  border-radius: 5px;
+}
 
-  .custom-space-item-2 > .ant-space-item{
-    width: 45%;
+.custom-button {
+  width: fit-content !important;
+  height: auto;
+  font: var(--font-input);
+  /*width: 100%;*/
+  color: inherit;
+  /*background: white;*/
+  outline: none;
+  padding: 0.85em 0.75em 0.75em;
+  margin: 0;
+  box-shadow: none;
+  /*padding: 0.85em 0.75em 0.75em;*/
+  /*border: 2px solid var(--color-grey-50);*/
+  /*border-radius: var(--radius-2);*/
+  transition: border 150ms ease;
+  &:focus {
+    border-color: var(--color-primary);
   }
-  
-  .custom-space-item-3 {
-    > .ant-space-item{
-      width: 55%;
-    }
-    > :nth-child(3){
-      width: 10%;
-    }
+  &[disabled] {
+    opacity: 0.6;
+    color: var(--color-text-light);
   }
-    
-  .ant-select-selector{
-    border: 2px solid var(--color-grey-50);
-    border-radius: 5px;
+  &::placeholder {
+    opacity: 0.5;
   }
+  &:read-only {
+    cursor: default;
+  }
+  border-radius: 5px;
+}
 
-  .ant-space-item > input.ant-input{
-    display: block;
-    font: var(--font-input);
-    /*width: 100%;*/
-    color: inherit;
-    /*background: white;*/
-    outline: none;
-    padding: 0.85em 0.75em 0.75em;
-    margin: 0;
-    box-shadow: none;
-    /*padding: 0.85em 0.75em 0.75em;*/
-    /*border: 2px solid var(--color-grey-50);*/
-    /*border-radius: var(--radius-2);*/
-    transition: border 150ms ease;
-    &:focus {
-      border-color: var(--color-primary);
-    }
-    &[disabled] {
-      opacity: 0.6;
-      color: var(--color-text-light);
-    }
-    &::placeholder {
-      opacity: 0.5;
-    }
-    &:read-only {
-      cursor: default;
-    }
-    border-radius: 5px;
+.custom-search {
+  height: auto;
+  font: var(--font-input);
+  /*width: 100%;*/
+  color: inherit;
+  /*background: white;*/
+  outline: none;
+  padding: 0.85em 0.75em 0.75em;
+  margin: 0;
+  box-shadow: none;
+  /*padding: 0.85em 0.75em 0.75em;*/
+  /*border: 2px solid var(--color-grey-50);*/
+  /*border-radius: var(--radius-2);*/
+  transition: border 150ms ease;
+  &:focus {
+    border-color: var(--color-primary);
   }
-
-  .custom-button{
-    width: fit-content !important;
-    height: auto;
-    font: var(--font-input);
-    /*width: 100%;*/
-    color: inherit;
-    /*background: white;*/
-    outline: none;
-    padding: 0.85em 0.75em 0.75em;
-    margin: 0;
-    box-shadow: none;
-    /*padding: 0.85em 0.75em 0.75em;*/
-    /*border: 2px solid var(--color-grey-50);*/
-    /*border-radius: var(--radius-2);*/
-    transition: border 150ms ease;
-    &:focus {
-      border-color: var(--color-primary);
-    }
-    &[disabled] {
-      opacity: 0.6;
-      color: var(--color-text-light);
-    }
-    &::placeholder {
-      opacity: 0.5;
-    }
-    &:read-only {
-      cursor: default;
-    }
-    border-radius: 5px;
+  &[disabled] {
+    opacity: 0.6;
+    color: var(--color-text-light);
   }
+  &::placeholder {
+    opacity: 0.5;
+  }
+  &:read-only {
+    cursor: default;
+  }
+  border-radius: 5px;
+}
 
-  
+.custom-label {
+  font-size: 0.75;
+  font: var(--font-ui);
+  line-height: 30px;
+  text-transform: uppercase;
+}
 
-  
+.custom-label-normal {
+  font-size: 0.5;
+  line-height: 20px;
+  text-transform: uppercase;
+}

@@ -10,7 +10,7 @@ const JobCard = ({ job }) => {
   console.log('JobCard: ', job);
   return (
     <Link href={`/job/${job?.id}`}>
-      <Card style={{ width: 550, position: 'relative' }}>
+      <Card style={{ width: '95%', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 10, right: 10 }}>
           <HeartOutlined />
         </div>
@@ -28,10 +28,10 @@ const JobCard = ({ job }) => {
             }
           </div>
           <div className="ml-4" style={{ textAlign: 'left' }}>
-            <Title level={5} style={{ color: '#4D70EB' }}>
+            <Title className="custom-label" level={5} style={{ color: '#4D70EB', fontSize: 0 }}>
               {job?.title}
             </Title>
-            <p>{job?.companyName}</p>
+            <p className="custom-label">{job?.companyName}</p>
             <div className="mt-4">
               <div className="flex items-center">
                 <svg
