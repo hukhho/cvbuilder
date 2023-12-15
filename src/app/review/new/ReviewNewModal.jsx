@@ -14,7 +14,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });

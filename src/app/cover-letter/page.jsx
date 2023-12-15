@@ -62,6 +62,7 @@ const CoverLetterIndex = () => {
             <div className="container mx-auto px-4 py-6">
               <div className="grid grid-cols-4 gap-4">
                 <CreateCoverLetter onCreated={onCreated} listResumes={listResumes} />
+
                 {/* Map over the mockCardData and generate cards with links */}
                 {resumes?.map((card, index) => (
                   <div key={index}>

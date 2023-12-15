@@ -20,7 +20,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
   }));
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });
@@ -75,19 +75,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
   return (
     <>
       {contextHolder}
-      <div className="inset-0 flex items-center justify-center">
-        {/* <Card
-          hoverable
-          onClick={openModal}
-          style={{ width: 240, background: '#fbfbfb' }} // Adjust this value based on your needs
-        >
-          <div>
-            <div style={{ position: 'relative', width: 200, height: 200, alignContent: 'center' }}>
-              Create new cover letter
-            </div>
-            <Meta title="" description="cover letter" />
-          </div>
-        </Card> */}
+      <div className="inset-0 flex items-center justify-start">
         <div hoverable={true} onClick={openModal} class="src-containers-Dashboard--oPXEIf9zEiA=">
           <div id="on-screen-create-new-resume" class="cta-button resumeCta">
             <span class="resumeCta-label">Create new Cover Letter</span>

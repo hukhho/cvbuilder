@@ -11,7 +11,7 @@ const CanvasGradient = props => {
     stops: [],
     animated: false,
     animation: {
-      progress: 0.35,
+      progress: 2,
       stopDelta: 0,
       stops: [],
     },

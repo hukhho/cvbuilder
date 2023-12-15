@@ -44,7 +44,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });
@@ -92,8 +92,13 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
       const result = await updateExpertConfig(values);
       openNotification('bottomRight', `Save changes: ${result}`);
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
-      console.log('Submit. Error:', error);
+      if (error?.response?.data?.error) {
+        openNotification('bottomRight', `Error`);
+      } else if (error?.response?.data) {
+        openNotification('bottomRight', `Error ${error?.response?.data}`);
+      } else {
+        openNotification('bottomRight', `Error ${error}`);
+      }
     }
   };
 
@@ -253,29 +258,37 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               placeholder="About"
             />
           </Form.Item>
-          <Space className="custom-space-item-2" style={{justifyContent: "space-between", width: "100%"}} align="center">
-              <Form.Item
-                name="cvId"
-                label={
-                  <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
-                    <div className="flex gap-2 items-center text-xs">
-                      <span className="flex flex-col">
-                        <div>
-                          <strong>Choose CV</strong>
-                        </div>
-                        <div>
-                          <span style={{ textTransform: 'none' }}>
-                            Choose your best CV to show for the recruiter
-                          </span>
-                        </div>
-                      </span>
-                    </div>
-                  </label>
-                }
-              >
-                <Select
-                placeholder="Set your deadline" className='customtext' style={{ height: 60, marginTop: '-10px' }} options={resumeOptions} />
-              </Form.Item>
+          <Space
+            className="custom-space-item-2"
+            style={{ justifyContent: 'space-between', width: '100%' }}
+            align="center"
+          >
+            <Form.Item
+              name="cvId"
+              label={
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
+                  <div className="flex gap-2 items-center text-xs">
+                    <span className="flex flex-col">
+                      <div>
+                        <strong>Choose CV</strong>
+                      </div>
+                      <div>
+                        <span style={{ textTransform: 'none' }}>
+                          Choose your best CV to show for the recruiter
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                </label>
+              }
+            >
+              <Select
+                placeholder="Set your deadline"
+                className="customtext"
+                style={{ height: 60, marginTop: '-10px' }}
+                options={resumeOptions}
+              />
+            </Form.Item>
             <Form.Item
               name="experiences"
               label={
@@ -295,7 +308,9 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                 </label>
               }
             >
-              <InputNumber type='number' min={1}
+              <InputNumber
+                type="number"
+                min={1}
                 style={{
                   marginTop: '-10px',
                 }}
@@ -306,24 +321,23 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
             </Form.Item>
           </Space>
 
-          
-          <Form.Item label={
-                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
-                  <div className="flex  gap-2 items-center text-xs">
-                    <span className="flex flex-col">
-                      <span>
-                        <strong>PRICING</strong>
-                      </span>
-                      <div>
-                        <span style={{ textTransform: 'none' }}>
-                          Set your review request pricing
-                        </span>
-                      </div>
+          <Form.Item
+            label={
+              <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
+                <div className="flex  gap-2 items-center text-xs">
+                  <span className="flex flex-col">
+                    <span>
+                      <strong>PRICING</strong>
                     </span>
-                  </div>
-                </label>
-              }>
-            <Form.List name={['price']}>
+                    <div>
+                      <span style={{ textTransform: 'none' }}>Set your review request pricing</span>
+                    </div>
+                  </span>
+                </div>
+              </label>
+            }
+          >
+            <Form.List name={['price']} initialValue={[{}]}>
               {(subFields, subOpt) => (
                 <div
                   style={{
@@ -335,22 +349,31 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                   {subFields.map(subField => (
                     <Space className="custom-space-item-3" key={subField.key}>
                       <Form.Item noStyle name={[subField.name, 'day']}>
-                        <Input placeholder="day" />
+                        <Input addonAfter={<div>days</div>} placeholder="day" />
                       </Form.Item>
                       <Form.Item noStyle name={[subField.name, 'price']}>
-                        <Input placeholder="price" />
+                        <Input addonAfter={<div> vnđ</div>} placeholder="price" />
                       </Form.Item>
-                      <CloseOutlined
-                        onClick={() => {
-                          subOpt.remove(subField.name);
-                        }}
-                      />
+                      {subFields.length > 1 && (
+                        <CloseOutlined
+                          onClick={() => {
+                            subOpt.remove(subField.name);
+                          }}
+                        />
+                      )}
                     </Space>
                   ))}
-                  <div style={{display: 'flex', justifyContent: 'end'}}>
-                  <Button className='custom-button' type="dashed" onClick={() => subOpt.add()} block>
-                    + Add more day
-                  </Button>
+                  <div style={{ display: 'flex', justifyContent: 'end' }}>
+                    {subFields.length < 3 && (
+                      <Button
+                        className="custom-button"
+                        type="dashed"
+                        onClick={() => subOpt.add()}
+                        block
+                      >
+                        + Add more day
+                      </Button>
+                    )}
                   </div>
                 </div>
               )}

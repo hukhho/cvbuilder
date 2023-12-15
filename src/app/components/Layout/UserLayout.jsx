@@ -38,6 +38,9 @@ import { parse, serialize } from 'cookie';
 import Image from 'next/image';
 import AuthLayout from './AuthLayout';
 import { useRouter } from 'next/navigation';
+import { PageLoader } from '../PageLoader';
+import Login from '@/app/login/page';
+import MemoizedMenu from './MemoizedMenu';
 // Dynamically import CanvasGradient with ssr: false
 const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), {
   ssr: false,
@@ -182,66 +185,65 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
-  const router = useRouter();
-
-  const { getAccessTokenSilently } = useAuth0();
-  const [windowWidth, setWindowWidth] = useState(1000);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window?.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   const [userRole, setUserRole] = useState();
 
-  useEffect(() => {
-    let isMounted = true;
-    const getMessage = async () => {
-      const accessToken = await getAccessTokenSilently();
-      console.log('accessToken', accessToken);
-      // Set the cookie
-      document.cookie = serialize('token', accessToken, {
-        path: '/', // The path for which the cookie is valid
-        maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-        secure: false, // Use 'secure' in production for HTTPS-only cookies
-      });
+  const router = useRouter();
 
-      const { data, error } = await getProtectedResource(accessToken);
-      if (!isMounted) {
-        return;
-      }
-      if (data) {
-        setMessage(JSON.stringify(data, null, 2));
-        setEmail(data.email);
-        setAvatar(data.avatar);
-        document.cookie = serialize('userId', data.id, {
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+    getAccessTokenSilently,
+  } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      let isMounted = true;
+      const getMessage = async () => {
+        const accessToken = await getAccessTokenSilently();
+        console.log('accessToken', accessToken);
+        // Set the cookie
+        document.cookie = serialize('token', accessToken, {
           path: '/', // The path for which the cookie is valid
           maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
           secure: false, // Use 'secure' in production for HTTPS-only cookies
         });
-        document.cookie = serialize('roleName', data.role.roleName, {
-          path: '/', // The path for which the cookie is valid
-          maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-          secure: false, // Use 'secure' in production for HTTPS-only cookies
-        });
-        setUserRole(data.role.roleName);
-        if (data.role.roleName === 'ADMIN') {
-          router.push('/admin/dashboard');
+
+        const { data, error } = await getProtectedResource(accessToken);
+        if (!isMounted) {
+          return;
         }
-      }
-      if (error) {
-        setMessage(JSON.stringify(error, null, 2));
-      }
-    };
-    getMessage();
-    return () => {
-      isMounted = false;
-    };
+        if (data) {
+          setMessage(JSON.stringify(data, null, 2));
+          setEmail(data.email);
+          setAvatar(data.avatar);
+          document.cookie = serialize('userId', data.id, {
+            path: '/', // The path for which the cookie is valid
+            maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
+            secure: false, // Use 'secure' in production for HTTPS-only cookies
+          });
+          document.cookie = serialize('roleName', data.role.roleName, {
+            path: '/', // The path for which the cookie is valid
+            maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
+            secure: false, // Use 'secure' in production for HTTPS-only cookies
+          });
+          setUserRole(data.role.roleName);
+          if (data.role.roleName === 'ADMIN') {
+            router.push('/admin/dashboard');
+          }
+        }
+        if (error) {
+          setMessage(JSON.stringify(error, null, 2));
+        }
+      };
+      getMessage();
+      return () => {
+        isMounted = false;
+      };
+    }
   }, [getAccessTokenSilently]);
 
   const filteredItems = items.filter(item => item.roles.includes(userRole));
@@ -254,7 +256,6 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
   console.log('colorPrimary:', colorPrimary);
   console.log('borderRadius:', borderRadius);
   console.log('colorBgContainer:', colorBgContainer);
-  const { logout } = useAuth0();
 
   const handleLogout = () => {
     logout({
@@ -263,11 +264,19 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
       },
     });
   };
-
-  return (
-    // <AuthenticationGuard>
-    // <AuthLayout>
-    <AuthenticationGuard>
+  if (isLoading) {
+    return <PageLoader />;
+  }
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
+  if (!isAuthenticated) {
+    return <Login />;
+  } else if (isAuthenticated) {
+    return (
+      // <AuthenticationGuard>
+      // <AuthLayout>
+      // <AuthenticationGuard>
       <ConfigProvider
         theme={{
           components: {
@@ -302,19 +311,19 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
               zIndex: 99,
             }}
           >
-            <div style={{ ...styles.compareBox }}>
-              <CanvasGradient
-                animated
-                angle={61.63}
-                stops={[
-                  { offset: 0.0, color: COLORS.Primary },
-                  { offset: 0.25, color: COLORS.Secondary },
-                  { offset: 0.5, color: COLORS.Three },
-                  { offset: 0.75, color: COLORS.Secondary },
-                  { offset: 1.0, color: COLORS.Primary },
-                ]}
-              />
-            </div>
+            {/* <div style={{ ...styles.compareBox }}>
+           <CanvasGradient
+             animated
+             angle={62} // Adjust the angle to create a wave effect (e.g., 0 for a horizontal wave)
+             stops={[
+               { offset: 0.1, color: COLORS.Primary },
+               { offset: 0.2, color: COLORS.Primary },
+               { offset: 0.75, color: COLORS.Secondary },
+               { offset: 0.75, color: COLORS.Three }, 
+               { offset: 0.5, color: COLORS.Primary },
+             ]}
+           />
+         </div> */}
 
             <Space
               direction="vertical"
@@ -397,7 +406,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
               </Space>
             )}
 
-            <Menu
+            {/* <Menu
               style={{
                 marginTop: '26px',
                 marginLeft: collapsed ? 0 : '10px',
@@ -413,7 +422,10 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
               mode="inline"
               defaultSelectedKeys={[selected]}
               items={filteredItems}
-            />
+            /> */}
+
+            <MemoizedMenu collapsed={collapsed} selected={selected} filteredItems={filteredItems} />
+
             {!collapsed && (
               <Space
                 direction="vertical"
@@ -508,7 +520,7 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
           <Layout
             className="site-layout"
             style={{
-              marginLeft: 350,
+              marginLeft: collapsed ? 150 : 350,
               background: '#fbfbfb',
             }}
           >
@@ -522,16 +534,16 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
               }}
             >
               {userHeader}
-              {
-                !collapsed && 
+              {!collapsed && (
                 <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
-                  <Space align="center">''
+                  <Space align="center">
                     <Avatar src={avatar} size={30} />
                     <span className="mock-block">{email}</span>
                   </Space>
                 </div>
-             }
+              )}
             </Header>
+
             <Content
               style={{
                 margin: '0 0 0 0',
@@ -550,26 +562,18 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
             </Content>
 
             {/* <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Ant Design ©2023
-        </Footer> */}
+       style={{
+         textAlign: 'center',
+       }}
+     >
+       Ant Design ©2023
+     </Footer> */}
           </Layout>
         </Layout>
       </ConfigProvider>
-    </AuthenticationGuard>
-  );
+      // </AuthenticationGuard>
+    );
+  }
 });
 
-// const UserLayout = ({ userHeader, content, selected }) => {
-//   console.log('selected', selected);
-//   const {
-//     token: { colorBgContainer },
-//   } = theme.useToken();
-//   return (
-
-//   );
-// };
 export default UserLayout;

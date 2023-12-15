@@ -13,6 +13,7 @@ import CoverLetterFormV2 from '@/app/components/Form/CoverLetterFormV2';
 import { getResumes } from '@/app/utils/indexService';
 import getCoverLetter from '../finishup/getCoverLetter';
 import getContact from '@/app/resume/[id]/contact/contactService';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]);
@@ -59,7 +60,8 @@ const Contact = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCoverLetterBuilderHeader
               coverLetterId={cvId}

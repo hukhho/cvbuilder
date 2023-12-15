@@ -478,8 +478,7 @@ export default function FinishUp({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cvId = params.id;
-        const data = await getFinishUp(cvId);
+        const data = await getFinishUp(params.id);
         console.log('FinishUp data: ', data);
         setFinishUpData(data);
         setShowFinishupCV(true);
@@ -492,7 +491,7 @@ export default function FinishUp({ params }) {
     };
     const fetchAudit = async () => {
       try {
-        const data1 = await getAudit(cvId);
+        const data1 = await getAudit(params.id);
         setAuditData(data1);
       } catch (error) {
         console.error('Error fetching getAudit data:', error);
@@ -643,49 +642,6 @@ export default function FinishUp({ params }) {
                         onClickSyncUp={handleSyncUp}
                         currentTemplate={templateSelected}
                       />
-                      {/* <div className="flex" style={{ justifyItems: 'center' }}>
-                        <button
-                          style={{
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSyncUp()}
-                        >
-                          Sync Up
-                        </button>
-                        <button
-                          style={{
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '10px',
-                            marginLeft: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleDownloadButtonClick()}
-                        >
-                          Download
-                        </button>
-                        <button
-                          style={{
-                            width: '60px',
-                            height: '30px',
-                            marginTop: '10px',
-                            marginLeft: '10px',
-                            marginBottom: '10px',
-                          }}
-                          className="button"
-                          type=""
-                          onClick={() => handleSave()}
-                        >
-                          Save
-                        </button>
-                      </div> */}
                     </div>
                   </div>
                   <CVLayout

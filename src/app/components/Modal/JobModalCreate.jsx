@@ -14,7 +14,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });

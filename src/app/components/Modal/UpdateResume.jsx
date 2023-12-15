@@ -14,7 +14,7 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });

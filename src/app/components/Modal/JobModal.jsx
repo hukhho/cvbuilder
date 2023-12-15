@@ -15,7 +15,7 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });
@@ -36,6 +36,8 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
 
   function openModal() {
     setInputValue(description)
+
+    setFormData(prevData => ({ ...prevData, title: title, description: description }));
     setIsOpen(true);
   }
 
@@ -64,7 +66,7 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
 
     try {
       const result = await updateJobDescription(cvId, formData);
-      openNotification('bottomRight', `Create: ${result.id}`);
+      openNotification('bottomRight', `Changes saved`);
       onCreated();
       closeModal();
     } catch (error) {
@@ -148,7 +150,7 @@ const JobModal = ({ onCreated, cvId, title, description }) => {
                             name="title"
                             className="inputEl new-resume-form"
                             id="title" // Add id attribute here
-                            required=""
+                            required="true"
                             aria-label="Job title"
                             defaultValue={title}
                             onChange={handleInputChange}

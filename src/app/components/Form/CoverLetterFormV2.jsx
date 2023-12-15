@@ -50,7 +50,7 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });
@@ -206,32 +206,6 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
         >
           <Select size="large" options={resumeOptions} />
         </Form.Item>
-        {/* <Form.Item
-          name="cvId"
-          style={{ display: 'none' }}
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                <strong>CvId</strong>
-              </span>
-            </label>
-          }
-        >
-          <Input disabled />
-        </Form.Item> */}
-        {/* <Form.Item
-          name="resumeName"
-          label={
-            <label style={{}}>
-              <span className="custom-text whitespace-nowrap">
-                <strong>Resume Name</strong>
-              </span>
-            </label>
-          }
-        >
-          <Input disabled />
-        </Form.Item> */}
-
         <Form.Item
           name="job_title"
           label={

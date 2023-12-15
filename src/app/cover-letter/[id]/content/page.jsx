@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { format, parse } from 'date-fns';
 import updateCoverLetter from '@/app/components/Form/updateCoverLetterService';
 import TextArea from 'antd/es/input/TextArea';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const Content = ({ params }) => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const Content = ({ params }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });
@@ -98,7 +99,8 @@ const Content = ({ params }) => {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed
           userHeader={
             <UserCoverLetterBuilderHeader
               coverLetterId={coverLetterId}

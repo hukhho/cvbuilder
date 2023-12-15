@@ -18,6 +18,7 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { getRequestList } from '../expertServices';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import Link from 'next/link';
+import moment from 'moment';
 
 const { Title } = Typography;
 const columns = [
@@ -86,11 +87,18 @@ const columns = [
   // },
   {
     title: 'Receive day',
-    dataIndex: 'receiveDay',
+    dataIndex: 'receivedDate',
     sorter: {
-      compare: (a, b) => a.revicedDay - b.revicedDay,
-      multiple: 2,
+      compare: (a, b) => moment(a.receivedDate) - moment(b.receivedDate),
     },
+    render: (text, record) => (
+      <div className="flex flex-col">
+        <div> {moment(record.receivedDate).fromNow()}</div>{' '}
+        <div style={{ color: 'gray', fontSize: '11px' }}>
+          {moment(record.receivedDate).format('HH:mm:ss DD/MM/YYYY')}
+        </div>{' '}
+      </div>
+    ),
   },
   // {
   //   title: 'Deadline',
@@ -130,6 +138,9 @@ const Home = () => {
   });
 
   const [data, setData] = useState();
+  const [searchText, setSearchText] = useState('');
+  const [searchData, setSearchData] = useState();
+
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
@@ -138,14 +149,36 @@ const Home = () => {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getRequestList();
       setData(fetchedDataFromAPI);
+      setSearchData(fetchedDataFromAPI);
+
     } catch (error) {
-      console.log("getReviewRequestsByCandiate:Error: ", error)
+      console.log('getReviewRequestsByCandiate:Error: ', error);
     }
+  };
+
+
+  const handleSearch = (value) => {
+    setSearchText(value);
+    console.log("handleSearch")
+    if (value === '') {
+      setSearchData(data);
+      return;
+    }
+  
+    const filteredData = data.filter(item => {
+      const searchString = value.toLowerCase();
+      return (
+        item.resumeName.toLowerCase().includes(searchString) ||
+        item.name.toLowerCase().includes(searchString) ||
+        item.note.toLowerCase().includes(searchString)
+      );
+    });
+    // Update the data state with the filtered data
+    setSearchData(filteredData);
   };
 
   useEffect(() => {
     console.log('useEffect');
-
     fetchData();
   }, []);
 
@@ -153,19 +186,22 @@ const Home = () => {
     <ConfigProvider>
       <UserLayout
         selected="3"
-        userHeader={<UserHeaderExpert initialEnabledCategories={enabledCategories} />
-        }
+        userHeader={<UserHeaderExpert initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
-            <div className="!p-0 mb-5 mt-16 card">
-              <div style={{ textAlign: 'left' }}>
-                {/* <Title level={5}>CV Review Table</Title> */}
-              </div>
+            <div className="!p-0 mb-5 mt-16">
+              <div style={{ textAlign: 'left' }}></div>
               <div>
-                <Input className="" placeholder="Search the resume" />
-              </div>
-              <div>
-                <Table columns={columns} dataSource={data} onChange={onChange} />
+              <Input
+                  className=""
+                  placeholder="Search the resume"
+                  value={searchText}
+                  onChange={e => handleSearch(e.target.value)}
+                />              </div>
+              <div className="!p-0 mb-5 mt-4 card">
+                <div className="">
+                  <Table columns={columns} dataSource={searchData} onChange={onChange} />
+                </div>
               </div>
             </div>
           </div>

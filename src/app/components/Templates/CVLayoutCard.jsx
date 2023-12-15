@@ -122,7 +122,7 @@ const CVLayoutCard = ({ children, onSectionsOrderChange, layoutStyles, stars }) 
   };
 
   return (
-    <div className="preview card" style={{ marginLeft: 0, marginTop: 10, userSelect: 'none', pointerEvents: 'none' }}>
+    <div className="" style={{ marginLeft: 0, marginTop: 10, userSelect: 'none', pointerEvents: 'none' }}>
       <div className="flexrounded-md" id="resume-preview">
         <div />
       </div>

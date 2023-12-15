@@ -29,7 +29,7 @@ const Home = () => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
-      message: 'Thong bao',
+      message: 'Notification',
       description: message,
       placement,
     });
@@ -39,6 +39,7 @@ const Home = () => {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getRequestList();
       setData(fetchedDataFromAPI);
+      setSearchData(fetchedDataFromAPI);
     } catch (error) {}
   };
 
@@ -64,6 +65,15 @@ const Home = () => {
     }
   };
 
+  
+  const initialData = [];
+
+  const [data, setData] = useState(initialData);
+  const [searchText, setSearchText] = useState('');
+  const [searchData, setSearchData] = useState(initialData);
+
+
+
   const columns = [
     {
       title: 'Resume Name',
@@ -72,7 +82,7 @@ const Home = () => {
         if (record.status === 'Processing') {
           return <Link href={`/expert/view-cv/${record.id}`}>{text}</Link>;
         } else {
-          return <span>{text}</span>; // Just display the text if status is not "Processing"
+          return <span>{text}</span>;
         }
       },
     },
@@ -102,6 +112,15 @@ const Home = () => {
     {
       title: 'Status',
       dataIndex: 'status',
+      filters: [
+        { text: 'Waiting', value: 'Waiting' },
+        { text: 'Processing', value: 'Processing' },
+        { text: 'Overdue', value: 'Overdue' },
+        { text: 'Done', value: 'Done' },
+        { text: 'Null', value: null },
+      ],
+      onFilter: (value, record) => record.status === value,
+
       render: text => {
         if (text === 'Waiting') {
           return <Badge status="warning" text={text} />;
@@ -125,14 +144,13 @@ const Home = () => {
       title: 'Receive day',
       dataIndex: 'receivedDate',
       sorter: {
-        compare: (a, b) => a.revicedDay - b.revicedDay,
-        multiple: 2,
+        compare: (a, b) => moment(a.receivedDate) - moment(b.receivedDate),
       },
       render: (text, record) => (
         <div className="flex flex-col">
-          <div> {moment(record.revicedDay).fromNow()}</div>{' '}
+          <div> {moment(record.receivedDate).fromNow()}</div>{' '}
           <div style={{ color: 'gray', fontSize: '11px' }}>
-            {moment(record.revicedDay).format('HH:mm:ss DD/MM/YYYY')}
+            {moment(record.receivedDate).format('HH:mm:ss DD/MM/YYYY')}
           </div>{' '}
         </div>
       ),
@@ -141,8 +159,7 @@ const Home = () => {
       title: 'Deadline',
       dataIndex: 'deadline',
       sorter: {
-        compare: (a, b) => a.deadline.valueOf() - b.deadline.valueOf(),
-        multiple: 1,
+        compare: (a, b) => moment(a.deadline) - moment(b.deadline),
       },
       render: (text, record) => (
         <div className="flex flex-col">
@@ -174,16 +191,34 @@ const Home = () => {
       },
     },
   ];
-  const initialData = [];
 
-  const [data, setData] = useState(initialData);
   const onChange = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
+ 
+  
+  };
+  
+  const handleSearch = (value) => {
+    setSearchText(value);
+    console.log("handleSearch")
+    if (value === '') {
+      setSearchData(data);
+      return;
+    }
+  
+    const filteredData = data.filter(item => {
+      const searchString = value.toLowerCase();
+      return (
+        item.resumeName.toLowerCase().includes(searchString) ||
+        item.name.toLowerCase().includes(searchString) ||
+        item.note.toLowerCase().includes(searchString)
+      );
+    });
+    // Update the data state with the filtered data
+    setSearchData(filteredData);
   };
 
   useEffect(() => {
     console.log('useEffect');
-
     fetchData();
   }, []);
 
@@ -203,11 +238,18 @@ const Home = () => {
               <Title level={5}>CV Review Table</Title>
             </div>
             <div>
-              <Input className="" placeholder="Search the resume" />
+              <div>
+                <Input
+                  className=""
+                  placeholder="Search the resume"
+                  value={searchText}
+                  onChange={e => handleSearch(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="!p-0 mb-5 card">
+            <div className="!p-0 mb-5 mt-4 card">
               <div className="">
-                <Table columns={columns} dataSource={data} onChange={onChange} />
+                <Table columns={columns} dataSource={searchData} onChange={onChange} />
               </div>
             </div>
           </div>
