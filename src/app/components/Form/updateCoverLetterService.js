@@ -15,7 +15,7 @@ const updateCoverLetter = async (cvId, coverLetterId, data) => {
     }
     console.log('updateCoverLetter: ', data);
     const response = await axiosInstance.put(
-      `/chat-gpt/user/cv/${cvId}/cover-letter/${coverLetterId}`,
+      `/chat-gpt/user/cv/${cvId}/cover-letter/${coverLetterId}/content`,
       data,
     );
     return response.data;

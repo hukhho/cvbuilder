@@ -46,4 +46,14 @@ const updateCoverLetterName = async (coverLetterId, data) => {
   }
 };
 
-export { deleteCoverLetter, updateCoverLetter, updateCoverLetterName };
+const getCoverLetterHistory = async coverLetterId => {
+  try {
+    const userId = getUserIdFromCookie();
+    const response = await axiosInstance.get(`/user/cv/${coverLetterId}/history-cover-letter`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { deleteCoverLetter, updateCoverLetter, updateCoverLetterName, getCoverLetterHistory };

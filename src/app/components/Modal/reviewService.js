@@ -27,7 +27,7 @@ const applyJob = async (jobId, cvId, coverletterId, note) => {
     const userId = getUserIdFromCookie();
     if (coverletterId) {
       const response = await axiosInstance.post(
-        `/user/${userId}/cv/${cvId}/job-posting/${jobId}/apply?note=${note}&coverletterId=${coverletterId}`,
+        `/user/${userId}/cv/${cvId}/job-posting/${jobId}/apply?note=${note}&cover_letter_id=${coverletterId}`,
       );
       return response.data;
     }

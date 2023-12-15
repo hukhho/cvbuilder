@@ -18,6 +18,7 @@ const getContent = async coverLetterId => {
     return response.data;
     // return {
     //   id: 1,
+    //   cvId: 2,
     //   title: 'string',
     //   dear: 'string',
     //   date: '2023-11-22',

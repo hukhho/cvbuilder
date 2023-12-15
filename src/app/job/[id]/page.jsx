@@ -21,16 +21,24 @@ import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { getCoverLetters, getResumes } from '@/app/utils/indexService';
 
-import { CalendarOutlined, HeartFilled, HeartOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  CalendarOutlined,
+  HeartFilled,
+  HeartOutlined,
+  ScheduleOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import { getJobById, likeJob } from '../jobServices';
 import ApplyJobModal from '@/app/components/Modal/ApplyJobModal';
+import SuccessJob from '@/app/components/Modal/SuccessJob';
 
 const { Title } = Typography;
 
@@ -52,6 +60,13 @@ const Home = ({ params }) => {
   const [data, setData] = useState();
   const [resumes, setResumes] = useState([]);
   const [coverLetters, setCoverLetters] = useState([]);
+
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSuccess = () => {
+    console.log('handleSuccess');
+    setIsSuccess(true);
+  };
 
   const fetchData = async () => {
     try {
@@ -78,7 +93,6 @@ const Home = ({ params }) => {
       // Simulate fetching resumes (replace with your actual fetch logic)
       const like = await likeJob(params.id);
       fetchData();
-
     } catch (error) {
       console.error('There was an error fetching resumes', error);
     }
@@ -120,9 +134,13 @@ const Home = ({ params }) => {
 
               <div>
                 <div className="flex relative mt-16">
-                  <Title level={3}>{data?.title}</Title>
+                  <div className="flex">
+                    <Title style={{ width: 825 }} level={3}>
+                      {data?.title}
+                    </Title>
+                  </div>
                   <div>
-                    <div style={{ marginLeft: '900px', textAlign: 'left' }}>
+                    <div style={{ marginLeft: '0px', textAlign: 'left' }}>
                       {/* <button className="button" on style={{ width: '314px' }}>
                         Apply for this job
                       </button> */}
@@ -130,7 +148,9 @@ const Home = ({ params }) => {
                         resumeOptions={resumeOptions}
                         coverOptions={coverOptions}
                         jobId={params.id}
+                        handleSuccess={handleSuccess}
                       />
+
                       <button className="mt-4" onClick={likeJobHanlde}>
                         {data?.liked === true && <HeartFilled style={{ color: '#4D70EB' }} />}
                         {data?.liked === false && <HeartOutlined style={{ color: '#4D70EB' }} />}
@@ -190,8 +210,8 @@ const Home = ({ params }) => {
                     {data?.skill?.map((skill, index) => {
                       return (
                         <div
-                          style={{ textAlign: 'center' }}
-                          className="border-gray-500 border rounded-full p-1"
+                          style={{ textAlign: 'center', minWidth: '100px' }}
+                          className="border-gray-500 border rounded-full p-1 pr-2 pl-2"
                         >
                           {skill}
                         </div>
@@ -209,20 +229,26 @@ const Home = ({ params }) => {
               </div>
 
               <div className="flex mt-8">
-                <Card className="p-8 " style={{ textAlign: 'left', width: 1000, minHeight: 500 }}>
+                <Card className="p-8 " style={{ textAlign: 'left', width: 800, minHeight: 500 }}>
                   <div>
                     <Image src={data?.avatar} width={100} height={100} />
                   </div>
-                  <div className='mt-8'>
-                    <Title level={4}>What can we offer?</Title>
+                  <div className="mt-8">
+                    <Title style={{ width: 800 }} level={4}>
+                      What can we offer?
+                    </Title>
                     <div>{data?.benefit}</div>
                   </div>
                   <div className="mt-4">
-                    <Title level={4}>Job descriptions</Title>
+                    <Title style={{ width: 800 }} level={4}>
+                      Job descriptions
+                    </Title>
                     <div>{data?.description}</div>
                   </div>
                   <div className="mt-4">
-                    <Title level={4}>Requirements</Title>
+                    <Title style={{ width: 800 }} level={4}>
+                      Requirements
+                    </Title>
                     <div>{data?.requirement}</div>
                   </div>
                 </Card>
@@ -238,47 +264,47 @@ const Home = ({ params }) => {
                   >
                     <div>
                       <div className="flex">
-                        <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
+                        <ScheduleOutlined />
+                        <div className="flex flex-col ml-2 mt-2 mr-2">
                           <span style={{ fontWeight: 'bold' }}>Posted date</span>
                           <p>{data?.createDate}</p>
                         </div>
                       </div>
                       <div className="flex">
                         <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
+                        <div className="flex flex-col ml-2  mt-2 mr-2">
                           <span style={{ fontWeight: 'bold' }}>Deadline</span>
                           <p>{data?.deadline}</p>
                         </div>
                       </div>
+                   
                       <div className="flex">
-                        <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
-                          <span style={{ fontWeight: 'bold' }}>Experience</span>
-                          <p>3+ years</p>
-                        </div>
-                      </div>
-                      <div className="flex">
-                        <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
+                        <AppstoreOutlined />
+                        <div className="flex flex-col ml-2  mt-2 mr-2  ">
                           <span style={{ fontWeight: 'bold' }}>Job Type</span>
-                          <p>Full time</p>
+                          <p>{data?.workingType}</p>
                         </div>
                       </div>
-                      <div className="flex">
+                      {/* <div className="flex">
                         <CalendarOutlined />
                         <div className="flex flex-col ml-2">
                           <span style={{ fontWeight: 'bold' }}>Preferred Languages</span>
                           <p>English</p>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </Card>
                 </div>
               </div>
-              <button className="button" style={{ marginTop: '20px', width: '314px' }}>
-                Apply for this job
-              </button>
+              <div style={{ marginTop: '20px', width: '314px' }}>
+                <ApplyJobModal
+                  resumeOptions={resumeOptions}
+                  coverOptions={coverOptions}
+                  handleSuccess={handleSuccess}
+                  jobId={params.id}
+                />
+                <SuccessJob isSuccess={isSuccess} />
+              </div>
             </div>
           </div>
         }

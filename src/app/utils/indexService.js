@@ -54,6 +54,15 @@ const getResume = async cvId => {
   }
 };
 
+const getHistoryFinishUp = async historyId => {
+  try {
+    const response = await axiosInstance.get(`/user/cv/history/${historyId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteResume = async cvId => {
   try {
     const userId = getUserIdFromCookie();
@@ -107,4 +116,5 @@ export {
   duplicateResume,
   getCookieToken,
   getProtectedResourceWithoutToken,
+  getHistoryFinishUp,
 };

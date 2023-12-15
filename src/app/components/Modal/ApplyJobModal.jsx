@@ -5,12 +5,14 @@ import React, { Fragment, useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import { Button, Form, Input, Select, notification } from 'antd';
+import { Button, Form, Input, Select, Spin, notification } from 'antd';
 import './card.css';
 // import './button.css';
 import { applyJob, createReview } from './reviewService';
+import { LoadingOutlined } from '@ant-design/icons';
+import SuccessJob from './SuccessJob';
 
-export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, jobId }) {
+export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, jobId, handleSuccess }) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -22,6 +24,9 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
   const [form] = Form.useForm();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [resumeId, setResumeId] = useState();
@@ -77,13 +82,17 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
   const onFinish = async values => {
     console.log('values: ', values);
     try {
+      setIsSubmitting(true);
       const result = await applyJob(jobId, values.resume, values.coverletter, values.note);
-      openNotification('bottomRight', `Create: `);
+      openNotification('bottomRight', `Success: ${result}`);
       setIsOpen(false);
+      handleSuccess();
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
       openNotification('bottomRight', `Error: ${error}`);
       setIsOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   return (
@@ -102,7 +111,9 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
         >
           <i className="fad fa-file-plus" aria-hidden="true" />
           <span>Apply for this job</span>
+
         </button>
+
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className=" relative z-10" onClose={closeModal}>
@@ -131,13 +142,13 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                   leaveTo="opacity-0 scale-95"
                 >
                   <Dialog.Panel
-                    style={{ width: 900 }}
+                    style={{ width: 550 }}
                     className="z-99 relative transform rounded-lg  text-left align-middle shadow-sm transition-all opacity-100 scale-100"
                   >
                     <div className="container mx-auto px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
                         <div className="flex ">
-                          <div className="p-9 w-[70%]" style={{ color: 'black' }}>
+                          <div className="p-9 " style={{ color: 'black' }}>
                             <h2>Select your CV and Cover Letter</h2>
                             <p></p>
                             <div>
@@ -147,27 +158,39 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 onFinish={onFinish}
                                 layout="vertical"
                                 style={{
-                                  marginTop: 100,
-                                  maxWidth: 900,
+                                  marginTop: 50,
+                                  maxWidth: 550,
                                 }}
+                                requiredMark={false}
                               >
                                 <Form.Item
                                   name="resume"
-                                  label="Resume"
+                                  label={
+                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                                      <div className="flex gap-2 items-center text-xs">
+                                        <strong>RESUME *</strong>
+                                      </div>
+                                    </label>
+                                  }
                                   rules={[
                                     {
                                       required: true,
                                     },
                                   ]}
                                 >
-                                  <Select style={{ width: 200 }} options={resumeOptions} />
+                                  <Select style={{}} options={resumeOptions} />
                                 </Form.Item>
                                 <Form.Item
                                   name="coverletter"
-                                  label="Cover Letter "
-                                 
+                                  label={
+                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                                      <div className="flex gap-2 items-center text-xs">
+                                        <strong>COVER LETTER</strong>
+                                      </div>
+                                    </label>
+                                  }
                                 >
-                                  <Select style={{ width: 200 }} options={coverOptions} />
+                                  <Select style={{}} options={coverOptions} />
                                 </Form.Item>
                                 {/* <Form.Item
                                   name="deadline"
@@ -183,18 +206,32 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
 
                                 <Form.Item
                                   name="note"
-                                  label="Note"
-                                  rules={[
-                                    {
-                                      required: true,
-                                    },
-                                  ]}
+                                  label={
+                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
+                                      <div className="flex gap-2 items-center text-xs">
+                                        <strong>NOTE</strong>
+                                      </div>
+                                    </label>
+                                  }
                                 >
                                   <Input placeholder="Anything you'd like us to express for the hiring manager" />
                                 </Form.Item>
 
                                 <Form.Item>
-                                  <Button type="primary" htmlType="submit">
+                                  {isSubmitting && (
+                                    <Spin 
+                                      indicator={
+                                        <LoadingOutlined
+                                          style={{
+                                            fontSize: 24,
+                                            marginRight: 10,
+                                          }}
+                                          spin
+                                        />
+                                      }
+                                    />
+                                  )}
+                                  <Button disabled={isSubmitting} type="primary" htmlType="submit">
                                     Submit
                                   </Button>
                                 </Form.Item>

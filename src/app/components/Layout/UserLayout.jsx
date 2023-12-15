@@ -401,8 +401,6 @@ const UserLayout = React.memo(
                   <CreateResume onCreated={onCreated} />
                 </Space>
               )}
-
- 
               <Menu
                 style={{
                   marginTop: '26px',
@@ -557,7 +555,6 @@ const UserLayout = React.memo(
                   {content}
                 </div>
               </Content>
-
               {/* <Footer
        style={{
          textAlign: 'center',

@@ -43,15 +43,32 @@ const columns = [
   {
     title: 'Price',
     dataIndex: 'price',
-    render: text => <div>{text}$</div>,
+    render: text => (
+      <div>
+        {(Number(text) * 1000).toLocaleString('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        })}
+      </div>
+    ),
     sorter: {
       compare: (a, b) => a.price - b.price,
       multiple: 3,
     },
   },
+
   {
     title: 'Status',
     dataIndex: 'status',
+    filters: [
+      { text: 'Waiting', value: 'Waiting' },
+      { text: 'Processing', value: 'Processing' },
+      { text: 'Overdue', value: 'Overdue' },
+      { text: 'Done', value: 'Done' },
+      { text: 'Null', value: null },
+    ],
+    onFilter: (value, record) => record.status === value,
+
     render: text => {
       if (text === 'Waiting') {
         return <Badge status="warning" text={text} />;
@@ -65,6 +82,9 @@ const columns = [
       if (text === 'Done') {
         return <Badge status="success" text={text} />;
       }
+      if (text === null) {
+        return <Badge status="warning" text="Waiting" />;
+      }
       return <Badge status="warning" text={text} />;
     },
   },
@@ -72,8 +92,7 @@ const columns = [
     title: 'Receive day',
     dataIndex: 'receivedDate',
     sorter: {
-      compare: (a, b) => a.revicedDay - b.revicedDay,
-      multiple: 2,
+      compare: (a, b) => moment(a.receivedDate) - moment(b.receivedDate),
     },
     render: (text, record) => (
       <div className="flex flex-col">
@@ -88,8 +107,7 @@ const columns = [
     title: 'Deadline',
     dataIndex: 'deadline',
     sorter: {
-      compare: (a, b) => a.deadline - b.deadline,
-      multiple: 1,
+      compare: (a, b) => moment(a.deadline) - moment(b.deadline),
     },
     render: (text, record) => (
       <div className="flex flex-col">
@@ -148,7 +166,7 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="4"
         userHeader={
           <>
             <UserHeaderReview initialEnabledCategories={enabledCategories} />
@@ -162,7 +180,7 @@ const Home = () => {
             <div>
               <Input className="" placeholder="Search the resume" />
             </div>
-            <div className="!p-0 mb-5 card">
+            <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />
               </div>

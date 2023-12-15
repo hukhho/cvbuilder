@@ -23,6 +23,8 @@ import Link from 'next/link';
 import HeaderHR from '@/app/components/HeaderHR';
 import { getFinishUp } from '@/app/expert/view-cv/[id]/finishUpService';
 import { getHistoryFinishUp } from '@/app/utils/indexService';
+import UserLayout from '@/app/components/Layout/UserLayout';
+import UserHeaderJob from '@/app/components/UserHeaderJob';
 
 const mockData = {
   data: {
@@ -192,7 +194,7 @@ export default function FinishUp({ params }) {
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
   const [enabledCategories, setEnabledCategories] = useState({
-    'APPLICATION LIST': true,
+    'MY APPLICATION': true,
   });
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
@@ -499,8 +501,9 @@ export default function FinishUp({ params }) {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
-          userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
+        <UserLayout
+          selected="3"
+          userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
           content={
             <div className="flex">
               {showFinishupCV && (
@@ -508,7 +511,7 @@ export default function FinishUp({ params }) {
                   <div>
                     <div style={{ width: '895px' }}>
                       <div className="flex" style={{ justifyItems: 'center' }}>
-                        <Link href={'/hr/application'} passHref>
+                        <Link href={'/job/application'} passHref>
                           <button
                             style={{
                               width: '120px',
@@ -520,7 +523,7 @@ export default function FinishUp({ params }) {
                             className="button"
                             type=""
                           >
-                           Back to list
+                            Back to list
                           </button>
                         </Link>
                         <button

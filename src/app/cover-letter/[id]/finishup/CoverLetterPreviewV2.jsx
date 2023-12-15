@@ -11,8 +11,9 @@ import { CommentOutlined } from '@ant-design/icons';
 import ContentEditable from 'react-contenteditable';
 import * as htmlToImage from 'html-to-image';
 import jsPDF from 'jspdf';
+import { getCoverLetterHistory } from '../../coverLetterService';
 
-const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
+const CoverLetterPreviewV2 = React.forwardRef(({ coverLetterId }, ref) => {
   const [lineHeight, setLineHeight] = useState(1.55);
   const [fontSize, setFontSize] = useState(9);
   const [zoom, setZoom] = useState(100);
@@ -79,14 +80,14 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   // };
   async function fetchData() {
     try {
-      const content2 = await getCoverLetter(coverLetterId);
+      const content2 = await getCoverLetterHistory(coverLetterId);
       setContent({
-        name: content2.user.name,
-        address: content2.user.address,
-        phone: content2.user.phone,
-        email: content2.user.email,
-        company: content2.user.company,
-        content: content2.description,
+        name: content2?.user?.name,
+        address: content2?.user?.address,
+        phone: content2?.user?.phone,
+        email: content2?.user?.email,
+        company: content2?.user?.company,
+        content: content2?.description,
       });
     } catch (error) {
       // Handle any errors that occur during the data fetch
@@ -127,113 +128,8 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   return (
     <>
       <div className="sample-generator-wrapper">
-        <div className="toolbar flex" style={{ width: '100%' }}>
-          
-          <div className="flex flex-col items-start">
-            <label>Line height</label>
-            <Row>
-              <Col span={12}>
-                <Slider
-                  min={1}
-                  max={2.5}
-                  step={0.01}
-                  onChange={handleLineHeightChange}
-                  value={typeof lineHeight === 'number' ? lineHeight : 1}
-                />
-              </Col>
-              <Col span={4}>
-                <InputNumber
-                  min={1}
-                  max={2.5}
-                  step={0.01}
-                  style={{
-                    margin: '0 16px',
-                  }}
-                  value={lineHeight}
-                  onChange={handleLineHeightChange}
-                />
-              </Col>
-            </Row>
-            {/* <input
-              type="range"
-              min="1"
-              max="2.5"
-              step="0.01"
-              value={lineHeight}
-              onChange={handleLineHeightChange}
-            /> */}
-          </div>
-          <div className="flex flex-col ml-16 items-start">
-            <label>Font size</label>
-            <Row>
-              <Col span={12}>
-                <Slider
-                  min={6}
-                  max={14}
-                  step={1}
-                  onChange={handleFontSizeChange}
-                  value={typeof fontSize === 'number' ? fontSize : 9}
-                />
-              </Col>
-              <Col span={4}>
-                <InputNumber
-                  min={6}
-                  max={14}
-                  step={1}
-                  style={{
-                    margin: '0 16px',
-                  }}
-                  value={fontSize}
-                  onChange={handleFontSizeChange}
-                />
-              </Col>
-            </Row>
-            {/* <input
-              type="range"
-              min="1"
-              max="2.5"
-              step="0.01"
-              value={lineHeight}
-              onChange={handleLineHeightChange}
-            /> */}
-          </div>
-          <div className="flex flex-col ml-16 items-start">
-            <label>Zoom</label>
-            <Row>
-              <Col span={12}>
-                <Slider
-                  min={20}
-                  max={200}
-                  step={1}
-                  onChange={handleZoomChange}
-                  value={typeof zoom === 'number' ? zoom : 100}
-                />
-              </Col>
-              <Col span={4}>
-                <InputNumber
-                  min={20}
-                  max={200}
-                  step={1}
-                  style={{
-                    margin: '0 16px',
-                  }}
-                  value={zoom}
-                  onChange={handleZoomChange}
-                />
-              </Col>
-            </Row>
-            {/* <input
-              type="range"
-              min="1"
-              max="2.5"
-              step="0.01"
-              value={lineHeight}
-              onChange={handleLineHeightChange}
-            /> */}
-          </div>
-        </div>
-
         
+
         <div>
           <button
             style={{
@@ -349,4 +245,4 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   );
 });
 
-export default CoverLetterPreview;
+export default CoverLetterPreviewV2;
