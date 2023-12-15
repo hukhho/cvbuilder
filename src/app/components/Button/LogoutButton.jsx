@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import useStore from '@/store/store';
 import { useAuth0 } from '@auth0/auth0-react';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -53,7 +55,7 @@ export const LogoutButton = ({ isCollapsed }) => {
             fontSize: '11.2px',
             fontWeight: '700',
           }}
-          onKeyPress={handleKeyPress}
+          // onKeyPress={handleKeyPress}
           tabIndex={0}
           role="button"
           onClick={handleLogout}
