@@ -29,6 +29,21 @@ const getResumes = async () => {
   }
 };
 
+const getProtectedResourceWithoutToken = async () => {
+  try {
+    const response = await axiosInstance.get('/api/messages/protected');
+    return {
+      data: response.data || null,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: error.message,
+    };
+  }
+};
+
 const getResume = async cvId => {
   try {
     const userId = getUserIdFromCookie();
@@ -84,4 +99,12 @@ const getCoverLetters = async () => {
   }
 };
 
-export { getResumes, getResume, getCoverLetters, deleteResume, duplicateResume, getCookieToken };
+export {
+  getResumes,
+  getResume,
+  getCoverLetters,
+  deleteResume,
+  duplicateResume,
+  getCookieToken,
+  getProtectedResourceWithoutToken,
+};

@@ -19,12 +19,13 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
       placement,
     });
   };
-  useEffect(() => {
-    // Handle the modal state from the parent component
-    // You can perform additional actions when the modal is opened or closed
 
-    console.log('Modal state:', isOpen);
-  }, [isOpen]);
+  // useEffect(() => {
+  //   console.log('Modal state:', isOpen);
+  // }, [isOpen]);
+
+  const [isOpenState, setIsOpen] = useState(isOpen);
+
   // const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -46,11 +47,14 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
     });
   }, [resume]);
 
-  function closeModal() {}
+  function closeModal() {
+    setIsOpen(false);
 
-  // function openModal() {
-  //   setIsOpen(true);
-  // }
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -96,7 +100,7 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
       {contextHolder}
       <div className="inset-0 flex items-center justify-center"></div>
 
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={isOpenState  } as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}

@@ -80,25 +80,21 @@ const Home = ({ params }) => {
 
     setOptions(newOptions);
   }, []);
-  const fetchExperts = async () => {
+  const fetchCandidates = async () => {
     try {
-      // Simulate fetching resumes (replace with your actual fetch logic)
       const fetchedExpert = await getCandidateConfig();
 
       setExpert(fetchedExpert);
-      console.log('fetchedExpert: ', fetchedExpert);
+      console.log('fetchCandidates: ', fetchedExpert);
 
-      // setResumes(fetchedResumes);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
     }
   };
   const fetchResumes = async () => {
     try {
-      // Simulate fetching resumes (replace with your actual fetch logic)
       const fetchedResumes = await getResumes();
 
-      setExpert(fetchedResumes);
       console.log('fetched ', fetchedResumes);
 
       setResumes(fetchedResumes);
@@ -108,16 +104,13 @@ const Home = ({ params }) => {
   };
 
   useEffect(() => {
-    fetchExperts();
+    fetchCandidates();
     fetchResumes();
   }, []);
 
   const onCreated = async e => {
     // e.preventDefault();
   };
-
-  const lowestPriceData = expert?.price?.[0]?.price ?? null;
-  const biggestPriceData = expert?.price?.[2]?.price ?? null;
 
   return (
     <ConfigProvider>
