@@ -175,7 +175,7 @@ const Summary = ({ params }) => {
           content={
             <div className="flex h-screen">
               {contextHolder}
-              <div className="flex flex-col p-4" style={{ width: '900px' }}>
+              <div className="flex flex-col" style={{ width: '900px' }}>
                 <SummaryForm
                   cvId={cvId}
                   onCreated={fetchData}
@@ -229,6 +229,8 @@ const Summary = ({ params }) => {
                             <Select
                               style={{
                                 height: 50,
+                                maxWidth: '270px',
+                                width: '100%',
                               }}
                               className=""
                               onChange={handleChange}
@@ -244,6 +246,9 @@ const Summary = ({ params }) => {
                           )}
                         </Form.Item>
                         <Form.Item
+                          style={{
+                            marginTop: '-20px',
+                          }}
                           name="skill_highlight"
                           label={
                             <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
@@ -252,7 +257,12 @@ const Summary = ({ params }) => {
                           }
                         >
                           <Input
-                            style={{ marginTop: '-10px' }}
+                            style={{
+                              marginTop: '-10px',
+                              height: 50,
+                              maxWidth: '270px',
+                              width: '100%',
+                            }}
                             className="inputEl st-current"
                             placeholder="Marketing Asistant at Sony"
                           />

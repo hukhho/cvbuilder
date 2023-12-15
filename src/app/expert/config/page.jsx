@@ -96,7 +96,6 @@ const Home = () => {
   };
 
   return (
-    <ConfigProvider>
       <UserLayout
         selected="5"
         userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
@@ -123,7 +122,6 @@ const Home = () => {
           </div>
         }
       />
-    </ConfigProvider>
   );
 };
 

@@ -19,7 +19,7 @@ import updateContact from './updateContactService';
 
 import './customtext.css';
 import ButtonContact from './ButtonContact';
-import { CloseOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, LoadingOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
 import { updateExpertConfig } from '@/app/expert/expertServices';
 import { getCookieToken } from '@/app/utils/indexService';
@@ -148,19 +148,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               uploadButton
             )}
           </Upload>
-          <Form.Item
-            name="avatar"
-            label={
-              <></>
-              // <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
-              //   <div className="flex gap-2 items-center text-xs">
-              //     <span>
-              //       <strong>Avatar</strong>
-              //     </span>
-              //   </div>
-              // </label>
-            }
-          >
+          <Form.Item name="avatar" label={<></>}>
             <Input
               style={{
                 // display: 'none',
@@ -173,6 +161,9 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
           </Form.Item>
           <Form.Item
             name="name"
+            style={{
+              marginTop: '-50px',
+            }}
             label={
               <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                 <div className="flex gap-2 items-center text-xs">
@@ -337,7 +328,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               </label>
             }
           >
-            <Form.List name={['price']} initialValue={[{}]}>
+            <Form.List name={['price']}>
               {(subFields, subOpt) => (
                 <div
                   style={{
@@ -349,31 +340,28 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                   {subFields.map(subField => (
                     <Space className="custom-space-item-3" key={subField.key}>
                       <Form.Item noStyle name={[subField.name, 'day']}>
-                        <Input addonAfter={<div>days</div>} placeholder="day" />
+                        <InputNumber type="number" className='inputEl' noStyle placeholder="day" />
                       </Form.Item>
+                      
                       <Form.Item noStyle name={[subField.name, 'price']}>
-                        <Input addonAfter={<div> vnđ</div>} placeholder="price" />
+                        <Input className='inputEl' placeholder="price" />
                       </Form.Item>
-                      {subFields.length > 1 && (
-                        <CloseOutlined
-                          onClick={() => {
-                            subOpt.remove(subField.name);
-                          }}
-                        />
-                      )}
+                      <CloseOutlined
+                        onClick={() => {
+                          subOpt.remove(subField.name);
+                        }}
+                      />
                     </Space>
                   ))}
                   <div style={{ display: 'flex', justifyContent: 'end' }}>
-                    {subFields.length < 3 && (
-                      <Button
-                        className="custom-button"
-                        type="dashed"
-                        onClick={() => subOpt.add()}
-                        block
-                      >
-                        + Add more day
-                      </Button>
-                    )}
+                    <Button
+                      className="custom-button"
+                      type="dashed"
+                      onClick={() => subOpt.add()}
+                      block
+                    >
+                      + Add more day
+                    </Button>
                   </div>
                 </div>
               )}

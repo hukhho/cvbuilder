@@ -594,6 +594,9 @@ export default function FinishUp({ params }) {
   const handleChooseVersion = versionId => {
     console.log('versionId: ', versionId);
   };
+
+  const [matchedJobs, setMatchedJobs] = useState([]);
+
   return (
     <main>
       <ConfigProvider>
@@ -662,6 +665,11 @@ export default function FinishUp({ params }) {
                   style={{ position: 'static', width: '360px' }}
                 >
                   <VideoCard />
+                  {/* <div>
+                    {matchedJobs?.map((job, index) => {
+                      return (<>{job?.}</>)
+                    }
+                  </div> */}
                   <ExpertReviewCard />
                   <AiFeedback cvId={params.id} />
                   <Ats cvId={params.id} />

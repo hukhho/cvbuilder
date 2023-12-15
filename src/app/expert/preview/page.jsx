@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Card, ConfigProvider, Empty, Typography } from 'antd';
+import { Avatar, Button, Card, ConfigProvider, Empty, Skeleton, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -52,6 +52,7 @@ const Home = () => {
   const [resumes, setResumes] = useState([]);
   const [options, setOptions] = useState([]);
   const [expertsMock, setExpertsMock] = useState(generateMockExperts());
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Get the current date
@@ -90,6 +91,8 @@ const Home = () => {
       // setResumes(fetchedResumes);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
+    } finally {
+      setIsLoading(false);
     }
   };
   const fetchResumes = async () => {
@@ -124,21 +127,22 @@ const Home = () => {
   const biggestPriceData = sortedPrices[sortedPrices.length - 1]?.price ?? null;
 
   return (
-    <ConfigProvider>
-      <UserCVBuilderLayout
-        selected="3"
-        userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
-        content={
-          <div className="container mx-auto">
+    <UserLayout
+      selected="5"
+      userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
+      content={
+        <div className="container mx-auto">
+          {isLoading && <Skeleton style={{ marginTop: 50 }} />}
+          {!isLoading && (
             <div className="!p-0 relative">
               <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
                 <div className="absolute top-10 left-5">
-                  <Link href="/review/list/expert" passHref>
+                  {/* <Link href="/review/list/expert" passHref>
                     <button>
                       <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
                     <span className="ml-2">Back</span>
-                  </Link>
+                  </Link> */}
                 </div>
                 <div className="absolute top-10 right-5" style={{ textAlign: 'left' }}>
                   {/* <ReviewNewModal onCreated={onCreated} resumes={resumes} expert={expert} /> */}
@@ -248,10 +252,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
-        }
-      />
-    </ConfigProvider>
+          )}
+        </div>
+      }
+    />
   );
 };
 

@@ -1,12 +1,12 @@
 // updateContact.js
 import axiosInstance from '../../utils/axiosInstance';
 
-const updateContact = async contactData => {
+const updateContact = async (cvId, contactData) => {
   try {
     // Move the userId retrieval to the client side
     const userId = getUserIdFromCookie();
 
-    const response = await axiosInstance.put(`/user/${userId}/contact`, contactData);
+    const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/contact`, contactData);
     return response.data;
   } catch (error) {
     throw error;
