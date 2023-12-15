@@ -339,12 +339,11 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                 >
                   {subFields.map(subField => (
                     <Space className="custom-space-item-3" key={subField.key}>
-                      <Form.Item noStyle name={[subField.name, 'day']}>
-                        <InputNumber type="number" className='inputEl' noStyle placeholder="day" />
+                       <Form.Item noStyle name={[subField.name, 'day']}>
+                        <Input addonAfter={<div>days</div>} placeholder="day" />
                       </Form.Item>
-                      
                       <Form.Item noStyle name={[subField.name, 'price']}>
-                        <Input className='inputEl' placeholder="price" />
+                        <Input addonAfter={<div> vnđ</div>} placeholder="price" />
                       </Form.Item>
                       <CloseOutlined
                         onClick={() => {

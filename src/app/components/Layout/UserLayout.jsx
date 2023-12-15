@@ -247,11 +247,9 @@ const UserLayout = React.memo(
 
     const filteredItems = items.filter(item => item.roles.includes(userRole));
 
-    console.log('selected', selected);
     const {
       token: { colorPrimary, borderRadius, colorBgContainer },
     } = theme.useToken();
-    // Log the extracted values for debugging
     console.log('colorPrimary:', colorPrimary);
     console.log('borderRadius:', borderRadius);
     console.log('colorBgContainer:', colorBgContainer);
@@ -404,30 +402,7 @@ const UserLayout = React.memo(
                 </Space>
               )}
 
-              {/* <Menu
-              style={{
-                marginTop: '26px',
-                marginLeft: collapsed ? 0 : '10px',
-                iconSize: 59,
-                backgroundColor: 'transparent',
-                color: '#ffffff',
-                width: '100%',
-                fontSize: '11.2',
-                fontFamily: 'Source Sans Pro',
-                fontWeight: 'bold',
-              }}
-              iconmargininlineend={50}
-              mode="inline"
-              defaultSelectedKeys={[selected]}
-              items={filteredItems}
-            /> */}
-
-              {/* <MemoizedMenu
-                collapsed={collapsed}
-                selected={selected}
-                filteredItems={filteredItems}
-              /> */}
-
+ 
               <Menu
                 style={{
                   marginTop: '26px',
