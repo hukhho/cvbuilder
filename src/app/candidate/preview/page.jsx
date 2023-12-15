@@ -114,13 +114,13 @@ const Home = ({ params }) => {
 
   return (
     <ConfigProvider>
-      <UserCVBuilderLayout
-        selected="3"
+      <UserLayout
+        selected="7"
         userHeader={<CandidateConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mx-auto">
             <div className="!p-0 relative">
-              <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
+              <div className="pl-16" style={{ width: 900, paddingLeft: '', background: 'white' }}>
                 <div className="absolute top-10 left-5">
                   <Link href="/review/list/expert" passHref>
                     <button>
@@ -165,7 +165,7 @@ const Home = ({ params }) => {
                           <Empty />
                         )}
                       </div>
-                      {expert?.cv?.map(cvItem => (
+                      {expert?.cv?.map(cvItem => (  
                         <FinishUpPreviewV2 key={cvItem.id} cvId={cvItem.id} />
                       ))}
                     </div>

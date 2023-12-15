@@ -122,7 +122,7 @@ const Home = ({ params }) => {
                 <div className="flex relative mt-16">
                   <Title level={3}>{data?.title}</Title>
                   <div>
-                    <div style={{ marginLeft: '500px', textAlign: 'left' }}>
+                    <div style={{ marginLeft: '900px', textAlign: 'left' }}>
                       {/* <button className="button" on style={{ width: '314px' }}>
                         Apply for this job
                       </button> */}
@@ -209,11 +209,11 @@ const Home = ({ params }) => {
               </div>
 
               <div className="flex mt-8">
-                <div className="p-8 bg-white" style={{ textAlign: 'left' }}>
+                <Card className="p-8 " style={{ textAlign: 'left', width: 1000, minHeight: 500 }}>
                   <div>
                     <Image src={data?.avatar} width={100} height={100} />
                   </div>
-                  <div>
+                  <div className='mt-8'>
                     <Title level={4}>What can we offer?</Title>
                     <div>{data?.benefit}</div>
                   </div>
@@ -225,7 +225,7 @@ const Home = ({ params }) => {
                     <Title level={4}>Requirements</Title>
                     <div>{data?.requirement}</div>
                   </div>
-                </div>
+                </Card>
                 <div>
                   <Card
                     style={{

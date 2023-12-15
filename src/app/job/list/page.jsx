@@ -87,10 +87,10 @@ const Home = () => {
                 </div>
               </div>
               <div>
-                <div className="flex">
-                  <Title>Browse Jobs</Title>
+                <div className="flex mt-8">
+                  <Title level={3}>Browse Jobs</Title>
                 </div>
-                <div className="">
+                <div className="mt-8">
                   <Row gutter={[16, 48]}>
                     {filteredData.map((job, index) => (
                       <Col key={index} span={12}>
