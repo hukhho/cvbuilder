@@ -6,6 +6,7 @@ import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import CoverLetterCard from '@/app/cover-letter/[id]/finishup/CoverLetterCard';
 import CoverLetterCardV2 from '@/app/cover-letter/[id]/finishup/CoverLetterCardV2';
+import useStore from '@/store/store';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';

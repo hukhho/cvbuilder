@@ -25,6 +25,7 @@ import { getFinishUp } from '@/app/expert/view-cv/[id]/finishUpService';
 import { getHistoryFinishUp } from '@/app/utils/indexService';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
+import useStore from '@/store/store';
 
 const mockData = {
   data: {

@@ -39,6 +39,7 @@ import Image from 'next/image';
 import { getJobById, likeJob } from '../jobServices';
 import ApplyJobModal from '@/app/components/Modal/ApplyJobModal';
 import SuccessJob from '@/app/components/Modal/SuccessJob';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
