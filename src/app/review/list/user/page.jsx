@@ -18,14 +18,21 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { getReviewRequestsByCandiate } from '../../new/reviewService';
 import Link from 'next/link';
 import moment from 'moment';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
   {
     title: 'Resume Name',
     dataIndex: 'resumeName',
-    render: (text, record) => <Link href={`/review/view-response/${record.id}`}>{text} </Link>,
-  },
+    render: (text, record) => {
+      if (record.status === 'Done') {
+        return <Link href={`/review/view-response/${record.id}`}>{text}</Link>;
+      } else {
+        return text; // Display the text without a link if status is not "Done"
+      }
+    },
+  },  
   {
     title: 'Candidate',
     dataIndex: 'name',
@@ -143,6 +150,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'MY REVIEWS': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -166,6 +175,10 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         selected="4"
         userHeader={
           <>

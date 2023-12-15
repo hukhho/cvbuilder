@@ -21,15 +21,15 @@ import { updateProject } from './projectService';
 import VideoComponent from '@/app/components/VideoComponent';
 import StandarList from '@/app/components/List/StandarList';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
 const Project = ({ params }) => {
   const [projectData, setProjectData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    PROJECT: true,
-  });
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { PROJECT: true };
   const [isShow, setIsShow] = useState(true);
   const handleDownButton = () => {
     setIsShow(!isShow);
@@ -79,6 +79,9 @@ const Project = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

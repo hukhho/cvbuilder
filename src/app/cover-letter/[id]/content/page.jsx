@@ -19,6 +19,7 @@ import updateCoverLetter from '@/app/components/Form/updateCoverLetterService';
 import TextArea from 'antd/es/input/TextArea';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import getCoverLetter from '../finishup/getCoverLetter';
+import useStore from '@/store/store';
 
 const Content = ({ params }) => {
   const router = useRouter();
@@ -34,6 +35,8 @@ const Content = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     CONTENT: true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [data, setData] = useState();
   const [contentData, setContentData] = useState();
   const [cvId, setCvId] = useState();
@@ -75,6 +78,9 @@ const Content = ({ params }) => {
   return (
     <UserLayout
       isCollapsed
+      avatar={avatar}
+      email={email}
+      userRole={userRole}
       userHeader={
         <UserCoverLetterBuilderHeader
           coverLetterId={coverLetterId}

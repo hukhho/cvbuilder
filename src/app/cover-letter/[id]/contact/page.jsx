@@ -14,6 +14,7 @@ import { getResumes } from '@/app/utils/indexService';
 import getCoverLetter from '../finishup/getCoverLetter';
 import getContact from '@/app/resume/[id]/contact/contactService';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]);
@@ -24,6 +25,7 @@ const Contact = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     CONTACT: true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const cvId = params.id;
 
@@ -62,6 +64,9 @@ const Contact = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCoverLetterBuilderHeader
               coverLetterId={cvId}

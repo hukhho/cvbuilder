@@ -5,10 +5,11 @@ import React, { Fragment, useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import { Button, Form, Input, Select, notification } from 'antd';
+import { Button, Form, Input, Select, Spin, notification } from 'antd';
 import './card.css';
 import './button.css';
 import { createReview } from './reviewService';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export default function ReviewNewModal({ onCreated, resumes, expert }) {
   const [api, contextHolder] = notification.useNotification();
@@ -23,6 +24,8 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
   const [form] = Form.useForm();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [resumeId, setResumeId] = useState();
@@ -97,11 +100,14 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
     // values.deadline = convertedDate.toISOString();
     console.log(values);
     try {
+      setIsSubmitting(true);
       const result = await createReview(values.resume, expert.id, values.optionId, values);
       openNotification('bottomRight', `Send request successful.`);
       setIsOpen(false);
     } catch (error) {
       openNotification('bottomRight', `Error: ${error.response.data}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   return (
@@ -273,7 +279,20 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                 </Form.Item>
 
                                 <Form.Item>
-                                  <Button type="primary" htmlType="submit">
+                                  {isSubmitting && (
+                                    <Spin
+                                      indicator={
+                                        <LoadingOutlined
+                                          style={{
+                                            fontSize: 24,
+                                            marginRight: 10,
+                                          }}
+                                          spin
+                                        />
+                                      }
+                                    />
+                                  )}
+                                  <Button disabled={isSubmitting} type="primary" htmlType="submit">
                                     Submit
                                   </Button>
                                 </Form.Item>

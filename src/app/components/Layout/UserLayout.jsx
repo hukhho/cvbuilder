@@ -41,6 +41,7 @@ import { useRouter } from 'next/navigation';
 import { PageLoader } from '../PageLoader';
 import Login from '@/app/login/page';
 import MemoizedMenu from './MemoizedMenu';
+import { LogoutButton } from '../Button/LogoutButton';
 // Dynamically import CanvasGradient with ssr: false
 const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), {
   ssr: false,
@@ -170,97 +171,24 @@ const styles = {
   },
 };
 const UserLayout = React.memo(
-  ({ userHeader, content, selected, onCreated, isCollapsed, initRole }) => {
-    const [collapsed, setCollapsed] = useState(isCollapsed ? true : false);
-
-    const [message, setMessage] = useState('');
-    const [email, setEmail] = useState('');
-    const [avatar, setAvatar] = useState('');
-
-    const [userRole, setUserRole] = useState(initRole ? initRole : 'candidate');
-
-    const router = useRouter();
-
-    const {
-      isLoading,
-      isAuthenticated,
-      error,
-      user,
-      loginWithRedirect,
-      logout,
-      getAccessTokenSilently,
-    } = useAuth0();
-
-    useEffect(() => {
-      if (isAuthenticated) {
-        let isMounted = true;
-        const getMessage = async () => {
-          const accessToken = await getAccessTokenSilently();
-          console.log('accessToken', accessToken);
-          // Set the cookie
-          document.cookie = serialize('token', accessToken, {
-            path: '/', // The path for which the cookie is valid
-            maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-            secure: false, // Use 'secure' in production for HTTPS-only cookies
-          });
-
-          const { data, error } = await getProtectedResource(accessToken);
-          if (!isMounted) {
-            return;
-          }
-          if (data) {
-            setMessage(JSON.stringify(data, null, 2));
-            setEmail(data.email);
-            setAvatar(data.avatar);
-            document.cookie = serialize('userId', data.id, {
-              path: '/', // The path for which the cookie is valid
-              maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-              secure: false, // Use 'secure' in production for HTTPS-only cookies
-            });
-            document.cookie = serialize('roleName', data.role.roleName, {
-              path: '/', // The path for which the cookie is valid
-              maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-              secure: false, // Use 'secure' in production for HTTPS-only cookies
-            });
-            setUserRole(data.role.roleName);
-            if (data.role.roleName === 'ADMIN') {
-              router.push('/admin/dashboard');
-            }
-            if (data.role.roleName === 'HR') {
-              if (router.pathname === '' || router.pathname === null) {
-                router.push('/hr/list');
-              } else if (router.pathname === '/resume') {
-                router.push('/hr/list');
-              }
-            }
-          }
-          if (error) {
-            setMessage(JSON.stringify(error, null, 2));
-          }
-        };
-        getMessage();
-        return () => {
-          isMounted = false;
-        };
-      }
-    }, [getAccessTokenSilently]);
-
+  ({ userHeader, content, selected, onCreated, isCollapsed, userRole, avatar, email }) => {
     const filteredItems = items.filter(item => item.roles.includes(userRole));
 
     const {
       token: { colorPrimary, borderRadius, colorBgContainer },
     } = theme.useToken();
+
     console.log('colorPrimary:', colorPrimary);
     console.log('borderRadius:', borderRadius);
     console.log('colorBgContainer:', colorBgContainer);
 
-    const handleLogout = () => {
-      logout({
-        logoutParams: {
-          returnTo: window.location.origin,
-        },
-      });
-    };
+    // const handleLogout = () => {
+    //   logout({
+    //     logoutParams: {
+    //       returnTo: window.location.origin,
+    //     },
+    //   });
+    // };
 
     return (
       // <AuthenticationGuard>
@@ -284,7 +212,7 @@ const UserLayout = React.memo(
         >
           <Layout style={{ background: '#fbfbfb' }} hasSider>
             <Sider
-              collapsed={collapsed}
+              collapsed={isCollapsed}
               position="relative"
               width="280px"
               style={{
@@ -308,12 +236,11 @@ const UserLayout = React.memo(
                { offset: 0.1, color: COLORS.Primary },
                { offset: 0.2, color: COLORS.Primary },
                { offset: 0.75, color: COLORS.Secondary },
-               { offset: 0.75, color: COLORS.Three }, 
+               { offset: 0.75, color: COLORS.Three },
                { offset: 0.5, color: COLORS.Primary },
              ]}
            />
          </div> */}
-
               <Space
                 direction="vertical"
                 size="middle"
@@ -326,7 +253,7 @@ const UserLayout = React.memo(
                 }}
               >
                 <Link href="/">
-                  {collapsed ? (
+                  {isCollapsed ? (
                     <svg
                       width={100}
                       height={80}
@@ -385,7 +312,7 @@ const UserLayout = React.memo(
                   )}
                 </Link>
               </Space>
-              {!collapsed && (
+              {!isCollapsed && (
                 <Space
                   direction="vertical"
                   size="middle"
@@ -404,7 +331,7 @@ const UserLayout = React.memo(
               <Menu
                 style={{
                   marginTop: '26px',
-                  marginLeft: collapsed ? 0 : '10px',
+                  marginLeft: isCollapsed ? 0 : '10px',
                   iconSize: 59,
                   backgroundColor: 'transparent',
                   color: '#ffffff',
@@ -416,10 +343,10 @@ const UserLayout = React.memo(
                 iconmargininlineend={50}
                 mode="inline"
                 defaultSelectedKeys={[selected]}
-                items={items}
+                items={filteredItems}
               />
 
-              {!collapsed && (
+              {!isCollapsed && (
                 <Space
                   direction="vertical"
                   size="middle"
@@ -476,35 +403,9 @@ const UserLayout = React.memo(
                     <div style={{ display: 'none' }} />
                     <div className="space-align-block">
                       <Space align="center">
-                        <FontAwesomeIcon
-                          style={{
-                            color: 'white',
-                            fontFamily: 'Source Sans Pro, sans-serif',
-                            textTransform: 'uppercase',
-                            cursor: 'pointer',
-                            fontSize: '16.8px',
-                            fontWeight: '700',
-                          }}
-                          icon={faSignOutAlt}
-                          onClick={handleLogout}
-                        />
-
-                        {!collapsed && (
-                          <span
-                            className="icon-button-label ml-2"
-                            style={{
-                              color: 'white',
-                              fontFamily: 'Source Sans Pro, sans-serif',
-                              textTransform: 'uppercase',
-                              cursor: 'pointer',
-                              fontSize: '11.2px',
-                              fontWeight: '700',
-                            }}
-                            onClick={handleLogout}
-                          >
-                            Log out
-                          </span>
-                        )}
+                     
+                        <LogoutButton isCollapsed={isCollapsed} />
+                       
                       </Space>
                     </div>
                   </div>
@@ -515,7 +416,7 @@ const UserLayout = React.memo(
             <Layout
               className="site-layout"
               style={{
-                marginLeft: collapsed ? 150 : 350,
+                marginLeft: isCollapsed ? 150 : 350,
                 background: '#fbfbfb',
               }}
             >
@@ -529,7 +430,7 @@ const UserLayout = React.memo(
                 }}
               >
                 {userHeader}
-                {!collapsed && (
+                {!isCollapsed && (
                   <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
                     <Space align="center">
                       <Avatar src={avatar} size={30} />

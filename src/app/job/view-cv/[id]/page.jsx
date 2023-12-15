@@ -196,6 +196,7 @@ export default function FinishUp({ params }) {
   const [enabledCategories, setEnabledCategories] = useState({
     'MY APPLICATION': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
@@ -502,7 +503,10 @@ export default function FinishUp({ params }) {
     <main>
       <ConfigProvider>
         <UserLayout
-          selected="3"
+          isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
           content={
             <div className="flex">

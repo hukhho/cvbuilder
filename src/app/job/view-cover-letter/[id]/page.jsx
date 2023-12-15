@@ -15,11 +15,16 @@ const ViewCoverLetter = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     'MY APPLICATION': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   return (
     <UserLayout
-      selected="3"
+      selected="8"
+      isCollapsed={true}
+      avatar={avatar}
+      email={email}
+      userRole={userRole}
       userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
-
       content={
         <div>
           <Link  href={'/job/application'} passHref>

@@ -15,6 +15,7 @@ import { getResumes } from '@/app/utils/indexService';
 
 import { StarFilled, StarOutlined, UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -40,7 +41,14 @@ const columns = [
   {
     title: 'Price',
     dataIndex: 'price',
-    render: text => <div>{text}$</div>,
+    render: text => (
+      <div>
+        {(Number(text)*1000).toLocaleString('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        })}
+      </div>
+    ),
     sorter: {
       compare: (a, b) => a.price - b.price,
       multiple: 3,
@@ -179,6 +187,7 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW OPTIONS': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -187,9 +196,13 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
+        selected="4"
+        userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         // <UserHeaderReview initialEnabledCategories={enabledCategories} />
-        userHeader={<></>}
         content={
           <div className="container">
             <div className="!p-0 mb-5 mt-0 card">

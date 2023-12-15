@@ -34,6 +34,7 @@ import Link from 'next/link';
 import ExpertReviewCard from './ExpertReviewCard';
 import VideoCard from './VideoCard';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const mockData = {
   data: {
@@ -202,9 +203,9 @@ export default function FinishUp({ params }) {
 
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
-  const [enabledCategories, setEnabledCategories] = useState({
-    'FINISH UP': true,
-  });
+ 
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { 'FINISH UP': true };
 
   // useEffect(() => {
   //   setShowFinishupCV(false);
@@ -602,6 +603,9 @@ export default function FinishUp({ params }) {
       <ConfigProvider>
         <UserLayout
           isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

@@ -50,6 +50,8 @@ import InvolvementSection from '@/app/components/Templates/SectionComponents/Inv
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
 import RatingForm from '@/app/components/Form/RatingForm';
+import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 // import { getRequestList } from '../../reviewServices';
 
 export default function FinishUp({ params }) {
@@ -72,6 +74,7 @@ export default function FinishUp({ params }) {
   const [enabledCategories, setEnabledCategories] = useState({
     'MY REVIEWS': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [templateSelected, setTemplateSelected] = useState('classical');
   const [toolbarState, setToolbarState] = useState({
@@ -453,7 +456,6 @@ export default function FinishUp({ params }) {
     }
   };
   useEffect(() => {
-    
     const selection = window.getSelection();
     const selectedText = selection.toString();
 
@@ -538,11 +540,15 @@ export default function FinishUp({ params }) {
 
   const onCreated = () => {
     fetchData();
-  }
+  };
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+          isCollapsed={false}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
           content={
             <div className="flex mt-8">

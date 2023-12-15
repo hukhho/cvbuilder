@@ -29,7 +29,6 @@ const ContactForm = ({ cvId, onCreated, data }) => {
         personalWebsite: data.personalWebsite,
         city: data.city,
       };
-
       console.log('Form fields set with data:', data);
       // Use mockData if no data is provided
       const initialData = mockData;

@@ -20,6 +20,7 @@ import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import { getCandidateApplication, getHrApplication } from '@/app/hr/hrServices';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -123,6 +124,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'MY APPLICATION': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -149,7 +152,11 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="8"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={
           <>
             <UserHeaderJob initialEnabledCategories={enabledCategories} />

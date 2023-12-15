@@ -46,6 +46,8 @@ const Home = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     OPPORTUNITIES: true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const options = [];
   for (let i = 10; i < 36; i++) {
     options.push({
@@ -125,7 +127,11 @@ const Home = ({ params }) => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="8"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">

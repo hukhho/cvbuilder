@@ -19,15 +19,16 @@ import StandarList from '@/app/components/List/StandarList';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { updateSkills } from './skillService';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
 const Skill = ({ params }) => {
   const [skillsData, setSkillsData] = useState([]); // Renamed 'data' to 'skillsData'
   const [selectedData, setSelectedData] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    SKILLS: true,
-  });
+
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { SKILLS: true };
   console.log('Data: ', params);
 
   const cvId = params.id;
@@ -79,6 +80,9 @@ const Skill = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

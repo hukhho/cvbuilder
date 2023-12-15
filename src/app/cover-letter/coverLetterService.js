@@ -37,7 +37,7 @@ const updateCoverLetterName = async (coverLetterId, data) => {
   try {
     const userId = getUserIdFromCookie();
     const response = await axiosInstance.put(
-      `chat-gpt/user/${userId}/cover-letter/${coverLetterId}`,
+      `chat-gpt/user/cv/cover-letter/${coverLetterId}/title`,
       data,
     );
     return response.data;

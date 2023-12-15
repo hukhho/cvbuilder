@@ -24,6 +24,7 @@ import FinishUpPreviewV2 from '@/app/resume/[id]/finishup/FinishUpPreviewV2';
 import Statitics from './Statitics';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import Link from 'next/link';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -46,6 +47,7 @@ const Home = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW OPTIONS': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [expert, setExpert] = useState(null);
@@ -125,8 +127,12 @@ const Home = ({ params }) => {
 
   return (
     <ConfigProvider>
-      <UserCVBuilderLayout
-        selected="3"
+      <UserLayout
+        selected="4"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mx-auto">

@@ -7,6 +7,7 @@ import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import JobCard from './JobCard';
 import { getJobList } from '../jobServices';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
@@ -19,6 +20,7 @@ const Home = () => {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const { avatar, email, userRole } = useStore();
 
   const handleChange = value => {
     setSelectedLocations(value);
@@ -62,7 +64,11 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
+        selected="8"
         userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">

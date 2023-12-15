@@ -25,6 +25,7 @@ import Link from 'next/link';
 import { getExpert } from '@/app/review/new/reviewService';
 import { getCandidateConfig } from '../candidateServices';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -47,6 +48,7 @@ const Home = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     'PREVIEW YOUR PROFILE': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [expert, setExpert] = useState(null);
@@ -86,7 +88,6 @@ const Home = ({ params }) => {
 
       setExpert(fetchedExpert);
       console.log('fetchCandidates: ', fetchedExpert);
-
     } catch (error) {
       console.error('There was an error fetching resumes', error);
     }
@@ -115,10 +116,14 @@ const Home = ({ params }) => {
   return (
     <ConfigProvider>
       <UserLayout
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         selected="7"
         userHeader={<CandidateConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
+          <div className="container">
             <div className="!p-0 relative">
               <div className="pl-16" style={{ width: 900, paddingLeft: '', background: 'white' }}>
                 <div className="absolute top-10 left-5">
@@ -129,10 +134,7 @@ const Home = ({ params }) => {
                     <span className="ml-2">Back</span>
                   </Link>
                 </div>
-                <div className="absolute top-10 right-5" style={{ textAlign: 'left' }}>
-                  {/* <ReviewNewModal onCreated={onCreated} resumes={resumes} expert={expert} /> */}
-                  {/* <Statitics expert={expert} /> */}
-                </div>
+
                 <div className="flex justify-between mt-16 mr-32 p-8">
                   <div className="flex mt-8">
                     <Avatar size={128} style={{}} src={expert?.avatar} alt="image" />
@@ -165,7 +167,7 @@ const Home = ({ params }) => {
                           <Empty />
                         )}
                       </div>
-                      {expert?.cv?.map(cvItem => (  
+                      {expert?.cv?.map(cvItem => (
                         <FinishUpPreviewV2 key={cvItem.id} cvId={cvItem.id} />
                       ))}
                     </div>

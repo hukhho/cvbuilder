@@ -21,6 +21,7 @@ import Link from 'next/link';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import { getCandidatePurchases } from '../candidateServices';
 import moment from 'moment';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -135,6 +136,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'PURCHASE HISTORY': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -160,6 +163,10 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         selected="7"
         userHeader={
           <>
@@ -171,9 +178,7 @@ const Home = () => {
             <div style={{ textAlign: 'left' }}>
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
-            <div>
-              {/* <Input className="" placeholder="Search the candiatename" /> */}
-            </div>
+            <div>{/* <Input className="" placeholder="Search the candiatename" /> */}</div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />

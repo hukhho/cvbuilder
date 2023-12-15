@@ -135,7 +135,7 @@ export default function Deposit({ onCreated }) {
                           htmlFor="resumeName" // Add htmlFor with the correct id
                         >
                           <div className="flex gap-2 items-center">
-                            <span>Money</span> *
+                            <span>Money (vnđ) </span> *
                           </div>
                           <div id="null-portal-root" />
                         </label>
@@ -151,6 +151,7 @@ export default function Deposit({ onCreated }) {
                             min={10000}
                             defaultValue={10000}
                           />
+                          
                         </div>
                       </div>
 

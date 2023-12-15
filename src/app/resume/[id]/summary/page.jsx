@@ -17,6 +17,7 @@ import './textarena.css';
 import { getAllExperiences } from '../experience/experienceService';
 import { Listbox } from '@headlessui/react';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
@@ -34,9 +35,9 @@ const Summary = ({ params }) => {
   const [summaryHistory, setSummaryHistory] = useState([]);
 
   const [selectedData, setSelectedData] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    SUMMARY: true,
-  });
+
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { SUMMARY: true };
   const [experiences, setExperiences] = useState([]);
   const cvId = params.id;
   const dataService = new DataService('certifications', cvId);
@@ -169,6 +170,9 @@ const Summary = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
