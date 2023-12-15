@@ -253,28 +253,29 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               placeholder="About"
             />
           </Form.Item>
-          <Space align="center">
-            <Form.Item
-              name="cvId"
-              label={
-                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
-                  <div className="flex gap-2 items-center text-xs">
-                    <span className="flex flex-col">
-                      <div>
-                        <strong>Choose CV</strong>
-                      </div>
-                      <div>
-                        <span style={{ textTransform: 'none' }}>
-                          Choose your best CV to show for the recruiter
-                        </span>
-                      </div>
-                    </span>
-                  </div>
-                </label>
-              }
-            >
-              <Select style={{ width: 300, height: 60, marginTop: 5 }} options={resumeOptions} />
-            </Form.Item>
+          <Space className="custom-space-item-2" style={{justifyContent: "space-between", width: "100%"}} align="center">
+              <Form.Item
+                name="cvId"
+                label={
+                  <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
+                    <div className="flex gap-2 items-center text-xs">
+                      <span className="flex flex-col">
+                        <div>
+                          <strong>Choose CV</strong>
+                        </div>
+                        <div>
+                          <span style={{ textTransform: 'none' }}>
+                            Choose your best CV to show for the recruiter
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  </label>
+                }
+              >
+                <Select
+                placeholder="Set your deadline" className='customtext' style={{ height: 60, marginTop: '-10px' }} options={resumeOptions} />
+              </Form.Item>
             <Form.Item
               name="experiences"
               label={
@@ -294,19 +295,34 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                 </label>
               }
             >
-              <InputNumber
+              <InputNumber type='number' min={1}
                 style={{
                   marginTop: '-10px',
                 }}
                 className="inputEl contact-section inputEl st-current"
                 id="contact-section-form-0"
-                placeholder="5"
+                placeholder="0"
               />
             </Form.Item>
           </Space>
 
           
-          <Form.Item label="Price">
+          <Form.Item label={
+                <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
+                  <div className="flex  gap-2 items-center text-xs">
+                    <span className="flex flex-col">
+                      <span>
+                        <strong>PRICING</strong>
+                      </span>
+                      <div>
+                        <span style={{ textTransform: 'none' }}>
+                          Set your review request pricing
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                </label>
+              }>
             <Form.List name={['price']}>
               {(subFields, subOpt) => (
                 <div
@@ -317,7 +333,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                   }}
                 >
                   {subFields.map(subField => (
-                    <Space key={subField.key}>
+                    <Space className="custom-space-item-3" key={subField.key}>
                       <Form.Item noStyle name={[subField.name, 'day']}>
                         <Input placeholder="day" />
                       </Form.Item>
@@ -331,9 +347,11 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                       />
                     </Space>
                   ))}
-                  <Button type="dashed" onClick={() => subOpt.add()} block>
-                    + Add Sub Item
+                  <div style={{display: 'flex', justifyContent: 'end'}}>
+                  <Button className='custom-button' type="dashed" onClick={() => subOpt.add()} block>
+                    + Add more day
                   </Button>
+                  </div>
                 </div>
               )}
             </Form.List>
@@ -342,7 +360,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
           <Form.Item>
             <div className="form-submit-wrapper">
               <button
-                style={{ width: '592px', height: '50px' }}
+                style={{ width: '300px', height: '35px' }}
                 href=""
                 data-size="large"
                 data-theme="default"

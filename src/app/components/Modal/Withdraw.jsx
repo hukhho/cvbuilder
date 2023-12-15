@@ -142,6 +142,7 @@ export default function Withdraw({ onCreated }) {
                           <input
                             name="expenditure"
                             type="number"
+                            min={1000}
                             className="inputEl new-resume-form"
                             id="expenditure" // Add id attribute here
                             required=""
