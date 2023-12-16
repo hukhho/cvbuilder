@@ -38,6 +38,7 @@ import { getHrConfig, postHrPublic } from '../hrServices';
 import SuccessModalHrPost from '@/app/components/Modal/SuccessModalHrPost';
 import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -60,6 +61,8 @@ const HRPost = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'POST A JOB': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [form] = Form.useForm();
 
   const [deadlineString, setDeadlineString] = useState('2023-11-29');
@@ -205,6 +208,10 @@ const HRPost = () => {
     <ConfigProvider>
       <UserLayout
         selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mx-auto">
@@ -217,7 +224,7 @@ const HRPost = () => {
             >
               Successs
             </Modal>{' '}
-            <div className="!p-0">
+            <div className="!p-0" style={{ width: 900 }}>
               <div className="mt-8">
                 <Card>
                   <Title level={4}>Create a job posting</Title>
@@ -234,11 +241,12 @@ const HRPost = () => {
                   onFinish={onFinish}
                 >
                   <Form.Item name="title" label="JOB TITLE">
-                    <Input />
+                    <Input className='inputEl'/>
                   </Form.Item>
                   <Form.Item name="workingType" label="TYPE OF JOB">
                     <Select
                       defaultValue="Full Time"
+                      
                       style={{
                         width: 120,
                       }}

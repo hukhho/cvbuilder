@@ -33,11 +33,14 @@ import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
 import Deposit from '@/app/components/Modal/Deposit';
 import { getProtectedResource } from '@/app/services/message.service';
 import Withdraw from '@/app/components/Modal/Withdraw';
+import useStore from '@/store/store';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     ACCOUNT: true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [form] = Form.useForm();
   const [data, setData] = useState();
   const [resumes, setResumes] = useState([]);
@@ -98,6 +101,10 @@ const Home = () => {
   return (
       <UserLayout
         selected="5"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">

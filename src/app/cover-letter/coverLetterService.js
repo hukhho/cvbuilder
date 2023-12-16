@@ -1,17 +1,9 @@
 import axiosInstance from '@/app/utils/axiosInstance';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
+import { getUserIdFromLocalStorage } from '../utils/indexService';
 
 const deleteCoverLetter = async coverLetterId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.delete(
       `chat-gpt/user/${userId}/cover-letter/${coverLetterId}`,
     );
@@ -23,7 +15,7 @@ const deleteCoverLetter = async coverLetterId => {
 
 const updateCoverLetter = async (coverLetterId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.delete(
       `chat-gpt/user/${userId}/cover-letter/${coverLetterId}`,
     );
@@ -35,7 +27,7 @@ const updateCoverLetter = async (coverLetterId, data) => {
 
 const updateCoverLetterName = async (coverLetterId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(
       `chat-gpt/user/cv/cover-letter/${coverLetterId}/title`,
       data,
@@ -48,7 +40,7 @@ const updateCoverLetterName = async (coverLetterId, data) => {
 
 const getCoverLetterHistory = async coverLetterId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/cv/${coverLetterId}/history-cover-letter`);
     return response.data;
   } catch (error) {

@@ -2,14 +2,11 @@
 import Cookies from 'js-cookie';
 import axiosInstance from './axiosInstance';
 
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
+const getUserIdFromLocalStorage = () => {
+  const userId = localStorage.getItem('userId');
   return userId;
 };
+
 const getCookieToken = () => {
   // Assuming your authentication token is stored in a cookie named 'auth_token'
   const token = Cookies.get('token');
@@ -21,7 +18,7 @@ const getCookieToken = () => {
 
 const getResumes = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/${userId}/cvs`);
     return response.data;
   } catch (error) {
@@ -46,7 +43,7 @@ const getProtectedResourceWithoutToken = async () => {
 
 const getResume = async cvId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}`);
     return response.data;
   } catch (error) {
@@ -65,7 +62,7 @@ const getHistoryFinishUp = async historyId => {
 
 const deleteResume = async cvId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.delete(`/user/${userId}/cv/${cvId}`);
     return response.data;
   } catch (error) {
@@ -75,7 +72,7 @@ const deleteResume = async cvId => {
 
 const duplicateResume = async cvId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.post(`/user/user/${userId}/cv/${cvId}/duplicate`);
     return response.data;
   } catch (error) {
@@ -85,7 +82,7 @@ const duplicateResume = async cvId => {
 
 const getCoverLetters = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/chat-gpt/user/${userId}/cv/cover-letters`);
 
     // const mockCoverLetter = [
@@ -117,4 +114,5 @@ export {
   getCookieToken,
   getProtectedResourceWithoutToken,
   getHistoryFinishUp,
+  getUserIdFromLocalStorage,
 };

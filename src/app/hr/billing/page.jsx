@@ -7,6 +7,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Card,
   ConfigProvider,
   Form,
   Input,
@@ -32,10 +33,11 @@ import { getHrConfig } from '../hrServices';
 import useStore from '@/store/store';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import HRConfigHeader from '@/app/components/HRConfigHeader';
+import Title from 'antd/es/typography/Title';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'ACCOUNT': true,
+    BILLING: true,
   });
   const { avatar, email, userRole } = useStore();
 
@@ -79,15 +81,49 @@ const Home = () => {
         userHeader={<HRConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
-            <div className="!p-0 mb-5 mt-16 card">
-              <div style={{ textAlign: 'left' }}>
-                {/* <Title level={5}>CV Review Table</Title> */}
-              </div>
-              <div></div>
-              <div>
-                <div>
-                  <HrForm data={data} onCreated={onCreated} />
+            <div className="!p-0 mb-5 mt-16 ">
+              <div className="flex" style={{ textAlign: 'left' }}>
+                <div style={{ width: 200, height: 300, marginRight: 50 }}>
+                  <Title level={2}>Choose a plan</Title>
+                  <div>
+                    <span className="text-gray-600">WHAT'S INCLUED</span>
+                  </div>
+                  <div className='mt-8'>
+                    <FontAwesomeIcon icon={faCheck} />
+                    <span className="text-gray-600">Unlimited access to quality candidate CVs</span>
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faCheck} />
+                    <span className="text-gray-600">
+                      {' '}
+                      Easy search functionality similar to LinkedIn
+                    </span>
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faCheck} />
+                    <span className="text-gray-600">Download unlimited CVs</span>
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faCheck} />
+                    <span className="text-gray-600">Create and post unlimited job postings</span>
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faCheck} />
+                    <span className="text-gray-600">Add Resume Photo</span>
+                  </div>
                 </div>
+                <Card style={{ width: 200, height: 300, marginRight: 50 }}>
+                <Title level={5}>Monthly</Title>
+                <div>
+
+                </div>
+
+                </Card>
+                <Card style={{ width: 200, height: 300, marginRight: 50 }}>
+                <Title level={5}>Annualy</Title>
+
+                    
+                </Card>
               </div>
             </div>
           </div>

@@ -42,7 +42,6 @@ import { PageLoader } from '../PageLoader';
 import Login from '@/app/login/page';
 import MemoizedMenu from './MemoizedMenu';
 import { LogoutButton } from '../Button/LogoutButton';
-import useStore from '@/store/store';
 // Dynamically import CanvasGradient with ssr: false
 const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), {
   ssr: false,
@@ -171,10 +170,9 @@ const styles = {
     backgroundImage: `linear-gradient(61.63deg, ${COLORS.Primary} 0%, ${COLORS.Secondary} 50%, ${COLORS.Three} 100%)`,
   },
 };
-const UserLayout = React.memo(
+const UserLayoutNoAuth = React.memo(
   ({ userHeader, content, selected, onCreated, isCollapsed, userRole, avatar, email }) => {
     const filteredItems = items.filter(item => item.roles.includes(userRole));
-    const { balance  } = useStore();
 
     const {
       token: { colorPrimary, borderRadius, colorBgContainer },
@@ -195,7 +193,6 @@ const UserLayout = React.memo(
     return (
       // <AuthenticationGuard>
       // <AuthLayout>
-      <AuthenticationGuard>
         <ConfigProvider
           theme={{
             components: {
@@ -327,7 +324,7 @@ const UserLayout = React.memo(
                     marginTop: -15,
                   }}
                 >
-                  {userRole !== 'HR' && <CreateResume onCreated={onCreated} />}
+                  <CreateResume onCreated={onCreated} />
                 </Space>
               )}
               <Menu
@@ -378,7 +375,7 @@ const UserLayout = React.memo(
                       </div>
                       <div className="pr-2 flex ml-4">
                         <div className="text-white text-xs font-bold uppercase leading-3">
-                          {balance}
+                          3,096
                         </div>
                         <div className="ml-1 text-white text-xs font-black font-['Font Awesome 5 Free'] uppercase leading-3">
                           <FontAwesomeIcon icon={faCoins} />{' '}
@@ -405,7 +402,9 @@ const UserLayout = React.memo(
                     <div style={{ display: 'none' }} />
                     <div className="space-align-block">
                       <Space align="center">
+                     
                         <LogoutButton isCollapsed={isCollapsed} />
+                       
                       </Space>
                     </div>
                   </div>
@@ -466,9 +465,8 @@ const UserLayout = React.memo(
             </Layout>
           </Layout>
         </ConfigProvider>
-      </AuthenticationGuard>
     );
   },
 );
 
-export default UserLayout;
+export default UserLayoutNoAuth;

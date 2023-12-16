@@ -24,6 +24,7 @@ import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import Link from 'next/link';
 import { getExpertPreview } from '../expertServices';
 import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -46,6 +47,7 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'PREVIEW YOUR PROFILE': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [expert, setExpert] = useState(null);
@@ -129,13 +131,17 @@ const Home = () => {
   return (
     <UserLayout
       selected="5"
+      isCollapsed={false}
+      avatar={avatar}
+      email={email}
+      userRole={userRole}
       userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
       content={
         <div className="container mx-auto">
           {isLoading && <Skeleton style={{ marginTop: 50 }} />}
           {!isLoading && (
             <div className="!p-0 relative">
-              <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
+              <div className="pl-16" style={{ paddingLeft: '', width: '95%', background: 'white' }}>
                 <div className="absolute top-10 left-5">
                   {/* <Link href="/review/list/expert" passHref>
                     <button>
@@ -205,13 +211,12 @@ const Home = () => {
                   style={{
                     paddingLeft: '20px',
                     paddingBottom: '20px',
-                    background: 'white',
+                    width: '95%',
                     textAlign: 'left',
                   }}
                 >
                   <div>
-                    <Title style={{ color: '#4D70EB' }} level={5}>
-                      {' '}
+                    <Title style={{ color: '#4D70EB', marginTop: '10px' }} level={5}>
                       <span style={{ borderBottom: '2px solid #4D70EB' }}>Reviews</span>
                     </Title>
                   </div>

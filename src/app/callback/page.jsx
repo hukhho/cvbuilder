@@ -6,9 +6,21 @@ import { useAuth0 } from '@/lib/Auth0';
 import useStore from '@/store/store';
 import { getProtectedResource } from '../services/message.service';
 
+// Helper function to set cookies
+const setCookie = (name, value, days) => {
+  let expires = '';
+  if (days) {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = `; expires=${date.toUTCString()}`;
+  }
+  document.cookie = `${name}=${value || ''}${expires}; path=/`;
+};
+
 const CallbackPage = () => {
   const { isLoading, isAuthenticated, error, user, getAccessTokenSilently } = useAuth0();
-  const { setMessage, setEmail, setAvatar, setUserRole } = useStore();
+  const { setMessage, setEmail, setAvatar, setUserRole, setBalance } = useStore();
+
   const router = useRouter();
 
   useEffect(() => {
@@ -28,11 +40,16 @@ const CallbackPage = () => {
           // Save user data to localStorage
           localStorage.setItem('email', data.email);
           localStorage.setItem('avatar', data.avatar);
+          localStorage.setItem('userId', data.id);
+
+          // setCookie('userId', data.id, 7); // 7 days for cookie expiration
+
           localStorage.setItem('userRole', data.role.roleName);
 
           // Update Zustand store with user data
           setEmail(data.email);
           setAvatar(data.avatar);
+          setBalance(data.accountBalance);
           setUserRole(data.role.roleName);
 
           // Redirect based on user role

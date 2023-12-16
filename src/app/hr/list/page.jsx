@@ -19,6 +19,7 @@ import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import { getHrPostList } from '../hrServices';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -102,6 +103,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'MANAGE JOBS': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -128,6 +131,10 @@ const Home = () => {
     <ConfigProvider>
       <UserLayout
         selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={
           <>
             <HeaderHR initialEnabledCategories={enabledCategories} />

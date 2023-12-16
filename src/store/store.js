@@ -17,6 +17,9 @@ const useStore = create(set => {
     email: storedEmail, // Initialize with the value from localStorage
     avatar: storedAvatar, // Initialize with the value from localStorage
     userRole: storedUserRole, // Initialize with the value from localStorage
+    balance: 0,
+
+    setBalance: balance => set({ balance }),
 
     // Actions to update the state and localStorage
     setMessage: message => set({ message }),

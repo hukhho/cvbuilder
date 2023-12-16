@@ -22,6 +22,7 @@ import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import { getExpertPurchases } from '../expertServices';
 import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
 import moment from 'moment';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -49,7 +50,7 @@ const columns = [
     dataIndex: 'expenditure',
     render: text => (
       <div>
-        {(Number(text)*1000).toLocaleString('vi-VN', {
+        {(Number(text) * 1000).toLocaleString('vi-VN', {
           style: 'currency',
           currency: 'VND',
         })}
@@ -137,6 +138,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'PURCHASE HISTORY': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -163,15 +166,17 @@ const Home = () => {
     <ConfigProvider>
       <UserLayout
         selected="5"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mt-16" style={{ width: '80%' }}>
             <div style={{ textAlign: 'left' }}>
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
-            <div>
-              {/* <Input className="" placeholder="Search the transaction" /> */}
-            </div>
+            <div>{/* <Input className="" placeholder="Search the transaction" /> */}</div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />

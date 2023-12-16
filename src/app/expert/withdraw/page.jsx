@@ -22,6 +22,7 @@ import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import { getExpertPurchases } from '../expertServices';
 import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
 import moment from 'moment';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -138,6 +139,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'WITHDRAW MONEY REQUEST': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -164,6 +167,10 @@ const Home = () => {
     <ConfigProvider>
       <UserLayout
         selected="5"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mt-16" style={{ width: '80%' }}>

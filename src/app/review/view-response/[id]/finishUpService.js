@@ -1,15 +1,7 @@
 // finishUpService.js
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../../utils/axiosInstance';
 import { mockData } from './mockData';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
 
 export const getFinishUp = async cvId => {
   try {
@@ -23,7 +15,7 @@ export const getFinishUp = async cvId => {
 
 export const getReviewResponse = async requestId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(
       `cv/user/${userId}/review-request/${requestId}/review-response`,
     );
@@ -36,7 +28,7 @@ export const getReviewResponse = async requestId => {
 
 export const updateReviewResponse = async (responseId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(
       `/cv/expert/${userId}/review-response/${responseId}/overall`,
       data,
@@ -49,7 +41,7 @@ export const updateReviewResponse = async (responseId, data) => {
 };
 export const updateReviewResponsePublic = async (responseId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(
       `/cv/expert/${userId}/review-response/${responseId}/public`,
       data,

@@ -520,7 +520,7 @@ export default function FinishUp({ params }) {
                             className="button"
                             type=""
                           >
-                           Back to list
+                            Back to list
                           </button>
                         </Link>
                         <button

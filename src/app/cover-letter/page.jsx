@@ -65,6 +65,7 @@ const CoverLetterIndex = () => {
           avatar={avatar}
           email={email}
           userRole={userRole}
+          selected="1"
           userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={
             <div className="container mx-auto px-4 py-6">
