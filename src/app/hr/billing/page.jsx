@@ -29,11 +29,12 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 // import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import ExpertForm from '@/app/components/Form/ExpertForm';
 import HrForm from '@/app/components/Form/HrForm';
-import { getHrConfig } from '../hrServices';
+import { getHrConfig, getVipList } from '../hrServices';
 import useStore from '@/store/store';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import HRConfigHeader from '@/app/components/HRConfigHeader';
 import Title from 'antd/es/typography/Title';
+import MonthSub from '@/app/components/Modal/MonthSub';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -47,7 +48,7 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      const fetchedDataFromAPI = await getHrConfig();
+      const fetchedDataFromAPI = await getVipList();
       console.log('fetchedDataFromAPI: ', fetchedDataFromAPI);
 
       setData(fetchedDataFromAPI);
@@ -88,7 +89,7 @@ const Home = () => {
                   <div>
                     <span className="text-gray-600">WHAT'S INCLUED</span>
                   </div>
-                  <div className='mt-8'>
+                  <div className="mt-8">
                     <FontAwesomeIcon icon={faCheck} />
                     <span className="text-gray-600">Unlimited access to quality candidate CVs</span>
                   </div>
@@ -113,16 +114,28 @@ const Home = () => {
                   </div>
                 </div>
                 <Card style={{ width: 200, height: 300, marginRight: 50 }}>
-                <Title level={5}>Monthly</Title>
-                <div>
-
-                </div>
-
+                  <Title level={5}>Monthly</Title>
+                  <div>
+                    {Number(data?.vipMonthRatio).toLocaleString('vi-VN', {
+                      style: 'currency',
+                      currency: 'VND',
+                    })}
+                  </div>
+                  <div>
+                    <MonthSub money={data?.vipMonthRatio} />
+                  </div>
                 </Card>
                 <Card style={{ width: 200, height: 300, marginRight: 50 }}>
-                <Title level={5}>Annualy</Title>
-
-                    
+                  <Title level={5}>Annualy</Title>
+                  <div>
+                    {Number(data?.vipYearRatio).toLocaleString('vi-VN', {
+                      style: 'currency',
+                      currency: 'VND',
+                    })}
+                    <div>
+                      <MonthSub money={data?.vipYearRatio} />
+                    </div>
+                  </div>
                 </Card>
               </div>
             </div>

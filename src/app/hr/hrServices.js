@@ -123,6 +123,15 @@ const getHrApplication = async () => {
   }
 };
 
+const getVipList = async () => {
+  try {
+    const response = await axiosInstance.get('/admin/information/config');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCandidateList = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -153,6 +162,16 @@ const getHrConfig = async () => {
   }
 };
 
+const subMonth = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/hr/${userId}/register-vip`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const updateHrConfig = async (cvId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -176,4 +195,6 @@ export {
   getCandidateApplication,
   updateHrUnshare,
   updateHrShare,
+  getVipList,
+  subMonth,
 };
