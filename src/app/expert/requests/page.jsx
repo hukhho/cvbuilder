@@ -19,6 +19,7 @@ import { acceptRequest, getRequestList, rejectRequest } from '../expertServices'
 import Link from 'next/link';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import moment from 'moment';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
@@ -26,6 +27,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW REQUESTS': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -225,7 +228,11 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="2"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={
           <>
             <UserHeaderExpert initialEnabledCategories={enabledCategories} />
@@ -241,13 +248,13 @@ const Home = () => {
               <div>
                 <Input
                   className=""
-                  placeholder="Search the resume"
+                  placeholder="Search the requests"
                   value={searchText}
                   onChange={e => handleSearch(e.target.value)}
                 />
               </div>
             </div>
-            <div className="!p-0 mb-5 mt-4 card">
+            <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={searchData} onChange={onChange} />
               </div>

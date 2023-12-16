@@ -11,12 +11,15 @@ import CreateCoverLetter from '../components/Modal/CreateCoverLetter';
 import Meta from 'antd/es/card/Meta';
 import CoverLetterCard from './[id]/finishup/CoverLetterCard';
 import CoverLetterCardComponents from './CoverLetterCardComponents';
+import useStore from '@/store/store';
 
 const CoverLetterIndex = () => {
   const [resumes, setResumes] = useState([]);
-  const [enabledCategories, setEnabledCategories] = useState({
+  const enabledCategories = {
     'COVER LETTERS': true,
-  });
+  };
+  const { avatar, email, userRole } = useStore();
+
   // Mock JSON data for cards
   const defaultImageUrl =
     'https://photos.pinksale.finance/file/pinksale-logo-upload/1692701716873-e9b5323edab631aa000eabb7a8512a33.PNG';
@@ -53,10 +56,16 @@ const CoverLetterIndex = () => {
     fetchResumes();
     fetchData();
   }, []);
+
   return (
     <main>
       <ConfigProvider>
         <UserLayout
+          isCollapsed={false}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
+          selected="1"
           userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
           content={
             <div className="container mx-auto px-4 py-6">
@@ -66,7 +75,11 @@ const CoverLetterIndex = () => {
                 {/* Map over the mockCardData and generate cards with links */}
                 {resumes?.map((card, index) => (
                   <div key={index}>
-                    <CoverLetterCardComponents resume={card} onDeleted={onCreated} />
+                    <CoverLetterCardComponents
+                      resume={card}
+                      onDeleted={onCreated}
+                      onCreated={onCreated}
+                    />
                   </div>
                 ))}
                 {resumes?.length === 0 && <Empty />}

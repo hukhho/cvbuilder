@@ -73,11 +73,11 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
           <div style={{ position: 'relative', display: 'block', zIndex: 0, textAlign: 'left' }}>
             <div className="summary-section src-components-GeneratorForm--yE-M0KIYLqM= src-components-GeneratorForm--fATEgyCKtc4=   src-components-Form-Textarea--33tYOpt2RMw= ">
               <label
-                className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+                className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end uppercase text-gray-600"
                 htmlFor="summary-section-form-0"
               >
                 <div className="flex gap-2 items-center">
-                  <span>
+                  <span style={{ fontSize: 12 }}>
                     Write a professional <strong>summary</strong>
                   </span>
                 </div>

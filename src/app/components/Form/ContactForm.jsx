@@ -22,14 +22,13 @@ const ContactForm = ({ cvId, onCreated, data }) => {
     console.log('ContactForm data: ', data);
     if (data) {
       const mockData = {
-        name: data.name,
+        fullName: data.fullName,
         email: data.email,
         phone: data.phone,
         linkin: data.linkin,
         personalWebsite: data.personalWebsite,
-        country: data.country,
+        city: data.city,
       };
-
       console.log('Form fields set with data:', data);
       // Use mockData if no data is provided
       const initialData = mockData;
@@ -40,7 +39,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
 
   const handleSubmit = async values => {
     try {
-      const result = await updateContact(values);
+      const result = await updateContact(cvId, values);
       form.resetFields();
       onCreated();
       openNotification('bottomRight', `Save changed: ${result.id}`);
@@ -56,7 +55,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
         <Row justify="start" gutter={[16, 0]}>
           <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
-              name="name"
+              name="fullName"
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                   <div className="flex gap-2 items-center text-xs">
@@ -175,7 +174,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
 
           <Col style={{ maxWidth: 602 }} span={12}>
             <Form.Item
-              name="country"
+              name="city"
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                   <div className="flex gap-2 items-center text-xs">

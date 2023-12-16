@@ -3,7 +3,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, ConfigProvider, Form, Input, Select, Table, Typography } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  ConfigProvider,
+  Form,
+  Input,
+  Select,
+  Table,
+  Typography,
+} from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -19,11 +29,16 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import ExpertForm from '@/app/components/Form/ExpertForm';
 import HrForm from '@/app/components/Form/HrForm';
 import { getHrConfig } from '../hrServices';
+import useStore from '@/store/store';
+import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
+import HRConfigHeader from '@/app/components/HRConfigHeader';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'REVIEW HISTORY': true,
+    'ACCOUNT': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [form] = Form.useForm();
   const [data, setData] = useState();
   const [resumes, setResumes] = useState([]);
@@ -40,12 +55,10 @@ const Home = () => {
     }
   };
 
-
   useEffect(() => {
     console.log('useEffect');
     fetchData();
   }, []);
-
 
   const onCreated = () => {
     // form.setFieldsValue({
@@ -55,13 +68,15 @@ const Home = () => {
     console.log('onCreated');
   };
 
-
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
-        userHeader={<></>}
-        // userHeader={<UserHeaderExpert initialEnabledCategories={enabledCategories} />}
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
+        selected="6"
+        userHeader={<HRConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
             <div className="!p-0 mb-5 mt-16 card">

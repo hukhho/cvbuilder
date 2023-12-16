@@ -12,7 +12,7 @@ import ContentEditable from 'react-contenteditable';
 import * as htmlToImage from 'html-to-image';
 import jsPDF from 'jspdf';
 
-const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
+const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   const [lineHeight, setLineHeight] = useState(1.55);
   const [fontSize, setFontSize] = useState(9);
   const [zoom, setZoom] = useState(100);
@@ -349,4 +349,4 @@ const ResumeGenerator = React.forwardRef(({ coverLetterId }, ref) => {
   );
 });
 
-export default ResumeGenerator;
+export default CoverLetterPreview;

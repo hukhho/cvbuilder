@@ -19,6 +19,7 @@ import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSe
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import CoverLetterPreview from './CoverLetterPreview';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 export default function FinishUp({ params }) {
   const [lineHeight, setLineHeight] = useState(1.55);
@@ -28,6 +29,7 @@ export default function FinishUp({ params }) {
   const [enabledCategories, setEnabledCategories] = useState({
     'FINISH UP': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const cvId = params.id;
 
@@ -56,6 +58,9 @@ export default function FinishUp({ params }) {
       <ConfigProvider>
         <UserLayout
           isCollapsed
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCoverLetterBuilderHeader
               coverLetterId={cvId}

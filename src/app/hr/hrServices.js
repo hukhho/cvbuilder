@@ -1,18 +1,10 @@
 // combinedService.js
 import axiosInstance from '@/app/utils/axiosInstance';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
+import { getUserIdFromLocalStorage } from '../utils/indexService';
 
 const postHrPublic = async data => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.post(`/hr/${userId}/job-posting/public`, data);
     return response.data;
   } catch (error) {
@@ -21,17 +13,37 @@ const postHrPublic = async data => {
 };
 const updateHrPublic = async (postingId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/hr/${userId}/job-posting/${postingId}`, data);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
-
+const updateHrUnshare = async (postingId, data) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(
+      `/hr/${userId}/job-posting/${postingId}/un-share`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const updateHrShare = async (postingId, data) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/hr/${userId}/job-posting/${postingId}/share`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getJobPosting = async postingId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/hr/${userId}/job-posting/${postingId}`);
     return response.data;
   } catch (error) {
@@ -41,7 +53,7 @@ const getJobPosting = async postingId => {
 
 const getHrPostList = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(
       `/hr/${userId}/job-postings?sortBy=view&sortOrder=asc`,
     );
@@ -53,7 +65,7 @@ const getHrPostList = async () => {
 
 const getCandidateApplication = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/application-log/candidate/${userId}`);
     return response.data;
     // return [
@@ -83,7 +95,7 @@ const getCandidateApplication = async () => {
 
 const getHrApplication = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/application-log/hr/${userId}`);
     return response.data;
     // return [
@@ -111,9 +123,18 @@ const getHrApplication = async () => {
   }
 };
 
+const getVipList = async () => {
+  try {
+    const response = await axiosInstance.get('/admin/information/config');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCandidateList = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get('/candidates/publish/information');
     return response.data;
   } catch (error) {
@@ -123,7 +144,7 @@ const getCandidateList = async () => {
 
 const postHrDraft = async data => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/hr/${userId}/job-posting/draft`, data);
     return response.data;
   } catch (error) {
@@ -133,8 +154,18 @@ const postHrDraft = async data => {
 
 const getHrConfig = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/hr/${userId}/information/config`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const subMonth = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/hr/${userId}/register-vip`, data);
     return response.data;
   } catch (error) {
     throw error;
@@ -143,7 +174,7 @@ const getHrConfig = async () => {
 
 const updateHrConfig = async (cvId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/hr/${userId}/information/config`, data);
     return response.data;
   } catch (error) {
@@ -162,4 +193,8 @@ export {
   getHrApplication,
   getJobPosting,
   getCandidateApplication,
+  updateHrUnshare,
+  updateHrShare,
+  getVipList,
+  subMonth,
 };

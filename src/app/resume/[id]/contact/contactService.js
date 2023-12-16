@@ -15,7 +15,7 @@ const getContact = async cvId => {
   }
 
   try {
-    const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}`);
+    const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}/contact`);
     console.log('getContact: ', response.data);
     return response.data;
   } catch (error) {

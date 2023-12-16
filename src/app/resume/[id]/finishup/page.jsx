@@ -34,6 +34,7 @@ import Link from 'next/link';
 import ExpertReviewCard from './ExpertReviewCard';
 import VideoCard from './VideoCard';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const mockData = {
   data: {
@@ -202,9 +203,9 @@ export default function FinishUp({ params }) {
 
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
-  const [enabledCategories, setEnabledCategories] = useState({
-    'FINISH UP': true,
-  });
+ 
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { 'FINISH UP': true };
 
   // useEffect(() => {
   //   setShowFinishupCV(false);
@@ -594,11 +595,17 @@ export default function FinishUp({ params }) {
   const handleChooseVersion = versionId => {
     console.log('versionId: ', versionId);
   };
+
+  const [matchedJobs, setMatchedJobs] = useState([]);
+
   return (
     <main>
       <ConfigProvider>
         <UserLayout
           isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
@@ -662,6 +669,11 @@ export default function FinishUp({ params }) {
                   style={{ position: 'static', width: '360px' }}
                 >
                   <VideoCard />
+                  {/* <div>
+                    {matchedJobs?.map((job, index) => {
+                      return (<>{job?.}</>)
+                    }
+                  </div> */}
                   <ExpertReviewCard />
                   <AiFeedback cvId={params.id} />
                   <Ats cvId={params.id} />

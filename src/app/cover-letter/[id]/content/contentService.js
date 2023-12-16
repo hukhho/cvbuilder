@@ -1,23 +1,16 @@
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../../utils/axiosInstance';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
 
 const getContent = async coverLetterId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(
       `chat-gpt/user/${userId}/cover-letter/${coverLetterId}`,
     );
     return response.data;
     // return {
     //   id: 1,
+    //   cvId: 2,
     //   title: 'string',
     //   dear: 'string',
     //   date: '2023-11-22',

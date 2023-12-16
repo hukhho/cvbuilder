@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Card, ConfigProvider, Empty, Typography } from 'antd';
+import { Avatar, Button, Card, ConfigProvider, Empty, Skeleton, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -24,6 +24,7 @@ import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import Link from 'next/link';
 import { getExpertPreview } from '../expertServices';
 import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -46,12 +47,14 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'PREVIEW YOUR PROFILE': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [expert, setExpert] = useState(null);
   const [resumes, setResumes] = useState([]);
   const [options, setOptions] = useState([]);
   const [expertsMock, setExpertsMock] = useState(generateMockExperts());
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Get the current date
@@ -90,6 +93,8 @@ const Home = () => {
       // setResumes(fetchedResumes);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
+    } finally {
+      setIsLoading(false);
     }
   };
   const fetchResumes = async () => {
@@ -124,21 +129,26 @@ const Home = () => {
   const biggestPriceData = sortedPrices[sortedPrices.length - 1]?.price ?? null;
 
   return (
-    <ConfigProvider>
-      <UserCVBuilderLayout
-        selected="3"
-        userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
-        content={
-          <div className="container mx-auto">
+    <UserLayout
+      selected="5"
+      isCollapsed={false}
+      avatar={avatar}
+      email={email}
+      userRole={userRole}
+      userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
+      content={
+        <div className="container mx-auto">
+          {isLoading && <Skeleton style={{ marginTop: 50 }} />}
+          {!isLoading && (
             <div className="!p-0 relative">
-              <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
+              <div className="pl-16" style={{ paddingLeft: '', width: '95%', background: 'white' }}>
                 <div className="absolute top-10 left-5">
-                  <Link href="/review/list/expert" passHref>
+                  {/* <Link href="/review/list/expert" passHref>
                     <button>
                       <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
                     <span className="ml-2">Back</span>
-                  </Link>
+                  </Link> */}
                 </div>
                 <div className="absolute top-10 right-5" style={{ textAlign: 'left' }}>
                   {/* <ReviewNewModal onCreated={onCreated} resumes={resumes} expert={expert} /> */}
@@ -201,13 +211,12 @@ const Home = () => {
                   style={{
                     paddingLeft: '20px',
                     paddingBottom: '20px',
-                    background: 'white',
+                    width: '95%',
                     textAlign: 'left',
                   }}
                 >
                   <div>
-                    <Title style={{ color: '#4D70EB' }} level={5}>
-                      {' '}
+                    <Title style={{ color: '#4D70EB', marginTop: '10px' }} level={5}>
                       <span style={{ borderBottom: '2px solid #4D70EB' }}>Reviews</span>
                     </Title>
                   </div>
@@ -248,10 +257,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
-        }
-      />
-    </ConfigProvider>
+          )}
+        </div>
+      }
+    />
   );
 };
 

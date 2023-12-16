@@ -19,15 +19,16 @@ import { updateInvolvement } from './involvementService';
 import StandarList from '@/app/components/List/StandarList';
 import ListError from '@/app/components/ListError/ListError';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
 const Involvement = ({ params }) => {
   const [involvementData, setInvolvementData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    INVOLVEMENT: true,
-  });
+
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { INVOLVEMENT: true };
 
   const cvId = params.id;
   const dataService = new DataService('involvements', cvId);
@@ -68,6 +69,9 @@ const Involvement = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

@@ -7,7 +7,7 @@ const fakeData = {
 
 export const createCoverLetter = async (cvId, coverLetterId, contactData) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
 
     const response = await axiosInstance.post(
       `/chat-gpt/cv/${cvId}/cover-letter/${coverLetterId}/generation`,
@@ -39,13 +39,4 @@ const convertContactDataToQueryString = contactData => {
   }
 
   return queryStringParams.join('&');
-};
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
 };

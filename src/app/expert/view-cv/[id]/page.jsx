@@ -52,6 +52,9 @@ import { getRequestList } from '../../expertServices';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
+import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
 
 const mockData = {
   data: {
@@ -240,6 +243,7 @@ export default function FinishUp({ params }) {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW REQUESTS': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
@@ -376,7 +380,7 @@ export default function FinishUp({ params }) {
 
             setFinishUpData(data);
             setShowFinishupCV(true);
-          
+
             setTemplateSelected(data.templateType);
             setToolbarState(data.cvStyle);
             setSummary(data.summary);
@@ -397,14 +401,12 @@ export default function FinishUp({ params }) {
     console.log('onDeleteComment:randomId:', randomId);
     console.log('onDeleteComment:dataId:', dataId);
     handleDeleteComment(commentId, type, randomId, dataId);
-  
   }
 
   useEffect(() => {
-   
     console.log('State updated, triggering re-render');
   }, [finishUpData, showFinishupCV]);
-  
+
   // Function to handle comment deletion
   function handleDeleteComment(commentId, type, randomId, dataId) {
     console.log('handleDeleteComment:commentId:', commentId);
@@ -478,7 +480,6 @@ export default function FinishUp({ params }) {
             setTemplateSelected(data.templateType);
             setToolbarState(data.cvStyle);
             setSummary(data.summary);
-
           } catch (error) {
             console.error('Error fetching FinishUp data:', error);
           }
@@ -845,7 +846,12 @@ export default function FinishUp({ params }) {
   };
 
   return (
-    <UserCVBuilderLayout
+    <UserLayoutNoAuth
+      selected="5"
+      isCollapsed={true}
+      avatar={avatar}
+      email={email}
+      userRole={userRole}
       userHeader={
         <UserHeaderExpert initialEnabledCategories={enabledCategories} cvId={params.id} />
       }
@@ -912,7 +918,7 @@ export default function FinishUp({ params }) {
               </Box>
               {finishUpData ? (
                 <div className="relative">
-                  <div className=" top-10 left-5 " style={{ textAlign: 'left'}}>
+                  <div className=" top-10 left-5 " style={{ textAlign: 'left' }}>
                     <Link href="/expert/requests" passHref>
                       <button>
                         <FontAwesomeIcon icon={faChevronLeft} />
@@ -920,7 +926,7 @@ export default function FinishUp({ params }) {
                       <span className="ml-2">Back</span>
                     </Link>
                   </div>
-                  <Card className='mt-4'>
+                  <Card className="mt-4">
                     <div className="flex justify-start">
                       <div style={{ textAlign: 'left' }}>
                         <div>Name1: {dataRequest?.name}</div>

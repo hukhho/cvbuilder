@@ -719,8 +719,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                         {replyContent?.map((reply, index) => {
                           return (
                             <div className="mt-2" style={{ borderRadius: '10px' }}>
-                              {reply}x
+                              {reply}
+                              <button type="button" onClick={e => handleApplyAiWriter(reply)}>
+                                <FontAwesomeIcon icon={faCopy} />
+                              </button>
                             </div>
+                            
                           );
                         })}
                         {!isAiLoading && replyContent?.length === 0 && <Empty />}
@@ -728,12 +732,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                     </div>
 
                     <div className="flex" style={{ width: '50px' }}>
-                      <button
-                        onClick={handleApplyAiContent}
-                        className="button cta mt-8"
-                        
-                        type=""
-                      >
+                      <button onClick={handleApplyAiContent} className="button cta mt-8" type="">
                         Apply AI Content
                       </button>
                       <button
@@ -780,7 +779,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
           <Input type="hidden" value={inputValue} />
         </Form.Item>
-                  
+
         <button
           disable={isAiWrite}
           href=""

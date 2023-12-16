@@ -21,16 +21,25 @@ import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { getCoverLetters, getResumes } from '@/app/utils/indexService';
 
-import { CalendarOutlined, HeartFilled, HeartOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  CalendarOutlined,
+  HeartFilled,
+  HeartOutlined,
+  ScheduleOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import { getJobById, likeJob } from '../jobServices';
 import ApplyJobModal from '@/app/components/Modal/ApplyJobModal';
+import SuccessJob from '@/app/components/Modal/SuccessJob';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
@@ -38,6 +47,8 @@ const Home = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     OPPORTUNITIES: true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const options = [];
   for (let i = 10; i < 36; i++) {
     options.push({
@@ -52,6 +63,13 @@ const Home = ({ params }) => {
   const [data, setData] = useState();
   const [resumes, setResumes] = useState([]);
   const [coverLetters, setCoverLetters] = useState([]);
+
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSuccess = () => {
+    console.log('handleSuccess');
+    setIsSuccess(true);
+  };
 
   const fetchData = async () => {
     try {
@@ -110,7 +128,11 @@ const Home = ({ params }) => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="8"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
@@ -197,6 +219,7 @@ const Home = ({ params }) => {
                         right: 50,
                       }}
                     >
+
                       {/* <button className="button" on style={{ width: '314px' }}>
                         Apply for this job
                       </button> */}
@@ -204,7 +227,9 @@ const Home = ({ params }) => {
                         resumeOptions={resumeOptions}
                         coverOptions={coverOptions}
                         jobId={params.id}
+                        handleSuccess={handleSuccess}
                       />
+
                       <button className="mt-4" onClick={likeJobHanlde}>
                         {data?.liked === true && <HeartFilled style={{ color: '#4D70EB' }} />}
                         {data?.liked === false && <HeartOutlined style={{ color: '#4D70EB' }} />}
@@ -217,23 +242,31 @@ const Home = ({ params }) => {
 
               <div className="flex mt-8">
                 <div className="p-8 bg-white" style={{ textAlign: 'left', width: '70%' }}>
+
                   <div>
                     <Image src={data?.avatar} width={100} height={100} />
                   </div>
-                  <div>
-                    <Title level={4}>What can we offer?</Title>
+                  <div className="mt-8">
+                    <Title style={{ width: 800 }} level={4}>
+                      What can we offer?
+                    </Title>
                     <div>{data?.benefit}</div>
                   </div>
                   <div className="mt-4">
-                    <Title level={4}>Job descriptions</Title>
+                    <Title style={{ width: 800 }} level={4}>
+                      Job descriptions
+                    </Title>
                     <div>{data?.description}</div>
                   </div>
                   <div className="mt-4">
-                    <Title level={4}>Requirements</Title>
+                    <Title style={{ width: 800 }} level={4}>
+                      Requirements
+                    </Title>
                     <div>{data?.requirement}</div>
                   </div>
                 </div>
                 <div style={{ width: '30%', position: 'relative' }}>
+
                   <Card
                     style={{
                       width: 300,
@@ -247,47 +280,47 @@ const Home = ({ params }) => {
                   >
                     <div>
                       <div className="flex">
-                        <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
+                        <ScheduleOutlined />
+                        <div className="flex flex-col ml-2 mt-2 mr-2">
                           <span style={{ fontWeight: 'bold' }}>Posted date</span>
                           <p>{data?.createDate}</p>
                         </div>
                       </div>
                       <div className="flex">
                         <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
+                        <div className="flex flex-col ml-2  mt-2 mr-2">
                           <span style={{ fontWeight: 'bold' }}>Deadline</span>
                           <p>{data?.deadline}</p>
                         </div>
                       </div>
+                   
                       <div className="flex">
-                        <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
-                          <span style={{ fontWeight: 'bold' }}>Experience</span>
-                          <p>3+ years</p>
-                        </div>
-                      </div>
-                      <div className="flex">
-                        <CalendarOutlined />
-                        <div className="flex flex-col ml-2">
+                        <AppstoreOutlined />
+                        <div className="flex flex-col ml-2  mt-2 mr-2  ">
                           <span style={{ fontWeight: 'bold' }}>Job Type</span>
-                          <p>Full time</p>
+                          <p>{data?.workingType}</p>
                         </div>
                       </div>
-                      <div className="flex">
+                      {/* <div className="flex">
                         <CalendarOutlined />
                         <div className="flex flex-col ml-2">
                           <span style={{ fontWeight: 'bold' }}>Preferred Languages</span>
                           <p>English</p>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </Card>
                 </div>
               </div>
-              <button className="button" style={{ marginTop: '20px', width: '314px' }}>
-                Apply for this job
-              </button>
+              <div style={{ marginTop: '20px', width: '314px' }}>
+                <ApplyJobModal
+                  resumeOptions={resumeOptions}
+                  coverOptions={coverOptions}
+                  handleSuccess={handleSuccess}
+                  jobId={params.id}
+                />
+                <SuccessJob isSuccess={isSuccess} />
+              </div>
             </div>
           </div>
         }

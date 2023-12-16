@@ -34,12 +34,15 @@ import CandidateForm from '@/app/components/Form/CandidateForm';
 import { getProtectedResource } from '@/app/services/message.service';
 import Deposit from '@/app/components/Modal/Deposit';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
+import useStore from '@/store/store';
 // import { getHrConfig } from '../hrServices';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     ACCOUNT: true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [form] = Form.useForm();
   const [data, setData] = useState();
   const [protectedData, setProtectedData] = useState();
@@ -76,8 +79,6 @@ const Home = () => {
     fetchData();
   }, []);
 
-
-
   const onCreated = () => {
     // form.setFieldsValue({
     //   //   note: 'Hello world!',
@@ -86,31 +87,33 @@ const Home = () => {
     console.log('onCreated');
   };
 
-  const formatBalance = (balance) => {
+  const formatBalance = balance => {
     if (balance !== undefined) {
       // Convert to VND and format
       const formattedBalance = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
       }).format(balance * 1000);
-  
+
       return formattedBalance;
     }
-  
+
     return ''; // Return an empty string if balance is undefined
   };
-  
 
   return (
     <ConfigProvider>
       <UserLayout
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         selected="7"
         userHeader={<CandidateConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
             <div className="!p-0 mb-5 mt-16 card">
               <div style={{ textAlign: 'left' }}>
-                {/* <Title level={5}>CV Review Table</Title> */}
               </div>
               <div></div>
               <div>

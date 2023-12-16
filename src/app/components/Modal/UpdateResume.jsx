@@ -19,16 +19,13 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
       placement,
     });
   };
-  useEffect(() => {
-    // Handle the modal state from the parent component
-    // You can perform additional actions when the modal is opened or closed
 
+  useEffect(() => {
     console.log('Modal state:', isOpen);
   }, [isOpen]);
-  // const [isOpen, setIsOpen] = useState(false);
+
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
-
   const [formData, setFormData] = useState({
     resumeName: '',
     jobTitle: '',
@@ -37,7 +34,6 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
   });
 
   useEffect(() => {
-    // Update formData with resume data when the resume prop changes
     setFormData({
       resumeName: resume?.resumeName || '',
       jobTitle: resume?.jobTitle || '',
@@ -46,11 +42,11 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
     });
   }, [resume]);
 
-  function closeModal() {}
+  function closeModal() {
+    onClose();
 
-  // function openModal() {
-  //   setIsOpen(true);
-  // }
+  }
+
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -95,7 +91,6 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
     <>
       {contextHolder}
       <div className="inset-0 flex items-center justify-center"></div>
-
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child

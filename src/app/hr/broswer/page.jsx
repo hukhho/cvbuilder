@@ -33,6 +33,7 @@ import JobCard from './JobCard';
 import { getCandidateList } from '../hrServices';
 import UserHeaderHR from '@/app/components/UserHeaderHR';
 import HeaderHR from '@/app/components/HeaderHR';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
@@ -40,6 +41,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'BROSWER CVS': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const options = [];
   for (let i = 10; i < 36; i++) {
     options.push({
@@ -70,6 +73,10 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         selected="3"
         userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
@@ -102,6 +109,7 @@ const Home = () => {
             <div style={{}} className="!p-0 mb-5 mt-0">
               <div className="">
                 <div className="flex"></div>
+
                 <div className="">
                   {data?.map((job, index) => (
                     <JobCard job={job} jobTitle={job.title} />

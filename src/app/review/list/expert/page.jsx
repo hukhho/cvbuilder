@@ -16,6 +16,7 @@ import { StarFilled } from '@ant-design/icons';
 import { getExperts, searchExperts } from '../../new/reviewService';
 import Search from 'antd/es/input/Search';
 import Link from 'next/link';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -38,6 +39,7 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW OPTIONS': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [resumes, setResumes] = useState([]);
@@ -124,7 +126,11 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
+        selected="4"
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mx-auto">

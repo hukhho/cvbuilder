@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+  Avatar,
   Button,
   Card,
   Col,
@@ -148,12 +149,10 @@ const CandidateForm = ({ onCreated, data }) => {
             onChange={handleChange}
           >
             {imageUrl ? (
-              <img
+              <Avatar
                 src={imageUrl}
                 alt="avatar"
-                style={{
-                  width: '100px',
-                }}
+                size={100}
               />
             ) : (
               uploadButton
@@ -161,6 +160,10 @@ const CandidateForm = ({ onCreated, data }) => {
           </Upload>
           <Form.Item
             name="avatar"
+            style={{
+              // display: 'none',
+              marginTop: '-10px',
+            }}
             label={
               <></>
               // <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">

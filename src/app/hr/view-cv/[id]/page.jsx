@@ -13,22 +13,16 @@ import SummarySection from '@/app/components/Templates/SectionComponents/Summary
 import ExperiencesSection from '@/app/components/Templates/SectionComponents/ExperiencesSection';
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
-import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import { getAudit, getFinishUp, getVersionsList, saveCv, syncUp } from './finishUpService';
-import ScoreFinishUp from './Score';
-import VideoComponent from '@/app/components/VideoComponent';
-import './expert.css';
-import './gen.css';
-import './version.css';
-import Ats from './Ats';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackwardStep, faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
-import AiFeedback from './AiFeedback';
+// import './expert.css';
+// import './gen.css';
+// import './version.css';
 import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
 import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 import Link from 'next/link';
 import HeaderHR from '@/app/components/HeaderHR';
+import { getFinishUp } from '@/app/expert/view-cv/[id]/finishUpService';
+import { getHistoryFinishUp } from '@/app/utils/indexService';
 
 const mockData = {
   data: {
@@ -470,7 +464,7 @@ export default function FinishUp({ params }) {
     const fetchData = async () => {
       try {
         const cvId = params.id;
-        const fetched = await getFinishUp(cvId);
+        const fetched = await getHistoryFinishUp(cvId);
         const data = fetched.cvBody;
         console.log('FinishUp data.cvBody: ', data);
 
@@ -526,7 +520,7 @@ export default function FinishUp({ params }) {
                             className="button"
                             type=""
                           >
-                           Back to list
+                            Back to list
                           </button>
                         </Link>
                         <button

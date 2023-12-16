@@ -23,12 +23,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import ResumeCard from './ResumeCard';
+import useStore from '@/store/store';
 
 const ResumeIndex = () => {
   const [resumes, setResumes] = useState([]);
   const [enabledCategories, setEnabledCategories] = useState({
     RESUMES: true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const fetchResumes = async () => {
     try {
@@ -41,6 +43,9 @@ const ResumeIndex = () => {
   };
 
   useEffect(() => {
+    console.log('avatar: ', avatar);
+    console.log('userRole: ', userRole);
+
     if (!resumes.length) {
       fetchResumes();
     }
@@ -63,6 +68,10 @@ const ResumeIndex = () => {
     >
       <UserLayout
         onCreated={onCreated}
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         selected="1"
         userHeader={<UserHeader initialEnabledCategories={enabledCategories} />}
         content={
@@ -70,7 +79,6 @@ const ResumeIndex = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {resumes?.map((item, index) => (
                 <div key={index}>
-                  {/* {item.id} */}
                   <ResumeCard resume={item} onDeleted={onCreated} />
                 </div>
               ))}

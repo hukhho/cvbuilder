@@ -61,7 +61,7 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
     const result = await (formData)
     try {
       const result = await updateCoverLetterName(resume.id, formData);
-      openNotification('bottomRight', `Update: ${result.id}`);
+      openNotification('bottomRight', `Update: ${result}`);
       onCreated();
       closeModal();
     } catch (error) {

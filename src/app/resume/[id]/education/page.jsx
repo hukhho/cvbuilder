@@ -18,15 +18,15 @@ import ListError from '@/app/components/ListError/ListError';
 import StandarList from '@/app/components/List/StandarList';
 import VideoComponent from '@/app/components/VideoComponent';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
 const Education = ({ params }) => {
   const [educations, setEducations] = useState([]);
   const [selectedEducation, setSelectedEducation] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    EDUCATION: true,
-  });
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { EDUCATION: true };
   const [isShow, setIsShow] = useState(true);
   const handleDownButton = () => {
     setIsShow(!isShow);
@@ -38,9 +38,8 @@ const Education = ({ params }) => {
     try {
       const data = await getAllEducations(cvId);
       console.log('data getAllEducations ', data);
-      setSelectedEducation(null)
+      setSelectedEducation(null);
       setEducations(data);
-      
     } catch (error) {
       console.error('There was an error fetching the educations', error);
     }
@@ -51,7 +50,7 @@ const Education = ({ params }) => {
   }, []);
 
   const handleEditEducation = education => {
-    console.log("selected: ", selectedEducation)
+    console.log('selected: ', selectedEducation);
     setSelectedEducation(education);
   };
   const handleHideEducation = education => {
@@ -76,8 +75,11 @@ const Education = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id}  />
+            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
           content={
             <div className="flex h-screen w-full">
@@ -131,7 +133,11 @@ const Education = ({ params }) => {
                 </Card>
               </div>
               <div className="flex flex-col px-4">
-                <EducationForm cvId={cvId} onEducationCreated={fetchEducations} education={selectedEducation} />
+                <EducationForm
+                  cvId={cvId}
+                  onEducationCreated={fetchEducations}
+                  education={selectedEducation}
+                />
               </div>
             </div>
           }

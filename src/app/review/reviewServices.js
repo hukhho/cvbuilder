@@ -1,15 +1,6 @@
 // combinedService.js
 import axiosInstance from '@/app/utils/axiosInstance';
 
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
-
 const ratingComment = async (responseId, data) => {
   try {
     const response = await axiosInstance.post(

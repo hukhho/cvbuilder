@@ -1,14 +1,6 @@
 // combinedService.js
 import axiosInstance from '@/app/utils/axiosInstance';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
+import { getUserIdFromLocalStorage } from '../utils/indexService';
 
 // const postHrPublic = async data => {
 //   try {
@@ -22,7 +14,7 @@ const getUserIdFromCookie = () => {
 
 const getJobList = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/${userId}/job-posting`);
     return response.data;
   } catch (error) {
@@ -32,7 +24,7 @@ const getJobList = async () => {
 
 const getJobById = async jobId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/${userId}/job-posting/${jobId}`);
     return response.data;
   } catch (error) {
@@ -42,7 +34,7 @@ const getJobById = async jobId => {
 
 const likeJob = async jobId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.post(`/user/${userId}/job-posting/${jobId}/like`);
     return response.data;
   } catch (error) {

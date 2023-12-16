@@ -19,6 +19,7 @@ import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import { getHrApplication, getHrPostList } from '../hrServices';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -58,13 +59,20 @@ const columns = [
     dataIndex: 'cvs',
     render: cvs => (
       <a>
-        <Link href={`/hr/view-cv/${cvs.historyId}`}>{cvs.historyId}</Link>{' '}
+        <Link href={`/hr/view-cv/${cvs.historyId}`}>{cvs.resumeName}</Link>{' '}
       </a>
     ),
   },
   {
     title: 'Cover Letter',
-    dataIndex: 'coverLetterId',
+    dataIndex: 'coverLetters',
+    render: cvs => (
+      <a>
+        <Link href={`/hr/view-cover-letter/${cvs.historyCoverLetterId}`}>
+          {cvs.historyCoverLetterId}
+        </Link>{' '}
+      </a>
+    ),
   },
   {
     title: 'Date Application',
@@ -113,6 +121,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'APPLICATION LIST': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -139,6 +149,10 @@ const Home = () => {
     <ConfigProvider>
       <UserLayout
         selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={
           <>
             <HeaderHR initialEnabledCategories={enabledCategories} />
@@ -152,7 +166,7 @@ const Home = () => {
             <div>
               <Input className="" placeholder="Search the candiatename" />
             </div>
-            <div className="!p-0 mb-5 card">
+            <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />
               </div>

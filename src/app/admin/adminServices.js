@@ -1,14 +1,6 @@
 // combinedService.js
 import axiosInstance from '@/app/utils/axiosInstance';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
+import { getUserIdFromLocalStorage } from '../utils/indexService';
 
 const getWithdrawRequests = async data => {
   try {
@@ -29,7 +21,7 @@ const getUsers = async data => {
 //
 const postHrPublic = async data => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.post(`/hr/${userId}/job-posting/public`, data);
     return response.data;
   } catch (error) {
@@ -38,7 +30,7 @@ const postHrPublic = async data => {
 };
 const updateHrPublic = async (postingId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/hr/${userId}/job-posting/${postingId}`, data);
     return response.data;
   } catch (error) {
@@ -48,7 +40,7 @@ const updateHrPublic = async (postingId, data) => {
 
 const getJobPosting = async postingId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/hr/${userId}/job-posting/${postingId}`);
     return response.data;
   } catch (error) {
@@ -58,7 +50,7 @@ const getJobPosting = async postingId => {
 
 const getHrPostList = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(
       `/hr/${userId}/job-postings?sortBy=view&sortOrder=asc`,
     );
@@ -70,7 +62,7 @@ const getHrPostList = async () => {
 
 const getCandidateApplication = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/application-log/candidate/${userId}`);
     return response.data;
     // return [
@@ -100,7 +92,7 @@ const getCandidateApplication = async () => {
 
 const getHrApplication = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/application-log/hr/${userId}`);
     return response.data;
     // return [
@@ -130,7 +122,7 @@ const getHrApplication = async () => {
 
 const getCandidateList = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get('/candidates/publish/information');
     return response.data;
   } catch (error) {
@@ -140,7 +132,7 @@ const getCandidateList = async () => {
 
 const postHrDraft = async data => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/hr/${userId}/job-posting/draft`, data);
     return response.data;
   } catch (error) {
@@ -150,7 +142,7 @@ const postHrDraft = async data => {
 
 const getHrConfig = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/hr/${userId}/information/config`);
     return response.data;
   } catch (error) {
@@ -160,7 +152,7 @@ const getHrConfig = async () => {
 
 const updateHrConfig = async (cvId, data) => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/hr/${userId}/information/config`, data);
     return response.data;
   } catch (error) {

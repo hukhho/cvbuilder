@@ -20,6 +20,7 @@ import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import { getCandidateApplication, getHrApplication } from '@/app/hr/hrServices';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -59,13 +60,20 @@ const columns = [
     dataIndex: 'cvs',
     render: cvs => (
       <a>
-        <Link href={`/hr/view-cv/${cvs.historyId}`}>{cvs.historyId}</Link>{' '}
+        <Link href={`/job/view-cv/${cvs.historyId}`}>{cvs.resumeName}</Link>{' '}
       </a>
     ),
   },
   {
     title: 'Cover Letter',
-    dataIndex: 'coverLetterId',
+    dataIndex: 'coverLetters',
+    render: cvs => (
+      <a>
+        <Link href={`/job/view-cover-letter/${cvs.historyCoverLetterId}`}>
+          {cvs.historyCoverLetterId}
+        </Link>{' '}
+      </a>
+    ),
   },
 
   {
@@ -79,6 +87,7 @@ const columns = [
   {
     title: 'note',
     dataIndex: 'note',
+    render: text => <div>{text}</div>,
   },
   {
     title: 'email',
@@ -115,6 +124,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'MY APPLICATION': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -141,7 +152,11 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="8"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={
           <>
             <UserHeaderJob initialEnabledCategories={enabledCategories} />
@@ -155,7 +170,7 @@ const Home = () => {
             <div>
               <Input className="" placeholder="Search the candiatename" />
             </div>
-            <div className="!p-0 mb-5 card">
+            <div className="!p-0 mb-5 mt-8 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />
               </div>
