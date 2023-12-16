@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-syntax */
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../utils/axiosInstance';
 
 const fakeData = {

@@ -1,4 +1,5 @@
 // updateContact.js
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../utils/axiosInstance';
 
 const updateContact = async (cvId, contactData) => {
