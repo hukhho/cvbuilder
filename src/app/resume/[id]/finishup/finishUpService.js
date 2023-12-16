@@ -120,17 +120,7 @@ export const getVersionsList = async cvId => {
 };
 export const getAudit = async cvId => {
   try {
-    const userId =
-      typeof document !== 'undefined'
-        ? document.cookie
-            .split('; ')
-            .find(row => row.startsWith('userId'))
-            .split('=')[1]
-        : null;
-
-    if (!userId) {
-      throw new Error('User ID not found.');
-    }
+    const userId = getUserIdFromLocalStorage();
 
     const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}/evaluate`);
     // return mockData.data.resume;

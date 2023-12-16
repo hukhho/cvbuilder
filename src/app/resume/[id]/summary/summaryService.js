@@ -4,17 +4,7 @@ import axiosInstance from '../../../utils/axiosInstance';
 
 const getSummary = async cvId => {
   try {
-    const userId =
-      typeof document !== 'undefined'
-        ? document.cookie
-            .split('; ')
-            .find(row => row.startsWith('userId'))
-            .split('=')[1]
-        : null;
-
-    if (!userId) {
-      throw new Error('User ID not found.');
-    }
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}`);
     return response.data;
   } catch (error) {
@@ -56,17 +46,7 @@ const getSummaryHistory = async cvId => {
 
 const postSummaryAi = async (cvId, values) => {
   try {
-    const userId =
-      typeof document !== 'undefined'
-        ? document.cookie
-            .split('; ')
-            .find(row => row.startsWith('userId'))
-            .split('=')[1]
-        : null;
-
-    if (!userId) {
-      throw new Error('User ID not found.');
-    }
+    const userId = getUserIdFromLocalStorage();
 
     const response = await axiosInstance.post(`/chat-gpt/cv/${cvId}/summary`, values);
 
