@@ -2,6 +2,7 @@
 
 'use client';
 
+import '../../components/Form/customtext.css';
 import React, { useEffect, useState } from 'react';
 import {
   Avatar,
@@ -80,28 +81,35 @@ const Home = () => {
         userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
-            <div className="!p-0 mb-5 mt-0 ">
-              <div style={{ textAlign: 'left' }} />
-              <div className="flex mt-16">
-                <div style={{ width: 500 }}>
-                  <Input placeholder="Search by title, name or company" />
-                </div>
-                <div style={{ width: 200 }} className="ml-8">
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{
-                      width: '100%',
-                    }}
-                    placeholder="All Location"
-                    // defaultValue={['a10', 'c12']}
-                    onChange={handleChange}
-                    options={options}
-                  />{' '}
-                </div>
+            <div style={{ textAlign: 'left' }} />
+            <div className="flex mt-6 mb-16">
+              <div style={{ width: 500 }}>
+                <Input
+                  style={{ width: '100%' }}
+                  className="custom-search"
+                  placeholder="Search by title or company"
+                />
               </div>
-              <div>
-                <div className="flex mt-16"></div>
+              <div style={{ width: 400, height: 50 }} className="ml-8">
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{
+                    height: '50px',
+                    width: '100%',
+                  }}
+                  placeholder="All Location"
+                  // defaultValue={['a10', 'c12']}
+                  onChange={handleChange}
+                  options={options}
+                />{' '}
+              </div>
+            </div>
+
+            <div style={{}} className="!p-0 mb-5 mt-0">
+              <div className="">
+                <div className="flex"></div>
+
                 <div className="">
                   {data?.map((job, index) => (
                     <JobCard job={job} jobTitle={job.title} />

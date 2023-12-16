@@ -21,6 +21,7 @@ import {
   TreeSelect,
   Typography,
 } from 'antd';
+import '../../components/Form/customtext.css';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -96,7 +97,7 @@ const HRPost = () => {
 
   // useEffect(() => {
   //   // Set the initial value for the deadline field
-    
+
   // }, [form]);
 
   const [salaryName, setSalaryName] = useState('');
@@ -240,15 +241,17 @@ const HRPost = () => {
                   form={form}
                   onFinish={onFinish}
                 >
-                  <Form.Item name="title" label="JOB TITLE">
-                    <Input className='inputEl'/>
+                  <Form.Item className="custom-label" name="title" label="JOB TITLE">
+                    <Input className="inputEl" />
+
                   </Form.Item>
-                  <Form.Item name="workingType" label="TYPE OF JOB">
+                  <Form.Item className="custom-label" name="workingType" label="TYPE OF JOB">
                     <Select
                       defaultValue="Full Time"
                       
                       style={{
-                        width: 120,
+                        width: 350,
+                        height: '60px',
                       }}
                       onChange={handleChangeSelectJobType}
                       options={[
@@ -270,6 +273,7 @@ const HRPost = () => {
                   <Space.Compact block>
                     {' '}
                     <Form.Item
+                      className="custom-label"
                       name="companyName"
                       label="COMPANY NAME"
                       style={{
@@ -277,9 +281,10 @@ const HRPost = () => {
                         marginRight: '10px',
                       }}
                     >
-                      <Input placeholder="Google" />
+                      <Input className="inputEl" placeholder="Google" disabled />
                     </Form.Item>
                     <Form.Item
+                      className="custom-label"
                       name="location"
                       label="COMPANY LOCATION"
                       style={{
@@ -287,9 +292,10 @@ const HRPost = () => {
                         marginRight: '10px',
                       }}
                     >
-                      <Input placeholder="New York" />
+                      <Input className="inputEl" placeholder="New York" disabled />
                     </Form.Item>
                     <Form.Item
+                      className="custom-label"
                       name="avatar"
                       label="COMPANY AVATAR"
                       style={{
@@ -300,13 +306,14 @@ const HRPost = () => {
                       <Avatar size="large" src={data?.companyLogo} />
                     </Form.Item>
                   </Space.Compact>
-                  <Form.Item name="about" label="About">
-                    <Input.TextArea placeholder="About the company" rows={10} />
+                  <Form.Item className="custom-label" name="about" label="About">
+                    <Input.TextArea className="inputEl" placeholder="About the company" rows={10} />
                   </Form.Item>
-                  <Form.Item name="" className="" label="SALARY">
+                  <Form.Item className="custom-label" name="" label="SALARY">
                     <Select
                       style={{
-                        width: 200,
+                        width: 350,
+                        height: 60,
                       }}
                       value={salaryOptions}
                       onChange={handleChangeSelectSalary}
@@ -372,43 +379,76 @@ const HRPost = () => {
                       </>
                     )}
                   </Form.Item>
-                  <Form.Item name="benefit" label="Benefit">
+                  <Form.Item className="custom-label" name="benefit" label="Benefit">
                     <Input.TextArea
+                      className="inputEl"
                       placeholder="Say about what benefits candidate can recieve"
                       rows={10}
                     />
                   </Form.Item>
-                  <Form.Item name="requirement" label="Job Requirement">
-                    <Input.TextArea placeholder="Say about requirement of the job" rows={10} />
+                  <Form.Item className="custom-label" name="requirement" label="Job Requirement">
+                    <Input.TextArea
+                      className="inputEl"
+                      placeholder="Say about requirement of the job"
+                      rows={10}
+                    />
                   </Form.Item>
-                  <Form.Item name="description" label="Job Description">
-                    <Input.TextArea placeholder="Say about the description of the job" rows={10} />
+                  <Form.Item className="custom-label" name="description" label="Job Description">
+                    <Input.TextArea
+                      className="inputEl"
+                      placeholder="Say about the description of the job"
+                      rows={10}
+                    />
                   </Form.Item>
-                  <Form.Item name="skill" label="Skills">
+                  <Form.Item name="skill" className="custom-label" label="Skills">
                     <Select
                       mode="tags"
                       style={{
                         width: '100%',
+                        height: 60,
                       }}
                       placeholder="Tags Mode"
                       onChange={handleChangeTag}
                       options={options}
                     />
                   </Form.Item>
-                  <Form.Item name="deadline" label="Deadline">
-                    <DatePicker format="YYYY-MM-DD" onChange={onChangeDate} />
-                  </Form.Item>
+                  <div
+                    className="custom-space-item-2"
+                    style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <Form.Item
+                      className="custom-item custom-label"
+                      name="deadline"
+                      label="Deadline"
+                    >
+                      <DatePicker
+                        style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
+                        className="inputEl"
+                        format="YYYY-MM-DD"
+                        onChange={onChangeDate}
+                      />
+                    </Form.Item>
 
-                  <div className="ml-20">
-                    <Switch defaultChecked onChange={onChangeSwitch} />
-                    <span className="ml-4">Not Allow Candidate to apply many time in a job</span>
+                    <div className="custom-item custom-label">
+                      <div className="">
+                        <Switch defaultChecked onChange={onChangeSwitch} />
+                        <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                      </div>
+                      <Form.Item className="mb-4" name="applyAgain">
+                        <InputNumber className="inputEl" defaultValue={1} min={1} type="number" />
+                      </Form.Item>
+                    </div>
                   </div>
-                  <Form.Item name="applyAgain" label="Apply Again">
-                    <InputNumber defaultValue={0} />
-                  </Form.Item>
-                  <Form.Item label="Button">
-                    <Button type="primary" htmlType="submit">
-                      Submit
+                  <Form.Item>
+                    <Button
+                      style={{
+                        height: 35,
+                        width: '100%',
+                      }}
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      PUBLISH THE JOB
                     </Button>{' '}
                   </Form.Item>
                 </Form>

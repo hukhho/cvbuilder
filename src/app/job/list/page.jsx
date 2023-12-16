@@ -1,5 +1,6 @@
 'use client';
 
+import '../../components/Form/customtext.css';
 import React, { useEffect, useState } from 'react';
 import { Col, ConfigProvider, Input, Row, Select, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
@@ -71,18 +72,25 @@ const Home = () => {
         selected="8"
         userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container">
-            <div className="!p-0 mb-5 mt-0 ">
+          <div className="container" style={{ marginBottom: '50px' }}>
+            <div className="!p-0 mb-5 mt-0 card">
+
               <div style={{ textAlign: 'left' }} />
-              <div className="flex mt-16">
-                <div style={{ width: 500 }}>
-                  <Input placeholder="Search by title or company" />
+              <div className="flex mt-6 mb-6">
+                <div style={{ width: '50%' }}>
+                  <Input
+                    style={{ width: '100%' }}
+                    className="custom-search"
+                    placeholder="Search by title or company"
+                  />
                 </div>
-                <div style={{ width: 200 }} className="ml-8">
+                <div style={{ width: 400, height: 50 }} className="ml-8">
                   <Select
+                    className=""
                     mode="multiple"
                     allowClear
                     style={{
+                      height: '50px',
                       width: '100%',
                     }}
                     placeholder="All Location"

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { Button, Form, Input, Select, Spin, notification } from 'antd';
 import './card.css';
+import '../../components/Form/customtext.css';
 // import './button.css';
 import { applyJob, createReview } from './reviewService';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -147,10 +148,12 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                   >
                     <div className="container mx-auto px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
-                        <div className="flex ">
-                          <div className="p-9 " style={{ color: 'black' }}>
+
+                        <div className="flex  justify-center">
+                          <div className="p-9 w-[70%]" style={{ color: 'black' }}>
+
                             <h2>Select your CV and Cover Letter</h2>
-                            <p></p>
+                            <p>Choosing the suitable CV and Cover Letter to apply for the job.</p>
                             <div>
                               <Form
                                 form={form}
@@ -158,39 +161,40 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 onFinish={onFinish}
                                 layout="vertical"
                                 style={{
-                                  marginTop: 50,
-                                  maxWidth: 550,
+                                  marginTop: 20,
+                                  maxWidth: 900,
+
                                 }}
                                 requiredMark={false}
                               >
                                 <Form.Item
+                                  className="custom-label-normal"
                                   name="resume"
-                                  label={
-                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
-                                      <div className="flex gap-2 items-center text-xs">
-                                        <strong>RESUME *</strong>
-                                      </div>
-                                    </label>
-                                  }
+                                  label="Select Resume"
+
                                   rules={[
                                     {
                                       required: true,
                                     },
                                   ]}
                                 >
-                                  <Select style={{}} options={resumeOptions} />
+                                  <Select
+                                    className=""
+                                    style={{ width: '100%', height: 50 }}
+                                    options={resumeOptions}
+                                  />
+
                                 </Form.Item>
                                 <Form.Item
+                                  className="custom-label-normal"
                                   name="coverletter"
-                                  label={
-                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
-                                      <div className="flex gap-2 items-center text-xs">
-                                        <strong>COVER LETTER</strong>
-                                      </div>
-                                    </label>
-                                  }
+                                  label="select Cover Letter "
                                 >
-                                  <Select style={{}} options={coverOptions} />
+                                  <Select
+                                    style={{ width: '100%', height: 50 }}
+                                    options={coverOptions}
+                                  />
+
                                 </Form.Item>
                                 {/* <Form.Item
                                   name="deadline"
@@ -205,19 +209,24 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 </Form.Item> */}
 
                                 <Form.Item
+                                  className="custom-label-normal"
                                   name="note"
-                                  label={
-                                    <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
-                                      <div className="flex gap-2 items-center text-xs">
-                                        <strong>NOTE</strong>
-                                      </div>
-                                    </label>
-                                  }
+                                  label="Notes for Hiring Manager"
+                                  rules={[
+                                    {
+                                      required: true,
+                                    },
+                                  ]}
+
                                 >
-                                  <Input placeholder="Anything you'd like us to express for the hiring manager" />
+                                  <Input
+                                    className="custom-search"
+                                    placeholder="Anything you'd like us to express for the hiring manager"
+                                  />
                                 </Form.Item>
 
                                 <Form.Item>
+
                                   {isSubmitting && (
                                     <Spin 
                                       indicator={
