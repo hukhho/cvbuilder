@@ -11,6 +11,7 @@ import './customtext.css';
 // import './select.css';
 import './coverletter.css';
 import updateCoverLetter from './updateCoverLetterService';
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 
 const stylesInput = {
   width: '100%',
@@ -51,7 +52,7 @@ const CoverLetterForm = ({ cvId, onCreated, data }) => {
 
   const handleSubmit = async values => {
     try {
-      const userId = 1;
+      const userId = getUserIdFromLocalStorage();
       setLoading(true);
       const contentResponse = await createCoverLetter(userId, values);
       console.log('handleSubmit, values: ', values);
@@ -73,7 +74,7 @@ const CoverLetterForm = ({ cvId, onCreated, data }) => {
 
   const handleSubmitSave = async values => {
     try {
-      const userId = 1;
+      const userId = getUserIdFromLocalStorage();
       setLoading(true);
 
       console.log('save values: ', values);

@@ -203,8 +203,8 @@ export default function FinishUp({ params }) {
 
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
- 
-  const { avatar, email, userRole } = useStore();
+
+  const { avatar, email, userRole, ats, setAts } = useStore();
   const enabledCategories = { 'FINISH UP': true };
 
   // useEffect(() => {
@@ -221,6 +221,9 @@ export default function FinishUp({ params }) {
     setFinishUpData(newFinishUpData);
   }, [toolbarState]);
 
+  useEffect(() => {
+    console.log('ats:', ats);
+  }, [ats]);
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
@@ -596,6 +599,26 @@ export default function FinishUp({ params }) {
     console.log('versionId: ', versionId);
   };
 
+  const handleGen = () => {
+    console.log('handleGen: ');
+    console.log('ats: ', ats);
+
+    setAts([
+      {
+        ats: 'Product Owner',
+        status: 'Pass',
+      },
+      {
+        ats: 'Product Manager',
+        status: 'Pass',
+      },
+      {
+        ats: 'Analyze',
+        status: 'Pass',
+      },
+    ]);
+  };
+
   const [matchedJobs, setMatchedJobs] = useState([]);
 
   return (
@@ -676,7 +699,7 @@ export default function FinishUp({ params }) {
                   </div> */}
                   <ExpertReviewCard />
                   <AiFeedback cvId={params.id} />
-                  <Ats cvId={params.id} />
+                  <Ats cvId={params.id} onGen={handleGen} />
 
                   <button
                     onClick={handleShowVersion}

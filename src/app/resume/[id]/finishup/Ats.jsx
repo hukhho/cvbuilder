@@ -1,15 +1,21 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { getAts } from './finishUpService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircle, faWarning } from '@fortawesome/free-solid-svg-icons';
 import JobModal from '@/app/components/Modal/JobModal';
 import JobModalCreate from '@/app/components/Modal/JobModalCreate';
+import useStore from '@/store/store';
 
-const Ats = ({ cvId }) => {
+const Ats = ({ cvId, onGen }) => {
   const [data, setData] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [isFetched, setIsFetched] = useState(false);
+  function filterPass(filterData) {
+    return filterData?.filter(content => content?.status === 'Pass');
+  }
 
   const fetchData = async () => {
     try {
@@ -101,19 +107,19 @@ const Ats = ({ cvId }) => {
       ],
     };
     setData(result.ats);
-    console.log('Ats:data: ', result);
     setTitle(result.title);
     setDescription(result.description);
     setIsFetched(true);
+    // const passed = filterPass(data.ats);
+    // console.log(':passed: ', passed);
+
+    // setAts(passed);
   };
 
   const onCreated = () => {
     fetchData();
   };
 
-  function filterPass(filterData) {
-    return filterData?.filter(content => content?.status === 'Pass');
-  }
   const passedData = filterPass(data);
 
   return (
@@ -140,8 +146,8 @@ const Ats = ({ cvId }) => {
                   );
                 })}
               </div>
-              <button className="button cta" onClick={handleCLick}>
-                Gen fake data
+              <button className="button cta mb-8" onClick={handleCLick}>
+                GENERATE
               </button>
               Want to improve your chances of getting this role? Consider adding the following
               keywords to your resume:

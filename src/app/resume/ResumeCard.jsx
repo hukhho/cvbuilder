@@ -67,7 +67,6 @@ const ResumeCard = ({ onDeleted, resume }) => {
           className="relative group"
           style={{ width: '240px', height: '240px', overflow: 'hidden' }}
         >
-          
           <UpdateResume
             isOpen={isUpdateResumeOpen}
             onOpenModal={closeUpdateResumeModal}
@@ -77,7 +76,6 @@ const ResumeCard = ({ onDeleted, resume }) => {
               console.log('update');
             }}
           />
-
           <div className="w-full h-full opacity-100 group-hover:opacity-50 transition-opacity">
             <Link href={`/resume/${resume.id}/contact`} passHref legacyBehavior>
               <RedLink>
@@ -129,7 +127,6 @@ const ResumeCard = ({ onDeleted, resume }) => {
                       </div>
                     </div>
                   </button>
-
                   {/* <button onClick={openUpdateResumeModal}></button> */}
                 </Space>
                 <Space align="center">

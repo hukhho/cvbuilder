@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+import useStore from '@/store/store';
 import { Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
@@ -7,6 +8,8 @@ import Highlighter from 'react-highlight-words';
 
 const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyles }) => {
   const summaryState = useRef(summary);
+  const { ats } = useStore();
+  console.log('SummarySection: ', ats);
 
   const handleChange = (evt, targetName) => {
     console.log('handleChange: ', evt.target.value);
@@ -21,6 +24,7 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
       console.log('handleBlur: ', summaryState.current);
     }
   };
+
   if (templateType === 'modern') {
     return (
       <>
@@ -57,7 +61,6 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
             autoEscape={true}
             textToHighlight={summary}
           />
-          
         </div>
       </>
     );
@@ -94,12 +97,12 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
           onBlur={e => handleBlur(e, 'summary')}
           onChange={e => handleChange(e, 'summary')}
         /> */}
-         <Highlighter
-            highlightClassName="YourHighlightClass"
-            searchWords={['test']}
-            autoEscape={true}
-            textToHighlight={summary}
-          />
+        <Highlighter
+          highlightClassName="YourHighlightClass"
+          searchWords={['test']}
+          autoEscape={true}
+          textToHighlight={summary}
+        />
       </div>
     </div>;
   }
@@ -145,12 +148,27 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
               onBlur={e => handleBlur(e, 'summary')}
               onChange={e => handleChange(e, 'summary')}
             /> */}
-             <Highlighter
-            highlightClassName="YourHighlightClass"
-            searchWords={['test']}
-            autoEscape={true}
-            textToHighlight={summary}
-          />
+            {/* // <Highlighter
+              //   highlightClassName="YourHighlightClass"
+              //   searchWords={['Product Manager', 'Product Owner', 'Analyze']}
+              //   autoEscape={true}
+              //   textToHighlight={summary}
+              // /> */}
+            {ats.map((at, index) => (
+              // Assuming 'at' is an individual item in the 'ats' array
+              <div key={index}>
+                {/* Render your item properties here */}
+                <p>{at.status}</p>
+                {/* Add more properties as needed */}
+              </div>
+            ))}
+            <ContentEditable
+              className="editableContent cursor-text  designStudio "
+              id="summary-summary"
+              html={summaryState.current}
+              onBlur={e => handleBlur(e, 'summary')}
+              onChange={e => handleChange(e, 'summary')}
+            />
           </div>
         </div>
       </div>
