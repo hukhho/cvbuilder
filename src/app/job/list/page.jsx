@@ -74,7 +74,6 @@ const Home = () => {
         content={
           <div className="container" style={{ marginBottom: '50px' }}>
             <div className="!p-0 mb-5 mt-0 card">
-
               <div style={{ textAlign: 'left' }} />
               <div className="flex mt-6 mb-6">
                 <div style={{ width: '50%' }}>
