@@ -1,4 +1,5 @@
 // createResumeService.js
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../utils/axiosInstance';
 
 const createCoverLetterService = async (cvId, resumeData) => {

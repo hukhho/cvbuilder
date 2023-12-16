@@ -1,4 +1,5 @@
 // getContact.js
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../../utils/axiosInstance';
 
 const getContact = async cvId => {

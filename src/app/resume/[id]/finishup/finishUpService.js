@@ -1,4 +1,5 @@
 // finishUpService.js
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../../utils/axiosInstance';
 import { mockData } from './mockData';
 
@@ -99,17 +100,7 @@ export const getReview = async cvId => {
 };
 export const getVersionsList = async cvId => {
   try {
-    const userId =
-      typeof document !== 'undefined'
-        ? document.cookie
-            .split('; ')
-            .find(row => row.startsWith('userId'))
-            .split('=')[1]
-        : null;
-
-    if (!userId) {
-      throw new Error('User ID not found.');
-    }
+    const userId = getUserIdFromLocalStorage();
 
     const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}/histories`);
     // return mockData.data.resume;
@@ -141,17 +132,7 @@ export const syncUp = async cvId => {
 
 export const saveCv = async (cvId, resumeData) => {
   try {
-    const userId =
-      typeof document !== 'undefined'
-        ? document.cookie
-            .split('; ')
-            .find(row => row.startsWith('userId'))
-            .split('=')[1]
-        : null;
-
-    if (!userId) {
-      throw new Error('User ID not found.');
-    }
+    const userId = getUserIdFromLocalStorage();
 
     const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/cv-body`, resumeData);
     return response.data;

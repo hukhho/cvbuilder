@@ -1,3 +1,4 @@
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../utils/axiosInstance';
 
 const updateCoverLetter = async (cvId, coverLetterId, data) => {
