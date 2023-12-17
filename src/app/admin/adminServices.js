@@ -18,6 +18,56 @@ const getUsers = async data => {
     throw error;
   }
 };
+
+const getPostingJobs = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`/admin/${userId}/job-postings`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getEvaluatesConfig = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`/admin/${userId}/evaluates/config`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const saveScore = async (evaluateId, data) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/admin/${userId}/evaluate/${evaluateId}/score`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const banJob = async jobId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/admin/${userId}/job-posting/${jobId}/ban`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const unbanJob = async jobId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/admin/${userId}/job-posting/${jobId}/un-ban`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 //
 const postHrPublic = async data => {
   try {
@@ -160,4 +210,12 @@ const updateHrConfig = async (cvId, data) => {
   }
 };
 
-export { getWithdrawRequests, getUsers };
+export {
+  getWithdrawRequests,
+  getUsers,
+  getPostingJobs,
+  banJob,
+  unbanJob,
+  getEvaluatesConfig,
+  saveScore,
+};
