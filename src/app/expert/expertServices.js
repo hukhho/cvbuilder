@@ -112,5 +112,5 @@ export {
   getExpertPreview,
   updateExpertConfig,
   getExpertPurchases,
-  getSuggestJobTitleAndCompany
+  getSuggestJobTitleAndCompany,
 };
