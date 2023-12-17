@@ -242,7 +242,7 @@ const Home = ({ params }) => {
               <div className="flex mt-8">
                 <div className="p-8 bg-white" style={{ textAlign: 'left', width: '70%' }}>
 
-                  <div>{data?.avatar && <Image src={"c"} width={100} height={100} />}</div>
+                  <div>{data?.avatar && <Image src={data?.avatar} width={100} height={100} />}</div>
                   <div className="mt-8">
                     <Title style={{ width: 800 }} level={4}>
                       What can we offer?

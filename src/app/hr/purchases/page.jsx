@@ -50,7 +50,7 @@ const columns = [
     dataIndex: 'expenditure',
     render: text => (
       <div>
-        {(Number(text) * 1000).toLocaleString('vi-VN', {
+        {(Number(text)).toLocaleString('vi-VN', {
           style: 'currency',
           currency: 'VND',
         })}
@@ -168,7 +168,7 @@ const Home = () => {
         avatar={avatar}
         email={email}
         userRole={userRole}
-        selected="7"
+        selected="6"
         userHeader={
           <>
             <HRConfigHeader initialEnabledCategories={enabledCategories} />
