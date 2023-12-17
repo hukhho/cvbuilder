@@ -137,14 +137,19 @@ const CoverLetterCardComponents = ({ onDeleted, onCreated, resume }) => {
 
                   {/* <button onClick={openUpdateResumeModal}></button> */}
                 </Space>
-             
-                <Space align="center">
-                  <FontAwesomeIcon icon={faTrashAlt} />
-                  Delete
+
+                <Space align="center mt-4">
+                  <button onClick={() => handleDeleteResume(resume.id)}>
+                    <div className="flex">
+                      <FontAwesomeIcon icon={faTrashAlt} />
+                      <div className="ml-4" style={{ marginTop: -3 }}>
+                        Delete
+                      </div>
+                    </div>
+                  </button>
                 </Space>
               </div>
               <Divider />
-              
             </Card>
           </Popover.Panel>
         </Popover>

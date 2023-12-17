@@ -3,7 +3,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Card, ConfigProvider, Empty, Skeleton, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  ConfigProvider,
+  Empty,
+  Result,
+  Skeleton,
+  Typography,
+  notification,
+} from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -56,6 +66,17 @@ const Home = () => {
   const [expertsMock, setExpertsMock] = useState(generateMockExperts());
   const [isLoading, setIsLoading] = useState(true);
 
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Notification',
+      description: message,
+      placement,
+    });
+  };
   useEffect(() => {
     // Get the current date
     const today = new Date();
@@ -92,6 +113,18 @@ const Home = () => {
 
       // setResumes(fetchedResumes);
     } catch (error) {
+      openNotification('bottomRight', `Error`);
+
+      if (error.response.data.error) {
+        openNotification('bottomRight', `Error: ${error.response.data.error}`);
+        +setErrorMessage(error.response.data.error);
+      } else if (error.response.data && error.response.status === 400 && error.response.data) {
+        openNotification('bottomRight', `Error: ${error.response.data}`);
+        setErrorMessage(error.response.data);
+      } else {
+        openNotification('bottomRight', `Something went wrong!`);
+        setErrorMessage('Something went wrong');
+      }
       console.error('There was an error fetching resumes', error);
     } finally {
       setIsLoading(false);
@@ -106,9 +139,7 @@ const Home = () => {
       console.log('fetched ', fetchedResumes);
 
       setResumes(fetchedResumes);
-    } catch (error) {
-      console.error('There was an error fetching resumes', error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -139,7 +170,19 @@ const Home = () => {
       content={
         <div className="container mx-auto">
           {isLoading && <Skeleton style={{ marginTop: 50 }} />}
-          {!isLoading && (
+          {!isLoading && errorMessage !== '' && (
+            <Result
+              status="403"
+              title="403"
+              subTitle={`Sorry, you are not authorized to access this page. ${errorMessage}`}
+              extra={
+                <Link href="/" passHref>
+                  <button type="button">Back</button>
+                </Link>
+              }
+            />
+          )}
+          {!isLoading && errorMessage === '' && (
             <div className="!p-0 relative">
               <div className="pl-16" style={{ paddingLeft: '', width: '95%', background: 'white' }}>
                 <div className="absolute top-10 left-5">
@@ -149,6 +192,7 @@ const Home = () => {
                     </button>
                     <span className="ml-2">Back</span>
                   </Link> */}
+                  {errorMessage}
                 </div>
                 <div className="absolute top-10 right-5" style={{ textAlign: 'left' }}>
                   {/* <ReviewNewModal onCreated={onCreated} resumes={resumes} expert={expert} /> */}

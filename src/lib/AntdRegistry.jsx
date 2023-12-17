@@ -9,10 +9,12 @@ import dynamic from 'next/dynamic';
 import Auth0ProviderWithNavigate from '@/app/Auth0ProviderWithNavigate';
 import { useAuth0 } from '@auth0/auth0-react';
 import { PageLoader } from '@/app/components/PageLoader';
+import { notification } from 'antd';
 
 const StyledComponentsRegistry = ({ children }) => {
   const cache = createCache();
   const { isLoading } = useAuth0();
+  const [api, contextHolder] = notification.useNotification();
 
   // Use useServerInsertedHTML only on the server side
   useServerInsertedHTML(() => (
@@ -21,6 +23,7 @@ const StyledComponentsRegistry = ({ children }) => {
 
   return (
     <Auth0ProviderWithNavigate>
+      {contextHolder}
       <StyleProvider cache={cache}> {children}</StyleProvider>
     </Auth0ProviderWithNavigate>
   );
