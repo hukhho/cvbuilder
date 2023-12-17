@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, ConfigProvider, Input, Table, Typography } from 'antd';
+import { Avatar, Badge, Breadcrumb, ConfigProvider, Input, Table, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -16,18 +16,18 @@ import { getResumes } from '@/app/utils/indexService';
 import { UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
-import { getHrPostList } from '../hrServices';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import useStore from '@/store/store';
+import { getHrApplication, getHrApplicationByPostId } from '@/app/hr/hrServices';
 
 const { Title } = Typography;
 const columns = [
-  {
-    title: 'Job posting',
-    dataIndex: 'title',
-    render: (text, record)  => <Link href={`/hr/application/job/${record?.id}`}>{text}</Link>,
-  },
+  // {
+  //   title: 'Job posting',
+  //   dataIndex: 'title',
+  //   render: text => <a>{text}</a>,
+  // },
   {
     title: 'Status',
     dataIndex: 'status',
@@ -51,33 +51,49 @@ const columns = [
     },
   },
   {
-    title: 'View',
-    dataIndex: 'view',
+    title: 'Candidate',
+    dataIndex: 'candidateName',
   },
   {
-    title: 'Application',
-    dataIndex: 'application',
+    title: 'Cv',
+    dataIndex: 'cvs',
+    render: cvs => (
+      <a>
+        <Link href={`/hr/view-cv/${cvs.historyId}`}>{cvs.resumeName}</Link>{' '}
+      </a>
+    ),
   },
- 
-  
- 
-  
+  {
+    title: 'Cover Letter',
+    dataIndex: 'coverLetters',
+    render: cvs => (
+      <a>
+        <Link href={`/hr/view-cover-letter/${cvs.historyCoverLetterId}`}>{cvs.title}</Link>{' '}
+      </a>
+    ),
+  },
   {
     title: 'Date Application',
-    dataIndex: 'timestamp',
+    dataIndex: 'applyDate',
     // sorter: {
     //   compare: (a, b) => a.revicedDay - b.revicedDay,
     //   multiple: 2,
     // },
   },
   {
-    title: 'Action',
-    dataIndex: 'id',
-    render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
-
+    title: 'note',
+    dataIndex: 'note',
   },
- 
-  
+  {
+    title: 'email',
+    dataIndex: 'email',
+  },
+  // {
+  //   title: 'Action',
+  //   dataIndex: 'id',
+  //   render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
+
+  // },
 ];
 // const statuses = ['Waiting', 'Overdue', 'Done'];
 // const dateRandome = ['3 days ago', 'Next Tuesday'];
@@ -99,9 +115,9 @@ const columns = [
 //   });
 // }
 
-const Home = () => {
+const HRApplicationJobIdPage = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'MANAGE JOBS': true,
+    'APPLICATION LIST': true,
   });
   const { avatar, email, userRole } = useStore();
 
@@ -114,10 +130,10 @@ const Home = () => {
   const fetchData = async () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getHrPostList();
+      const fetchedDataFromAPI = await getHrApplicationByPostId(params.id);
       setData(fetchedDataFromAPI);
     } catch (error) {
-      console.log("getReviewRequestsByCandiate:Error: ", error)
+      console.log('getReviewRequestsByCandiate:Error: ', error);
     }
   };
 
@@ -142,8 +158,17 @@ const Home = () => {
         }
         content={
           <div className="container mt-16" style={{ width: '80%' }}>
-            <div style={{ textAlign: 'left' }}>
-              {/* <Title level={5}>CV Review Table</Title> */}
+            <div style={{ marginBottom: 20, textAlign: 'left' }}>
+              <Breadcrumb
+                items={[
+                  {
+                    title: <Link href="/hr/application">Application List</Link>,
+                  },
+                  {
+                    title: 'An Application',
+                  },
+                ]}
+              />
             </div>
             <div>
               <Input className="" placeholder="Search the candiatename" />
@@ -160,4 +185,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HRApplicationJobIdPage;

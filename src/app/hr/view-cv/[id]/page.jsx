@@ -23,6 +23,8 @@ import Link from 'next/link';
 import HeaderHR from '@/app/components/HeaderHR';
 import { getFinishUp } from '@/app/expert/view-cv/[id]/finishUpService';
 import { getHistoryFinishUp } from '@/app/utils/indexService';
+import useStore from '@/store/store';
+import UserLayout from '@/app/components/Layout/UserLayout';
 
 const mockData = {
   data: {
@@ -194,6 +196,7 @@ export default function FinishUp({ params }) {
   const [enabledCategories, setEnabledCategories] = useState({
     'APPLICATION LIST': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
@@ -499,7 +502,12 @@ export default function FinishUp({ params }) {
   return (
     <main>
       <ConfigProvider>
-        <UserCVBuilderLayout
+        <UserLayout
+         isCollapsed={true}
+         avatar={avatar}
+         email={email}
+         userRole={userRole}
+         selected="3"
           userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
           content={
             <div className="flex">

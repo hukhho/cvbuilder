@@ -132,6 +132,15 @@ const getHrApplication = async () => {
     throw error;
   }
 };
+const getHrApplicationByPostId = async postId => {
+  try {
+    const response = await axiosInstance.get(`/application-log/${postId}`);
+    return response.data;
+    
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getVipList = async () => {
   try {
@@ -228,4 +237,5 @@ export {
   getCandidateConfigById,
   getCandidateListMatchByPostId,
   getCandidateListByKeyword,
+  getHrApplicationByPostId
 };

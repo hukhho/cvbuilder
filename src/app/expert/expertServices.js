@@ -21,6 +21,15 @@ const getExpertPurchases = async () => {
     throw error;
   }
 };
+const getSuggestJobTitleAndCompany = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`user/${userId}/job-title/company/config`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getRequestList = async () => {
   try {
@@ -103,4 +112,5 @@ export {
   getExpertPreview,
   updateExpertConfig,
   getExpertPurchases,
+  getSuggestJobTitleAndCompany
 };

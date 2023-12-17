@@ -113,7 +113,6 @@ const Home = () => {
 
       // setResumes(fetchedResumes);
     } catch (error) {
-
       if (error.response.data.error) {
         openNotification('bottomRight', `Error: ${error.response.data.error}`);
         +setErrorMessage(error.response.data.error);
@@ -240,10 +239,6 @@ const Home = () => {
                       {expert?.cvId > 0 && <FinishUpPreviewV2 cvId={expert.cvId} />}
                     </div>
                   </div>
-
-                  {/* <div className="mt-8">
-                    <img src="/images/resume.jpg" alt="image" />
-                  </div> */}
                 </div>
               </div>
 

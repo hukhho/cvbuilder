@@ -330,7 +330,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
           >
             <Form.List
               name={['price']}
-              initialValue={[{ day: '', price: '' }]} // Initialize with one item
+              initialValue={[{ day: 1, price: 100 }]} // Initialize with one item
               rules={[
                 {
                   validator: async (_, prices) => {
@@ -360,6 +360,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                         >
                           <Input addonAfter={<div> vnđ</div>} placeholder="price" />
                         </Form.Item>
+
                         {subFields.length > 1 && (
                           <CloseOutlined
                             onClick={() => {
@@ -370,7 +371,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                       </Space>
                     ))}
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'end' }}>
+                  <div style={{ marginTop: 10, display: 'flex', justifyContent: 'end' }}>
                     {subFields.length < 3 && (
                       <Button
                         className="custom-button"
