@@ -122,8 +122,9 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
   // };
   const formData = {
     resumeName: data?.resumeName,
-    title: data?.title,
+    job_title: data?.jobTitle,
     company: data?.company,
+    job_description: data?.jobDescription,
     cvId: data?.cvId,
   };
 

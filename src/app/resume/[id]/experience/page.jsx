@@ -46,13 +46,14 @@ const Experience = ({ params }) => {
     try {
       const data = await getAllExperiences(cvId);
       console.log('data getAllExperiences ', data);
-      // setSelectedExperience(null);
 
       if (typeId > 0) {
         console.log('typeId: ', typeId);
         let experience = data.find(item => item.id == typeId);
         console.log('experience::typeId ', experience);
         setSelectedExperience(experience);
+      } else {
+        setSelectedExperience(null);
       }
 
       setExperiences(data);
