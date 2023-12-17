@@ -79,7 +79,13 @@ const ExpertRequestPage = () => {
       title: 'Resume Name',
       dataIndex: 'resumeName',
       render: (text, record) => {
-        if (record.status === 'Processing') {
+        if (
+          record.status === 'Processing' ||
+          record.status === 'WAITING' ||
+          record.status === 'Waiting' ||
+          record.status === 'Draft' ||
+          record.status === 'DRAFT'
+        ) {
           return <Link href={`/expert/view-cv/${record.id}`}>{text}</Link>;
         } else {
           return <span>{text}</span>;
