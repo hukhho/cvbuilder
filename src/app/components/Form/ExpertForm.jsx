@@ -315,7 +315,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
           <Form.Item
             label={
               <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs text-gray-600">
-                <div className="flex  gap-2 items-center text-xs">
+                <div className="flex gap-2 items-center text-xs">
                   <span className="flex flex-col">
                     <span>
                       <strong>PRICING</strong>
@@ -328,40 +328,61 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               </label>
             }
           >
-            <Form.List name={['price']}>
-              {(subFields, subOpt) => (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    rowGap: 16,
-                  }}
-                >
-                  {subFields.map(subField => (
-                    <Space className="custom-space-item-3" key={subField.key}>
-                       <Form.Item noStyle name={[subField.name, 'day']}>
-                        <Input addonAfter={<div>days</div>} placeholder="day" />
-                      </Form.Item>
-                      <Form.Item noStyle name={[subField.name, 'price']}>
-                        <Input addonAfter={<div> vnđ</div>} placeholder="price" />
-                      </Form.Item>
-                      <CloseOutlined
-                        onClick={() => {
-                          subOpt.remove(subField.name);
-                        }}
-                      />
-                    </Space>
-                  ))}
-                  <div style={{ display: 'flex', justifyContent: 'end' }}>
-                    <Button
-                      className="custom-button"
-                      type="dashed"
-                      onClick={() => subOpt.add()}
-                      block
-                    >
-                      + Add more day
-                    </Button>
+            <Form.List
+              name={['price']}
+              initialValue={[{ day: '', price: '' }]} // Initialize with one item
+              rules={[
+                {
+                  validator: async (_, prices) => {
+                    if (!prices || prices.length < 1) {
+                      return Promise.reject(new Error('At least one price item is required'));
+                    }
+                  },
+                },
+              ]}
+            >
+              {(subFields, subOpt, { errors }) => (
+                <div>
+                  <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
+                    {subFields.map(subField => (
+                      <Space className="custom-space-item-3" key={subField.key}>
+                        <Form.Item
+                          noStyle
+                          name={[subField.name, 'day']}
+                          rules={[{ required: true, message: 'Day is required' }]}
+                        >
+                          <Input addonAfter={<div>days</div>} placeholder="day" />
+                        </Form.Item>
+                        <Form.Item
+                          noStyle
+                          name={[subField.name, 'price']}
+                          rules={[{ required: true, message: 'Price is required' }]}
+                        >
+                          <Input addonAfter={<div> vnđ</div>} placeholder="price" />
+                        </Form.Item>
+                        {subFields.length > 1 && (
+                          <CloseOutlined
+                            onClick={() => {
+                              subOpt.remove(subField.name);
+                            }}
+                          />
+                        )}
+                      </Space>
+                    ))}
                   </div>
+                  <div style={{ display: 'flex', justifyContent: 'end' }}>
+                    {subFields.length < 3 && (
+                      <Button
+                        className="custom-button"
+                        type="dashed"
+                        onClick={() => subOpt.add()}
+                        block
+                      >
+                        + Add more day
+                      </Button>
+                    )}
+                  </div>
+                  <Form.ErrorList errors={errors} />
                 </div>
               )}
             </Form.List>

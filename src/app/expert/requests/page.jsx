@@ -68,14 +68,11 @@ const ExpertRequestPage = () => {
     }
   };
 
-  
   const initialData = [];
 
   const [data, setData] = useState(initialData);
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState(initialData);
-
-
 
   const columns = [
     {
@@ -92,10 +89,11 @@ const ExpertRequestPage = () => {
     {
       title: 'Candidate',
       dataIndex: 'name',
-      render: text => (
+      render: (text, record) => (
         <div>
           {' '}
-          <Avatar icon={<UserOutlined />} /> {text}
+          {record?.avatar && <Avatar className="mr-2" src={record?.avatar} />}
+          {text}
         </div>
       ),
     },
@@ -106,7 +104,14 @@ const ExpertRequestPage = () => {
     {
       title: 'Price',
       dataIndex: 'price',
-      render: text => <div>{text}.000đ</div>,
+      render: text => (
+        <div>
+          {Number(text).toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          })}
+        </div>
+      ),
       sorter: {
         compare: (a, b) => a.price - b.price,
         multiple: 3,
@@ -195,19 +200,16 @@ const ExpertRequestPage = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
- 
-  
-  };
-  
-  const handleSearch = (value) => {
+  const onChange = (pagination, filters, sorter, extra) => {};
+
+  const handleSearch = value => {
     setSearchText(value);
-    console.log("handleSearch")
+    console.log('handleSearch');
     if (value === '') {
       setSearchData(data);
       return;
     }
-  
+
     const filteredData = data.filter(item => {
       const searchString = value.toLowerCase();
       return (

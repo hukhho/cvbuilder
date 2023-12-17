@@ -14,7 +14,6 @@ import { notification } from 'antd';
 const StyledComponentsRegistry = ({ children }) => {
   const cache = createCache();
   const { isLoading } = useAuth0();
-  const [api, contextHolder] = notification.useNotification();
 
   // Use useServerInsertedHTML only on the server side
   useServerInsertedHTML(() => (
@@ -23,7 +22,6 @@ const StyledComponentsRegistry = ({ children }) => {
 
   return (
     <Auth0ProviderWithNavigate>
-      {contextHolder}
       <StyleProvider cache={cache}> {children}</StyleProvider>
     </Auth0ProviderWithNavigate>
   );
