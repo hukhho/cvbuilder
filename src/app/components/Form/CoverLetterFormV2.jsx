@@ -215,10 +215,15 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
         </Form.Item>
         <Form.Item
           name="job_title"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                <strong>JOB TITLE</strong>
+                <strong>JOB TITLE *</strong>
               </span>
             </label>
           }

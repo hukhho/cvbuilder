@@ -165,7 +165,7 @@ const HRApplicationJobIdPage = ({ params }) => {
                     title: <Link href="/hr/application">Application List</Link>,
                   },
                   {
-                    title: 'An Application',
+                    title: '',
                   },
                 ]}
               />

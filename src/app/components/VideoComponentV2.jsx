@@ -12,7 +12,7 @@ function VideoComponentV2() {
       {showVideo ? (
         <div>
           <iframe
-            src="https://fast.wistia.net/embed/iframe/fo7dvqzmxu?autoPlay=true"
+            src="https://fast.wistia.net/embed/iframe/09d0j7zwor"
             width="360"
             height="185"
             allowtransparency="true"

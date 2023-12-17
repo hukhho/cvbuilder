@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function VideoComponent() {
+function VideoComponent({ videoUrl }) {
   const [showVideo, setShowVideo] = useState(false);
 
   const openVideo = () => {
@@ -12,7 +12,7 @@ function VideoComponent() {
       {showVideo ? (
         <div>
           <iframe
-            src="https://fast.wistia.net/embed/iframe/fo7dvqzmxu?autoPlay=true"
+            src={videoUrl || 'https://fast.wistia.net/embed/iframe/fo7dvqzmxu?autoPlay=true'}
             width="320"
             height="185"
             allowtransparency="true"

@@ -198,11 +198,8 @@ const Summary = ({ params }) => {
                   </div>
                   <div>
                     <p>
-                      AI writer helps you to write your summary for a{' '}
-                      <span style={{ color: '#4d70eb', cursor: 'pointer' }}>
-                        targeted job position
-                      </span>
-                      . Strange result? Just regenerate!
+                      AI writer helps you to write your summary for a targeted job position .
+                      Strange result? Just regenerate!
                     </p>{' '}
                   </div>
                   <div>

@@ -90,7 +90,7 @@ const Project = ({ params }) => {
               <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
-                    <VideoComponent />
+                    <VideoComponent videoUrl={"https://fast.wistia.net/embed/iframe/51ing461q6"}/>
                   </div>
                 </div>
                 <Card
