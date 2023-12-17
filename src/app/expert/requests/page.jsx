@@ -23,7 +23,7 @@ import useStore from '@/store/store';
 
 const { Title } = Typography;
 
-const Home = () => {
+const ExpertRequestPage = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW REQUESTS': true,
   });
@@ -266,4 +266,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ExpertRequestPage;

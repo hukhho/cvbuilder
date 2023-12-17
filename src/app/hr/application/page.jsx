@@ -117,7 +117,7 @@ const columns = [
 //   });
 // }
 
-const Home = () => {
+const HRApplicationPage = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'APPLICATION LIST': true,
   });
@@ -178,4 +178,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HRApplicationPage;
