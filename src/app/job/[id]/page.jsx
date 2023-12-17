@@ -189,8 +189,7 @@ const Home = ({ params }) => {
                           <span className="ml-2">{data?.salary}</span>
                         </div>
                       </div>
-
-                      <div className="flex mt-4 space-x-4 items-center">
+                      <div className="flex mt-4 space-x-4 items-center" style={{ minWidth: 120 }}>
                         {data?.skill?.map((skill, index) => {
                           return (
                             <div
@@ -201,13 +200,6 @@ const Home = ({ params }) => {
                             </div>
                           );
                         })}
-
-                        {/* <div
-                      style={{ width: '120px', textAlign: 'center' }}
-                      className="border-gray-500 border rounded-full p-1"
-                    >
-                      UI/UX Designer{' '}
-                    </div> */}
                       </div>
                     </div>
                   </div>

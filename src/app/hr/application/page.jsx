@@ -69,7 +69,7 @@ const columns = [
     render: cvs => (
       <a>
         <Link href={`/hr/view-cover-letter/${cvs.historyCoverLetterId}`}>
-          {cvs.historyCoverLetterId}
+          {cvs.title}
         </Link>{' '}
       </a>
     ),

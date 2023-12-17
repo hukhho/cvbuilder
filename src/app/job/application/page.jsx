@@ -65,6 +65,10 @@ const columns = [
     ),
   },
   {
+    title: 'Company',
+    dataIndex: 'company',
+  },
+  {
     title: 'Cv',
     dataIndex: 'cvs',
     render: cvs => (
