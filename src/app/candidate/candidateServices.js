@@ -11,6 +11,7 @@ const getCandidateConfig = async () => {
     throw error;
   }
 };
+
 const getCandidatePurchases = async () => {
   try {
     const userId = getUserIdFromLocalStorage();

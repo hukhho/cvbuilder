@@ -17,7 +17,6 @@ import {
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBackward,
@@ -33,9 +32,11 @@ import Statitics from './Statitics';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import Link from 'next/link';
 import { getExpert } from '@/app/review/new/reviewService';
-import { getCandidateConfig } from '../candidateServices';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import useStore from '@/store/store';
+import { getCandidateConfig } from '@/app/candidate/candidateServices';
+import { getCandidateConfigById } from '../../hrServices';
+import HeaderHR from '@/app/components/HeaderHR';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -56,7 +57,7 @@ const generateMockExperts = () => {
 };
 const Home = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'PREVIEW YOUR PROFILE': true,
+    'BROSWER CVS': true,
   });
   const { avatar, email, userRole } = useStore();
 
@@ -78,7 +79,7 @@ const Home = ({ params }) => {
 
   const fetchCandidates = async () => {
     try {
-      const fetchedExpert = await getCandidateConfig();
+      const fetchedExpert = await getCandidateConfigById(params.id);
 
       setExpert(fetchedExpert);
       console.log('fetchCandidates: ', fetchedExpert);
@@ -128,7 +129,7 @@ const Home = ({ params }) => {
         email={email}
         userRole={userRole}
         selected="7"
-        userHeader={<CandidateConfigHeader initialEnabledCategories={enabledCategories} />}
+        userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
             {isLoading && <Skeleton style={{ marginTop: 50 }} />}
@@ -138,7 +139,7 @@ const Home = ({ params }) => {
                 title="403"
                 subTitle={`Sorry, you are not authorized to access this page. ${errorMessage}`}
                 extra={
-                  <Link href="/" passHref>
+                  <Link href="/hr/broswer" passHref>
                     <button type="button">Back</button>
                   </Link>
                 }
@@ -148,13 +149,14 @@ const Home = ({ params }) => {
               <div className="!p-0 relative">
                 <div className="pl-16" style={{ width: 900, paddingLeft: '', background: 'white' }}>
                   <div className="absolute top-10 left-5">
-                    <Link href="/review/list/expert" passHref>
+                    <Link href="/hr/broswer" passHref>
                       <button>
                         <FontAwesomeIcon icon={faChevronLeft} />
                       </button>
                       <span className="ml-2">Back</span>
                     </Link>
                   </div>
+
                   <div className="flex justify-between mt-16 mr-32 p-8">
                     <div className="flex mt-8">
                       <Avatar size={128} style={{}} src={expert?.avatar} alt="image" />

@@ -63,6 +63,15 @@ const getHrPostList = async () => {
   }
 };
 
+const getCandidateConfigById = async candidateId => {
+  try {
+    const response = await axiosInstance.get(`/candidate/${candidateId}/information/config`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCandidateApplication = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -141,6 +150,24 @@ const getCandidateList = async () => {
     throw error;
   }
 };
+const getCandidateListByKeyword = async values => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`/candidates/publish/information?search=${values}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const getCandidateListMatchByPostId = async postId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`/hr/job-posting/${postId}/match/skills`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const postHrDraft = async data => {
   try {
@@ -197,4 +224,7 @@ export {
   updateHrShare,
   getVipList,
   subMonth,
+  getCandidateConfigById,
+  getCandidateListMatchByPostId,
+  getCandidateListByKeyword,
 };

@@ -118,9 +118,13 @@ const Home = () => {
   const [searchValue, setSearchValue] = useState('');
 
   const onSearch = async (value, _e, info) => {
-    const result = await searchExperts(value);
-    setExperts(result);
-    setSearchValue(value);
+    try {
+      const result = await searchExperts(value);
+      setExperts(result);
+      setSearchValue(value);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
@@ -141,7 +145,6 @@ const Home = () => {
                   size="large"
                   defaultValue={searchValue}
                   onSearch={onSearch}
-                
                 />
               </div>
               <div className="grid grid-cols-3 gap-4 mt-16 mb-16">

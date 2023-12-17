@@ -30,10 +30,11 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import JobCard from './JobCard';
-import { getCandidateList } from '../hrServices';
+import { getCandidateList, getCandidateListByKeyword, getCandidateListMatchByPostId, getHrPostList } from '../hrServices';
 import UserHeaderHR from '@/app/components/UserHeaderHR';
 import HeaderHR from '@/app/components/HeaderHR';
 import useStore from '@/store/store';
+import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 
@@ -44,23 +45,53 @@ const Home = () => {
   const { avatar, email, userRole } = useStore();
 
   const options = [];
-  for (let i = 10; i < 36; i++) {
-    options.push({
-      label: i.toString(36) + i,
-      value: i.toString(36) + i,
-    });
-  }
-  const handleChange = value => {
+
+  const [selectedJob, setSelectedJob] = useState();
+
+  const handleChange = async value => {
     console.log(`selected ${value}`);
+    if (value > 0) {
+      try {
+      setSelectedJob(value)
+
+      const fetchedDataFromAPI = await getCandidateListMatchByPostId(value);
+      
+      setData(fetchedDataFromAPI);
+      }
+      catch (error) {
+        console.log('error', error);
+      }
+    } else {
+      setSelectedJob(null)
+      fetchData();
+    }
   };
 
   const [data, setData] = useState();
+  const [jobs, setJobs] = useState([]);
 
   const fetchData = async () => {
     try {
       const fetchedDataFromAPI = await getCandidateList();
       setData(fetchedDataFromAPI);
       console.log('Candidate List', fetchedDataFromAPI);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const fetchPostingJobs = async () => {
+    try {
+      const fetchedJobFromAPI = await getHrPostList();
+
+      setJobs(fetchedJobFromAPI);
+
+      const jobOptions = fetchedJobFromAPI.map(job => ({
+        value: job?.id,
+        label: job?.title,
+      }));
+      setJobs(jobOptions);
+      console.log('fetchedJobFromAPI:', fetchedJobFromAPI);
     } catch (error) {}
   };
 
@@ -68,8 +99,14 @@ const Home = () => {
     console.log('useEffect');
 
     fetchData();
+    fetchPostingJobs();
   }, []);
+  const [searchValue, setSearchValue] = useState('');
 
+  const onSearch = async (value, _e, info) => {
+    const result = await getCandidateListByKeyword(value);
+    setData(result);
+  };
   return (
     <ConfigProvider>
       <UserLayout
@@ -84,32 +121,35 @@ const Home = () => {
             <div style={{ textAlign: 'left' }} />
             <div className="flex mt-6 mb-16">
               <div style={{ width: 500 }}>
-                <Input
-                  style={{ width: '100%' }}
-                  className="custom-search"
+              <Search
                   placeholder="Search by title or company"
+                  size="large"
+                  className="custom-search"
+
+                  defaultValue={searchValue}
+                  onSearch={onSearch}
+                
                 />
+               
               </div>
               <div style={{ width: 400, height: 50 }} className="ml-8">
                 <Select
-                  mode="multiple"
                   allowClear
                   style={{
                     height: '50px',
                     width: '100%',
                   }}
-                  placeholder="All Location"
-                  // defaultValue={['a10', 'c12']}
+                  value={selectedJob}
+                  placeholder="Choose your job to match"
                   onChange={handleChange}
-                  options={options}
-                />{' '}
+                  options={jobs}
+                />
               </div>
             </div>
 
             <div style={{}} className="!p-0 mb-5 mt-0">
               <div className="">
                 <div className="flex"></div>
-
                 <div className="">
                   {data?.map((job, index) => (
                     <JobCard job={job} jobTitle={job.title} />
