@@ -219,7 +219,6 @@ const Home = ({ params }) => {
                         right: 50,
                       }}
                     >
-
                       {/* <button className="button" on style={{ width: '314px' }}>
                         Apply for this job
                       </button> */}
@@ -243,9 +242,7 @@ const Home = ({ params }) => {
               <div className="flex mt-8">
                 <div className="p-8 bg-white" style={{ textAlign: 'left', width: '70%' }}>
 
-                  <div>
-                    <Image src={data?.avatar} width={100} height={100} />
-                  </div>
+                  <div>{data?.avatar && <Image src={"c"} width={100} height={100} />}</div>
                   <div className="mt-8">
                     <Title style={{ width: 800 }} level={4}>
                       What can we offer?
@@ -266,7 +263,6 @@ const Home = ({ params }) => {
                   </div>
                 </div>
                 <div style={{ width: '30%', position: 'relative' }}>
-
                   <Card
                     style={{
                       width: 300,
@@ -293,7 +289,7 @@ const Home = ({ params }) => {
                           <p>{data?.deadline}</p>
                         </div>
                       </div>
-                   
+
                       <div className="flex">
                         <AppstoreOutlined />
                         <div className="flex flex-col ml-2  mt-2 mr-2  ">

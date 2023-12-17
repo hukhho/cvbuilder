@@ -56,11 +56,20 @@ const columns = [
     dataIndex: 'candidateName',
   },
   {
+    title: 'Job Title',
+    dataIndex: 'jobPosting',
+    render: job => (
+      <a>
+        <Link href={`/job/${job?.id}`}>{job?.name}</Link>{' '}
+      </a>
+    ),
+  },
+  {
     title: 'Cv',
     dataIndex: 'cvs',
     render: cvs => (
       <a>
-        <Link href={`/job/view-cv/${cvs.historyId}`}>{cvs.resumeName}</Link>{' '}
+        <Link href={`/job/view-cv/${cvs?.historyId}`}>{cvs?.resumeName}</Link>{' '}
       </a>
     ),
   },
@@ -69,9 +78,9 @@ const columns = [
     dataIndex: 'coverLetters',
     render: cvs => (
       <a>
-        <Link href={`/job/view-cover-letter/${cvs.historyCoverLetterId}`}>
-          {cvs.historyCoverLetterId}
-        </Link>{' '}
+        <Link href={`/job/view-cover-letter/${cvs?.historyCoverLetterId}`}>
+          {cvs?.title}
+        </Link>
       </a>
     ),
   },
@@ -89,10 +98,10 @@ const columns = [
     dataIndex: 'note',
     render: text => <div>{text}</div>,
   },
-  {
-    title: 'email',
-    dataIndex: 'email',
-  },
+  // {
+  //   title: 'email',
+  //   dataIndex: 'email',
+  // },
   // {
   //   title: 'Action',
   //   dataIndex: 'id',
