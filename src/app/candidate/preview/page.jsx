@@ -3,7 +3,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Card, ConfigProvider, Empty, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  ConfigProvider,
+  Empty,
+  Result,
+  Skeleton,
+  Typography,
+  notification,
+} from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -50,38 +60,22 @@ const Home = ({ params }) => {
   });
   const { avatar, email, userRole } = useStore();
 
-  const [experts, setExperts] = useState([]);
   const [expert, setExpert] = useState(null);
-  const [resumes, setResumes] = useState([]);
-  const [options, setOptions] = useState([]);
-  const [expertsMock, setExpertsMock] = useState(generateMockExperts());
 
-  useEffect(() => {
-    // Get the current date
-    const today = new Date();
+  const [isLoading, setIsLoading] = useState(true);
 
-    // Generate options
-    const newOptions = [
-      { value: null, metadata: '5-d', label: '5 days' },
-      { value: null, metadata: '4-d', label: '4 days' },
-      { value: null, metadata: '3-d', label: '3 days' },
-      { value: null, metadata: '2-d', label: '2 days' },
-      { value: null, metadata: '1-d', label: '1 day' },
-    ].map(option => {
-      const daysToAdd = parseInt(option.metadata, 10);
+  const [errorMessage, setErrorMessage] = useState('');
 
-      const newDate = new Date(today);
-      newDate.setDate(today.getDate() + daysToAdd);
+  const [api, contextHolder] = notification.useNotification();
 
-      const newDateStr = newDate.toISOString().split('T')[0];
-      option.value = newDateStr;
-      option.label = `${option.label} (${newDateStr})`;
-
-      return option;
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Notification',
+      description: message,
+      placement,
     });
+  };
 
-    setOptions(newOptions);
-  }, []);
   const fetchCandidates = async () => {
     try {
       const fetchedExpert = await getCandidateConfig();
@@ -90,6 +84,19 @@ const Home = ({ params }) => {
       console.log('fetchCandidates: ', fetchedExpert);
     } catch (error) {
       console.error('There was an error fetching resumes', error);
+
+      if (error.response.data.error) {
+        openNotification('bottomRight', `Error: ${error.response.data.error}`);
+        +setErrorMessage(error.response.data.error);
+      } else if (error.response.data && error.response.status === 400 && error.response.data) {
+        openNotification('bottomRight', `Error: ${error.response.data}`);
+        setErrorMessage(error.response.data);
+      } else {
+        openNotification('bottomRight', `Something went wrong!`);
+        setErrorMessage('Something went wrong');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   const fetchResumes = async () => {
@@ -124,61 +131,72 @@ const Home = ({ params }) => {
         userHeader={<CandidateConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
-            <div className="!p-0 relative">
-              <div className="pl-16" style={{ width: 900, paddingLeft: '', background: 'white' }}>
-                <div className="absolute top-10 left-5">
-                  <Link href="/review/list/expert" passHref>
-                    <button>
-                      <FontAwesomeIcon icon={faChevronLeft} />
-                    </button>
-                    <span className="ml-2">Back</span>
+            {isLoading && <Skeleton style={{ marginTop: 50 }} />}
+            {!isLoading && errorMessage !== '' && (
+              <Result
+                status="403"
+                title="403"
+                subTitle={`Sorry, you are not authorized to access this page. ${errorMessage}`}
+                extra={
+                  <Link href="/" passHref>
+                    <button type="button">Back</button>
                   </Link>
-                </div>
+                }
+              />
+            )}
+            {!isLoading && !errorMessage && expert && (
+              <div className="!p-0 relative">
+                <div className="pl-16" style={{ width: 900, paddingLeft: '', background: 'white' }}>
+                  <div className="absolute top-10 left-5">
+                    <Link href="/review/list/expert" passHref>
+                      <button>
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                      </button>
+                      <span className="ml-2">Back</span>
+                    </Link>
+                  </div>
 
-                <div className="flex justify-between mt-16 mr-32 p-8">
-                  <div className="flex mt-8">
-                    <Avatar size={128} style={{}} src={expert?.avatar} alt="image" />
-                    <div style={{ textAlign: 'left', marginTop: '20px', marginLeft: '20px' }}>
-                      <Title level={3}>{expert?.name}</Title>
-                      <p>
-                        {expert?.jobTitle} at {expert?.company}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-8" style={{ textAlign: 'left', marginLeft: '20px' }}>
-                  <div className="flex">
-                    <Title style={{ color: '#4D70EB' }} level={5}>
-                      <span style={{ borderBottom: '2px solid #4D70EB' }}>Overview</span>
-                    </Title>
-                    <div></div>
-                  </div>
-                  <div>
-                    <div />
-                  </div>
-                  <div className="flex justify-between	">
-                    <div style={{ textAlign: 'left', width: '900px' }}>
-                      <div style={{ textAlign: 'left', minHeight: '100px' }}>
-                        {' '}
-                        {expert?.about ? (
-                          <p dangerouslySetInnerHTML={{ __html: expert?.about }} />
-                        ) : (
-                          <Empty />
-                        )}
+                  <div className="flex justify-between mt-16 mr-32 p-8">
+                    <div className="flex mt-8">
+                      <Avatar size={128} style={{}} src={expert?.avatar} alt="image" />
+                      <div style={{ textAlign: 'left', marginTop: '20px', marginLeft: '20px' }}>
+                        <Title level={3}>{expert?.name}</Title>
+                        <p>
+                          {expert?.jobTitle} at {expert?.company}
+                        </p>
                       </div>
-                      {expert?.cv?.map(cvItem => (
-                        <FinishUpPreviewV2 key={cvItem.id} cvId={cvItem.id} />
-                      ))}
                     </div>
                   </div>
 
-                  {/* <div className="mt-8">
-                    <img src="/images/resume.jpg" alt="image" />
-                  </div> */}
+                  <div className="mt-8" style={{ textAlign: 'left', marginLeft: '20px' }}>
+                    <div className="flex">
+                      <Title style={{ color: '#4D70EB' }} level={5}>
+                        <span style={{ borderBottom: '2px solid #4D70EB' }}>Overview</span>
+                      </Title>
+                      <div></div>
+                    </div>
+                    <div>
+                      <div />
+                    </div>
+                    <div className="flex justify-between	">
+                      <div style={{ textAlign: 'left', width: '900px' }}>
+                        <div style={{ textAlign: 'left', minHeight: '100px' }}>
+                          {' '}
+                          {expert?.about ? (
+                            <p dangerouslySetInnerHTML={{ __html: expert?.about }} />
+                          ) : (
+                            <Empty />
+                          )}
+                        </div>
+                        {expert?.cv?.map(cvItem => (
+                          <FinishUpPreviewV2 key={cvItem.id} cvId={cvItem.id} />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         }
       />

@@ -113,7 +113,6 @@ const Home = () => {
 
       // setResumes(fetchedResumes);
     } catch (error) {
-      openNotification('bottomRight', `Error`);
 
       if (error.response.data.error) {
         openNotification('bottomRight', `Error: ${error.response.data.error}`);
@@ -125,7 +124,6 @@ const Home = () => {
         openNotification('bottomRight', `Something went wrong!`);
         setErrorMessage('Something went wrong');
       }
-      console.error('There was an error fetching resumes', error);
     } finally {
       setIsLoading(false);
     }

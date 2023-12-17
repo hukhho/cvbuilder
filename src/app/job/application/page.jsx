@@ -82,9 +82,7 @@ const columns = [
     dataIndex: 'coverLetters',
     render: cvs => (
       <a>
-        <Link href={`/job/view-cover-letter/${cvs?.historyCoverLetterId}`}>
-          {cvs?.title}
-        </Link>
+        <Link href={`/job/view-cover-letter/${cvs?.historyCoverLetterId}`}>{cvs?.title}</Link>
       </a>
     ),
   },
@@ -100,8 +98,9 @@ const columns = [
   {
     title: 'note',
     dataIndex: 'note',
-    render: text => <div>{text}</div>,
+    render: text => (text !== undefined || null || '' ? <div>{text}</div> : null),
   },
+
   // {
   //   title: 'email',
   //   dataIndex: 'email',

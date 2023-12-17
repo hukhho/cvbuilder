@@ -205,7 +205,13 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
             </label>
           }
         >
-          <Select size="large" options={resumeOptions} />
+          <Select
+            style={{
+              height: 50,
+              width: '100%',
+            }}
+            options={resumeOptions}
+          />
         </Form.Item>
         <Form.Item
           name="job_title"
@@ -264,15 +270,19 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
           min={0.2}
           max={1}
           step={0.01}
-          marks={marks}
           tooltip={{
             formatter,
           }}
           value={slider}
           onChange={val => setSlider(val)}
         />
+        <label style={{}}>
+          <span>
+            <strong>Cover Letter creative level</strong>
+          </span>
+        </label>
 
-        <button hidden={loading} className="button mt-8" type="submit">
+        <button hidden={loading} className="button mt-16" type="submit">
           {loading ? 'WAIT TO UPDATE COVER LETTER' : 'CREATE CONTENT COVER LETTER'}
         </button>
         {loading && (
