@@ -166,7 +166,7 @@ const Home = () => {
       userRole={userRole}
       userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
       content={
-        <div className="container mx-auto">
+        <div className="container">
           {isLoading && <Skeleton style={{ marginTop: 50 }} />}
           {!isLoading && errorMessage !== '' && (
             <Result

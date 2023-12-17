@@ -146,7 +146,7 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                     style={{ width: 550 }}
                     className="z-99 relative transform rounded-lg  text-left align-middle shadow-sm transition-all opacity-100 scale-100"
                   >
-                    <div className="container mx-auto px-4 py-6">
+                    <div className="container px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
 
                         <div className="flex  justify-center">

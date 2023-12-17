@@ -44,6 +44,18 @@ const getReviewRequestsByCandiate = async () => {
   }
 };
 
+const getReviewRequestsByCandiateSearch = async searchTerm => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(
+      `/cv/candidate/${userId}/review-requests?sortBy=price&sortOrder=asc&searchTerm=${searchTerm}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getExpert = async id => {
   try {
     const response = await axiosInstance.get(`/expert/${id}`);
@@ -67,4 +79,5 @@ export {
   createReview,
   searchExperts,
   getReviewRequestsByCandiate,
+  getReviewRequestsByCandiateSearch,
 };

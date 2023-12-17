@@ -244,7 +244,7 @@ const HRUpdatePost = ({ params }) => {
         selected="3"
         userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
+          <div className="container">
             {contextHolder}
             <Modal
               title="Update post success"

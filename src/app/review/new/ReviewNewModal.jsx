@@ -165,7 +165,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                     >
                       ✕
                     </button>
-                    <div className="container mx-auto px-4 py-6">
+                    <div className="container px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
                         <div className="flex ">
                           <div className="bg-rezi-blue text-white p-9 rounded-l-lg w-[30%]">

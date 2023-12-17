@@ -135,7 +135,7 @@ const Home = ({ params }) => {
         userRole={userRole}
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
+          <div className="container">
             <div className="!p-0 relative">
               <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
                 <div className="absolute top-10 left-5">
@@ -207,13 +207,13 @@ const Home = ({ params }) => {
                   style={{
                     paddingLeft: '20px',
                     paddingBottom: '20px',
+                    paddingTop: '20px',
                     background: 'white',
                     textAlign: 'left',
                   }}
                 >
                   <div>
                     <Title style={{ color: '#4D70EB' }} level={5}>
-                      {' '}
                       <span style={{ borderBottom: '2px solid #4D70EB' }}>Reviews</span>
                     </Title>
                   </div>

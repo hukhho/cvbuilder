@@ -133,17 +133,15 @@ const Home = () => {
         selected="4"
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
-            <div className="!p-0">
+          <div className="container">
+            <div className="!p-0" style={{ width: 1000 }}>
               <div className="mt-16">
                 <Search
                   placeholder="Search by name, title or company"
                   size="large"
                   defaultValue={searchValue}
                   onSearch={onSearch}
-                  style={{
-                    width: 900,
-                  }}
+                
                 />
               </div>
               <div className="grid grid-cols-3 gap-4 mt-16 mb-16">
@@ -204,7 +202,7 @@ const Home = () => {
                               {expert?.jobTitle} at {expert?.company}
                             </p>
                           </div>
-                          <div className="flex">
+                          <div className="flex mt-4">
                             <svg
                               width="19"
                               height="19"
@@ -225,7 +223,7 @@ const Home = () => {
                                 stroke-linejoin="round"
                               />
                             </svg>
-                            <p className="ml-2"> {expert?.price} </p>
+                            <p className="ml-2"> {expert?.price} VNĐ</p>
                           </div>
                         </div>
                       </div>

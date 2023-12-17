@@ -174,7 +174,7 @@ const styles = {
 const UserLayout = React.memo(
   ({ userHeader, content, selected, onCreated, isCollapsed, userRole, avatar, email }) => {
     const filteredItems = items.filter(item => item.roles.includes(userRole));
-    const { balance  } = useStore();
+    const { balance } = useStore();
 
     const {
       token: { colorPrimary, borderRadius, colorBgContainer },
@@ -418,6 +418,7 @@ const UserLayout = React.memo(
               style={{
                 marginLeft: isCollapsed ? 150 : 350,
                 background: '#fbfbfb',
+                maxWidth: '1000',
               }}
             >
               <Header
@@ -429,15 +430,17 @@ const UserLayout = React.memo(
                   position: 'relative',
                 }}
               >
-                {userHeader}
-                {!isCollapsed && (
-                  <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
-                    <Space align="center">
-                      <Avatar src={avatar} size={30} />
-                      <span className="mock-block">{email}</span>
-                    </Space>
-                  </div>
-                )}
+                <div className="container mx-auto">
+                  {userHeader}
+                  {!isCollapsed && (
+                    <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
+                      <Space align="center">
+                        <Avatar src={avatar} size={30} />
+                        <span className="mock-block">{email}</span>
+                      </Space>
+                    </div>
+                  )}
+                </div>
               </Header>
 
               <Content
@@ -452,17 +455,11 @@ const UserLayout = React.memo(
                     textAlign: 'left',
                     background: '#fbfbfb',
                   }}
+                  className="container mx-auto"
                 >
                   {content}
                 </div>
               </Content>
-              {/* <Footer
-       style={{
-         textAlign: 'center',
-       }}
-     >
-       Ant Design ©2023
-     </Footer> */}
             </Layout>
           </Layout>
         </ConfigProvider>
