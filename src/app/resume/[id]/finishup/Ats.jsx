@@ -8,8 +8,7 @@ import JobModal from '@/app/components/Modal/JobModal';
 import JobModalCreate from '@/app/components/Modal/JobModalCreate';
 import useStore from '@/store/store';
 
-const Ats = ({ cvId, onGen }) => {
-  const [data, setData] = useState();
+const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [isFetched, setIsFetched] = useState(false);
@@ -21,7 +20,7 @@ const Ats = ({ cvId, onGen }) => {
     try {
       console.log('cvId: ', cvId);
       const result = await getAts(cvId);
-      setData(result.ats);
+      setDataAts(result.ats);
       console.log('Ats:data: ', result);
       setTitle(result.title);
       setDescription(result.description);
@@ -32,6 +31,7 @@ const Ats = ({ cvId, onGen }) => {
     }
   };
   useEffect(() => {
+    console.log('~page Ats.jsx');
     fetchData();
   }, []);
   const handleCLick = () => {
@@ -106,12 +106,15 @@ const Ats = ({ cvId, onGen }) => {
         },
       ],
     };
-    setData(result.ats);
+    setDataAts(result.ats);
+
     setTitle(result.title);
     setDescription(result.description);
     setIsFetched(true);
-    // const passed = filterPass(data.ats);
-    // console.log(':passed: ', passed);
+
+    const passed = filterPass(result.ats);
+    console.log(':passed: ', passed);
+    onGen(passed);
 
     // setAts(passed);
   };
@@ -120,7 +123,7 @@ const Ats = ({ cvId, onGen }) => {
     fetchData();
   };
 
-  const passedData = filterPass(data);
+  const passedData = filterPass(dataAts);
 
   return (
     <div style={{ color: 'black', textAlign: 'left' }}>
@@ -154,7 +157,7 @@ const Ats = ({ cvId, onGen }) => {
             </span>
             <div className="mt-4">
               <div>
-                {data?.map((content, index) => {
+                {dataAts?.map((content, index) => {
                   return (
                     <div key={index}>
                       {content.status === 'Warning' && (

@@ -22,13 +22,14 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const InvolvementSection = ({ involvements, onChangeOrder, templateType }) => {
+const InvolvementSection = ({ involvements, onChangeOrder, templateType, highlightAts }) => {
   const involvementItems = (
     <>
       {involvements.map(edu => {
         const { organizationRole, organizationName, duration, college, description } = edu;
         return (
           <StandardItem
+            highlightAts={highlightAts}
             key={edu.id}
             role={organizationRole}
             firstItem={college}

@@ -79,7 +79,7 @@ const Home = () => {
         userHeader={<HRConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
-            <div className="!p-0 mb-5 mt-16 card">
+            <div className="!p-0 mb-5 mt-16">
               <div style={{ textAlign: 'left' }}>
                 {/* <Title level={5}>CV Review Table</Title> */}
               </div>

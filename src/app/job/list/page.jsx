@@ -73,7 +73,7 @@ const Home = () => {
         userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container" style={{ marginBottom: '50px' }}>
-            <div className="!p-0 mb-5 mt-0 card">
+            <div className="!p-0 mb-5 mt-0">
               <div style={{ textAlign: 'left' }} />
               <div className="flex mt-6 mb-6">
                 <div style={{ width: '50%' }}>
