@@ -112,6 +112,16 @@ const items = [
     ),
     roles: ['ADMIN'], // Define roles that can access this item
   },
+  {
+    key: '6',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/admin/subscription">
+        <span style={{ color: '#ffffff', fontSize: 11 }}> Configure Subcriptions</span>
+      </Link>
+    ),
+    roles: ['ADMIN'], // Define roles that can access this item
+  },
 ];
 
 const COLORS = {

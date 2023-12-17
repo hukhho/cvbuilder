@@ -29,6 +29,16 @@ const getPostingJobs = async () => {
   }
 };
 
+const getSub = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get('/admin/information/config');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getEvaluatesConfig = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -43,6 +53,14 @@ const saveScore = async (evaluateId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/admin/${userId}/evaluate/${evaluateId}/score`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const saveSub = async data => {
+  try {
+    const response = await axiosInstance.put('/admin/information/config', data);
     return response.data;
   } catch (error) {
     throw error;
@@ -218,4 +236,6 @@ export {
   unbanJob,
   getEvaluatesConfig,
   saveScore,
+  getSub,
+  saveSub,
 };
