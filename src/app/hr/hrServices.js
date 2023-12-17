@@ -11,6 +11,7 @@ const postHrPublic = async data => {
     throw error;
   }
 };
+
 const updateHrPublic = async (postingId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -172,7 +173,7 @@ const getCandidateListMatchByPostId = async postId => {
 const postHrDraft = async data => {
   try {
     const userId = getUserIdFromLocalStorage();
-    const response = await axiosInstance.get(`/hr/${userId}/job-posting/draft`, data);
+    const response = await axiosInstance.post(`/hr/${userId}/job-posting/draft`, data);
     return response.data;
   } catch (error) {
     throw error;
