@@ -125,7 +125,7 @@ const Dashboard = () => {
             <div></div>
             <div className="!p-0 mt-16 mb-5 card">
               <div className="">
-                <ColumnChart data={chartData} />
+                {/* <ColumnChart data={chartData} /> */}
               </div>
             </div>
           </div>
