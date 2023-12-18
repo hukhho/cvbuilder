@@ -122,6 +122,16 @@ const items = [
     ),
     roles: ['ADMIN'], // Define roles that can access this item
   },
+  {
+    key: '7',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/admin/apikey">
+        <span style={{ color: '#ffffff', fontSize: 11 }}>Configure OpenAI API key</span>
+      </Link>
+    ),
+    roles: ['ADMIN'], // Define roles that can access this item
+  },
 ];
 
 const COLORS = {

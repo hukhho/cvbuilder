@@ -25,6 +25,15 @@ const getResumes = async () => {
     throw error;
   }
 };
+const getResumesCoverLetter = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`user/${userId}/cv/detail/cover-letter`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getProtectedResourceWithoutToken = async () => {
   try {
@@ -115,4 +124,5 @@ export {
   getProtectedResourceWithoutToken,
   getHistoryFinishUp,
   getUserIdFromLocalStorage,
+  getResumesCoverLetter,
 };

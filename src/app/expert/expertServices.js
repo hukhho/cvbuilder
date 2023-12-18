@@ -72,6 +72,24 @@ const updateExpertConfig = async data => {
     throw error;
   }
 };
+const updateOpenAiKey = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put('/admin/information/config/api-key', data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const updateExpertBankConfig = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/expert/${userId}/information/config-bank`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const rejectRequest = async requestId => {
   try {
@@ -124,4 +142,6 @@ export {
   getExpertPurchases,
   getSuggestJobTitleAndCompany,
   getHistoryList,
+  updateExpertBankConfig,
+  updateOpenAiKey,
 };

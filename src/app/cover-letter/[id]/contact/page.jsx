@@ -10,7 +10,7 @@ import UserCoverLetterBuilderHeader from '@/app/components/UserCoverLetterBuilde
 
 import CoverLetterFormV2 from '@/app/components/Form/CoverLetterFormV2';
 
-import { getResumes } from '@/app/utils/indexService';
+import { getResumes, getResumesCoverLetter } from '@/app/utils/indexService';
 import getCoverLetter from '../finishup/getCoverLetter';
 import getContact from '@/app/resume/[id]/contact/contactService';
 import UserLayout from '@/app/components/Layout/UserLayout';
@@ -46,7 +46,7 @@ const Contact = ({ params }) => {
 
   const fetchResumes = async () => {
     try {
-      const resumesList = await getResumes();
+      const resumesList = await getResumesCoverLetter();
       setListResumes(resumesList);
       console.log('fetchResumes: ', resumesList);
     } catch (error) {

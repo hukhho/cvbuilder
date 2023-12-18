@@ -54,7 +54,10 @@ const getEvaluatesConfig = async () => {
 const saveScore = async (evaluateId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();
-    const response = await axiosInstance.put(`/admin/${userId}/evaluate/${evaluateId}/score`, data);
+    const response = await axiosInstance.put(
+      `/admin/${userId}/evaluate/${evaluateId}/score-criteria`,
+      data,
+    );
     return response.data;
   } catch (error) {
     throw error;

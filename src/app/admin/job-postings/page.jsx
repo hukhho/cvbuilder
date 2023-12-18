@@ -62,22 +62,35 @@ const Home = () => {
     console.log('params', pagination, filters, sorter, extra);
   };
 
+  const fetchData = async () => {
+    try {
+      console.log('fetchData getReviewRequestsByCandiate');
+      const fetchedDataFromAPI = await getPostingJobs();
+      setData(fetchedDataFromAPI);
+    } catch (error) {
+      console.log('getReviewRequestsByCandiate:Error: ', error);
+    }
+  };
   // Function to mock banning a job
   const handleBanJob = async jobId => {
     console.log(`Banning job with ID: ${jobId}`);
     try {
       const result = await banJob(jobId);
       openNotification('bottomRight', `Save changed ${result}`, 'success');
+      fetchData();
+
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`, 'error');
     }
   };
 
   const handleUnbanJob = async jobId => {
-    console.log(`Banning job with ID: ${jobId}`);
+    console.log(`Unban job with ID: ${jobId}`);
     try {
       const result = await unbanJob(jobId);
       openNotification('bottomRight', `Save changed ${result}`, 'success');
+      fetchData();
+
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`, 'error');
     }
@@ -97,22 +110,15 @@ const Home = () => {
       title: 'Status',
       dataIndex: 'status',
       render: text => {
-        if (text === 'Published') {
+        if (text === 'UnBanned') {
           return <Badge status="success" text={text} />;
         }
-        if (text === 'Draft') {
-          return <Badge status="processing" text={text} />;
-        }
-        if (text === 'Overdue') {
+
+        if (text === 'Banned') {
           return <Badge status="error" text={text} />;
         }
-        if (text === 'Unpublish') {
-          return <Badge status="warning" text={text} />;
-        }
-        if (text === 'Disable') {
-          return <Badge status="default" text={text} />;
-        }
-        return <Badge status="warning" text={text} />;
+
+        return <Badge status="default" text={text} />;
       },
     },
     {
@@ -140,23 +146,18 @@ const Home = () => {
       dataIndex: 'id',
       render: (text, record) => (
         <div>
-          <button onClick={() => handleBanJob(record.id)}>Ban</button>
-          <button className="ml-4" onClick={() => handleUnbanJob(record.id)}>
-            Unban
-          </button>
+          {record?.status === 'Banned' ? (
+            <button className="" onClick={() => handleUnbanJob(record.id)}>
+              Unban
+            </button>
+          ) : (
+            <button onClick={() => handleBanJob(record.id)}>Ban</button>
+          )}
         </div>
       ),
     },
   ];
-  const fetchData = async () => {
-    try {
-      console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getPostingJobs();
-      setData(fetchedDataFromAPI);
-    } catch (error) {
-      console.log('getReviewRequestsByCandiate:Error: ', error);
-    }
-  };
+  
 
   useEffect(() => {
     console.log('useEffect');

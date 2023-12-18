@@ -34,6 +34,7 @@ import Deposit from '@/app/components/Modal/Deposit';
 import { getProtectedResource } from '@/app/services/message.service';
 import Withdraw from '@/app/components/Modal/Withdraw';
 import useStore from '@/store/store';
+import BankExpertForm from '@/app/components/Form/BankExpertForm';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -116,6 +117,9 @@ const Home = () => {
               <div>
                 <div>
                   <ExpertForm data={data} onCreated={onCreated} resumeOptions={resumeOptions} />
+                </div>
+                <div>
+                  <BankExpertForm data={data} onCreated={onCreated} />
                 </div>
                 <div>
                   {' '}

@@ -97,45 +97,42 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
       setLoading(false);
     }
   };
-
-  // const handleSubmitSave = async values => {
-  //   try {
-  //     setLoading(true);
-  //     console.log('save values: ', values);
-  //     const submitUpdate = {
-  //       title: 'title',
-  //       data: '2023-10-23T13:40:14.035Z',
-  //       company: 'Google',
-  //       description: content,
-  //     };
-
-  //     const response = await updateCoverLetter(coverLetterId, submitUpdate);
-
-  //     console.log('handleSubmit, values: ', values);
-  //     console.log('content state: ', content);
-  //     console.log('content.data.reply: ', contentResponse.reply);
-  //   } catch (error) {
-  //     openNotification('bottomRight', `Submit. Error: ${error}`);
-
-  //     console.log('Submit. Error:', error);
-  //   }
-  // };
   const formData = {
-    resumeName: data?.resumeName,
+    // resumeName: data?.resumeName,
     job_title: data?.jobTitle,
     company: data?.company,
     job_description: data?.jobDescription,
     cvId: data?.cvId,
   };
 
+  console.log('listResumes123', listResumes);
+
   const resumeOptions = listResumes.map(resume => ({
-    value: resume.id,
-    label: resume.resumeName,
+    value: resume?.id,
+    label: resume?.resume,
+    metadata: {
+      jobTitle: resume?.jobTitle,
+      company: resume?.company,
+      job_description: resume?.jobDescription,
+    },
   }));
+  console.log('resumeOptions: ', resumeOptions);
+
+  const handleResumeChange = cvId => {
+    console.log('handleResumeChange:cvId ', cvId);
+    setCvId(cvId);
+    const selectedResume = listResumes.find(resume => resume.id === cvId);
+    if (selectedResume) {
+      form.setFieldsValue({
+        job_title: selectedResume.jobTitle,
+        company: selectedResume.company,
+        job_description: selectedResume.jobDescription,
+      });
+    }
+  };
 
   useEffect(() => {
     console.log('form.setFieldsValue(formData): ', formData);
-
     form.setFieldsValue(formData);
   }, [data, form]);
 
@@ -150,44 +147,6 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
         autoComplete="off"
         requiredMark={false}
       >
-        {/* <Form.Item
-            name="temperature"
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  <strong>Temperature</strong>
-                </span>
-              </label>
-            }
-          >
-            <Input style={stylesInput} placeholder="0.2" />
-          </Form.Item> */}
-        {/* <Form.Item
-            label={
-              <label style={{}}>
-                <span className="custom-text whitespace-nowrap">
-                  <strong>CHOOSE CV</strong>
-                </span>
-              </label>
-            }
-          >
-            <Select
-              showSearch
-              style={{ width: '100%' }}
-              placeholder="Select a resume"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.children?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
-              }
-              onChange={value => setCvId(value)}
-            >
-              {listResumes?.map(resume => (
-                <Select.Option key={resume.id} value={resume.id}>
-                  {resume.resumeName}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item> */}
         <Form.Item
           name="cvId"
           rules={[
@@ -210,6 +169,8 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
               height: 50,
               width: '100%',
             }}
+            onChange={handleResumeChange}
+            value={cvId}
             options={resumeOptions}
           />
         </Form.Item>
