@@ -99,6 +99,21 @@ const Home = () => {
     console.log('onCreated');
   };
 
+  const formatBalance = balance => {
+    if (balance !== undefined) {
+      // Convert to VND and format
+      const formattedBalance = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+      }).format(balance);
+
+      return formattedBalance;
+    }
+
+    return ''; // Return an empty string if balance is undefined
+  };
+
+
   return (
       <UserLayout
         selected="5"
@@ -124,7 +139,7 @@ const Home = () => {
                 <div>
                   {' '}
                   <Card className="mt-16" style={{ width: '700px' }}>
-                    Your Balance: <b>{protectedData?.data?.accountBalance}</b>
+                    Your Balance: <b>{formatBalance(protectedData?.data?.accountBalance)}</b>
                     <Withdraw onCreated={onCreated}/>
                   </Card>
                 </div>

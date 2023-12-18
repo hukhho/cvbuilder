@@ -59,9 +59,9 @@ export default function Withdraw({ onCreated }) {
     console.log('Form data submitted:', formData);
 
     try {
-      formData.expenditure = Math.floor(formData.expenditure * 1000);
+      formData.expenditure = Math.floor(formData.expenditure);
 
-      formData.conversionAmount = Math.floor(formData.expenditure / 1000);
+      // formData.conversionAmount = Math.floor(formData.expenditure / 1000);
 
       const result = await withdrawMoney(formData);
       closeModal();

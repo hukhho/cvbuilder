@@ -123,7 +123,7 @@ const Home = () => {
                 </div>
                 <div>
                   <Card className="mt-16" style={{ width: '700px' }}>
-                    Your Balance1: <b>{formatBalance(protectedData?.data?.accountBalance)}</b>
+                    Your Balance: <b>{formatBalance(protectedData?.data?.accountBalance)}</b>
                     <Deposit />
                   </Card>
                 </div>

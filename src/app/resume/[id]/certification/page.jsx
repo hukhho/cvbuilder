@@ -18,6 +18,7 @@ import { updateCertification } from './certificationService';
 import StandarList from '@/app/components/List/StandarList';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
+import CertiSort from './CertiSort';
 
 const Certification = ({ params }) => {
   const [data, setData] = useState([]);
@@ -48,12 +49,10 @@ const Certification = ({ params }) => {
   }, []);
 
   const handleEditData = item => {
-    // Renamed the parameter to "item"
     setSelectedData(item);
   };
 
   const handleDeleteData = async itemId => {
-    // Renamed the parameter to "itemId"
     try {
       await dataService.delete(itemId);
       const updatedData = await dataService.getAll(cvId);
@@ -110,7 +109,7 @@ const Certification = ({ params }) => {
                     {/* {isShow && selectedEducation && <ListError errors={selectedEducation?.bulletPointDtos} />} */}
                   </div>
                   <div style={{ paddingTop: '0px' }}>
-                    {isShow &&
+                    {/* {isShow &&
                       data.map(project => (
                         <StandarList
                           key={project.id}
@@ -123,7 +122,18 @@ const Certification = ({ params }) => {
                           subtitle=""
                           updateExperience={updateCertification}
                         />
-                      ))}
+                      ))} */}
+                    {isShow && (
+                      <CertiSort
+                        cvId={cvId}
+                        selectedExperience={selectedData}
+                        updateExperience={updateCertification}
+                        handleDeleteData={handleDeleteData}
+                        handleEditData={handleEditData}
+                        skills={data}
+                        onChangeOrder={fetchData}
+                      />
+                    )}
                   </div>
                 </Card>
               </div>

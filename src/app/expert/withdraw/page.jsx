@@ -37,7 +37,7 @@ const columns = [
   },
   {
     title: 'Transaction',
-    dataIndex: 'transactionType',
+    dataIndex: 'responseMessage',
   },
   // {
   //   title: 'Cv',
@@ -53,7 +53,7 @@ const columns = [
     dataIndex: 'expenditure',
     render: text => (
       <div>
-        {(Number(text) * 1000).toLocaleString('vi-VN', {
+        {(Number(text)).toLocaleString('vi-VN', {
           style: 'currency',
           currency: 'VND',
         })}

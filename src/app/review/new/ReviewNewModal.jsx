@@ -57,6 +57,16 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
   // }, []);
 
 
+
+  const { balance, refreshBalance } = useStore();
+
+  // useEffect(() => {
+  //   if (balance === -1) {
+  //     refreshBalance();
+  //   }
+  // }, [balance, refreshBalance]);
+
+
   const openNotification = (placement, message) => {
     api.info({
       message: 'Notification',
@@ -148,6 +158,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
       const result = await createReview(values.resume, expert.id, values.optionId, values);
       openNotification('bottomRight', `Send request successful.`);
       setIsOpen(false);
+      refreshBalance();
     } catch (error) {
       openNotification('bottomRight', `Error: ${error.response.data}`);
     } finally {

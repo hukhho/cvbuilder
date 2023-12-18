@@ -40,6 +40,14 @@ const getSub = async () => {
     throw error;
   }
 };
+const checkApiKey = async () => {
+  try {
+    const response = await axiosInstance.post('/admin/config/api-key/check');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getEvaluatesConfig = async () => {
   try {
@@ -265,4 +273,5 @@ export {
   saveSub,
   banUser,
   unbanUser,
+  checkApiKey,
 };

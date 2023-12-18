@@ -14,7 +14,18 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Card, ConfigProvider, Layout, Menu, notification, Space, theme, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  ConfigProvider,
+  Layout,
+  Menu,
+  notification,
+  Space,
+  theme,
+  Typography,
+} from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCoins,
@@ -49,8 +60,8 @@ const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), 
 });
 
 notification.config({
-  placement: "bottomRight",
-  maxCount: 1
+  placement: 'bottomRight',
+  maxCount: 1,
 });
 
 const { Title, Paragraph, Text } = Typography;
@@ -179,8 +190,14 @@ const styles = {
 const UserLayout = React.memo(
   ({ userHeader, content, selected, onCreated, isCollapsed, userRole, avatar, email }) => {
     const filteredItems = items.filter(item => item.roles.includes(userRole));
-    const { balance } = useStore();
 
+    const { balance, refreshBalance } = useStore();
+
+    useEffect(() => {
+      if (balance === -1) {
+        refreshBalance();
+      }
+    }, [balance, refreshBalance]);
     const {
       token: { colorPrimary, borderRadius, colorBgContainer },
     } = theme.useToken();
@@ -440,8 +457,8 @@ const UserLayout = React.memo(
                   {!isCollapsed && (
                     <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
                       <Space align="center">
-                        <Avatar src={avatar} size={30} />
-                        <span className="mock-block">{email}</span>
+                        {/* <Avatar src={avatar} size={30} /> */}
+                        {/* <span className="mock-block">{email}</span> */}
                       </Space>
                     </div>
                   )}

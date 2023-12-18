@@ -35,6 +35,7 @@ import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import {
   banJob,
+  checkApiKey,
   getEvaluatesConfig,
   getPostingJobs,
   getSub,
@@ -74,9 +75,12 @@ const ApiKey = () => {
 
   const handleSubmit = async values => {
     try {
+      setLoading(true)
       console.log('handleSubmit: ', values);
       const result = await updateOpenAiKey(values);
-
+      notification.success({
+        message: "Save changes",
+      });
       openNotification('bottomRight', `Save changes`);
     } catch (error) {
       if (error?.response?.data?.error) {
@@ -86,11 +90,14 @@ const ApiKey = () => {
       } else {
         openNotification('bottomRight', `Error ${error}`);
       }
+    } finally {
+      setLoading(false)
     }
   };
 
   const fetchData = async () => {
     try {
+      setLoading(true)
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getSub();
       if (fetchedDataFromAPI) {
@@ -98,6 +105,33 @@ const ApiKey = () => {
       }
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
+    } finally {
+      setLoading(false)
+    }
+
+  };
+  const handleCheck = async () => {
+    try {
+      setLoading(true)
+      const fetchedDataFromAPI = await checkApiKey();
+      console.log("fetchedDataFromAPI",fetchedDataFromAPI)
+      if (fetchedDataFromAPI === true) {
+        notification.success({
+          message: "Key is valid",
+        });
+      } else {
+        notification.error({
+          message: "Key is invalid",
+        });
+      } 
+    
+    } catch (error) {
+      notification.error({
+        message: "Some thing went wrong",
+      });
+      console.log('getReviewRequestsByCandiate:Error: ', error);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -106,6 +140,7 @@ const ApiKey = () => {
 
     fetchData();
   }, []);
+
 
   return (
     <ConfigProvider>
@@ -153,7 +188,7 @@ const ApiKey = () => {
                       </Form.Item>
 
                       <Form.Item>
-                        <div className="form-submit-wrapper">
+                        <div className="flex form-submit-wrapper justify-between	">
                           <button
                             style={{ width: '300px', height: '35px' }}
                             href=""
@@ -163,8 +198,25 @@ const ApiKey = () => {
                             className='contact-section form[data-theme="basic"] button'
                             id="contact-section-save-to-list"
                             type="submit"
+                            disabled={loading}
+
                           >
                             Save
+                          </button>
+
+                          <button
+                            style={{ width: '300px', height: '35px', backgroundColor: '#65B741' }}
+                            href=""
+                            data-size="large"
+                            data-theme="default"
+                            data-busy="false"
+                            className='contact-section form[data-theme="basic"] button'
+                            id="contact-section-save-to-list"
+                            type="button"
+                            disabled={loading}
+                            onClick={() => handleCheck()}
+                          >
+                            Check key status
                           </button>
                         </div>
                       </Form.Item>
