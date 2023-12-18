@@ -659,7 +659,7 @@ export default function FinishUp({ params }) {
           content={
             <div className="flex">
               {showFinishupCV && (
-                <div className="mr-2 flex flex-col">
+                <div className="mr-2 flex flex-col w-full">
                   {/* <Button type="primary" onClick={() => setOpen(true)}>
                     Open Modal of 1000px width
                   </Button> */}
@@ -713,15 +713,9 @@ export default function FinishUp({ params }) {
               {showFinishupCV && (
                 <div
                   className="flex flex-col items-start"
-                  style={{ position: 'static', width: '360px' }}
+                  style={{ position: 'static', width: '500px' }}
                 >
                   <VideoCard />
-                  {/* <div>
-                    {matchedJobs?.map((job, index) => {
-                      return (<>{job?.}</>)
-                    }
-                  </div> */}
-                  <ExpertReviewCard />
                   <AiFeedback cvId={params.id} />
 
                   <Ats
@@ -731,12 +725,12 @@ export default function FinishUp({ params }) {
                     onGen={handleSetHighlight}
                   />
 
-                  <button
+                  {/* <button
                     onClick={handleShowVersion}
                     className="fixed z-50 right-0 bg-white pl-2 pr-1 py-2 border-l border-y border-gray-200 rounded-tl rounded-bl"
                   >
                     <FontAwesomeIcon icon={faHistory} />
-                  </button>
+                  </button> */}
                   {isShowVersion && (
                     <div className="templateSelector" data-dock="true">
                       <div className="drop-shadow selector">

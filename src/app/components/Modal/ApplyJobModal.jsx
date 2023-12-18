@@ -240,9 +240,10 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                       }
                                     />
                                   )}
-                                  <Button disabled={isSubmitting} type="primary" htmlType="submit">
+                                  <Button className="button cta width-fit"
+                                    style={{ height: 35 }} disabled={isSubmitting} type="primary" htmlType="submit">
                                     Submit
-                                  </Button>
+                                  </button>
                                 </Form.Item>
                               </Form>
                               {/* <form>

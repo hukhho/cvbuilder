@@ -83,7 +83,10 @@ const Education = ({ params }) => {
           }
           content={
             <div className="flex h-screen w-full">
-              <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
+              <div
+                className="flex flex-col p-4 pl-0"
+                style={{ width: '320px', marginRight: '36px' }}
+              >
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
                     <VideoComponent videoUrl={"https://fast.wistia.net/embed/iframe/m8s3qbbqcl"} />
@@ -132,7 +135,8 @@ const Education = ({ params }) => {
                   </div>
                 </Card>
               </div>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 w-full">
+
                 <EducationForm
                   cvId={cvId}
                   onEducationCreated={fetchEducations}

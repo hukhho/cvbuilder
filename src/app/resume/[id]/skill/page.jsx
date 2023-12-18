@@ -137,7 +137,7 @@ const Skill = ({ params }) => {
                   </div>
                 </Card>
               </div>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 w-full">
                 <SkillsForm cvId={cvId} onCreated={fetchData} data={selectedData} />
               </div>
             </div>

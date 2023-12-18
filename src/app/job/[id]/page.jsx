@@ -26,12 +26,13 @@ import { faBriefcase, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCoverLetters, getResumes } from '@/app/utils/indexService';
 
 import {
-  AppstoreOutlined,
   CalendarOutlined,
-  HeartFilled,
+  UnorderedListOutlined,
+  TranslationOutlined,
+  ScheduleFilled,
+  SnippetsOutlined,
   HeartOutlined,
-  ScheduleOutlined,
-  UserOutlined,
+  HeartFilled,
 } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
@@ -194,7 +195,7 @@ const Home = ({ params }) => {
                           return (
                             <div
                               style={{ textAlign: 'center' }}
-                              className="border-gray-500 border rounded-full p-1"
+                              className="px-3 py-1 border-gray-500 border rounded-full p-1"
                             >
                               {skill}
                             </div>
@@ -268,34 +269,46 @@ const Home = ({ params }) => {
                   >
                     <div>
                       <div className="flex">
-                        <ScheduleOutlined />
-                        <div className="flex flex-col ml-2 mt-2 mr-2">
+
+                        <ScheduleFilled style={{ alignItems: 'start', paddingTop: 3 }} />
+                        <div className="flex flex-col ml-2">
+
                           <span style={{ fontWeight: 'bold' }}>Posted date</span>
                           <p>{data?.createDate}</p>
                         </div>
                       </div>
                       <div className="flex">
-                        <CalendarOutlined />
-                        <div className="flex flex-col ml-2  mt-2 mr-2">
+
+                        <CalendarOutlined style={{ alignItems: 'start', paddingTop: 3 }} />
+                        <div className="flex flex-col ml-2">
+
                           <span style={{ fontWeight: 'bold' }}>Deadline</span>
                           <p>{data?.deadline}</p>
                         </div>
                       </div>
 
                       <div className="flex">
-                        <AppstoreOutlined />
-                        <div className="flex flex-col ml-2  mt-2 mr-2  ">
+                        <UnorderedListOutlined style={{ alignItems: 'start', paddingTop: 3 }} />
+                        <div className="flex flex-col ml-2">
+                          <span style={{ fontWeight: 'bold' }}>Experience</span>
+                          <p>3+ years</p>
+                        </div>
+                      </div>
+                      <div className="flex">
+                        <SnippetsOutlined style={{ alignItems: 'start', paddingTop: 3 }} />
+                        <div className="flex flex-col ml-2">
+
                           <span style={{ fontWeight: 'bold' }}>Job Type</span>
                           <p>{data?.workingType}</p>
                         </div>
                       </div>
-                      {/* <div className="flex">
-                        <CalendarOutlined />
+                      <div className="flex">
+                        <TranslationOutlined style={{ alignItems: 'start', paddingTop: 3 }} />
                         <div className="flex flex-col ml-2">
                           <span style={{ fontWeight: 'bold' }}>Preferred Languages</span>
                           <p>English</p>
                         </div>
-                      </div> */}
+                      </div> 
                     </div>
                   </Card>
                 </div>

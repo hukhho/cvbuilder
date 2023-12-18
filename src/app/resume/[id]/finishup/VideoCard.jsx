@@ -8,7 +8,7 @@ import VideoComponentV2 from '@/app/components/VideoComponentV2';
 
 const VideoCard = () => {
   return (
-    <div style={{ marginLeft: '14px' }}>
+    <div style={{ paddingLeft: '14px', paddingRight: '14px' }}>
       <VideoComponentV2 />
     </div>
   );

@@ -93,10 +93,21 @@
   border-radius: 5px;
 }
 
+.width-fit {
+  width: fit-content !important;
+}
+
+.button-red {
+  background-color: #d41b00;
+}
+
 .custom-button {
   width: fit-content !important;
   height: auto;
+  height: 35px;
+  text-transform: uppercase;
   font: var(--font-input);
+  cursor: pointer;
   /*width: 100%;*/
   color: inherit;
   /*background: white;*/

@@ -39,7 +39,7 @@ const Experience = ({ params }) => {
   const searchParams = useSearchParams();
   const typeId = searchParams.get('typeId');
   const handleRemoveSearchParam = () => {
-    console.log("handleRemoveSearchParam")
+    console.log('handleRemoveSearchParam');
     router.replace(`/resume/${cvId}/experience`, undefined, { shallow: true });
   };
   const fetchExperiences = async () => {
@@ -116,7 +116,7 @@ const Experience = ({ params }) => {
           }
           content={
             <div className="flex w-full">
-              <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
+              <div className="flex flex-col p-4 pl-0" style={{ width: '320px', marginRight: '36px' }}>
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
                     <VideoComponent />
@@ -167,7 +167,7 @@ const Experience = ({ params }) => {
                   </div>
                 </Card>
               </div>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 w-full">
                 <ExperienceForm
                   cvId={cvId}
                   onExperienceCreated={fetchExperiences}

@@ -501,7 +501,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   };
 
   return (
-    <div className="" style={{ width: '842px' }}>
+    <div className="" style={{}}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="role"
@@ -554,7 +554,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Form.Item name="endDate" hidden>
           <Input type="hidden" />
         </Form.Item>
-        <Space.Compact style={{ width: '842px' }} block>
+        <Space.Compact style={{ }} block>
           <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
               label={

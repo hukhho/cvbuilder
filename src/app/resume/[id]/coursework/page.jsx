@@ -73,7 +73,7 @@ const Coursework = ({ params }) => {
           }
           content={
             <div className="flex h-screen ">
-              <div className="flex flex-col p-4">
+              <div className="flex flex-col p-4 pl-0">
                 <div className="h-1/3">
                   <p>
                     <Image
@@ -116,7 +116,7 @@ const Coursework = ({ params }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 w-full">
                 <CourseworkForm cvId={cvId} onCreated={fetchData} data={selectedData} />
               </div>
             </div>

@@ -75,7 +75,7 @@ const Contact = ({ params }) => {
           }
           content={
             <div className="flex h-screen ">
-              <div className="flex flex-col p-4" style={{ width: '800px' }}>
+              <div className="flex flex-col p-4 pl-0" style={{ width: '800px' }}>
                 <CoverLetterFormV2
                   coverLetterId={params.id}
                   onCreated={fetchData}
