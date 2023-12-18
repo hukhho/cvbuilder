@@ -14,7 +14,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Card, ConfigProvider, Layout, Menu, Space, theme, Typography } from 'antd';
+import { Avatar, Button, Card, ConfigProvider, Layout, Menu, notification, Space, theme, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCoins,
@@ -46,6 +46,11 @@ import useStore from '@/store/store';
 // Dynamically import CanvasGradient with ssr: false
 const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), {
   ssr: false,
+});
+
+notification.config({
+  placement: "bottomRight",
+  maxCount: 1
 });
 
 const { Title, Paragraph, Text } = Typography;
@@ -448,7 +453,7 @@ const UserLayout = React.memo(
                   margin: '0 0 0 0',
                   minHeight: '100vh',
                   overflow: 'initial',
-                  paddingBottom: 50
+                  paddingBottom: 50,
                 }}
               >
                 <div
@@ -461,7 +466,6 @@ const UserLayout = React.memo(
                   {content}
                 </div>
               </Content>
-             
             </Layout>
           </Layout>
         </ConfigProvider>

@@ -30,10 +30,14 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
       console.error('Error fetching FinishUp data:', error);
     }
   };
+
   useEffect(() => {
     console.log('~page Ats.jsx');
-    fetchData();
-  }, [dataAts, setDataAts]);
+    if (dataAts === undefined || dataAts === null) {
+      fetchData();
+    }
+  }, []);
+
   const handleCLick = () => {
     const result = {
       title: 'Associate Product Manager',

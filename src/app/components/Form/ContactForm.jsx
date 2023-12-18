@@ -7,17 +7,7 @@ import './customtext.css';
 import ButtonContact from './ButtonContact';
 
 const ContactForm = ({ cvId, onCreated, data }) => {
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (placement, message) => {
-    api.info({
-      message: 'Notification',
-      description: message,
-      placement,
-    });
-  };
-
   const [form] = Form.useForm();
-
   useEffect(() => {
     console.log('ContactForm data: ', data);
     if (data) {
@@ -30,7 +20,6 @@ const ContactForm = ({ cvId, onCreated, data }) => {
         city: data.city,
       };
       console.log('Form fields set with data:', data);
-      // Use mockData if no data is provided
       const initialData = mockData;
       console.log('initialData: ', initialData);
       form.setFieldsValue(initialData);
@@ -42,15 +31,18 @@ const ContactForm = ({ cvId, onCreated, data }) => {
       const result = await updateContact(cvId, values);
       form.resetFields();
       onCreated();
-      openNotification('bottomRight', `Save changed: ${result.id}`);
+      notification.success({
+        message: 'Save changed',
+      });
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
+      notification.error({
+        message: `Submit. Error: ${error}`,
+      });
       console.log('Submit. Error:', error);
     }
   };
   return (
     <div className="w-full">
-      {contextHolder}
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Row justify="start" gutter={[16, 0]}>
           <Col span={12}>

@@ -214,6 +214,7 @@ export default function FinishUp({ params }) {
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
   const [highlightAts, setHighlightAts] = useState([]);
+
   const [dataAts, setDataAts] = useState();
 
   useEffect(() => {
@@ -811,12 +812,12 @@ export default function FinishUp({ params }) {
                   <ExpertReviewCard />
                   <AiFeedback cvId={params.id} />
 
-                  {/* <Ats
+                  <Ats
                     cvId={params.id}
                     dataAts={dataAts}
                     setDataAts={setDataAts}
                     onGen={handleSetHighlight}
-                  /> */}
+                  />
 
                   <button
                     onClick={handleShowVersion}

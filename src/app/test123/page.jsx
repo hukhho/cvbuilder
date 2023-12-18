@@ -3,16 +3,21 @@
 // SomeComponent.js
 import React from 'react';
 import useStore from '@/store/store';
+import { Button, notification } from 'antd';
 
-const SomeComponent = () => {
-  const { avatar, userRole } = useStore();
+export default function SomeComponent() {
+  const notifyError = () => {
+    notification.error({
+      message: 'some message',
+    });
+  };
 
   return (
-    <div>
-      <p>Avatar: {avatar}</p>
-      <p>Counter: {userRole}</p>
-    </div>
+    <>
+      {/* {notificationContextHolder} */}
+      <Button type="primary" onClick={notifyError}>
+        notify me
+      </Button>
+    </>
   );
-};
-
-export default SomeComponent;
+}
