@@ -178,9 +178,9 @@ const Home = () => {
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-              <Input className="" placeholder="Search by name" />;
+              <Input className="" placeholder="Search by name" />
             </div>
-            <div className="!p-0 mb-5 card">
+            <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />
               </div>

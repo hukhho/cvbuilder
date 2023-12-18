@@ -19,6 +19,7 @@ import {
   Switch,
   TreeSelect,
   Typography,
+  notification,
 } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
@@ -37,7 +38,8 @@ import moment from 'moment';
 import SuccessModalHrPost from '@/app/components/Modal/SuccessModalHrPost';
 import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
-import { getJobPosting, updateHrPublic } from '../../hrServices';
+import { getJobPosting, updateHrPublic, updateHrShare, updateHrUnshare } from '../../hrServices';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
@@ -67,6 +69,16 @@ const HRUpdatePost = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     'POST A JOB': true,
   });
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Notification',
+      description: message,
+      placement,
+    });
+  };
+  const { avatar, email, userRole } = useStore();
+
   const [form] = Form.useForm();
 
   const [deadlineString, setDeadlineString] = useState();
@@ -82,9 +94,9 @@ const HRUpdatePost = ({ params }) => {
       // Simulate fetching resumes (replace with your actual fetch logic)
       const fetchedJobPosting = await getJobPosting(params.id);
       console.log('fetchedJobPosting: ', fetchedJobPosting);
-      setData(fetchedJobPosting)
+      setData(fetchedJobPosting);
       fetchedJobPosting.deadline = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
-      form.setFieldsValue(fetchedJobPosting)
+      form.setFieldsValue(fetchedJobPosting);
       //   const fetchedResumes = await getResumes();
       //   console.log('fetchedExperts: ', fetchedExperts);
       // const similatorFetch =
@@ -189,8 +201,12 @@ const HRUpdatePost = ({ params }) => {
     values.deadline = deadlineString;
 
     console.log('Form data:', values);
-    const result = await updateHrPublic(params.id, values);
-    setOpenSuccess(true);
+    try {
+      const result = await updateHrPublic(params.id, values);
+      setOpenSuccess(true);
+    } catch (error) {
+      console.log('error: ', error);
+    }
   };
 
   const router = useRouter();
@@ -198,16 +214,40 @@ const HRUpdatePost = ({ params }) => {
     e.preventDefault();
     router.push('/hr/list');
   };
-
+  const handleClickUnshare = async e => {
+    e.preventDefault();
+    try {
+      const result = await updateHrUnshare(params.id);
+      openNotification('bottomRight', `Save changed: ${result}`);
+    } catch (error) {
+      console.log('error: ', error);
+      openNotification('bottomRight', `Error: ${error}`);
+    }
+  };
+  const handleClickShare = async e => {
+    e.preventDefault();
+    try {
+      const result = await updateHrShare(params.id);
+      openNotification('bottomRight', `Save changed: ${result}`);
+    } catch (error) {
+      console.log('error: ', error);
+      openNotification('bottomRight', `Error: ${error}`);
+    }
+  };
   return (
     <ConfigProvider>
       <UserLayout
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         selected="3"
         userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
+          <div className="container">
+            {contextHolder}
             <Modal
-              title="Create post success"
+              title="Update post success"
               centered
               open={openSuccess}
               onOk={e => handleClick(e)}
@@ -272,7 +312,7 @@ const HRUpdatePost = ({ params }) => {
                       <Input placeholder="New York" disabled />
                     </Form.Item>
                     <Form.Item name="avatar" label="COMPANY AVATAR">
-                      <Input hidden/> 
+                      <Input hidden />
                       <Avatar size="large" src={data?.avatar} />
                     </Form.Item>
                   </div>
@@ -317,9 +357,12 @@ const HRUpdatePost = ({ params }) => {
                   </Form.Item>
                   <div className="flex ml-32 pb-16">
                     <Button type="primary" htmlType="submit">
-                      Publish a job
+                      Update
                     </Button>
-                    <Button type="button" className="bg-red-500 ml-10">
+                    <Button type="primary" onClick={handleClickShare} className="bg-blue-600 ml-10">
+                      Publish
+                    </Button>
+                    <Button type="button" onClick={handleClickUnshare} className="bg-red-500 ml-10">
                       Unpublish
                     </Button>
                   </div>

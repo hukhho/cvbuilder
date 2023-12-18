@@ -1,21 +1,12 @@
 // getContact.js
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../../utils/axiosInstance';
 
 const getContact = async cvId => {
-  const userId =
-    typeof document !== 'undefined'
-      ? document.cookie
-          .split('; ')
-          .find(row => row.startsWith('userId'))
-          .split('=')[1]
-      : null;
-
-  if (!userId) {
-    throw new Error('User ID not found.');
-  }
+  const userId = getUserIdFromLocalStorage();
 
   try {
-    const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}`);
+    const response = await axiosInstance.get(`/user/${userId}/cv/${cvId}/contact`);
     console.log('getContact: ', response.data);
     return response.data;
   } catch (error) {

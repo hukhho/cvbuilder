@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic';
 import Auth0ProviderWithNavigate from '@/app/Auth0ProviderWithNavigate';
 import { useAuth0 } from '@auth0/auth0-react';
 import { PageLoader } from '@/app/components/PageLoader';
+import { notification } from 'antd';
 
 const StyledComponentsRegistry = ({ children }) => {
   const cache = createCache();

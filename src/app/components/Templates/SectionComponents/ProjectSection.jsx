@@ -22,13 +22,14 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const ProjectSection = ({ projects, onChangeOrder, templateType }) => {
+const ProjectSection = ({ projects, onChangeOrder, templateType, highlightAts }) => {
   const educationItems = (
     <>
       {projects.map(edu => {
         const { title, organization, description, projectUrl, duration } = edu;
         return (
           <StandardItem
+            highlightAts={highlightAts}
             key={edu.id}
             role={title}
             firstItem={organization}

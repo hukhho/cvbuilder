@@ -21,6 +21,8 @@ import Link from 'next/link';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import { getExpertPurchases } from '../expertServices';
 import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
+import moment from 'moment';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
@@ -46,38 +48,57 @@ const columns = [
   {
     title: 'Amount',
     dataIndex: 'expenditure',
+    render: text => (
+      <div>
+        {(Number(text)).toLocaleString('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        })}
+      </div>
+    ),
+
+    sorter: (a, b) => a.expenditure - b.expenditure,
   },
 
   {
     title: 'Date',
     dataIndex: 'createdDate',
-    // sorter: {
-    //   compare: (a, b) => a.revicedDay - b.revicedDay,
-    //   multiple: 2,
-    // },
+    sorter: {
+      compare: (a, b) => moment(a.createdDate) - moment(b.createdDate),
+    },
+    render: (text, record) => (
+      <div className="flex flex-col">
+        <div> {moment(record.createdDate).fromNow()}</div>{' '}
+        <div style={{ color: 'gray', fontSize: '11px' }}>
+          {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
+        </div>{' '}
+      </div>
+    ),
   },
   {
     title: 'Status',
     dataIndex: 'status',
+    filters: [
+      { text: 'PENDING', value: 'PENDING' },
+      { text: 'SUCCESSFULLY', value: 'SUCCESSFULLY' },
+      { text: 'FAIL', value: 'FAIL' },
+      // Include other statuses if needed
+    ],
+    onFilter: (value, record) => record.status === value,
     render: text => {
-      if (text === 'Published') {
-        return <Badge status="success" text={text} />;
+      switch (text) {
+        case 'PENDING':
+          return <Badge status="warning" text={text} />;
+        case 'SUCCESSFULLY':
+          return <Badge status="success" text={text} />;
+        case 'FAIL':
+          return <Badge status="error" text={text} />;
+        default:
+          return <Badge status="warning" text={text} />;
       }
-      if (text === 'Draft') {
-        return <Badge status="warning" text={text} />;
-      }
-      if (text === 'Overdue') {
-        return <Badge status="error" text={text} />;
-      }
-      if (text === 'Unpiblish') {
-        return <Badge status="warning" text={text} />;
-      }
-      if (text === 'Disable') {
-        return <Badge status="warning" text={text} />;
-      }
-      return <Badge status="warning" text={text} />;
     },
   },
+
   // {
   //   title: 'note',
   //   dataIndex: 'note',
@@ -117,6 +138,8 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'PURCHASE HISTORY': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -143,16 +166,18 @@ const Home = () => {
     <ConfigProvider>
       <UserLayout
         selected="5"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mt-16" style={{ width: '80%' }}>
             <div style={{ textAlign: 'left' }}>
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
-            <div>
-              <Input className="" placeholder="Search the candiatename" />
-            </div>
-            <div className="!p-0 mb-5 card">
+            <div>{/* <Input className="" placeholder="Search the transaction" /> */}</div>
+            <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />
               </div>

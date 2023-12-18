@@ -13,9 +13,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { LoginButton } from './components/Button/LoginButton';
 import Login from './login/page';
 import { PageLoader } from './components/PageLoader';
+import useStore from '@/store/store';
+import Dashboard from './admin/dashboard/page';
+import ExpertRequestPage from './expert/requests/page';
+import HRApplicationPage from './hr/application/page';
 
 const Home = () => {
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } = useAuth0();
+  const { avatar, email, userRole } = useStore();
 
   if (isLoading) {
     return <PageLoader />;
@@ -23,8 +28,21 @@ const Home = () => {
   if (error) {
     return <div>Oops... {error.message}</div>;
   }
+
   if (isAuthenticated) {
-    return <ResumeIndex />;
+    if (userRole === 'ADMIN') {
+      return <Dashboard />;
+    }
+    if (userRole === 'CANDIDATE') {
+      return <ResumeIndex />;
+    }
+    if (userRole === 'EXPERT') {
+      return <ExpertRequestPage />;
+    }
+    if (userRole === 'HR') {
+      return <HRApplicationPage />;
+    }
+    return <Login />;
   }
   return <Login />;
 };

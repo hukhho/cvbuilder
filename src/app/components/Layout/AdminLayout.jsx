@@ -102,7 +102,26 @@ const items = [
     ),
     roles: ['ADMIN'], // Define roles that can access this item
   },
-
+  {
+    key: '5',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/admin/criteria-scores">
+        <span style={{ color: '#ffffff', fontSize: 11 }}> Configure Criteria Score</span>
+      </Link>
+    ),
+    roles: ['ADMIN'], // Define roles that can access this item
+  },
+  {
+    key: '6',
+    icon: <FileDoneOutlined />, // fad fa-file
+    label: (
+      <Link href="/admin/subscription">
+        <span style={{ color: '#ffffff', fontSize: 11 }}> Configure Subcriptions</span>
+      </Link>
+    ),
+    roles: ['ADMIN'], // Define roles that can access this item
+  },
 ];
 
 const COLORS = {
@@ -132,17 +151,6 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
   const [avatar, setAvatar] = useState('');
 
   const { getAccessTokenSilently } = useAuth0();
-  const [windowWidth, setWindowWidth] = useState(1000);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window?.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const [userRole, setUserRole] = useState('CANDIDATE');
 
@@ -268,9 +276,7 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
                 left: 0,
                 bottom: 0,
               }}
-            >
-             
-            </Space>
+            ></Space>
             <Space
               direction="vertical"
               size="middle"
@@ -282,8 +288,7 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
                 bottom: 0,
                 marginTop: -15,
               }}
-            >
-            </Space>
+            ></Space>
             <Menu
               style={{
                 marginTop: '50px',
@@ -302,7 +307,6 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
               items={filteredItems}
             />
 
-          
             <div style={{ position: 'absolute', bottom: 30, left: 40, width: '100%' }}>
               <Space
                 direction="vertical"

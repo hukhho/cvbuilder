@@ -1,18 +1,9 @@
 // createResumeService.js
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../utils/axiosInstance';
 
 const createCoverLetterService = async (cvId, resumeData) => {
-  const userId =
-    typeof document !== 'undefined'
-      ? document.cookie
-          .split('; ')
-          .find(row => row.startsWith('userId'))
-          .split('=')[1]
-      : null;
-
-  if (!userId) {
-    throw new Error('User ID not found.');
-  }
+  const userId = getUserIdFromLocalStorage();
 
   try {
     const response = await axiosInstance.post(

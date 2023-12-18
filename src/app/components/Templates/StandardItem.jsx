@@ -3,6 +3,7 @@
 import { Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
+import Highlighter from 'react-highlight-words';
 
 const StandardItem = props => {
   const {
@@ -24,8 +25,15 @@ const StandardItem = props => {
     handleRoleChange,
     handleOrgNameChange,
     handleDescriptionChange,
+    highlightAts,
   } = props;
-  console.log('templateType::: ', templateType);
+
+  let searchWords = [];
+  if (highlightAts && highlightAts.length > 0) {
+    // Extract 'ats' values from the highlightAts array
+    searchWords = highlightAts.map(at => at?.ats);
+  }
+  console.log('hStandardItem:highlightAts::: ', highlightAts);
   const roleState = useRef(role);
   const orgNameState = useRef(orgName);
   const descriptionState = useRef(description);
@@ -72,13 +80,23 @@ const StandardItem = props => {
               </span>
             </p> */}
             </div>
-            <p
-              className="editableContent cursor-text  designStudio  "
-              id="XHKKXx5eVL-skill"
-              // // contentEditable="true"
-            >
-              {titleProps}
-            </p>
+            {searchWords && searchWords.length > 0 ? (
+              <Highlighter
+                id="XHKKXx5eVL-skill"
+                highlightClassName="editableContent cursor-text  designStudio"
+                searchWords={searchWords} // Use dynamically generated searchWords
+                autoEscape
+                textToHighlight={titleProps}
+              />
+            ) : (
+              <p
+                className="editableContent cursor-text  designStudio "
+                id="XHKKXx5eVL-skill"
+                // // contentEditable="true"
+              >
+                {titleProps}
+              </p>
+            )}
           </div>
         </div>
       );
@@ -198,13 +216,24 @@ const StandardItem = props => {
                   fontWeight: 100,
                 }}
               >
-                <p
-                  className="editableContent cursor-text  designStudio "
-                  id="LfWZnVqHS-description"
-                  // // contentEditable="true"
-                >
-                  {description}
-                </p>
+                {/* {description} */}
+                {searchWords && searchWords.length > 0 ? (
+                  <Highlighter
+                    id="LfWZnVqHS-description"
+                    highlightClassName="editableContent cursor-text  designStudio"
+                    searchWords={searchWords} // Use dynamically generated searchWords
+                    autoEscape
+                    textToHighlight={description}
+                  />
+                ) : (
+                  <p
+                    className="editableContent cursor-text  designStudio "
+                    id="LfWZnVqHS-description"
+                    // // contentEditable="true"
+                  >
+                    {description}
+                  </p>
+                )}
               </div>
             </div>
           );
@@ -301,13 +330,23 @@ const StandardItem = props => {
                       fontWeight: 400,
                     }}
                   >
-                    <p
-                      className="editableContent cursor-text  designStudio "
-                      id="smpl029042021-description"
-                      // // contentEditable="true"
-                    >
-                      {description}
-                    </p>
+                    {searchWords && searchWords.length > 0 ? (
+                      <Highlighter
+                        id="LfWZnVqHS-description"
+                        highlightClassName="editableContent cursor-text  designStudio"
+                        searchWords={searchWords} // Use dynamically generated searchWords
+                        autoEscape
+                        textToHighlight={description}
+                      />
+                    ) : (
+                      <p
+                        className="editableContent cursor-text  designStudio "
+                        id="LfWZnVqHS-description"
+                        // // contentEditable="true"
+                      >
+                        {description}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -419,13 +458,23 @@ const StandardItem = props => {
                     </span>
                   </p> */}
                 </div>
-                <p
-                  className="editableContent cursor-text  designStudio "
-                  id="ncQ-wVn_6-description"
-                  // // contentEditable="true"
-                >
-                  {description}
-                </p>
+                {searchWords && searchWords.length > 0 ? (
+                  <Highlighter
+                    id="LfWZnVqHS-description"
+                    highlightClassName="editableContent cursor-text  designStudio"
+                    searchWords={searchWords} // Use dynamically generated searchWords
+                    autoEscape
+                    textToHighlight={description}
+                  />
+                ) : (
+                  <p
+                    className="editableContent cursor-text  designStudio "
+                    id="LfWZnVqHS-description"
+                    // // contentEditable="true"
+                  >
+                    {description}
+                  </p>
+                )}
               </div>
             </div>
           );
@@ -535,13 +584,22 @@ const StandardItem = props => {
                           </span>
                         </p>
                       </div> */}
-                      {descriptionState && (
-                        <ContentEditable
-                          className="editableContent cursor-text  designStudio "
-                          html={descriptionState.current}
-                          onBlur={e => handleBlur(e, 'description')}
-                          onChange={e => handleChange(e, 'description')}
+                      {searchWords && searchWords.length > 0 ? (
+                        <Highlighter
+                          id="LfWZnVqHS-description"
+                          highlightClassName="editableContent cursor-text  designStudio"
+                          searchWords={searchWords} // Use dynamically generated searchWords
+                          autoEscape
+                          textToHighlight={description}
                         />
+                      ) : (
+                        <p
+                          className="editableContent cursor-text  designStudio "
+                          id="LfWZnVqHS-description"
+                          // // contentEditable="true"
+                        >
+                          {description}
+                        </p>
                       )}
 
                       {/* <p
@@ -653,13 +711,23 @@ const StandardItem = props => {
                     fontWeight: 400,
                   }}
                 >
-                  <p
-                    className="editableContent cursor-text  designStudio "
-                    id="smpl029042021-description"
-                    // contentEditable="true"
-                  >
-                    {description}
-                  </p>
+                  {searchWords && searchWords.length > 0 ? (
+                    <Highlighter
+                      id="LfWZnVqHS-description"
+                      highlightClassName="editableContent cursor-text  designStudio"
+                      searchWords={searchWords} // Use dynamically generated searchWords
+                      autoEscape
+                      textToHighlight={description}
+                    />
+                  ) : (
+                    <p
+                      className="editableContent cursor-text  designStudio "
+                      id="LfWZnVqHS-description"
+                      // // contentEditable="true"
+                    >
+                      {description}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -750,13 +818,23 @@ const StandardItem = props => {
                     </span>
                   </p>
                 </div> */}
-                <p
-                  className="editableContent cursor-text  designStudio "
-                  id="smpl125032021-description"
-                  // contentEditable="true"
-                >
-                  {description}
-                </p>
+                {searchWords && searchWords.length > 0 ? (
+                  <Highlighter
+                    id="LfWZnVqHS-description"
+                    highlightClassName="editableContent cursor-text  designStudio"
+                    searchWords={searchWords} // Use dynamically generated searchWords
+                    autoEscape
+                    textToHighlight={description}
+                  />
+                ) : (
+                  <p
+                    className="editableContent cursor-text  designStudio "
+                    id="LfWZnVqHS-description"
+                    // // contentEditable="true"
+                  >
+                    {description}
+                  </p>
+                )}
               </div>
             </div>
           );

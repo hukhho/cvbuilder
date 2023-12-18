@@ -1,14 +1,6 @@
 // combinedService.js
 import axiosInstance from '@/app/utils/axiosInstance';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
+import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 
 const createReview = async (cvId, expertId, optionId, data) => {
   try {
@@ -42,9 +34,21 @@ const getExperts = async () => {
 
 const getReviewRequestsByCandiate = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(
       `/cv/candidate/${userId}/review-requests?sortBy=price&sortOrder=asc`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getReviewRequestsByCandiateSearch = async searchTerm => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(
+      `/cv/candidate/${userId}/review-requests?sortBy=price&sortOrder=asc&searchTerm=${searchTerm}`,
     );
     return response.data;
   } catch (error) {
@@ -75,4 +79,5 @@ export {
   createReview,
   searchExperts,
   getReviewRequestsByCandiate,
+  getReviewRequestsByCandiateSearch,
 };

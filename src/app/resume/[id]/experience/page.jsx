@@ -22,6 +22,7 @@ import Head from 'next/head';
 import StandarList from '../../../components/List/StandarList';
 import { useRouter, useSearchParams } from 'next/navigation';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
@@ -29,9 +30,8 @@ const Experience = ({ params }) => {
   const router = useRouter();
   const [experiences, setExperiences] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    EXPERIENCE: true,
-  });
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { EXPERIENCE: true };
   console.log('Experiences: ', params);
 
   const cvId = params.id;
@@ -46,13 +46,14 @@ const Experience = ({ params }) => {
     try {
       const data = await getAllExperiences(cvId);
       console.log('data getAllExperiences ', data);
-      // setSelectedExperience(null);
 
       if (typeId > 0) {
         console.log('typeId: ', typeId);
         let experience = data.find(item => item.id == typeId);
         console.log('experience::typeId ', experience);
         setSelectedExperience(experience);
+      } else {
+        setSelectedExperience(null);
       }
 
       setExperiences(data);
@@ -107,6 +108,9 @@ const Experience = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

@@ -17,6 +17,7 @@ import './textarena.css';
 import { getAllExperiences } from '../experience/experienceService';
 import { Listbox } from '@headlessui/react';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
@@ -34,9 +35,9 @@ const Summary = ({ params }) => {
   const [summaryHistory, setSummaryHistory] = useState([]);
 
   const [selectedData, setSelectedData] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    SUMMARY: true,
-  });
+
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { SUMMARY: true };
   const [experiences, setExperiences] = useState([]);
   const cvId = params.id;
   const dataService = new DataService('certifications', cvId);
@@ -169,6 +170,9 @@ const Summary = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
@@ -176,6 +180,7 @@ const Summary = ({ params }) => {
             <div className="flex h-screen">
               {contextHolder}
               <div className="flex flex-col p-4 pl-0" style={{ width: '100%' }}>
+
                 <SummaryForm
                   cvId={cvId}
                   onCreated={fetchData}
@@ -194,11 +199,8 @@ const Summary = ({ params }) => {
                   </div>
                   <div>
                     <p>
-                      AI writer helps you to write your summary for a{' '}
-                      <span style={{ color: '#4d70eb', cursor: 'pointer' }}>
-                        targeted job position
-                      </span>
-                      . Strange result? Just regenerate!
+                      AI writer helps you to write your summary for a targeted job position .
+                      Strange result? Just regenerate!
                     </p>{' '}
                   </div>
                   <div>
@@ -229,6 +231,8 @@ const Summary = ({ params }) => {
                             <Select
                               style={{
                                 height: 50,
+                                maxWidth: '270px',
+                                width: '100%',
                               }}
                               className=""
                               onChange={handleChange}
@@ -244,6 +248,9 @@ const Summary = ({ params }) => {
                           )}
                         </Form.Item>
                         <Form.Item
+                          style={{
+                            marginTop: '-20px',
+                          }}
                           name="skill_highlight"
                           label={
                             <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
@@ -252,7 +259,12 @@ const Summary = ({ params }) => {
                           }
                         >
                           <Input
-                            style={{ marginTop: '-10px' }}
+                            style={{
+                              marginTop: '-10px',
+                              height: 50,
+                              maxWidth: '270px',
+                              width: '100%',
+                            }}
                             className="inputEl st-current"
                             placeholder="Marketing Asistant at Sony"
                           />

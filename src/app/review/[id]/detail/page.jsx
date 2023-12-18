@@ -24,6 +24,7 @@ import FinishUpPreviewV2 from '@/app/resume/[id]/finishup/FinishUpPreviewV2';
 import Statitics from './Statitics';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import Link from 'next/link';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -46,6 +47,7 @@ const Home = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW OPTIONS': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [expert, setExpert] = useState(null);
@@ -125,11 +127,15 @@ const Home = ({ params }) => {
 
   return (
     <ConfigProvider>
-      <UserCVBuilderLayout
-        selected="3"
+      <UserLayout
+        selected="4"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
+          <div className="container">
             <div className="!p-0 relative">
               <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
                 <div className="absolute top-10 left-5">
@@ -201,13 +207,13 @@ const Home = ({ params }) => {
                   style={{
                     paddingLeft: '20px',
                     paddingBottom: '20px',
+                    paddingTop: '20px',
                     background: 'white',
                     textAlign: 'left',
                   }}
                 >
                   <div>
                     <Title style={{ color: '#4D70EB' }} level={5}>
-                      {' '}
                       <span style={{ borderBottom: '2px solid #4D70EB' }}>Reviews</span>
                     </Title>
                   </div>

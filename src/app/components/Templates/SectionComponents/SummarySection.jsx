@@ -1,12 +1,25 @@
 /* eslint-disable */
 
+import useStore from '@/store/store';
 import { Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Highlighter from 'react-highlight-words';
 
-const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyles }) => {
+const SummarySection = ({
+  summary,
+  templateType,
+  handleSummaryChange,
+  layoutStyles,
+  highlightAts,
+}) => {
   const summaryState = useRef(summary);
+
+  let searchWords = [];
+  if (highlightAts && highlightAts.length > 0) {
+    // Extract 'ats' values from the highlightAts array
+    searchWords = highlightAts.map(at => at?.ats);
+  }
 
   const handleChange = (evt, targetName) => {
     console.log('handleChange: ', evt.target.value);
@@ -21,6 +34,7 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
       console.log('handleBlur: ', summaryState.current);
     }
   };
+
   if (templateType === 'modern') {
     return (
       <>
@@ -51,13 +65,23 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
             onBlur={e => handleBlur(e, 'summary')}
             onChange={e => handleChange(e, 'summary')}
           /> */}
-          <Highlighter
-            highlightClassName="YourHighlightClass"
-            searchWords={['test']}
-            autoEscape={true}
-            textToHighlight={summary}
-          />
-          
+          {searchWords && searchWords.length > 0 ? (
+              <Highlighter
+                id="summary-summary"
+                highlightClassName="editableContent cursor-text  designStudio"
+                searchWords={searchWords} // Use dynamically generated searchWords
+                autoEscape={true}
+                textToHighlight={summary}
+              />
+            ) : (
+              <ContentEditable
+                className="editableContent cursor-text  designStudio "
+                id="summary-summary"
+                html={summaryState.current}
+                onBlur={e => handleBlur(e, 'summary')}
+                onChange={e => handleChange(e, 'summary')}
+              />
+            )}
         </div>
       </>
     );
@@ -87,6 +111,7 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
         <div className="relative">
           <p className="editableContent ghost-hightlight w-full designStudio "></p>
         </div>
+        
         {/* <ContentEditable
           className="editableContent cursor-text  designStudio "
           id="summary-summary"
@@ -94,12 +119,23 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
           onBlur={e => handleBlur(e, 'summary')}
           onChange={e => handleChange(e, 'summary')}
         /> */}
-         <Highlighter
-            highlightClassName="YourHighlightClass"
-            searchWords={['test']}
-            autoEscape={true}
-            textToHighlight={summary}
-          />
+        {searchWords && searchWords.length > 0 ? (
+              <Highlighter
+                id="summary-summary"
+                highlightClassName="editableContent cursor-text  designStudio"
+                searchWords={searchWords} // Use dynamically generated searchWords
+                autoEscape={true}
+                textToHighlight={summary}
+              />
+            ) : (
+              <ContentEditable
+                className="editableContent cursor-text  designStudio "
+                id="summary-summary"
+                html={summaryState.current}
+                onBlur={e => handleBlur(e, 'summary')}
+                onChange={e => handleChange(e, 'summary')}
+              />
+            )}
       </div>
     </div>;
   }
@@ -145,12 +181,29 @@ const SummarySection = ({ summary, templateType, handleSummaryChange, layoutStyl
               onBlur={e => handleBlur(e, 'summary')}
               onChange={e => handleChange(e, 'summary')}
             /> */}
-             <Highlighter
-            highlightClassName="YourHighlightClass"
-            searchWords={['test']}
-            autoEscape={true}
-            textToHighlight={summary}
-          />
+            {/* // <Highlighter
+              //   highlightClassName="YourHighlightClass"
+              //   searchWords={['Product Manager', 'Product Owner', 'Analyze']}
+              //   autoEscape={true}
+              //   textToHighlight={summary}
+              // /> */}
+            {searchWords && searchWords.length > 0 ? (
+              <Highlighter
+                id="summary-summary"
+                highlightClassName="editableContent cursor-text  designStudio"
+                searchWords={searchWords} // Use dynamically generated searchWords
+                autoEscape={true}
+                textToHighlight={summary}
+              />
+            ) : (
+              <ContentEditable
+                className="editableContent cursor-text  designStudio "
+                id="summary-summary"
+                html={summaryState.current}
+                onBlur={e => handleBlur(e, 'summary')}
+                onChange={e => handleChange(e, 'summary')}
+              />
+            )}
           </div>
         </div>
       </div>

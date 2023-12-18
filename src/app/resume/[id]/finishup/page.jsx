@@ -34,6 +34,7 @@ import Link from 'next/link';
 import ExpertReviewCard from './ExpertReviewCard';
 import VideoCard from './VideoCard';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const mockData = {
   data: {
@@ -202,9 +203,9 @@ export default function FinishUp({ params }) {
 
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
-  const [enabledCategories, setEnabledCategories] = useState({
-    'FINISH UP': true,
-  });
+
+  const { avatar, email, userRole, ats, setAts } = useStore();
+  const enabledCategories = { 'FINISH UP': true };
 
   // useEffect(() => {
   //   setShowFinishupCV(false);
@@ -212,6 +213,8 @@ export default function FinishUp({ params }) {
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
+  const [highlightAts, setHighlightAts] = useState([]);
+  const [dataAts, setDataAts] = useState();
 
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
@@ -220,6 +223,9 @@ export default function FinishUp({ params }) {
     setFinishUpData(newFinishUpData);
   }, [toolbarState]);
 
+  useEffect(() => {
+    console.log('ats:', ats);
+  }, [ats]);
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
@@ -269,6 +275,11 @@ export default function FinishUp({ params }) {
 
   const handleToolbarChange = values => {
     setToolbarState(values);
+  };
+
+  const handleSetHighlight = values => {
+    console.log('handleSetHighlight values: ', values);
+    setHighlightAts(values);
   };
 
   const componentIDs = {
@@ -371,6 +382,7 @@ export default function FinishUp({ params }) {
       component: (
         <SummarySection
           templateType={templateSelected}
+          highlightAts={highlightAts}
           summary={summary}
           handleSummaryChange={handleSummaryChange}
         />
@@ -382,6 +394,7 @@ export default function FinishUp({ params }) {
       id: 'experiences',
       component: (
         <ExperiencesSection
+          highlightAts={highlightAts}
           templateType={templateSelected}
           experiences={filteredExperiences}
           onChangeOrder={sortedExperiences => {
@@ -406,7 +419,11 @@ export default function FinishUp({ params }) {
     {
       id: 'educations',
       component: (
-        <EducationsSection templateType={templateSelected} educations={filteredEducations} />
+        <EducationsSection
+          highlightAts={highlightAts}
+          templateType={templateSelected}
+          educations={filteredEducations}
+        />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
@@ -414,14 +431,24 @@ export default function FinishUp({ params }) {
     {
       id: 'involvements',
       component: (
-        <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
+        <InvolvementSection
+          highlightAts={highlightAts}
+          templateType={templateSelected}
+          involvements={filteredInvolvements}
+        />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
     },
     {
       id: 'projects',
-      component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
+      component: (
+        <ProjectSection
+          highlightAts={highlightAts}
+          templateType={templateSelected}
+          projects={filteredProjects}
+        />
+      ),
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
     },
@@ -429,6 +456,7 @@ export default function FinishUp({ params }) {
       id: 'certifications',
       component: (
         <CertificationSection
+          highlightAts={highlightAts}
           templateType={templateSelected}
           certifications={filteredCertifications}
         />
@@ -440,6 +468,7 @@ export default function FinishUp({ params }) {
       id: 'skills',
       component: (
         <SkillsSection
+          highlightAts={highlightAts}
           templateType={templateSelected}
           skills={filteredSkills}
           onChangeOrder={handleSkillsOrderChange}
@@ -594,11 +623,36 @@ export default function FinishUp({ params }) {
   const handleChooseVersion = versionId => {
     console.log('versionId: ', versionId);
   };
+
+  const handleGen = () => {
+    console.log('handleGen: ');
+
+    // setAts([
+    //   {
+    //     ats: 'Product Owner',
+    //     status: 'Pass',
+    //   },
+    //   {
+    //     ats: 'Product Manager',
+    //     status: 'Pass',
+    //   },
+    //   {
+    //     ats: 'Analyze',
+    //     status: 'Pass',
+    //   },
+    // ]);
+  };
+
+  const [matchedJobs, setMatchedJobs] = useState([]);
+
   return (
     <main>
       <ConfigProvider>
         <UserLayout
           isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
@@ -663,7 +717,13 @@ export default function FinishUp({ params }) {
                 >
                   <VideoCard />
                   <AiFeedback cvId={params.id} />
-                  <Ats cvId={params.id} />
+
+                  <Ats
+                    cvId={params.id}
+                    dataAts={dataAts}
+                    setDataAts={setDataAts}
+                    onGen={handleSetHighlight}
+                  />
 
                   {/* <button
                     onClick={handleShowVersion}

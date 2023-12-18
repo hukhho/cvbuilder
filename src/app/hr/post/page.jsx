@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
   Avatar,
   Button,
@@ -13,7 +13,6 @@ import {
   Form,
   Input,
   InputNumber,
-  Modal,
   Radio,
   Select,
   Space,
@@ -35,10 +34,12 @@ import Search from 'antd/es/input/Search';
 import Link from 'next/link';
 import UserHeaderHR from '@/app/components/UserHeaderHR';
 import moment from 'moment';
-import { getHrConfig, postHrPublic } from '../hrServices';
+import { getHrConfig, postHrDraft, postHrPublic } from '../hrServices';
 import SuccessModalHrPost from '@/app/components/Modal/SuccessModalHrPost';
 import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
+import useStore from '@/store/store';
+import { Dialog, Transition } from '@headlessui/react';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -61,6 +62,8 @@ const HRPost = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'POST A JOB': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [form] = Form.useForm();
 
   const [deadlineString, setDeadlineString] = useState('2023-11-29');
@@ -81,6 +84,7 @@ const HRPost = () => {
         companyName: fetchedDataFromAPI?.companyName,
         location: fetchedDataFromAPI?.companyLocation,
         about: fetchedDataFromAPI?.companyDescription,
+        workingType: 'Full Time',
       });
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
@@ -97,7 +101,7 @@ const HRPost = () => {
 
   // }, [form]);
 
-  const [salaryName, setSalaryName] = useState('');
+  const [salaryName, setSalaryName] = useState("You'll love it");
   const [salaryFrom, setSalaryFrom] = useState('');
   const [salaryTo, setSalaryTo] = useState('');
 
@@ -187,16 +191,37 @@ const HRPost = () => {
 
   const [openSuccess, setOpenSuccess] = useState(false);
 
+  let [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
   const onFinish = async values => {
     values.salary = salaryName;
     values.deadline = deadlineString;
 
     console.log('Form data:', values);
     const result = await postHrPublic(values);
-    setOpenSuccess(true);
+    setIsOpen(true);
+  };
+
+  const saveDraft = async values => {
+    values.salary = salaryName;
+    values.deadline = deadlineString;
+    // Make an API call to save the draft on the server
+    const result = await postHrDraft(values); // You should implement this function
+    // Handle the result, e.g., show a success message
+    console.log('Draft saved:', result);
+    setIsOpen(true);
   };
 
   const router = useRouter();
+
   const handleClick = e => {
     e.preventDefault();
     router.push('/hr/list');
@@ -206,19 +231,74 @@ const HRPost = () => {
     <ConfigProvider>
       <UserLayout
         selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
-            <Modal
-              title="Create post success"
-              centered
-              open={openSuccess}
-              onOk={e => handleClick(e)}
-              width={1000}
-            >
-              Successs
-            </Modal>{' '}
-            <div className="!p-0">
+          <div className="">
+            <div>
+              <>
+                <Transition appear show={isOpen} as={Fragment}>
+                  <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0"
+                      enterTo="opacity-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <div className="fixed inset-0 bg-black/25" />
+                    </Transition.Child>
+
+                    <div className="fixed inset-0 overflow-y-auto">
+                      <div className="flex min-h-full items-center justify-center p-4 text-center">
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-out duration-300"
+                          enterFrom="opacity-0 scale-95"
+                          enterTo="opacity-100 scale-100"
+                          leave="ease-in duration-200"
+                          leaveFrom="opacity-100 scale-100"
+                          leaveTo="opacity-0 scale-95"
+                        >
+                          <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Title
+                              as="h3"
+                              className="text-lg font-medium leading-6 text-gray-900"
+                            >
+                              Successful
+                            </Dialog.Title>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                Your post has been save successfully.
+                              </p>
+                            </div>
+
+                            <div className="mt-4">
+                              <button
+                                type="button"
+                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                onClick={() => {
+                                  closeModal();
+                                  router.push('/hr/list');
+                                }}
+                              >
+                                Got it, thanks!
+                              </button>
+                            </div>
+                          </Dialog.Panel>
+                        </Transition.Child>
+                      </div>
+                    </div>
+                  </Dialog>
+                </Transition>
+              </>
+            </div>
+            <div className="!p-0" style={{ width: 900 }}>
               <div className="mt-8">
                 <Card>
                   <Title level={4}>Create a job posting</Title>
@@ -230,11 +310,18 @@ const HRPost = () => {
                   layout="vertical"
                   initialValues={{
                     size: 'large',
+                    workingType: 'Full Time', // Set the default value here
                   }}
+                  requiredMark={false}
                   form={form}
                   onFinish={onFinish}
                 >
-                  <Form.Item className="custom-label" name="title" label="JOB TITLE">
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    className="custom-label"
+                    name="title"
+                    label="JOB TITLE *"
+                  >
                     <Input className="inputEl" />
                   </Form.Item>
                   <Form.Item className="custom-label" name="workingType" label="TYPE OF JOB">
@@ -308,6 +395,7 @@ const HRPost = () => {
                       }}
                       value={salaryOptions}
                       onChange={handleChangeSelectSalary}
+                      defaultValue={1}
                       options={[
                         {
                           value: 0,
@@ -410,7 +498,8 @@ const HRPost = () => {
                     <Form.Item
                       className="custom-item custom-label"
                       name="deadline"
-                      label="Deadline"
+                      rules={[{ required: true }]}
+                      label="Deadline *"
                     >
                       <DatePicker
                         style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
@@ -431,16 +520,41 @@ const HRPost = () => {
                     </div>
                   </div>
                   <Form.Item>
-                    <Button
-                      style={{
-                        height: 35,
-                        width: '100%',
-                      }}
-                      type="primary"
-                      htmlType="submit"
-                    >
-                      PUBLISH THE JOB
-                    </Button>{' '}
+                    <div className="flex items-between">
+                      <Button
+                        style={{
+                          height: 35,
+                          width: '78%',
+                          marginRight: '12px',
+                        }}
+                        type="primary"
+                        htmlType="submit"
+                      >
+                        PUBLISH THE JOB
+                      </Button>
+                      <Button
+                        style={{
+                          height: 35,
+                          width: '18%',
+                          background: 'white',
+                        }}
+                        onClick={() => {
+                          // Validate the form fields
+                          form
+                            .validateFields()
+                            .then(values => {
+                              // Validation successful, call the saveDraft function to save the draft
+                              saveDraft(values);
+                            })
+                            .catch(errorInfo => {
+                              // Validation failed, you can handle the error or display a message to the user
+                              console.log('Validation failed:', errorInfo);
+                            });
+                        }}
+                      >
+                        SAVE DRAFT
+                      </Button>{' '}
+                    </div>
                   </Form.Item>
                 </Form>
               </div>

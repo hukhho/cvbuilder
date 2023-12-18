@@ -22,7 +22,7 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
+const EducationsSection = ({ educations, onChangeOrder, templateType, highlightAts }) => {
   console.log('EducationSection::: ', educations);
   const educationItems = (
     <>
@@ -31,6 +31,7 @@ const EducationsSection = ({ educations, onChangeOrder, templateType }) => {
 
         return (
           <StandardItem
+            highlightAts={highlightAts}
             key={edu.id}
             role={degree}
             firstItem={minor ? `Minor in ${minor}` : null}

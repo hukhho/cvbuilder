@@ -28,14 +28,16 @@ const ExperiencesSection = ({
   handleRoleChange,
   handleOrgNameChange,
   handleDescriptionChange,
+  highlightAts,
 }) => {
-  console.log('ExperiencesSection::: ', experiences);
+  console.log('ExperiencesSection::: ', highlightAts);
   const experienceItems = (
     <>
       {experiences.map(exp => {
         const { duration, description, companyName, role, location } = exp;
         return (
           <StandardItem
+            highlightAts={highlightAts}
             type="experience"
             typeId={exp.id}
             key={exp.id}

@@ -16,6 +16,7 @@ import { StarFilled } from '@ant-design/icons';
 import { getExperts, searchExperts } from '../../new/reviewService';
 import Search from 'antd/es/input/Search';
 import Link from 'next/link';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -38,6 +39,7 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW OPTIONS': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [resumes, setResumes] = useState([]);
@@ -116,28 +118,33 @@ const Home = () => {
   const [searchValue, setSearchValue] = useState('');
 
   const onSearch = async (value, _e, info) => {
-    const result = await searchExperts(value);
-    setExperts(result);
-    setSearchValue(value);
+    try {
+      const result = await searchExperts(value);
+      setExperts(result);
+      setSearchValue(value);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
+        selected="4"
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container mx-auto">
-            <div className="!p-0">
+          <div className="container">
+            <div className="!p-0" style={{ width: 1000 }}>
               <div className="mt-16">
                 <Search
                   placeholder="Search by name, title or company"
                   size="large"
                   defaultValue={searchValue}
                   onSearch={onSearch}
-                  style={{
-                    width: 900,
-                  }}
                 />
               </div>
               <div className="grid grid-cols-3 gap-4 mt-16 mb-16">
@@ -198,7 +205,7 @@ const Home = () => {
                               {expert?.jobTitle} at {expert?.company}
                             </p>
                           </div>
-                          <div className="flex">
+                          <div className="flex mt-4">
                             <svg
                               width="19"
                               height="19"
@@ -219,7 +226,7 @@ const Home = () => {
                                 stroke-linejoin="round"
                               />
                             </svg>
-                            <p className="ml-2"> {expert?.price} </p>
+                            <p className="ml-2"> {expert?.price} VNĐ</p>
                           </div>
                         </div>
                       </div>

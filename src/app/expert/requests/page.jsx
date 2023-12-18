@@ -19,13 +19,16 @@ import { acceptRequest, getRequestList, rejectRequest } from '../expertServices'
 import Link from 'next/link';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import moment from 'moment';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
-const Home = () => {
+const ExpertRequestPage = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'REVIEW REQUESTS': true,
   });
+  const { avatar, email, userRole } = useStore();
+
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -65,21 +68,24 @@ const Home = () => {
     }
   };
 
-  
   const initialData = [];
 
   const [data, setData] = useState(initialData);
   const [searchText, setSearchText] = useState('');
   const [searchData, setSearchData] = useState(initialData);
 
-
-
   const columns = [
     {
       title: 'Resume Name',
       dataIndex: 'resumeName',
       render: (text, record) => {
-        if (record.status === 'Processing') {
+        if (
+          record.status === 'Processing' ||
+          record.status === 'WAITING' ||
+          record.status === 'Waiting' ||
+          record.status === 'Draft' ||
+          record.status === 'DRAFT'
+        ) {
           return <Link href={`/expert/view-cv/${record.id}`}>{text}</Link>;
         } else {
           return <span>{text}</span>;
@@ -89,10 +95,11 @@ const Home = () => {
     {
       title: 'Candidate',
       dataIndex: 'name',
-      render: text => (
+      render: (text, record) => (
         <div>
           {' '}
-          <Avatar icon={<UserOutlined />} /> {text}
+          {record?.avatar && <Avatar className="mr-2" src={record?.avatar} />}
+          {text}
         </div>
       ),
     },
@@ -103,7 +110,14 @@ const Home = () => {
     {
       title: 'Price',
       dataIndex: 'price',
-      render: text => <div>{text}.000đ</div>,
+      render: text => (
+        <div>
+          {Number(text).toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          })}
+        </div>
+      ),
       sorter: {
         compare: (a, b) => a.price - b.price,
         multiple: 3,
@@ -192,19 +206,16 @@ const Home = () => {
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
- 
-  
-  };
-  
-  const handleSearch = (value) => {
+  const onChange = (pagination, filters, sorter, extra) => {};
+
+  const handleSearch = value => {
     setSearchText(value);
-    console.log("handleSearch")
+    console.log('handleSearch');
     if (value === '') {
       setSearchData(data);
       return;
     }
-  
+
     const filteredData = data.filter(item => {
       const searchString = value.toLowerCase();
       return (
@@ -225,7 +236,11 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="2"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
         userHeader={
           <>
             <UserHeaderExpert initialEnabledCategories={enabledCategories} />
@@ -241,13 +256,13 @@ const Home = () => {
               <div>
                 <Input
                   className=""
-                  placeholder="Search the resume"
+                  placeholder="Search the requests"
                   value={searchText}
                   onChange={e => handleSearch(e.target.value)}
                 />
               </div>
             </div>
-            <div className="!p-0 mb-5 mt-4 card">
+            <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={searchData} onChange={onChange} />
               </div>
@@ -259,4 +274,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ExpertRequestPage;

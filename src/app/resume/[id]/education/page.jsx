@@ -18,15 +18,15 @@ import ListError from '@/app/components/ListError/ListError';
 import StandarList from '@/app/components/List/StandarList';
 import VideoComponent from '@/app/components/VideoComponent';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const { Meta } = Card;
 
 const Education = ({ params }) => {
   const [educations, setEducations] = useState([]);
   const [selectedEducation, setSelectedEducation] = useState(null);
-  const [enabledCategories, setEnabledCategories] = useState({
-    EDUCATION: true,
-  });
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { EDUCATION: true };
   const [isShow, setIsShow] = useState(true);
   const handleDownButton = () => {
     setIsShow(!isShow);
@@ -75,6 +75,9 @@ const Education = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed={true}
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
@@ -86,7 +89,7 @@ const Education = ({ params }) => {
               >
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
-                    <VideoComponent />
+                    <VideoComponent videoUrl={"https://fast.wistia.net/embed/iframe/m8s3qbbqcl"} />
                   </div>
                 </div>
                 <Card
@@ -133,6 +136,7 @@ const Education = ({ params }) => {
                 </Card>
               </div>
               <div className="flex flex-col px-4 w-full">
+
                 <EducationForm
                   cvId={cvId}
                   onEducationCreated={fetchEducations}

@@ -31,11 +31,12 @@ import Link from 'next/link';
 import { getUsers, getWithdrawRequests } from '../adminServices';
 import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
-import DemoColumn from './Column';
+import ColumnChart from './Column';
+
 
 const { Title } = Typography;
 
-const Home = () => {
+const Dashboard = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'APPLICATION LIST': true,
   });
@@ -61,6 +62,37 @@ const Home = () => {
     fetchData();
   }, []);
 
+  const chartData = [
+    {
+      date: '2023-01-01',
+      sales: 100,
+    },
+    {
+      date: '2023-01-02',
+      sales: 150,
+    },
+    {
+      date: '2023-01-03',
+      sales: 200,
+    },
+    {
+      date: '2023-01-04',
+      sales: 120,
+    },
+    {
+      date: '2023-01-05',
+      sales: 120,
+    },
+    {
+      date: '2023-01-06',
+      sales: 120,
+    },
+    {
+      date: '2023-01-07',
+      sales: 120,
+    },
+    // Add more data for other dates
+  ];
   return (
     <ConfigProvider>
       <AdminLayout
@@ -89,11 +121,11 @@ const Home = () => {
                   </div>
                 </Card>
               </Space>{' '}
-            </div>  
+            </div>
             <div></div>
             <div className="!p-0 mt-16 mb-5 card">
               <div className="">
-                {/* <DemoColumn /> */}
+                <ColumnChart data={chartData} />
               </div>
             </div>
           </div>
@@ -103,4 +135,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

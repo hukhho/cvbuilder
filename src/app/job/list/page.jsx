@@ -8,6 +8,7 @@ import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import JobCard from './JobCard';
 import { getJobList } from '../jobServices';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 
@@ -20,6 +21,7 @@ const Home = () => {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const { avatar, email, userRole } = useStore();
 
   const handleChange = value => {
     setSelectedLocations(value);
@@ -63,11 +65,15 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        isCollapsed={false}
+        avatar={avatar}
+        email={email}
+        userRole={userRole}
+        selected="8"
         userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container" style={{ marginBottom: '50px' }}>
-            <div className="!p-0 mb-5 mt-0 card">
+            <div className="!p-0 mb-5 mt-0">
               <div style={{ textAlign: 'left' }} />
               <div className="flex mt-6 mb-6">
                 <div style={{ width: '50%' }}>
@@ -94,10 +100,10 @@ const Home = () => {
                 </div>
               </div>
               <div>
-                <div className="flex">
-                  <Title>Browse Jobs</Title>
+                <div className="flex mt-8">
+                  <Title level={3}>Browse Jobs</Title>
                 </div>
-                <div className="">
+                <div className="mt-8">
                   <Row gutter={[16, 48]}>
                     {filteredData.map((job, index) => (
                       <Col key={index} span={12}>

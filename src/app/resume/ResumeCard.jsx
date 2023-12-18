@@ -35,6 +35,7 @@ const ResumeCard = ({ onDeleted, resume }) => {
   const [isUpdateResumeOpen, setIsUpdateResumeOpen] = useState(false);
 
   const openUpdateResumeModal = () => {
+    console.log("openUpdateResumeModal")
     setIsUpdateResumeOpen(true);
   };
 
@@ -126,7 +127,6 @@ const ResumeCard = ({ onDeleted, resume }) => {
                       </div>
                     </div>
                   </button>
-
                   {/* <button onClick={openUpdateResumeModal}></button> */}
                 </Space>
                 <Space align="center">

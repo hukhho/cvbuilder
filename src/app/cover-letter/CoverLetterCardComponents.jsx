@@ -31,7 +31,7 @@ import { deleteCoverLetter } from './coverLetterService';
 const RedLink = styled.a`
   color: black;
 `;
-const CoverLetterCardComponents = ({ onDeleted, resume }) => {
+const CoverLetterCardComponents = ({ onDeleted, onCreated, resume }) => {
   const [enabled, setEnabled] = useState(false);
 
   const [isUpdateResumeOpen, setIsUpdateResumeOpen] = useState(false);
@@ -73,9 +73,7 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
             onOpenModal={closeUpdateResumeModal}
             onClose={closeUpdateResumeModal}
             resume={resume}
-            onCreated={() => {
-              console.log('update');
-            }}
+            onCreated={onCreated}
           />
           <div className="w-full h-full opacity-100 group-hover:opacity-50 transition-opacity">
             <Link
@@ -118,7 +116,7 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
     >
       <Space.Compact block>
         <span className="" style={{ width: '90%', fontWeight: 700, fontSize: 16 }}>
-          {resume.resumeName}
+          {resume?.title}
         </span>
         <Popover className="relative">
           <Popover.Button>
@@ -139,14 +137,19 @@ const CoverLetterCardComponents = ({ onDeleted, resume }) => {
 
                   {/* <button onClick={openUpdateResumeModal}></button> */}
                 </Space>
-             
-                <Space align="center">
-                  <FontAwesomeIcon icon={faTrashAlt} />
-                  Delete
+
+                <Space align="center mt-4">
+                  <button onClick={() => handleDeleteResume(resume.id)}>
+                    <div className="flex">
+                      <FontAwesomeIcon icon={faTrashAlt} />
+                      <div className="ml-4" style={{ marginTop: -3 }}>
+                        Delete
+                      </div>
+                    </div>
+                  </button>
                 </Space>
               </div>
               <Divider />
-              
             </Card>
           </Popover.Panel>
         </Popover>

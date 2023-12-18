@@ -11,7 +11,7 @@ const CandidateConfigHeader = ({ initialEnabledCategories }) => {
   const [enabledCategories, setEnabledCategories] = useState(initialEnabledCategories);
 
   return (
-    <div className="flex items-center space-x-6  mt-10 ml-5">
+    <div className="flex items-center space-x-6  mt-10 ">
       {categories.map(category => (
         <Link
           key={category.name}

@@ -22,13 +22,14 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const CertificationSection = ({ certifications, onChangeOrder, templateType }) => {
+const CertificationSection = ({ certifications, onChangeOrder, templateType, highlightAts }) => {
   const educationItems = (
     <>
       {certifications.map(edu => {
         const { name, certificateSource, endYear, certificateRelevance } = edu;
         return (
           <StandardItem
+            highlightAts={highlightAts}
             key={edu.id}
             role={name}
             firstItem={certificateSource}

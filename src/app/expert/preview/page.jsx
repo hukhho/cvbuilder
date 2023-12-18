@@ -3,7 +3,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Card, ConfigProvider, Empty, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  ConfigProvider,
+  Empty,
+  Result,
+  Skeleton,
+  Typography,
+  notification,
+} from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -24,6 +34,7 @@ import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import Link from 'next/link';
 import { getExpertPreview } from '../expertServices';
 import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
+import useStore from '@/store/store';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -46,13 +57,26 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'PREVIEW YOUR PROFILE': true,
   });
+  const { avatar, email, userRole } = useStore();
 
   const [experts, setExperts] = useState([]);
   const [expert, setExpert] = useState(null);
   const [resumes, setResumes] = useState([]);
   const [options, setOptions] = useState([]);
   const [expertsMock, setExpertsMock] = useState(generateMockExperts());
+  const [isLoading, setIsLoading] = useState(true);
 
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (placement, message) => {
+    api.info({
+      message: 'Notification',
+      description: message,
+      placement,
+    });
+  };
   useEffect(() => {
     // Get the current date
     const today = new Date();
@@ -89,7 +113,18 @@ const Home = () => {
 
       // setResumes(fetchedResumes);
     } catch (error) {
-      console.error('There was an error fetching resumes', error);
+      if (error.response.data.error) {
+        openNotification('bottomRight', `Error: ${error.response.data.error}`);
+        +setErrorMessage(error.response.data.error);
+      } else if (error.response.data && error.response.status === 400 && error.response.data) {
+        openNotification('bottomRight', `Error: ${error.response.data}`);
+        setErrorMessage(error.response.data);
+      } else {
+        openNotification('bottomRight', `Something went wrong!`);
+        setErrorMessage('Something went wrong');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   const fetchResumes = async () => {
@@ -101,9 +136,7 @@ const Home = () => {
       console.log('fetched ', fetchedResumes);
 
       setResumes(fetchedResumes);
-    } catch (error) {
-      console.error('There was an error fetching resumes', error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -124,21 +157,39 @@ const Home = () => {
   const biggestPriceData = sortedPrices[sortedPrices.length - 1]?.price ?? null;
 
   return (
-    <ConfigProvider>
-      <UserCVBuilderLayout
-        selected="3"
-        userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
-        content={
-          <div className="container mx-auto">
+    <UserLayout
+      selected="5"
+      isCollapsed={false}
+      avatar={avatar}
+      email={email}
+      userRole={userRole}
+      userHeader={<ExpertConfigHeader initialEnabledCategories={enabledCategories} />}
+      content={
+        <div className="container">
+          {isLoading && <Skeleton style={{ marginTop: 50 }} />}
+          {!isLoading && errorMessage !== '' && (
+            <Result
+              status="403"
+              title="403"
+              subTitle={`Sorry, you are not authorized to access this page. ${errorMessage}`}
+              extra={
+                <Link href="/" passHref>
+                  <button type="button">Back</button>
+                </Link>
+              }
+            />
+          )}
+          {!isLoading && errorMessage === '' && (
             <div className="!p-0 relative">
-              <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
+              <div className="pl-16" style={{ paddingLeft: '', width: '95%', background: 'white' }}>
                 <div className="absolute top-10 left-5">
-                  <Link href="/review/list/expert" passHref>
+                  {/* <Link href="/review/list/expert" passHref>
                     <button>
                       <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
                     <span className="ml-2">Back</span>
-                  </Link>
+                  </Link> */}
+                  {errorMessage}
                 </div>
                 <div className="absolute top-10 right-5" style={{ textAlign: 'left' }}>
                   {/* <ReviewNewModal onCreated={onCreated} resumes={resumes} expert={expert} /> */}
@@ -188,10 +239,6 @@ const Home = () => {
                       {expert?.cvId > 0 && <FinishUpPreviewV2 cvId={expert.cvId} />}
                     </div>
                   </div>
-
-                  {/* <div className="mt-8">
-                    <img src="/images/resume.jpg" alt="image" />
-                  </div> */}
                 </div>
               </div>
 
@@ -201,13 +248,12 @@ const Home = () => {
                   style={{
                     paddingLeft: '20px',
                     paddingBottom: '20px',
-                    background: 'white',
+                    width: '95%',
                     textAlign: 'left',
                   }}
                 >
                   <div>
-                    <Title style={{ color: '#4D70EB' }} level={5}>
-                      {' '}
+                    <Title style={{ color: '#4D70EB', marginTop: '10px' }} level={5}>
                       <span style={{ borderBottom: '2px solid #4D70EB' }}>Reviews</span>
                     </Title>
                   </div>
@@ -248,10 +294,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
-        }
-      />
-    </ConfigProvider>
+          )}
+        </div>
+      }
+    />
   );
 };
 

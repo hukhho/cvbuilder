@@ -326,7 +326,7 @@ const FinishUpPreview = ({ cvId }) => {
     const fetchData = async () => {
       try {
         const data = await getFinishUp(cvId);
-        console.log('🚀 ~ file: page.jsx:330 ~ fetchData ~ data:', data);
+        console.log('🚀 ~ file: page.jsx:330 ~ fetchData ~ data:cvId', cvId);
 
         setFinishUpData(data);
 
@@ -337,8 +337,8 @@ const FinishUpPreview = ({ cvId }) => {
 
         setSummary(data.summary);
 
-        const data1 = await getAudit(cvId);
-        setAuditData(data1);
+        // const data1 = await getAudit(cvId);
+        // setAuditData(data1);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
       }

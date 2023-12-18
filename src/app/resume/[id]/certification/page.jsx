@@ -17,13 +17,15 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { updateCertification } from './certificationService';
 import StandarList from '@/app/components/List/StandarList';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import useStore from '@/store/store';
 
 const Certification = ({ params }) => {
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
-  const [enabledCategories] = useState({
-    CERTIFICATIONS: true,
-  });
+
+  const { avatar, email, userRole } = useStore();
+  const enabledCategories = { CERTIFICATIONS: true };
+
   const [isShow, setIsShow] = useState(true);
   const handleDownButton = () => {
     setIsShow(!isShow);
@@ -66,6 +68,9 @@ const Certification = ({ params }) => {
       <ConfigProvider>
         <UserLayout
           isCollapsed
+          avatar={avatar}
+          email={email}
+          userRole={userRole}
           userHeader={
             <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }

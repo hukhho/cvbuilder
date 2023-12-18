@@ -1,14 +1,6 @@
 // combinedService.js
 import axiosInstance from '@/app/utils/axiosInstance';
-
-const getUserIdFromCookie = () => {
-  const userId = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('userId'))
-    .split('=')[1];
-
-  return userId;
-};
+import { getUserIdFromLocalStorage } from '../utils/indexService';
 
 // const postHrPublic = async data => {
 //   try {
@@ -22,8 +14,17 @@ const getUserIdFromCookie = () => {
 
 const getExpertPurchases = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`transaction/get-all/{user-id}?user-id=${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const getSuggestJobTitleAndCompany = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`user/${userId}/job-title/company/config`);
     return response.data;
   } catch (error) {
     throw error;
@@ -32,7 +33,7 @@ const getExpertPurchases = async () => {
 
 const getRequestList = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(
       `/cv/expert/${userId}/review-requests?sortBy=price&sortOrder=asc`,
     );
@@ -44,7 +45,7 @@ const getRequestList = async () => {
 
 const getExpertConfig = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/expert/${userId}/information/config`);
     return response.data;
   } catch (error) {
@@ -54,7 +55,7 @@ const getExpertConfig = async () => {
 
 const updateExpertConfig = async data => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/expert/${userId}/cv/information/config`, data);
     return response.data;
   } catch (error) {
@@ -64,7 +65,7 @@ const updateExpertConfig = async data => {
 
 const rejectRequest = async requestId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(
       `/cv/expert/${userId}/review-request/${requestId}/reject`,
     );
@@ -75,7 +76,7 @@ const rejectRequest = async requestId => {
 };
 const acceptRequest = async requestId => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(
       `/cv/expert/${userId}/review-request/${requestId}/accept`,
     );
@@ -95,7 +96,7 @@ const acceptRequest = async requestId => {
 // };
 const getExpertPreview = async () => {
   try {
-    const userId = getUserIdFromCookie();
+    const userId = getUserIdFromLocalStorage();
 
     const response = await axiosInstance.get(`/expert/${userId}`);
     return response.data;
@@ -111,4 +112,5 @@ export {
   getExpertPreview,
   updateExpertConfig,
   getExpertPurchases,
+  getSuggestJobTitleAndCompany,
 };

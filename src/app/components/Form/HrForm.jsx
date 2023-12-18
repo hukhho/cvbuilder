@@ -72,7 +72,7 @@ const HrForm = ({ onCreated, data, resumeOptions }) => {
       values.companyLogo = imageUrl;
       console.log('handleSubmit: ', values);
       const result = await updateHrConfig(values.cv, values);
-      // openNotification('bottomRight', `Save changes: ${result}`);
+      openNotification('bottomRight', 'Save changes');
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`);
       console.log('Submit. Error:', error);
@@ -248,6 +248,10 @@ const HrForm = ({ onCreated, data, resumeOptions }) => {
             <Input.TextArea
               style={{
                 marginTop: '-10px',
+              }}
+              autoSize={{
+                minRows: 3,
+                maxRows: 6,
               }}
               className="inputEl contact-section inputEl st-current"
               id="contact-section-form-0"
