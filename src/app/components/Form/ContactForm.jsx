@@ -6,11 +6,14 @@ import updateContact from './updateContactService';
 import './customtext.css';
 import ButtonContact from './ButtonContact';
 
-const ContactForm = ({ cvId, onCreated, data }) => {
+const ContactForm = React.memo(({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSetData, setIsSetData] = useState(false);
+
   useEffect(() => {
-    console.log('ContactForm data: ', data);
-    if (data) {
+    console.log('CONTACT FORM');
+    if (data && !isSetData) {
       const mockData = {
         fullName: data.fullName,
         email: data.email,
@@ -19,17 +22,19 @@ const ContactForm = ({ cvId, onCreated, data }) => {
         personalWebsite: data.personalWebsite,
         city: data.city,
       };
-      console.log('Form fields set with data:', data);
       const initialData = mockData;
-      console.log('initialData: ', initialData);
       form.setFieldsValue(initialData);
+      setIsSetData(true);
     }
   }, [data, form]);
 
   const handleSubmit = async values => {
     try {
+      setIsLoading(true);
       const result = await updateContact(cvId, values);
-      form.resetFields();
+      setIsLoading(false);
+      // form.resetFields();
+      setIsLoading(false);
       onCreated();
       notification.success({
         message: 'Save changed',
@@ -201,32 +206,18 @@ const ContactForm = ({ cvId, onCreated, data }) => {
                   className='contact-section form[data-theme="basic"] button'
                   id="contact-section-save-to-list"
                   type="submit"
+                  disabled={isLoading}
                 >
                   Save basic info
                 </button>
               </div>
             </Form.Item>
           </Col>
-          <Col>
-            {/* <Button
-              htmlType="submit"
-              className="form-button  w-[769.22px] h-[47.86px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
-              style={{
-                width: '584px',
-                height: '56px',
-                backgroundColor: 'rgb(77, 112, 235)',
-                color: 'white',
-              }}
-            >
-              <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-                SAVE BASIC INFO
-              </div>
-            </Button> */}
-          </Col>
+          <Col />
         </Row>
       </Form>
     </div>
   );
-};
+});
 
 export default ContactForm;
