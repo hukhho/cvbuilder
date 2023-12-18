@@ -13,7 +13,13 @@ import { applyJob, createReview } from './reviewService';
 import { LoadingOutlined } from '@ant-design/icons';
 import SuccessJob from './SuccessJob';
 
-export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, jobId, handleSuccess }) {
+export default function ApplyJobModal({
+  onCreated,
+  resumeOptions,
+  coverOptions,
+  jobId,
+  handleSuccess,
+}) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -112,9 +118,7 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
         >
           <i className="fad fa-file-plus" aria-hidden="true" />
           <span>Apply for this job</span>
-
         </button>
-
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className=" relative z-10" onClose={closeModal}>
@@ -148,10 +152,8 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                   >
                     <div className="container px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
-
                         <div className="flex  justify-center">
                           <div className="p-9 w-[70%]" style={{ color: 'black' }}>
-
                             <h2>Select your CV and Cover Letter</h2>
                             <p>Choosing the suitable CV and Cover Letter to apply for the job.</p>
                             <div>
@@ -163,7 +165,6 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 style={{
                                   marginTop: 20,
                                   maxWidth: 900,
-
                                 }}
                                 requiredMark={false}
                               >
@@ -171,7 +172,6 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                   className="custom-label-normal"
                                   name="resume"
                                   label="Select Resume"
-
                                   rules={[
                                     {
                                       required: true,
@@ -183,7 +183,6 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                     style={{ width: '100%', height: 50 }}
                                     options={resumeOptions}
                                   />
-
                                 </Form.Item>
                                 <Form.Item
                                   className="custom-label-normal"
@@ -194,7 +193,6 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                     style={{ width: '100%', height: 50 }}
                                     options={coverOptions}
                                   />
-
                                 </Form.Item>
                                 {/* <Form.Item
                                   name="deadline"
@@ -217,7 +215,6 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                       required: true,
                                     },
                                   ]}
-
                                 >
                                   <Input
                                     className="custom-search"
@@ -226,9 +223,8 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 </Form.Item>
 
                                 <Form.Item>
-
                                   {isSubmitting && (
-                                    <Spin 
+                                    <Spin
                                       indicator={
                                         <LoadingOutlined
                                           style={{
@@ -240,10 +236,15 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                       }
                                     />
                                   )}
-                                  <Button className="button cta width-fit"
-                                    style={{ height: 35 }} disabled={isSubmitting} type="primary" htmlType="submit">
+                                  <Button
+                                    className="button cta width-fit"
+                                    style={{ height: 35 }}
+                                    disabled={isSubmitting}
+                                    type="primary"
+                                    htmlType="submit"
+                                  >
                                     Submit
-                                  </button>
+                                  </Button>
                                 </Form.Item>
                               </Form>
                               {/* <form>

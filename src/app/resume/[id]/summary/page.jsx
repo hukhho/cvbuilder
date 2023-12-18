@@ -180,7 +180,6 @@ const Summary = ({ params }) => {
             <div className="flex h-screen">
               {contextHolder}
               <div className="flex flex-col p-4 pl-0" style={{ width: '100%' }}>
-
                 <SummaryForm
                   cvId={cvId}
                   onCreated={fetchData}

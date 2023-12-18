@@ -413,51 +413,51 @@ const UserLayout = React.memo(
               </div>
             </Sider>
 
-          <Layout
-            className="site-layout"
-            style={{
-              marginLeft: collapsed ? 80 : 280,
-              background: '#fbfbfb',
-            }}
-          >
-            <div style={{ margin: '0 auto', width: '80%' }}>
-              <Header
-                style={{
-                  marginTop: '40px',
-                  padding: 0,
-                  paddingLeft: 0,
-                  background: '#fbfbfb',
-                  position: 'relative',
-                }}
-              >
-                {userHeader}
-                {!collapsed && (
-                  <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
-                    <Space align="center">
-                      <Avatar src={avatar} size={30} />
-                      <span className="mock-block">{email}</span>
-                    </Space>
-                  </div>
-                )}
-              </Header>
-
-              <Content
-                style={{
-                  margin: '0 0 0 0',
-                  minHeight: '100vh',
-                  overflow: 'initial',
-                }}
-              >
-                <div
+            <Layout
+              className="site-layout"
+              style={{
+                marginLeft: isCollapsed ? 80 : 280,
+                background: '#fbfbfb',
+              }}
+            >
+              <div style={{ margin: '0 auto', width: '80%' }}>
+                <Header
                   style={{
-                    textAlign: 'left',
+                    marginTop: '40px',
+                    padding: 0,
+                    paddingLeft: 0,
                     background: '#fbfbfb',
+                    position: 'relative',
                   }}
                 >
-                  {content}
-                </div>
-              </Content>
-            </div>
+                  {userHeader}
+                  {!isCollapsed && (
+                    <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
+                      <Space align="center">
+                        <Avatar src={avatar} size={30} />
+                        <span className="mock-block">{email}</span>
+                      </Space>
+                    </div>
+                  )}
+                </Header>
+
+                <Content
+                  style={{
+                    margin: '0 0 0 0',
+                    minHeight: '100vh',
+                    overflow: 'initial',
+                  }}
+                >
+                  <div
+                    style={{
+                      textAlign: 'left',
+                      background: '#fbfbfb',
+                    }}
+                  >
+                    {content}
+                  </div>
+                </Content>
+              </div>
 
               <Content
                 style={{

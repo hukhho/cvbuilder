@@ -51,7 +51,6 @@ const Contact = ({ params }) => {
             <div className="flex ">
               <div className="flex flex-col p-4 pl-0">
                 <ContactForm cvId={params.id} onCreated={fetchData} data={contactData} />
-
               </div>
             </div>
           }
