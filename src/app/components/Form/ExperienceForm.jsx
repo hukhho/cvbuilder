@@ -501,7 +501,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   };
 
   return (
-    <div className="" style={{ width: '842px' }}>
+    <div className="" style={{}}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="role"
@@ -554,7 +554,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Form.Item name="endDate" hidden>
           <Input type="hidden" />
         </Form.Item>
-        <Space.Compact style={{ width: '842px' }} block>
+        <Space.Compact style={{ }} block>
           <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
               label={
@@ -728,12 +728,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                     </div>
 
                     <div className="flex" style={{ width: '50px' }}>
-                      <button
-                        onClick={handleApplyAiContent}
-                        className="button cta mt-8"
-                        
-                        type=""
-                      >
+                      <button onClick={handleApplyAiContent} className="button cta mt-8" type="">
                         Apply AI Content
                       </button>
                       <button
@@ -780,7 +775,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
           <Input type="hidden" value={inputValue} />
         </Form.Item>
-                  
+
         <button
           disable={isAiWrite}
           href=""

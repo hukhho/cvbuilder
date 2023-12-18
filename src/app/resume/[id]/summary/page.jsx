@@ -175,7 +175,7 @@ const Summary = ({ params }) => {
           content={
             <div className="flex h-screen">
               {contextHolder}
-              <div className="flex flex-col p-4" style={{ width: '900px' }}>
+              <div className="flex flex-col p-4 pl-0" style={{ width: '100%' }}>
                 <SummaryForm
                   cvId={cvId}
                   onCreated={fetchData}
@@ -186,7 +186,7 @@ const Summary = ({ params }) => {
                 />
               </div>
               <div className="summary-wrapper" style={{ width: '320px', textAlign: 'left' }}>
-                <Card className="summary-ai-wrapper" style={{ marginTop: '57px' }}>
+                <Card className="summary-ai-wrapper" style={{ marginTop: '43px' }}>
                   <div>
                     <h4 style={{}}>
                       AI summary Writer<sup>BETA</sup>
@@ -275,7 +275,7 @@ const Summary = ({ params }) => {
                         <button onClick={saveSuggestion} className="button">
                           Save Suggestion
                         </button>
-                        <button onClick={cancelSuggestion} className="button bg-red-500 mt-2">
+                        <button onClick={cancelSuggestion} className="button button-red mt-2">
                           Cancel Suggestion
                         </button>
                       </div>

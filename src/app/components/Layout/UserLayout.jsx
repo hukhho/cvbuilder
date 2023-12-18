@@ -520,46 +520,48 @@ const UserLayout = React.memo(({ userHeader, content, selected, onCreated, isCol
           <Layout
             className="site-layout"
             style={{
-              marginLeft: collapsed ? 150 : 350,
+              marginLeft: collapsed ? 80 : 280,
               background: '#fbfbfb',
             }}
           >
-            <Header
-              style={{
-                marginTop: '40px',
-                padding: 0,
-                paddingLeft: 0,
-                background: '#fbfbfb',
-                position: 'relative',
-              }}
-            >
-              {userHeader}
-              {!collapsed && (
-                <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
-                  <Space align="center">
-                    <Avatar src={avatar} size={30} />
-                    <span className="mock-block">{email}</span>
-                  </Space>
-                </div>
-              )}
-            </Header>
-
-            <Content
-              style={{
-                margin: '0 0 0 0',
-                minHeight: '100vh',
-                overflow: 'initial',
-              }}
-            >
-              <div
+            <div style={{ margin: '0 auto', width: '80%' }}>
+              <Header
                 style={{
-                  textAlign: 'left',
+                  marginTop: '40px',
+                  padding: 0,
+                  paddingLeft: 0,
                   background: '#fbfbfb',
+                  position: 'relative',
                 }}
               >
-                {content}
-              </div>
-            </Content>
+                {userHeader}
+                {!collapsed && (
+                  <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
+                    <Space align="center">
+                      <Avatar src={avatar} size={30} />
+                      <span className="mock-block">{email}</span>
+                    </Space>
+                  </div>
+                )}
+              </Header>
+
+              <Content
+                style={{
+                  margin: '0 0 0 0',
+                  minHeight: '100vh',
+                  overflow: 'initial',
+                }}
+              >
+                <div
+                  style={{
+                    textAlign: 'left',
+                    background: '#fbfbfb',
+                  }}
+                >
+                  {content}
+                </div>
+              </Content>
+            </div>
 
             {/* <Footer
        style={{

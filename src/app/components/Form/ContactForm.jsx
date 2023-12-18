@@ -54,7 +54,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
       {contextHolder}
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Row justify="start" gutter={[16, 0]}>
-          <Col style={{ maxWidth: 602 }} span={12}>
+          <Col span={12}>
             <Form.Item
               name="name"
               label={
@@ -77,7 +77,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
               />
             </Form.Item>
           </Col>
-          <Col style={{ maxWidth: 602 }} span={12}>
+          <Col span={12}>
             <Form.Item
               name="email"
               label={
@@ -101,7 +101,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col style={{ maxWidth: 602 }} span={12}>
+          <Col span={12}>
             <Form.Item
               name="phone"
               label={
@@ -125,7 +125,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col style={{ maxWidth: 602 }} span={12}>
+          <Col span={12}>
             <Form.Item
               name="linkin"
               label={
@@ -149,7 +149,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col style={{ maxWidth: 602 }} span={12}>
+          <Col span={12}>
             <Form.Item
               name="personalWebsite"
               label={
@@ -173,7 +173,7 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
 
-          <Col style={{ maxWidth: 602 }} span={12}>
+          <Col span={12}>
             <Form.Item
               name="country"
               label={
@@ -197,12 +197,12 @@ const ContactForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </Col>
         </Row>
-        <Row justify="start">
-          <Col style={{ maxWidth: 602 }} span={12}>
+        <Row justify="start" gutter={[16, 0]}>
+          <Col span={12}>
             <Form.Item>
               <div className="form-submit-wrapper">
                 <button
-                  style={{ width: '592px', height: '50px' }}
+                  style={{ width: '100%', height: '50px' }}
                   href=""
                   data-size="large"
                   data-theme="default"

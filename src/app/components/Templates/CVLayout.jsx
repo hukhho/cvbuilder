@@ -144,26 +144,24 @@ const CVLayout = React.forwardRef(
     // };
     const captureRef = useRef();
     const CaptureScreenshot = () => {
-      console.log("cap")
+      console.log('cap');
       try {
         htmlToImage
-        .toCanvas(captureRef.current, { quality: 1, pixelRatio: 10 })
-        .then(function (canvas) {
-          const imgData = canvas.toDataURL('image/jpeg');
+          .toCanvas(captureRef.current, { quality: 1, pixelRatio: 10 })
+          .then(function (canvas) {
+            const imgData = canvas.toDataURL('image/jpeg');
 
-          // Adjust the width and height for A4 size (210mm x 297mm)
-          const pdfWidth = 210;
-          const pdfHeight = 297;
+            // Adjust the width and height for A4 size (210mm x 297mm)
+            const pdfWidth = 210;
+            const pdfHeight = 297;
 
-          const pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
-          pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-          pdf.save(`${new Date().toISOString()}.pdf`);
-        });
-        
+            const pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`${new Date().toISOString()}.pdf`);
+          });
       } catch (error) {
-        console.log("Error", error)
+        console.log('Error', error);
       }
-     
     };
     useImperativeHandle(ref, () => ({
       CaptureScreenshot,
@@ -172,7 +170,7 @@ const CVLayout = React.forwardRef(
     const templateName =
       templateType === 'classical' ? 'omega' : templateType === 'modern' ? 'beta' : 'lambda';
     return (
-      <div className="preview card">
+      <div className="">
         <div
           className="bg-gray-100 rounded-md p-4 select-none text-[#2e3d50]"
           id="resume-preview"
@@ -182,13 +180,13 @@ const CVLayout = React.forwardRef(
             className="design-studio-break-page"
             style={{
               top: 'calc(10.4882in)',
-              fontFamily: '"Source Sans Pro", sans-serif',
-              lineHeight: 20,
+              fontFamily: 'Merriweather, serif',
+              lineHeight: '20px',
               zIndex: 99,
             }}
           >
-            <div />
-            {/* Break */}
+            <div></div>
+            Break
           </div>
           <div
             ref={captureRef}

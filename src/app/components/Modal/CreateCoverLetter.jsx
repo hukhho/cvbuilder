@@ -120,6 +120,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                     <form onSubmit={handleFormSubmit}>
                       <div className="">
                         <label
+                          style={{ color: 'black' }}
                           className="!leading-[0px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
                           htmlFor="resumeName" // Add htmlFor with the correct id
                         >
@@ -145,7 +146,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                           htmlFor="resumeName" // Add htmlFor with the correct id
                         >
                           <div className="flex gap-2 items-center">
-                            <span>Cover letter title</span> *
+                            <span style={{ color: 'black' }}>Cover letter title</span> *
                           </div>
                           <div id="null-portal-root" />
                         </label>

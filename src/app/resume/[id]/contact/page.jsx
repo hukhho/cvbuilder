@@ -47,7 +47,7 @@ const Contact = ({ params }) => {
           }
           content={
             <div className="flex ">
-              <div className="flex flex-col p-4">
+              <div className="flex flex-col p-4 pl-0">
                 <ContactForm cvId={cvId} onCreated={fetchData} data={contactData} />
               </div>
             </div>

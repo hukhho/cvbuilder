@@ -55,7 +55,7 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
   };
 
   return (
-    <div className="" style={{ width: '775px' }}>
+    <div className="" style={{ width: '100%' }}>
       <Form
         onFinish={handleSubmit}
         form={form}

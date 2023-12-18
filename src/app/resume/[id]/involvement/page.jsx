@@ -73,7 +73,10 @@ const Involvement = ({ params }) => {
           }
           content={
             <div className="flex h-screen w-full">
-              <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
+              <div
+                className="flex flex-col p-4 pl-0"
+                style={{ width: '320px', marginRight: '36px' }}
+              >
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
                     <VideoComponent />
@@ -122,7 +125,7 @@ const Involvement = ({ params }) => {
                   </div>
                 </Card>
               </div>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col px-4 w-full">
                 <InvolvementForm cvId={cvId} onCreated={fetchData} data={selectedData} />
               </div>
             </div>

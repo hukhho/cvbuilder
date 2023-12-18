@@ -49,7 +49,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
   };
 
   return (
-    <div className="" style={{ width: '775px' }}>
+    <div className="" style={{ width: '100%' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="degree"

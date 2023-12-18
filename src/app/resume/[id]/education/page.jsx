@@ -38,9 +38,8 @@ const Education = ({ params }) => {
     try {
       const data = await getAllEducations(cvId);
       console.log('data getAllEducations ', data);
-      setSelectedEducation(null)
+      setSelectedEducation(null);
       setEducations(data);
-      
     } catch (error) {
       console.error('There was an error fetching the educations', error);
     }
@@ -51,7 +50,7 @@ const Education = ({ params }) => {
   }, []);
 
   const handleEditEducation = education => {
-    console.log("selected: ", selectedEducation)
+    console.log('selected: ', selectedEducation);
     setSelectedEducation(education);
   };
   const handleHideEducation = education => {
@@ -77,11 +76,14 @@ const Education = ({ params }) => {
         <UserLayout
           isCollapsed={true}
           userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id}  />
+            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
           }
           content={
             <div className="flex h-screen w-full">
-              <div className="flex flex-col p-4" style={{ width: '320px', marginRight: '36px' }}>
+              <div
+                className="flex flex-col p-4 pl-0"
+                style={{ width: '320px', marginRight: '36px' }}
+              >
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
                     <VideoComponent />
@@ -130,8 +132,12 @@ const Education = ({ params }) => {
                   </div>
                 </Card>
               </div>
-              <div className="flex flex-col px-4">
-                <EducationForm cvId={cvId} onEducationCreated={fetchEducations} education={selectedEducation} />
+              <div className="flex flex-col px-4 w-full">
+                <EducationForm
+                  cvId={cvId}
+                  onEducationCreated={fetchEducations}
+                  education={selectedEducation}
+                />
               </div>
             </div>
           }

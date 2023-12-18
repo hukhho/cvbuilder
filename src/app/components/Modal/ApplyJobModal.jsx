@@ -207,9 +207,14 @@ export default function ApplyJobModal({ onCreated, resumeOptions, coverOptions, 
                                 </Form.Item>
 
                                 <Form.Item>
-                                  <Button style={{ height: 35 }} type="primary" htmlType="submit">
+                                  <button
+                                    className="button cta width-fit"
+                                    style={{ height: 35 }}
+                                    type="primary"
+                                    htmlType="submit"
+                                  >
                                     Submit
-                                  </Button>
+                                  </button>
                                 </Form.Item>
                               </Form>
                               {/* <form>

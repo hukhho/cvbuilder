@@ -50,26 +50,9 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
   };
 
   return (
-    <div className="" style={{ width: '850.05px' }}>
+    <div className="" style={{ width: '100%' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
-        <Form.Item
-          name="summary"
-          label={
-            <lable style={{ display: 'none' }}>d</lable>
-            // <label
-            //   style={{ fontSize: 12 }}
-            //   className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-            //   for="summary-section-form-0"
-            // >
-            //   <div className="flex gap-2 items-center">
-            //     <span>
-            //       Write a professional <strong>summary</strong>
-            //     </span>
-            //   </div>
-            //   <div id="summary-section-form-0-portal-root" />
-            // </label>
-          }
-        >
+        <Form.Item name="summary">
           <div style={{ position: 'relative', display: 'block', zIndex: 0, textAlign: 'left' }}>
             <div className="summary-section src-components-GeneratorForm--yE-M0KIYLqM= src-components-GeneratorForm--fATEgyCKtc4=   src-components-Form-Textarea--33tYOpt2RMw= ">
               <label

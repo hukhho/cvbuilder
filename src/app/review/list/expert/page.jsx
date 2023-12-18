@@ -143,7 +143,7 @@ const Home = () => {
               <div className="grid grid-cols-3 gap-4 mt-16 mb-16">
                 {experts?.map(expert => (
                   <Link href={`/review/${expert?.id}/detail`}>
-                    <Card key={expert?.id} style={{ width: 297, borderRadius: '8px' }}>
+                    <Card key={expert?.id} style={{ width: 320, borderRadius: '8px' }}>
                       <img
                         style={{
                           width: '279.50px',

@@ -171,7 +171,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
   ));
 
   return (
-    <div className="" style={{ width: '912.05px' }}>
+    <div className="" style={{ width: '100%' }}>
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="organizationRole"
