@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json .
 RUN yarn install --frozen-lockfile
 
-FROM node:16-alpine AS builder
+FROM node:18.17.0 AS builder
 WORKDIR /app
 COPY --from=dependency /app/node_modules ./node_modules
 COPY . .
