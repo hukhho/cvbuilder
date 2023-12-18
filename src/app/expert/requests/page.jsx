@@ -79,17 +79,7 @@ const ExpertRequestPage = () => {
       title: 'Resume Name',
       dataIndex: 'resumeName',
       render: (text, record) => {
-        if (
-          record.status === 'Processing' ||
-          record.status === 'WAITING' ||
-          record.status === 'Waiting' ||
-          record.status === 'Draft' ||
-          record.status === 'DRAFT'
-        ) {
-          return <Link href={`/expert/view-cv/${record.id}`}>{text}</Link>;
-        } else {
-          return <span>{text}</span>;
-        }
+        return <Link href={`/expert/view-cv/${record.id}`}>{text}</Link>;
       },
     },
     {
@@ -112,10 +102,11 @@ const ExpertRequestPage = () => {
       dataIndex: 'price',
       render: text => (
         <div>
-          {Number(text).toLocaleString('vi-VN', {
+          {/* {Number(text).toLocaleString('vi-VN', {
             style: 'currency',
             currency: 'VND',
-          })}
+          })} */} 
+          {text}
         </div>
       ),
       sorter: {

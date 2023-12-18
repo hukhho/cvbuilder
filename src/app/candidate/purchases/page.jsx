@@ -30,11 +30,14 @@ const columns = [
   //   dataIndex: 'title',
   //   render: text => <a>{text}</a>,
   // },
-
   {
-    title: 'Transaction',
-    dataIndex: 'transactionType',
+    title: 'Transaction Name',
+    dataIndex: 'responseMessage',
   },
+  // {
+  //   title: 'Transaction',
+  //   dataIndex: 'transactionType',
+  // },
   // {
   //   title: 'Cv',
   //   dataIndex: 'cvs',
@@ -47,15 +50,21 @@ const columns = [
   {
     title: 'Amount',
     dataIndex: 'expenditure',
-    render: text => (
-      <div>
-        {(Number(text) * 1000).toLocaleString('vi-VN', {
-          style: 'currency',
-          currency: 'VND',
-        })}
-      </div>
-    ),
+    render: (text, record) => {
+      const isAddTransaction = record.transactionType === 'ADD';
+      const amountStyle = isAddTransaction ? { color: 'green' } : { color: 'red' };
+      const sign = isAddTransaction ? '+' : '-';
 
+      return (
+        <div style={amountStyle}>
+          {sign}
+          {Number(text).toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          })}
+        </div>
+      );
+    },
     sorter: (a, b) => a.expenditure - b.expenditure,
   },
 
@@ -74,29 +83,29 @@ const columns = [
       </div>
     ),
   },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    filters: [
-      { text: 'PENDING', value: 'PENDING' },
-      { text: 'SUCCESSFULLY', value: 'SUCCESSFULLY' },
-      { text: 'FAIL', value: 'FAIL' },
-      // Include other statuses if needed
-    ],
-    onFilter: (value, record) => record.status === value,
-    render: text => {
-      switch (text) {
-        case 'PENDING':
-          return <Badge status="warning" text={text} />;
-        case 'SUCCESSFULLY':
-          return <Badge status="success" text={text} />;
-        case 'FAIL':
-          return <Badge status="error" text={text} />;
-        default:
-          return <Badge status="warning" text={text} />;
-      }
-    },
-  },
+  // {
+  //   title: 'Status',
+  //   dataIndex: 'status',
+  //   filters: [
+  //     { text: 'PENDING', value: 'PENDING' },
+  //     { text: 'SUCCESSFULLY', value: 'SUCCESSFULLY' },
+  //     { text: 'FAIL', value: 'FAIL' },
+  //     // Include other statuses if needed
+  //   ],
+  //   onFilter: (value, record) => record.status === value,
+  //   render: text => {
+  //     switch (text) {
+  //       case 'PENDING':
+  //         return <Badge status="warning" text={text} />;
+  //       case 'SUCCESSFULLY':
+  //         return <Badge status="success" text={text} />;
+  //       case 'FAIL':
+  //         return <Badge status="error" text={text} />;
+  //       default:
+  //         return <Badge status="warning" text={text} />;
+  //     }
+  //   },
+  // },
   // {
   //   title: 'note',
   //   dataIndex: 'note',

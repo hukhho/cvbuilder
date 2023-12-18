@@ -929,7 +929,8 @@ export default function FinishUp({ params }) {
                   <Card className="mt-4">
                     <div className="flex justify-start">
                       <div style={{ textAlign: 'left' }}>
-                        <div>Name1: {dataRequest?.name}</div>
+                        <div>Name: {dataRequest?.name}</div>
+                        <div>Status: {fetchedData?.request?.status}</div>
                         <div>Note: {dataRequest?.note}</div>
                         <div>
                           Deadline: <div> {moment(dataRequest?.deadline).fromNow()}</div>{' '}
@@ -948,7 +949,8 @@ export default function FinishUp({ params }) {
                   >
                     {filteredSections.map(section => section.canBeDisplayed && section.component)}
                   </CVLayoutReviewerView>
-                  <div>
+                  {fetchedData?.request?.status !== 'Done' ? (
+                    <div>
                     <textarea
                       className="inputEl"
                       value={overall}
@@ -983,6 +985,11 @@ export default function FinishUp({ params }) {
                       Submit
                     </button>
                   </div>
+                  ) : (
+                    <div>
+                      
+                    </div>
+                  )}
                 </div>
               ) : (
                 <></>

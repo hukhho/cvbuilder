@@ -3,7 +3,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, ConfigProvider, Input, Table, Typography, Upload } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  ConfigProvider,
+  Input,
+  Table,
+  Typography,
+  Upload,
+  notification,
+} from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -18,75 +28,12 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
-import { getUsers, getWithdrawRequests } from '../adminServices';
+import { banUser, getUsers, getWithdrawRequests, unbanUser } from '../adminServices';
 import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
 
 const { Title } = Typography;
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    render: text => <div>{text}</div>,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    render: text => {
-      if (text === 'Done') {
-        return <Badge status="success" text={text} />;
-      }
-      if (text === 'Waiting') {
-        return <Badge status="warning" text={text} />;
-      }
-      if (text === 'Overdue') {
-        return <Badge status="error" text={text} />;
-      }
-      if (text === 'Unpiblish') {
-        return <Badge status="warning" text={text} />;
-      }
-      if (text === 'Disable') {
-        return <Badge status="warning" text={text} />;
-      }
-      return <Badge status="warning" text={text} />;
-    },
-  },
-  {
-    title: 'Account Balance',
-    dataIndex: 'accountBalance',
-    render: text => (
-      <div>
-        {(Number(text)*1000).toLocaleString('vi-VN', {
-          style: 'currency',
-          currency: 'VND',
-        })}
-      </div>
-    ),
-  },
-  // {
-  //   title: 'Create Date',
-  //   dataIndex: 'createdDate',
-  //   sorter: {
-  //     compare: (a, b) => a.createdDate.valueOf() - b.createdDate.valueOf(),
-  //     multiple: 1,
-  //   },
-  //   render: (text, record) => (
-  //     <div className="flex flex-col">
-  //       <div> {moment(record.createdDate).fromNow()}</div>{' '}
-  //       <div style={{ color: 'gray', fontSize: '11px' }}>
-  //         {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
-  //       </div>{' '}
-  //     </div>
-  //   ),
-  // },
-  {
-    title: 'Action',
-    dataIndex: 'id',
-    render: text => <div><button>Ban</button> </div>,
-
-  },
-];
 // const statuses = ['Waiting', 'Overdue', 'Done'];
 // const dateRandome = ['3 days ago', 'Next Tuesday'];
 
@@ -111,6 +58,24 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'APPLICATION LIST': true,
   });
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, message, type = 'info') => {
+    const notificationTypes = {
+      info: api.info,
+      success: api.success,
+      warning: api.warning,
+      error: api.error,
+    };
+
+    const notificationFunc = notificationTypes[type] || api.info;
+
+    notificationFunc({
+      message: 'Notification',
+      description: message,
+      placement,
+    });
+  };
+
   const initialData = [];
 
   const [data, setData] = useState(initialData);
@@ -133,6 +98,107 @@ const Home = () => {
     fetchData();
   }, []);
 
+  // Function to mock banning a job
+  const handleBanUser = async customerId => {
+    try {
+      const result = await banUser(customerId);
+      fetchData();
+      openNotification('bottomRight', `Save changed ${result}`, 'success');
+
+    } catch (error) {
+      openNotification('bottomRight', `Error: ${error}`, 'error');
+    }
+  };
+
+  const handleUnbanUser = async customerId => {
+    try {
+      const result = await unbanUser(customerId);
+      fetchData();
+      openNotification('bottomRight', `Save changed ${result}`, 'success');
+
+    } catch (error) {
+      openNotification('bottomRight', `Error: ${error}`, 'error');
+    }
+  };
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      render: text => <div>{text}</div>,
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: text => {
+        if (text === 'UnBanned') {
+          return <Badge status="success" text={text} />;
+        }
+
+        if (text === 'Banned') {
+          return <Badge status="error" text={text} />;
+        }
+
+        return <Badge status="default" text={text} />;
+      },
+    },
+    {
+      title: 'Spend Money',
+      dataIndex: 'money',
+      render: text => (
+        <div>
+          {/* {(Number(text)).toLocaleString('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
+            })} */}
+          {text} đ
+        </div>
+      ),
+    },
+    // {
+    //   title: 'Create Date',
+    //   dataIndex: 'createdDate',
+    //   sorter: {
+    //     compare: (a, b) => a.createdDate.valueOf() - b.createdDate.valueOf(),
+    //     multiple: 1,
+    //   },
+    //   render: (text, record) => (
+    //     <div className="flex flex-col">
+    //       <div> {moment(record.createdDate).fromNow()}</div>{' '}
+    //       <div style={{ color: 'gray', fontSize: '11px' }}>
+    //         {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
+    //       </div>{' '}
+    //     </div>
+    //   ),
+    // },
+    {
+      title: 'Last Active',
+      dataIndex: 'lastActive',
+      sorter: {
+        compare: (a, b) => moment(a.createdDate) - moment(b.createdDate),
+      },
+      render: (text, record) => (
+        <div className="flex flex-col">
+         {text}
+        </div>
+      ),
+    },
+    {
+      title: 'Action',
+      dataIndex: 'id',
+      render: (text, record) => (
+        <div>
+          {record?.status === 'Banned' ? (
+            <button className="" onClick={() => handleUnbanUser(record.id)}>
+              Unban
+            </button>
+          ) : (
+            <button onClick={() => handleBanUser(record.id)}>Ban</button>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <ConfigProvider>
       <AdminLayout
@@ -140,6 +206,7 @@ const Home = () => {
         userHeader={<></>}
         content={
           <div className="container mt-16" style={{ width: '80%' }}>
+            {contextHolder}
             <div style={{ textAlign: 'left' }}>
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>

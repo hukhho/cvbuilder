@@ -448,6 +448,7 @@ const UserLayout = React.memo(
                   margin: '0 0 0 0',
                   minHeight: '100vh',
                   overflow: 'initial',
+                  paddingBottom: 50
                 }}
               >
                 <div
@@ -460,6 +461,7 @@ const UserLayout = React.memo(
                   {content}
                 </div>
               </Content>
+             
             </Layout>
           </Layout>
         </ConfigProvider>

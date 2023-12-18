@@ -785,6 +785,7 @@ export default function FinishUp({ params }) {
                     </div>
                   </div>
                   <CVLayout
+                    isShowBreak={true}
                     ref={cvLayoutRef}
                     key={[templateSelected, toolbarState]}
                     templateType={templateSelected}

@@ -42,7 +42,7 @@ const beforeUpload = file => {
   }
   return isJpgOrPng && isLt2M;
 };
-const CandidateForm = ({ onCreated, data }) => {
+const CandidateForm = ({ onCreated, data, resumes }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -106,7 +106,7 @@ const CandidateForm = ({ onCreated, data }) => {
     }
   };
 
-  const resumeOptions = data?.cv?.map(resume => ({
+  const resumeOptions = resumes?.map(resume => ({
     value: resume.id,
     label: resume.resumeName,
   }));

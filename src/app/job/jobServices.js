@@ -22,7 +22,7 @@ const getJobList = async () => {
   }
 };
 
-const getJobListByTitle = async (title) => {
+const getJobListByTitle = async title => {
   try {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/${userId}/job-posting?title=${title}`);

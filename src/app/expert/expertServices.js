@@ -42,7 +42,17 @@ const getRequestList = async () => {
     throw error;
   }
 };
-
+const getHistoryList = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(
+      `/cv/expert/${userId}/review-requests/history?sortBy=price&sortOrder=asc`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getExpertConfig = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -113,4 +123,5 @@ export {
   updateExpertConfig,
   getExpertPurchases,
   getSuggestJobTitleAndCompany,
+  getHistoryList,
 };

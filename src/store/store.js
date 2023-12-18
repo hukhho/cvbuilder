@@ -18,7 +18,7 @@ const useStore = create(set => {
     avatar: storedAvatar, // Initialize with the value from localStorage
     userRole: storedUserRole, // Initialize with the value from localStorage
     balance: 0,
-    balance1: 0,
+    balance1: -1,
     ats: [],
     setAts: ats => set({ ats }),
     setBalance: balance => set({ balance }),

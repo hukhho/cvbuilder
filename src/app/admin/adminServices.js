@@ -10,9 +10,11 @@ const getWithdrawRequests = async data => {
     throw error;
   }
 };
-const getUsers = async data => {
+const getUsers = async () => {
   try {
-    const response = await axiosInstance.get('/user/manage/customer/information');
+    const userId = getUserIdFromLocalStorage();
+
+    const response = await axiosInstance.get(`admin/${userId}/manage/user/information`);
     return response.data;
   } catch (error) {
     throw error;
@@ -81,6 +83,26 @@ const unbanJob = async jobId => {
   try {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/admin/${userId}/job-posting/${jobId}/un-ban`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const banUser = async customerId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`admin/${userId}/manage/user/${customerId}/ban`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const unbanUser = async customerId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`admin/${userId}/manage/user/${customerId}/un-ban`);
     return response.data;
   } catch (error) {
     throw error;
@@ -238,4 +260,6 @@ export {
   saveScore,
   getSub,
   saveSub,
+  banUser,
+  unbanUser,
 };
