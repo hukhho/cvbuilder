@@ -230,14 +230,100 @@ export default function FinishUp({ params }) {
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
 
-  const filteredEducations = educations?.filter(education => education.isDisplay === true);
-  const filteredProjects = projects?.filter(project => project.isDisplay === true);
-  const filteredInvolvements = involvements?.filter(involvement => involvement.isDisplay === true);
-  const filteredCertifications = certifications?.filter(
-    certification => certification.isDisplay === true,
-  );
-  const filteredSkills = skills?.filter(skill => skill.isDisplay === true);
-  const filteredExperiences = experiences?.filter(experience => experience.isDisplay === true);
+  const filteredEducations = educations?.filter(education => {
+    // Check if education is displayable (isDisplay is true)
+    if (education.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if degree is not null
+    if (education.degree === null || education.degree === undefined || education.degree === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the education in the filtered list
+    return true;
+  });
+
+  const filteredProjects = projects?.filter(project => {
+    // Check if project is displayable (isDisplay is true)
+    if (project.isDisplay !== true) {
+      return false;
+    }
+  
+    // Check if title is not null, undefined, or an empty string
+    if (project.title === null || project.title === undefined || project.title === '') {
+      return false;
+    }
+  
+    // If both conditions are met, keep the project in the filtered list
+    return true;
+  });
+    const filteredInvolvements = involvements?.filter(involvement => {
+    // Check if involvement is displayable (isDisplay is true)
+    if (involvement.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if organizationName is not null, undefined, or an empty string
+    if (
+      involvement.organizationName === null ||
+      involvement.organizationName === undefined ||
+      involvement.organizationName === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the involvement in the filtered list
+    return true;
+  });
+  const filteredCertifications = certifications?.filter(certification => {
+    // Check if certification is displayable (isDisplay is true)
+    if (certification.isDisplay !== true) {
+      return false;
+    }
+  
+    // Check if name is not null, undefined, or an empty string
+    if (certification.name === null || certification.name === undefined || certification.name === '') {
+      return false;
+    }
+  
+    // If both conditions are met, keep the certification in the filtered list
+    return true;
+  });
+  
+  const filteredSkills = skills?.filter(skill => {
+    // Check if skill is displayable (isDisplay is true)
+    if (skill.isDisplay !== true) {
+      return false;
+    }
+  
+    // Check if description is not null, undefined, or an empty string
+    if (skill.description === null || skill.description === undefined || skill.description === '') {
+      return false;
+    }
+  
+    // If both conditions are met, keep the skill in the filtered list
+    return true;
+  });
+    const filteredExperiences = experiences?.filter(experience => {
+    // Check if experience is displayable (isDisplay is true)
+    if (experience.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if companyName is not null, empty string, or undefined
+    if (
+      experience.companyName === null ||
+      experience.companyName === '' ||
+      experience.companyName === undefined
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the experience in the filtered list
+    return true;
+  });
 
   // Now you have filtered arrays for each category
   console.log(filteredEducations);
@@ -718,12 +804,12 @@ export default function FinishUp({ params }) {
                   <VideoCard />
                   <AiFeedback cvId={params.id} />
 
-                  <Ats
+                  {/* <Ats
                     cvId={params.id}
                     dataAts={dataAts}
                     setDataAts={setDataAts}
                     onGen={handleSetHighlight}
-                  />
+                  /> */}
 
                   {/* <button
                     onClick={handleShowVersion}

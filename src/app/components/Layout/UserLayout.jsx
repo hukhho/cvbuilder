@@ -416,20 +416,21 @@ const UserLayout = React.memo(
             <Layout
               className="site-layout"
               style={{
-                marginLeft: isCollapsed ? 80 : 280,
+                marginLeft: isCollapsed ? 150 : 350,
                 background: '#fbfbfb',
+                maxWidth: '1000',
               }}
             >
-              <div style={{ margin: '0 auto', width: '80%' }}>
-                <Header
-                  style={{
-                    marginTop: '40px',
-                    padding: 0,
-                    paddingLeft: 0,
-                    background: '#fbfbfb',
-                    position: 'relative',
-                  }}
-                >
+              <Header
+                style={{
+                  marginTop: '40px',
+                  padding: 0,
+                  paddingLeft: 0,
+                  background: '#fbfbfb',
+                  position: 'relative',
+                }}
+              >
+                <div className="container mx-auto">
                   {userHeader}
                   {!isCollapsed && (
                     <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
@@ -439,25 +440,8 @@ const UserLayout = React.memo(
                       </Space>
                     </div>
                   )}
-                </Header>
-
-                <Content
-                  style={{
-                    margin: '0 0 0 0',
-                    minHeight: '100vh',
-                    overflow: 'initial',
-                  }}
-                >
-                  <div
-                    style={{
-                      textAlign: 'left',
-                      background: '#fbfbfb',
-                    }}
-                  >
-                    {content}
-                  </div>
-                </Content>
-              </div>
+                </div>
+              </Header>
 
               <Content
                 style={{

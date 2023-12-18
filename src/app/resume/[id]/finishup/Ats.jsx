@@ -31,9 +31,11 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
     }
   };
   useEffect(() => {
+    
     console.log('~page Ats.jsx');
     fetchData();
-  }, []);
+
+  }, [dataAts, setDataAts]);
   const handleCLick = () => {
     const result = {
       title: 'Associate Product Manager',

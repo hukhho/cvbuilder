@@ -72,16 +72,16 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
         newDate.setDate(today.getDate() + daysToAdd);
 
         const newDateStr = newDate.toISOString().split('T')[0];
-        const parsedPrice = parseFloat(price.price); // Assuming price.price is a string representation of a number
-        const formattedPrice = new Intl.NumberFormat('vi-VN', {
-          style: 'currency',
-          currency: 'VND',
-        }).format(parsedPrice);
+        // const parsedPrice = parseFloat(price.price); // Assuming price.price is a string representation of a number
+        // const formattedPrice = new Intl.NumberFormat('vi-VN', {
+        //   style: 'currency',
+        //   currency: 'VND',
+        // }).format(parsedPrice);
 
         return {
           value: price.id,
           metadata: `${price.day}-d`,
-          label: `${price.day} days (${newDateStr}) - ${formattedPrice}`,
+          label: `${price.day} days (${newDateStr}) - ${price.price} đ`,
         };
       });
 

@@ -7,7 +7,7 @@ import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import JobCard from './JobCard';
-import { getJobList } from '../jobServices';
+import { getJobList, getJobListByTitle } from '../jobServices';
 import useStore from '@/store/store';
 
 const { Title } = Typography;
@@ -61,6 +61,28 @@ const Home = () => {
     console.log('useEffect');
     fetchData();
   }, []);
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const onSearch = async (value, _e, info) => {
+    try {
+      const result = await getJobListByTitle(value);
+      setData(result);
+      setSearchValue(value);
+
+      // Extract unique locations from job data
+      const uniqueLocations = Array.from(new Set(fetchedDataFromAPI.map(job => job.location)));
+      // Generate options for Select based on unique locations
+      const locationOptionsTemp = uniqueLocations.map(location => ({
+        label: location,
+        value: location,
+      }));
+      setLocationOptions(locationOptionsTemp);
+      setFilteredData(fetchedDataFromAPI);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <ConfigProvider>
