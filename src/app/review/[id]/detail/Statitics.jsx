@@ -5,7 +5,16 @@ const { Title } = Typography;
 
 const Statitics = ({ expert }) => {
   return (
-    <div style={{ width: '300', marginRight: '100px', paddingTop: '160px', textAlign: 'left' }}>
+    <div
+      style={{
+        width: '300',
+        marginRight: '100px',
+        marginTop: '160px',
+        textAlign: 'left',
+        padding: 24,
+        boxShadow: '0px 4px 19px 0px rgba(142, 151, 158, 0.15)',
+      }}
+    >
       <Title style={{ color: 'black' }} level={4}>
         <span style={{}}>Statistic</span>
       </Title>

@@ -10,7 +10,7 @@ import './card.css';
 import './button.css';
 import { createReview } from './reviewService';
 import { LoadingOutlined } from '@ant-design/icons';
-
+import '../../components/Form/customtext.css';
 export default function ReviewNewModal({ onCreated, resumes, expert }) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
@@ -241,7 +241,12 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                     </label>
                                   }
                                 >
-                                  <Select size="large" options={resumeOptions} />
+                                  <Select
+                                    placeholder="Resume name"
+                                    style={{ height: 50 }}
+                                    size="large"
+                                    options={resumeOptions}
+                                  />
                                 </Form.Item>
                                 <Form.Item
                                   name="optionId"
@@ -260,7 +265,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                     },
                                   ]}
                                 >
-                                  <Select size="large" options={options} />
+                                  <Select style={{ height: 50 }} size="large" options={options} />
                                 </Form.Item>
 
                                 <Form.Item
@@ -275,7 +280,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                                     </label>
                                   }
                                 >
-                                  <Input />
+                                  <Input placeholder="Explain anything you would like us to know for the review." />
                                 </Form.Item>
 
                                 <Form.Item>
