@@ -4,8 +4,8 @@ import React from 'react';
 export const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
-   // Define the metadata you want to include
-   const metadata = {
+  // Define the metadata you want to include
+  const metadata = {
     roles: ['HR'], // Example metadata: roles
   };
 
@@ -17,7 +17,7 @@ export const LoginButton = () => {
       authorizationParams: {
         connection: 'google-oauth2',
         // prompt: 'login',
-        metadata: "HR",
+        metadata: 'HR',
       },
     });
   };
