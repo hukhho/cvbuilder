@@ -13,6 +13,7 @@ import {
   Table,
   Typography,
   Upload,
+  DatePicker,
 } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
@@ -28,11 +29,13 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
-import { getUsers, getWithdrawRequests } from '../adminServices';
+import { getChartsMoney, getUsers, getWithdrawRequests } from '../adminServices';
 import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
 import ColumnChart from './Column';
 
+import dayjs from 'dayjs';
+const { RangePicker } = DatePicker;
 
 const { Title } = Typography;
 
@@ -43,13 +46,27 @@ const Dashboard = () => {
   const initialData = [];
 
   const [data, setData] = useState(initialData);
+
+  const [selectedRang, setSelectedRang] = useState([dayjs().add(-7, 'd'), dayjs()]);
+
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
   const fetchData = async () => {
     try {
-      console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getUsers();
+      const currentDate = dayjs();
+
+      const sevenDaysAgo = dayjs().subtract(7, 'd');
+      const formattedDateStart = sevenDaysAgo.format('YYYY-MM-DD');
+      const formattedDateEnd = currentDate.format('YYYY-MM-DD');
+
+      console.log('Current Date: ', formattedDateStart);
+      console.log('Seven Days Ago: ', formattedDateEnd);
+      const submit = {
+        start: formattedDateStart,
+        end: formattedDateEnd,
+      };
+      const fetchedDataFromAPI = await getChartsMoney(submit);
       setData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
@@ -58,41 +75,46 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log('useEffect');
-
     fetchData();
   }, []);
 
-  const chartData = [
+  const onRangeChange = async (dates, dateStrings) => {
+    if (dates) {
+      try {
+        setSelectedRang(dates);
+        const submit = {
+          start: dateStrings[0],
+          end: dateStrings[1],
+        };
+
+        const fetchedDataFromAPI = await getChartsMoney(submit);
+        setData(fetchedDataFromAPI);
+      } catch (error) {
+        console.log('getReviewRequestsByCandiate:Error: ', error);
+      }
+    } else {
+      console.log('Clear');
+    }
+  };
+  const rangePresets = [
     {
-      date: '2023-01-01',
-      sales: 100,
+      label: 'Last 7 Days',
+      value: [dayjs().add(-7, 'd'), dayjs()],
     },
     {
-      date: '2023-01-02',
-      sales: 150,
+      label: 'Last 14 Days',
+      value: [dayjs().add(-14, 'd'), dayjs()],
     },
     {
-      date: '2023-01-03',
-      sales: 200,
+      label: 'Last 30 Days',
+      value: [dayjs().add(-30, 'd'), dayjs()],
     },
     {
-      date: '2023-01-04',
-      sales: 120,
+      label: 'Last 90 Days',
+      value: [dayjs().add(-90, 'd'), dayjs()],
     },
-    {
-      date: '2023-01-05',
-      sales: 120,
-    },
-    {
-      date: '2023-01-06',
-      sales: 120,
-    },
-    {
-      date: '2023-01-07',
-      sales: 120,
-    },
-    // Add more data for other dates
   ];
+
   return (
     <ConfigProvider>
       <AdminLayout
@@ -105,27 +127,38 @@ const Dashboard = () => {
                 <Card style={{ width: 278, height: 182 }}>
                   <div className="text-gray-500">Total revenue</div>
                   <div>
-                    <Title>$ 126,560</Title>
+                    <Title>$ {data?.income}</Title>
                   </div>
                 </Card>
                 <Card style={{ width: 278, height: 182 }}>
                   <div className="text-gray-500">Monthly active users</div>
                   <div>
-                    <Title>8,846</Title>
+                    <Title>{data?.userLogin}</Title>
                   </div>
                 </Card>{' '}
                 <Card style={{ width: 278, height: 182 }}>
                   <div className="text-gray-500">Total users</div>
                   <div>
-                    <Title>5,000</Title>
+                    <Title>{data?.totalUser}</Title>
                   </div>
                 </Card>
               </Space>{' '}
             </div>
             <div></div>
-            <div className="!p-0 mt-16 mb-5 card">
+
+            <div className="mt-8">
+              <Title level={5}>Revenue Chart</Title>
+            </div>
+            <RangePicker
+              presets={rangePresets}
+              value={selectedRang}
+              className="mt-2 mb-5 "
+              onChange={onRangeChange}
+            />
+
+            <div className="!p-0 mt-4 mb-5 card">
               <div className="">
-                {/* <ColumnChart data={chartData} /> */}
+                <ColumnChart data={data?.chart} />
               </div>
             </div>
           </div>

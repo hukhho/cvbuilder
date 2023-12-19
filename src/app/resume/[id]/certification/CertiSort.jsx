@@ -23,6 +23,7 @@ import {
 import { sortItemsOrderBasedOnKeysV1 } from '../../sortItemsOrder';
 import SortableItem from '@/app/components/SortableList/SortableItem';
 import StandarList from '@/app/components/List/StandarList';
+import SortableItemCV from '@/app/components/SortableList/SortableItemCV';
 
 const CertiSort = ({ skills, onChangeOrder, updateExperience, handleDeleteData, handleEditData, cvId }) => {
   const skillItems = (
@@ -62,14 +63,12 @@ const CertiSort = ({ skills, onChangeOrder, updateExperience, handleDeleteData, 
   const handleDragEnd = useCallback(
     event => {
       const { active, over } = event;
-
       if (over && active.id !== over.id) {
         const oldIndex = components.indexOf(active.id);
         const newIndex = components.indexOf(over.id);
         const newComponents = arrayMove(components, oldIndex, newIndex);
         const arrKeys = newComponents.map(it => it.key);
         const sortedskillItems = sortItemsOrderBasedOnKeysV1(arrKeys, skills);
-        console.log('sortedskillItems', sortedskillItems);
         onChangeOrder(sortedskillItems);
         setComponents([...newComponents]);
       }
@@ -91,9 +90,9 @@ const CertiSort = ({ skills, onChangeOrder, updateExperience, handleDeleteData, 
         <SortableContext items={components}>
           {components.map((child, index) => (
             <div key={index}>
-              <SortableItem className="hello" key={index}>
+              <SortableItemCV className="hello" key={index}>
                 {child}
-              </SortableItem>
+              </SortableItemCV>
             </div>
           ))}
         </SortableContext>

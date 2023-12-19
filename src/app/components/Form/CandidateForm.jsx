@@ -127,7 +127,7 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
       </div>
     </div>
   );
-  const token = getCookieToken(); // Replace with your actual function to get the token
+  const accessToken = localStorage.getItem('accessToken');
 
   return (
     <div className="" style={{ width: '700px' }}>
@@ -143,20 +143,12 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
             listType="picture-circle"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://api-cvbuilder.monoinfinity.net/api/v1/auth/upload/image"
-            headers={{ authorization: `Bearer ${token}` }}
+            action="https://api-cvbuilder.monoinfinity.net/api/messages/public/upload/image"
+            headers={{ authorization: `Bearer ${accessToken}` }}
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {imageUrl ? (
-              <Avatar
-                src={imageUrl}
-                alt="avatar"
-                size={100}
-              />
-            ) : (
-              uploadButton
-            )}
+            {imageUrl ? <Avatar src={imageUrl} alt="avatar" size={100} /> : uploadButton}
           </Upload>
           <Form.Item
             name="avatar"

@@ -10,6 +10,32 @@ const getWithdrawRequests = async data => {
     throw error;
   }
 };
+const getChartsMoney = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+
+    const response = await axiosInstance.post(
+      `admin/admin/${userId}/dashboard/chart?chart=Money`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const getChartsUser = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+
+    const response = await axiosInstance.post(
+      `admin/admin/${userId}/dashboard/chart?chart=User`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getUsers = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -274,4 +300,6 @@ export {
   banUser,
   unbanUser,
   checkApiKey,
+  getChartsMoney,
+  getChartsUser,
 };

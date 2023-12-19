@@ -11,11 +11,19 @@ import { getUserIdFromLocalStorage } from '../utils/indexService';
 //     throw error;
 //   }
 // };
-
+const getExpertWithdraw = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`expert/get-all/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getExpertPurchases = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
-    const response = await axiosInstance.get(`transaction/get-all/{user-id}?user-id=${userId}`);
+    const response = await axiosInstance.get(`transaction/get-all/${userId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -144,4 +152,5 @@ export {
   getHistoryList,
   updateExpertBankConfig,
   updateOpenAiKey,
+  getExpertWithdraw,
 };

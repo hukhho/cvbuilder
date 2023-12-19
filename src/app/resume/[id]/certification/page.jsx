@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Card, ConfigProvider, Space } from 'antd';
+import { Card, ConfigProvider, notification, Space } from 'antd';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
@@ -38,6 +38,9 @@ const Certification = ({ params }) => {
     try {
       const newData = await dataService.getAll();
       setSelectedData(null);
+
+      newData.sort((a, b) => a.theOrder - b.theOrder);
+
       setData(newData);
     } catch (error) {
       console.error('There was an error fetching the data', error);
@@ -55,10 +58,32 @@ const Certification = ({ params }) => {
   const handleDeleteData = async itemId => {
     try {
       await dataService.delete(itemId);
-      const updatedData = await dataService.getAll(cvId);
+      const updatedData = await dataService.getAll();
       setData(updatedData);
     } catch (error) {
       console.error('There was an error deleting the data', error);
+    }
+  };
+
+  const handleOrderChange = async newOrder => {
+    // Create a new JSON with updated "theOrder" property
+    const updatedOrder = newOrder.map((item, index) => ({
+      ...item,
+      theOrder: index + 1,
+    }));
+    console.log('updatedOrder', updatedOrder);
+
+    setData(updatedOrder);
+    try {
+      await dataService.sortOrder(updatedOrder);
+      notification.success({
+        message: 'Save changed',
+      });
+    } catch (error) {
+      notification.success({
+        message: 'Save order error',
+      });
+      console.error('There was an error updating the data', error);
     }
   };
 
@@ -131,7 +156,7 @@ const Certification = ({ params }) => {
                         handleDeleteData={handleDeleteData}
                         handleEditData={handleEditData}
                         skills={data}
-                        onChangeOrder={fetchData}
+                        onChangeOrder={handleOrderChange}
                       />
                     )}
                   </div>

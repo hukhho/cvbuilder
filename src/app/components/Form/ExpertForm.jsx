@@ -115,7 +115,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
     </div>
   );
 
-  const token = getCookieToken(); // Replace with your actual function to get the token
+  const accessToken = localStorage.getItem('accessToken');
 
   return (
     <div className="" style={{ width: '700px' }}>
@@ -131,8 +131,8 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
             listType="picture-circle"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://api-cvbuilder.monoinfinity.net/api/v1/auth/upload/image"
-            headers={{ authorization: `Bearer ${token}` }}
+            action="https://api-cvbuilder.monoinfinity.net/api/messages/public/upload/image"
+            headers={{ authorization: `Bearer ${accessToken}` }}
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >

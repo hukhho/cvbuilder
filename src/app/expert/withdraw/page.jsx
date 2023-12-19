@@ -19,7 +19,7 @@ import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
-import { getExpertPurchases } from '../expertServices';
+import { getExpertPurchases, getExpertWithdraw } from '../expertServices';
 import ExpertConfigHeader from '@/app/components/ExpertConfigHeader';
 import moment from 'moment';
 import useStore from '@/store/store';
@@ -35,9 +35,18 @@ const columns = [
     title: 'RequestID',
     dataIndex: 'requestId',
   },
+  // {
+  //   title: 'Transaction',
+  //   dataIndex: 'responseMessage',
+  // },
   {
-    title: 'Transaction',
-    dataIndex: 'responseMessage',
+    title: 'Bank Account',
+    dataIndex: 'bankAccount',
+    render: (text, record) => (
+      <div>
+        {record.bankName} - {record.bankAccountNumber}
+      </div>
+    ),
   },
   // {
   //   title: 'Cv',
@@ -53,7 +62,7 @@ const columns = [
     dataIndex: 'expenditure',
     render: text => (
       <div>
-        {(Number(text)).toLocaleString('vi-VN', {
+        {Number(text).toLocaleString('vi-VN', {
           style: 'currency',
           currency: 'VND',
         })}
@@ -81,17 +90,16 @@ const columns = [
     title: 'Status',
     dataIndex: 'status',
     filters: [
-      { text: 'PENDING', value: 'PENDING' },
-      { text: 'SUCCESSFULLY', value: 'SUCCESSFULLY' },
+      { text: 'PROCESSING', value: 'PROCESSING' },
+      { text: 'SUCCESSFUL', value: 'SUCCESSFUL' },
       { text: 'FAIL', value: 'FAIL' },
-      // Include other statuses if needed
     ],
     onFilter: (value, record) => record.status === value,
     render: text => {
       switch (text) {
-        case 'PENDING':
+        case 'PROCESSING':
           return <Badge status="warning" text={text} />;
-        case 'SUCCESSFULLY':
+        case 'SUCCESSFUL':
           return <Badge status="success" text={text} />;
         case 'FAIL':
           return <Badge status="error" text={text} />;
@@ -150,7 +158,10 @@ const Home = () => {
   const fetchData = async () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getExpertPurchases();
+      const fetchedDataFromAPI = await getExpertWithdraw();
+
+      fetchedDataFromAPI.sort((b, a) => moment(a.createdDate) - moment(b.createdDate));
+
       setData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
@@ -177,9 +188,7 @@ const Home = () => {
             <div style={{ textAlign: 'left' }}>
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
-            <div>
-              {/* <Input className="" placeholder="Search the candiatename" /> */}
-            </div>
+            <div>{/* <Input className="" placeholder="Search the candiatename" /> */}</div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
                 <Table columns={columns} dataSource={data} onChange={onChange} />

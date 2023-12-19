@@ -19,6 +19,21 @@ class DataService {
     }
   }
 
+  async sortOrder(data) {
+    try {
+      //  /cv/{cvId}/education
+
+      const response = await axiosInstance.put(
+        `/cv/${this.cvId}/${this.dataType}/update-all`,
+        data,
+      );
+
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(data) {
     try {
       const response = await axiosInstance.post(`/cv/${this.cvId}/${this.dataType}`, data);
