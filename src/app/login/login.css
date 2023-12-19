@@ -49,7 +49,7 @@
         }
         &:last-child {
           @media screen and (min-width: 1365px) {
-            background: url("https://storage.googleapis.com/rezi-3f268.appspot.com/public/white_fresh.webp")
+            background: url("https://firebasestorage.googleapis.com/v0/b/cvbuilder-dc116.appspot.com/o/df385050-5771-4743-9817-41ad9e62e2d1.png?alt=media&token=df385050-5771-4743-9817-41ad9e62e2d1.png")
               130px center / 104% no-repeat rgb(247, 247, 248);
           }
           @media screen and (max-width: 1365px) {

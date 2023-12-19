@@ -26,37 +26,29 @@ import useStore from '@/store/store';
 
 const { Title } = Typography;
 const columns = [
-  // {
-  //   title: 'Job posting',
-  //   dataIndex: 'title',
-  //   render: text => <a>{text}</a>,
-  // },
-
   {
-    title: 'Transaction',
-    dataIndex: 'transactionType',
+    title: 'Transaction Name',
+    dataIndex: 'responseMessage',
   },
-  // {
-  //   title: 'Cv',
-  //   dataIndex: 'cvs',
-  //   render: cvs => (
-  //     <a>
-  //       <Link href={`/hr/view-cv/${cvs.historyId}`}>{cvs.historyId}</Link>{' '}
-  //     </a>
-  //   ),
-  // },
+
   {
     title: 'Amount',
     dataIndex: 'expenditure',
-    render: text => (
-      <div>
-        {(Number(text)).toLocaleString('vi-VN', {
-          style: 'currency',
-          currency: 'VND',
-        })}
-      </div>
-    ),
+    render: (text, record) => {
+      const isAddTransaction = record.transactionType === 'TRANSFER' || record.transactionType === 'ADD';
+      const amountStyle = isAddTransaction ? { color: 'green' } : { color: 'red' };
+      const sign = isAddTransaction ? '+' : '-';
 
+      return (
+        <div style={amountStyle}>
+          {sign}
+          {Number(text).toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          })}
+        </div>
+      );
+    },
     sorter: (a, b) => a.expenditure - b.expenditure,
   },
 
@@ -75,64 +67,7 @@ const columns = [
       </div>
     ),
   },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    filters: [
-      { text: 'PENDING', value: 'PENDING' },
-      { text: 'SUCCESSFULLY', value: 'SUCCESSFULLY' },
-      { text: 'FAIL', value: 'FAIL' },
-      // Include other statuses if needed
-    ],
-    onFilter: (value, record) => record.status === value,
-    render: text => {
-      switch (text) {
-        case 'PENDING':
-          return <Badge status="warning" text={text} />;
-        case 'SUCCESSFULLY':
-          return <Badge status="success" text={text} />;
-        case 'FAIL':
-          return <Badge status="error" text={text} />;
-        default:
-          return <Badge status="warning" text={text} />;
-      }
-    },
-  },
-
-  // {
-  //   title: 'note',
-  //   dataIndex: 'note',
-  // },
-  // {
-  //   title: 'email',
-  //   dataIndex: 'email',
-  // },
-  // {
-  //   title: 'Action',
-  //   dataIndex: 'id',
-  //   render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
-
-  // },
 ];
-// const statuses = ['Waiting', 'Overdue', 'Done'];
-// const dateRandome = ['3 days ago', 'Next Tuesday'];
-
-// for (let i = 0; i < 100; i++) {
-//   const price = Math.floor(Math.random() * 10) + 1;
-//   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
-//   const status = statuses[Math.floor(Math.random() * statuses.length)];
-
-//   data.push({
-//     key: i,
-//     resumeName: 'Pham Viet Thuan Thien',
-//     name: '<User Name>',
-//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price,
-//     status,
-//     receiveDate: due,
-//     deadline: due,
-//   });
-// }
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -150,6 +85,7 @@ const Home = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getExpertPurchases();
+      fetchedDataFromAPI.sort((b, a) => moment(a.createdDate) - moment(b.createdDate));
       setData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);

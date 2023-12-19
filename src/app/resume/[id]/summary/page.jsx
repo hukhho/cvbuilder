@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Form, Input, notification, Select, Switch } from 'antd';
+import { App, Button, Card, ConfigProvider, Form, Input, notification, Select, Switch } from 'antd';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
@@ -121,7 +121,7 @@ const Summary = ({ params }) => {
       console.log('summary page: submit: ', values);
       const result = await postSummaryAi(cvId, values);
       // console.log(summary, result);
-      openNotification('bottomRight', 'oke');
+      openNotification('bottomRight', 'Generated summary successfully');
       fetchSummaryHistory();
     } catch (error) {
       console.log('Submit. Error:', error);
@@ -149,11 +149,15 @@ const Summary = ({ params }) => {
     setIsAiWrite(false);
     setAiContent(null);
   };
+  const { message } = App.useApp();
+
   const onSubmit = async () => {
     console.log('onSubmit');
     const data = await getSummary(cvId);
     console.log('fetchData ', data);
     console.log('Summary: ', data.summary);
+    message.success('Hello World');
+
     setSummaryData(data); // Updated to setSummaryData
     setIsAiWrite(false);
     setAiContent(null);

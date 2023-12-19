@@ -11,11 +11,19 @@ import { getUserIdFromLocalStorage } from '../utils/indexService';
 //     throw error;
 //   }
 // };
-
+const getExpertWithdraw = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`expert/get-all/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getExpertPurchases = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
-    const response = await axiosInstance.get(`transaction/get-all/{user-id}?user-id=${userId}`);
+    const response = await axiosInstance.get(`transaction/get-all/${userId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -42,7 +50,17 @@ const getRequestList = async () => {
     throw error;
   }
 };
-
+const getHistoryList = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(
+      `/cv/expert/${userId}/review-requests/history?sortBy=price&sortOrder=asc`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getExpertConfig = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -57,6 +75,24 @@ const updateExpertConfig = async data => {
   try {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/expert/${userId}/cv/information/config`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const updateOpenAiKey = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put('/admin/information/config/api-key', data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const updateExpertBankConfig = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`/expert/${userId}/information/config-bank`, data);
     return response.data;
   } catch (error) {
     throw error;
@@ -113,4 +149,8 @@ export {
   updateExpertConfig,
   getExpertPurchases,
   getSuggestJobTitleAndCompany,
+  getHistoryList,
+  updateExpertBankConfig,
+  updateOpenAiKey,
+  getExpertWithdraw,
 };

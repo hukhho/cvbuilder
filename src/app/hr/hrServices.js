@@ -78,31 +78,20 @@ const getCandidateApplication = async () => {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/application-log/candidate/${userId}`);
     return response.data;
-    // return [
-    //   {
-    //     id: 1,
-    //     status: 'Reviced',
-    //     candidate: 'Pham Viet Thuan Thien',
-    //     cvId: '1',
-    //     coverLetterId: '1',
-    //     timestamp: '2023-11-28',
-    //     note: 'Lorem',
-    //   },
-    //   {
-    //     id: 2,
-    //     status: 'Reviced',
-    //     candidate: 'Pham Viet Thuan Thien2',
-    //     cvId: '2',
-    //     coverLetterId: '2',
-    //     timestamp: '2023-11-28',
-    //     note: 'Lorem2',
-    //   },
-    // ];
   } catch (error) {
     throw error;
   }
 };
 
+// const getCandidateApplicationSearch = async () => {
+//   try {
+//     const userId = getUserIdFromLocalStorage();
+//     const response = await axiosInstance.get(`/application-log/candidate/${userId}`);
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 const getHrApplication = async () => {
   try {
     const userId = getUserIdFromLocalStorage();

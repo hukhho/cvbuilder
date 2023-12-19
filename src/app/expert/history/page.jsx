@@ -15,7 +15,7 @@ import { getResumes } from '@/app/utils/indexService';
 
 import { StarFilled, StarOutlined, UserOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
-import { getRequestList } from '../expertServices';
+import { getHistoryList, getRequestList } from '../expertServices';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import Link from 'next/link';
 import moment from 'moment';
@@ -44,7 +44,7 @@ const columns = [
   {
     title: 'Price',
     dataIndex: 'price',
-    render: text => <div>{text}.000đ</div>,
+    render: text => <div>{text} đ</div>,
     sorter: {
       compare: (a, b) => a.price - b.price,
       multiple: 3,
@@ -63,10 +63,11 @@ const columns = [
   {
     title: 'Review Response',
     dataIndex: 'reviewResponse',
-    render: text => (
+    render: (text, record) => (
       <div>
         {' '}
-        {text} <StarFilled style={{ color: 'orange' }} />
+        {record?.star} {record?.star ? <StarFilled className='mr-1' style={{ color: 'orange' }} /> : null}
+        {record?.response}
       </div>
     ),
   },
@@ -149,30 +150,27 @@ const Home = () => {
   const fetchData = async () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
-      const fetchedDataFromAPI = await getRequestList();
-      console.log('fetchedDataFromAPI getRequestList: ', fetchedDataFromAPI);
-  
+      const fetchedDataFromAPI = await getHistoryList();
+      console.log('fetchedDataFromAPI getHistory: ', fetchedDataFromAPI);
+
       // Filter the data to include only those entries with a status of "Done"
-      const filteredData = fetchedDataFromAPI.filter(item => item.status === 'Done');
-  
-      setData(filteredData);
-      setSearchData(filteredData);
-  
+      // const filteredData = fetchedDataFromAPI.filter(item => item.status === 'Done');
+
+      setData(fetchedDataFromAPI);
+      setSearchData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
   };
-  
 
-
-  const handleSearch = (value) => {
+  const handleSearch = value => {
     setSearchText(value);
-    console.log("handleSearch")
+    console.log('handleSearch');
     if (value === '') {
       setSearchData(data);
       return;
     }
-  
+
     const filteredData = data.filter(item => {
       const searchString = value.toLowerCase();
       return (
@@ -201,25 +199,25 @@ const Home = () => {
         userHeader={<UserHeaderExpert initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container mt-16" style={{ width: '90%' }}>
-          <div style={{ textAlign: 'left' }}>
-            <Title level={5}>Review History Table</Title>
-          </div>
-          <div>
+            <div style={{ textAlign: 'left' }}>
+              <Title level={5}>Review History Table</Title>
+            </div>
             <div>
-              <Input
-                className=""
-                placeholder="Search the resume"
-                value={searchText}
-                onChange={e => handleSearch(e.target.value)}
-              />
+              <div>
+                <Input
+                  className=""
+                  placeholder="Search the resume"
+                  value={searchText}
+                  onChange={e => handleSearch(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="!p-0 mb-5 mt-4 card">
+              <div className="">
+                <Table columns={columns} dataSource={searchData} onChange={onChange} />
+              </div>
             </div>
           </div>
-          <div className="!p-0 mb-5 mt-4 card">
-            <div className="">
-              <Table columns={columns} dataSource={searchData} onChange={onChange} />
-            </div>
-          </div>
-        </div>
         }
       />
     </ConfigProvider>

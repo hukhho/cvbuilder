@@ -39,7 +39,10 @@ import jsPDF from 'jspdf';
 import * as htmlToImage from 'html-to-image';
 
 const CVLayout = React.forwardRef(
-  ({ children, onSectionsOrderChange, layoutStyles, templateType, stars }, ref) => {
+  (
+    { children, onSectionsOrderChange, layoutStyles, templateType, stars, isShowBreak = false },
+    ref,
+  ) => {
     const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
 
     // Define font styles for different fonts
@@ -176,18 +179,21 @@ const CVLayout = React.forwardRef(
           id="resume-preview"
           style={stylesTransform}
         >
-          <div
-            className="design-studio-break-page"
-            style={{
-              top: 'calc(10.4882in)',
-              fontFamily: 'Merriweather, serif',
-              lineHeight: '20px',
-              zIndex: 99,
-            }}
-          >
-            <div></div>
-            Break
-          </div>
+          {isShowBreak && (
+            <div
+              className="design-studio-break-page"
+              style={{
+                top: 'calc(10.4882in)',
+                fontFamily: 'Merriweather, serif',
+                lineHeight: '20px',
+                zIndex: 99,
+              }}
+            >
+              <div></div>
+              Break
+            </div>
+          )}
+
           <div
             ref={captureRef}
             style={{

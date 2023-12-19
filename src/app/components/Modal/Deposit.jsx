@@ -66,11 +66,10 @@ export default function Deposit({ onCreated }) {
       const result = await depositMoney(formData);
       openNotification('bottomRight', `Create: ${result.id}`);
       // onCreated();
-      
-      console.log("result: ", result)
+
+      console.log('result: ', result);
       const newTab = window.open(result, '_blank');
       closeModal();
-
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`);
     }
@@ -139,6 +138,7 @@ export default function Deposit({ onCreated }) {
                           </div>
                           <div id="null-portal-root" />
                         </label>
+                       
                         <div className="relative">
                           <input
                             name="expenditure"
@@ -148,11 +148,16 @@ export default function Deposit({ onCreated }) {
                             required=""
                             onChange={handleInputChange}
                             aria-label="Deposit money"
-                            min={10000}
+                            min={10000} // Set the minimum value
                             defaultValue={10000}
                           />
-                          
+                          <span className="text-red-500 text-xs mt-1">
+                            {inputValue < 10000
+                              ? 'Money must be greater than or equal to 10,000.'
+                              : ''}
+                          </span>
                         </div>
+
                       </div>
 
                       <button

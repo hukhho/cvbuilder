@@ -64,19 +64,20 @@ const Home = () => {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
   };
-  // const fetchResumes = async () => {
-  //   try {
-  //     // Simulate fetching resumes (replace with your actual fetch logic)
-  //     const fetchedResumes = await getResumes();
-  //     setResumes(fetchedResumes);
-  //   } catch (error) {
-  //     console.error('There was an error fetching resumes', error);
-  //   }
-  // };
+  const fetchResumes = async () => {
+    try {
+      // Simulate fetching resumes (replace with your actual fetch logic)
+      const fetchedResumes = await getResumes();
+      setResumes(fetchedResumes);
+    } catch (error) {
+      console.error('There was an error fetching resumes', error);
+    }
+  };
 
   useEffect(() => {
     console.log('useEffect');
     fetchData();
+    fetchResumes()
   }, []);
 
   const onCreated = () => {
@@ -93,7 +94,7 @@ const Home = () => {
       const formattedBalance = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
-      }).format(balance * 1000);
+      }).format(balance);
 
       return formattedBalance;
     }
@@ -118,7 +119,7 @@ const Home = () => {
               <div></div>
               <div>
                 <div>
-                  <CandidateForm data={data} onCreated={onCreated} />
+                  <CandidateForm data={data} resumes={resumes} onCreated={onCreated} />
                 </div>
                 <div>
                   <Card className="mt-16" style={{ width: '700px' }}>

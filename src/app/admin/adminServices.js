@@ -2,7 +2,7 @@
 import axiosInstance from '@/app/utils/axiosInstance';
 import { getUserIdFromLocalStorage } from '../utils/indexService';
 
-const getWithdrawRequests = async data => {
+const getWithdrawRequests = async () => {
   try {
     const response = await axiosInstance.get('/transaction/view-withdraw-request');
     return response.data;
@@ -10,9 +10,62 @@ const getWithdrawRequests = async data => {
     throw error;
   }
 };
-const getUsers = async data => {
+
+// transaction/approve-withdraw-request/1
+const approveWithdrawRequest = async transactionId => {
   try {
-    const response = await axiosInstance.get('/user/manage/customer/information');
+    const response = await axiosInstance.post(
+      `/transaction/approve-withdraw-request/${transactionId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const saveImage = async (transactionId, data) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(
+      `transaction/${transactionId}/user/${userId}/withdraw/image`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const getChartsMoney = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+
+    const response = await axiosInstance.post(
+      `admin/admin/${userId}/dashboard/chart?chart=Money`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const getChartsUser = async data => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+
+    const response = await axiosInstance.post(
+      `admin/admin/${userId}/dashboard/chart?chart=User`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const getUsers = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+
+    const response = await axiosInstance.get(`admin/${userId}/manage/user/information`);
     return response.data;
   } catch (error) {
     throw error;
@@ -38,6 +91,14 @@ const getSub = async () => {
     throw error;
   }
 };
+const checkApiKey = async () => {
+  try {
+    const response = await axiosInstance.post('/admin/config/api-key/check');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getEvaluatesConfig = async () => {
   try {
@@ -52,7 +113,10 @@ const getEvaluatesConfig = async () => {
 const saveScore = async (evaluateId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();
-    const response = await axiosInstance.put(`/admin/${userId}/evaluate/${evaluateId}/score`, data);
+    const response = await axiosInstance.put(
+      `/admin/${userId}/evaluate/${evaluateId}/score-criteria`,
+      data,
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -81,6 +145,26 @@ const unbanJob = async jobId => {
   try {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(`/admin/${userId}/job-posting/${jobId}/un-ban`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const banUser = async customerId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`admin/${userId}/manage/user/${customerId}/ban`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const unbanUser = async customerId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(`admin/${userId}/manage/user/${customerId}/un-ban`);
     return response.data;
   } catch (error) {
     throw error;
@@ -238,4 +322,11 @@ export {
   saveScore,
   getSub,
   saveSub,
+  banUser,
+  unbanUser,
+  checkApiKey,
+  getChartsMoney,
+  getChartsUser,
+  saveImage,
+  approveWithdrawRequest,
 };

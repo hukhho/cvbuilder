@@ -32,6 +32,7 @@ import { getHrConfig } from '../hrServices';
 import useStore from '@/store/store';
 import CandidateConfigHeader from '@/app/components/CandidateConfigHeader';
 import HRConfigHeader from '@/app/components/HRConfigHeader';
+import HrSub from '@/app/components/Form/HrSub';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -87,6 +88,8 @@ const Home = () => {
               <div>
                 <div>
                   <HrForm data={data} onCreated={onCreated} />
+                  <HrSub data={data} />
+
                 </div>
               </div>
             </div>

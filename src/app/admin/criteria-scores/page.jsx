@@ -83,6 +83,7 @@ const EditableCell = ({
         {editing ? (
           <Form.Item
             name={dataIndex}
+            valuePropName="checked" // Ensure the Checkbox is bound to the Form.Item
             style={{
               margin: 0,
             }}
@@ -93,7 +94,9 @@ const EditableCell = ({
               },
             ]}
           >
-            <Checkbox checked={record.criteria} />
+            <Checkbox />
+
+            {/* <Checkbox checked={record.criteria} /> */}
           </Form.Item>
         ) : (
           // Render checkbox in view mode

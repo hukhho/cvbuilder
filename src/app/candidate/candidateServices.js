@@ -59,7 +59,7 @@ const withdrawMoney = async data => {
   try {
     const userId = getUserIdFromLocalStorage();
     // Assuming userId is a string
-    data.userId = parseInt(userId, 10); // The second argument (10) is the radix/base, use 10 for decimal
+    data.receiverId = parseInt(userId, 10); // The second argument (10) is the radix/base, use 10 for decimal
     const response = await axiosInstance.post('/transaction/withdraw', data);
     return response.data;
   } catch (error) {

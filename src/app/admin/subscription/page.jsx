@@ -240,9 +240,9 @@ const Home = () => {
       );
 
       const submitData = {
-        vipMonthRatio: 1,
-        vipYearRatio: monthPrice,
-        moneyRatio: yearPrice,
+        vipMonthRatio: monthPrice,
+        vipYearRatio: yearPrice,
+        // moneyRatio: 1,
       };
       console.log('Submit: ', submitData);
       const result = await saveSub(submitData);

@@ -9,6 +9,7 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
 import { notification } from 'antd';
 import { depositMoney, withdrawMoney } from '@/app/candidate/candidateServices';
+import useStore from '@/store/store';
 
 export default function Withdraw({ onCreated }) {
   const [api, contextHolder] = notification.useNotification();
@@ -22,7 +23,9 @@ export default function Withdraw({ onCreated }) {
   const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const { balance, refreshBalance } = useStore();
 
+   
   const [formData, setFormData] = useState({
     sentId: 'string',
     expenditure: 0,
@@ -59,9 +62,9 @@ export default function Withdraw({ onCreated }) {
     console.log('Form data submitted:', formData);
 
     try {
-      formData.expenditure = Math.floor(formData.expenditure * 1000);
+      formData.expenditure = Math.floor(formData.expenditure);
 
-      formData.conversionAmount = Math.floor(formData.expenditure / 1000);
+      // formData.conversionAmount = Math.floor(formData.expenditure / 1000);
 
       const result = await withdrawMoney(formData);
       closeModal();
@@ -70,6 +73,7 @@ export default function Withdraw({ onCreated }) {
       openNotification('bottomRight', `Success: ${result.id}`);
       console.log("result: ", result)
 
+      refreshBalance()
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`);
     }
@@ -142,15 +146,21 @@ export default function Withdraw({ onCreated }) {
                           <input
                             name="expenditure"
                             type="number"
-                            min={1000}
                             className="inputEl new-resume-form"
                             id="expenditure" // Add id attribute here
                             required=""
                             onChange={handleInputChange}
                             aria-label="Deposit money"
-                            defaultValue={0}
+                            min={10000} // Set the minimum value
+                            defaultValue={10000}
                           />
+                          <span className="text-red-500 text-xs mt-1">
+                            {inputValue < 10000
+                              ? 'Money must be greater than or equal to 10,000.'
+                              : ''}
+                          </span>
                         </div>
+
                       </div>
 
                       <button
