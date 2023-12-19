@@ -10,6 +10,7 @@ import ContentEditable from 'react-contenteditable';
 const StandardItemV2 = props => {
   const {
     onComment,
+    isShowCommentBox,
     onDeleteComment,
     dataId,
     type,
@@ -85,11 +86,10 @@ const StandardItemV2 = props => {
     // Extracting comments from the description using a regular expression
 
     // const comments = description.match(/<comment(.*?)<\/comment>/s);
-    console.log('comments: ', comments);
-    if (!comments) {
+    if (!comments || isShowCommentBox === false) {
       return null;
     }
-
+    
     return comments.map((comment, index) => {
       const commentId = comment.match(/id="(.*?)"/)[1];
       console.log('commentId:', commentId);

@@ -34,6 +34,7 @@ import Deposit from '@/app/components/Modal/Deposit';
 import { getProtectedResource } from '@/app/services/message.service';
 import Withdraw from '@/app/components/Modal/Withdraw';
 import useStore from '@/store/store';
+import BankExpertForm from '@/app/components/Form/BankExpertForm';
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -98,6 +99,21 @@ const Home = () => {
     console.log('onCreated');
   };
 
+  const formatBalance = balance => {
+    if (balance !== undefined) {
+      // Convert to VND and format
+      const formattedBalance = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+      }).format(balance);
+
+      return formattedBalance;
+    }
+
+    return ''; // Return an empty string if balance is undefined
+  };
+
+
   return (
       <UserLayout
         selected="5"
@@ -118,9 +134,12 @@ const Home = () => {
                   <ExpertForm data={data} onCreated={onCreated} resumeOptions={resumeOptions} />
                 </div>
                 <div>
+                  <BankExpertForm data={data} onCreated={onCreated} />
+                </div>
+                <div>
                   {' '}
                   <Card className="mt-16" style={{ width: '700px' }}>
-                    Your Balance: <b>{protectedData?.data?.accountBalance}</b>
+                    Your Balance: <b>{formatBalance(protectedData?.data?.accountBalance)}</b>
                     <Withdraw onCreated={onCreated}/>
                   </Card>
                 </div>

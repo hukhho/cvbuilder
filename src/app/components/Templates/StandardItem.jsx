@@ -30,7 +30,6 @@ const StandardItem = props => {
 
   let searchWords = [];
   if (highlightAts && highlightAts.length > 0) {
-    // Extract 'ats' values from the highlightAts array
     searchWords = highlightAts.map(at => at?.ats);
   }
   console.log('hStandardItem:highlightAts::: ', highlightAts);

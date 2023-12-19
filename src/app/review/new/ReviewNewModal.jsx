@@ -11,8 +11,63 @@ import './button.css';
 import { createReview } from './reviewService';
 import { LoadingOutlined } from '@ant-design/icons';
 import '../../components/Form/customtext.css';
+import useStore from '@/store/store';
+import { useAuth0 } from '@auth0/auth0-react';
+
 export default function ReviewNewModal({ onCreated, resumes, expert }) {
   const [api, contextHolder] = notification.useNotification();
+
+
+  const { isLoading, isAuthenticated, error, user, getAccessTokenSilently } = useAuth0();
+  const { setMessage, setEmail, setAvatar, setUserRole, setBalance } = useStore();
+
+  const refreshMoney = async () => {
+    try {
+      const accessToken = await getAccessTokenSilently();
+      localStorage.setItem('accessToken', accessToken); // This is fine to keep in client-side code
+      console.log('accessToken: ', accessToken);
+      const { data } = await getProtectedResource(accessToken);
+      console.log('data: ', data);
+      // Save user data to localStorage
+      localStorage.setItem('email', data.email);
+      localStorage.setItem('avatar', data.avatar);
+      localStorage.setItem('userId', data.id);
+      localStorage.setItem('userRole', data.role.roleName);
+      // Update Zustand store with user data
+      setEmail(data.email);
+      setAvatar(data.avatar);
+      setBalance(data.accountBalance);
+      setUserRole(data.role.roleName);
+ 
+    } catch (fetchError) {
+      console.error('Fetching user data error:', fetchError);
+      setMessage(JSON.stringify(fetchError, null, 2));
+    }
+  };
+
+  // useEffect(() => {
+  //   // if (error) {
+  //   //   console.error('Auth0 error:', error);
+  //   //   setMessage(JSON.stringify(error, null, 2));
+  //   //   router.push('/error');
+  //   // } else if (isAuthenticated && !isLoading) {
+  //   //   refreshMoney();
+  //   // }
+  //   refreshMoney();
+
+  // }, []);
+
+
+
+  const { balance, refreshBalance } = useStore();
+
+  // useEffect(() => {
+  //   if (balance === -1) {
+  //     refreshBalance();
+  //   }
+  // }, [balance, refreshBalance]);
+
+
   const openNotification = (placement, message) => {
     api.info({
       message: 'Notification',
@@ -72,16 +127,16 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
         newDate.setDate(today.getDate() + daysToAdd);
 
         const newDateStr = newDate.toISOString().split('T')[0];
-        const parsedPrice = parseFloat(price.price); // Assuming price.price is a string representation of a number
-        const formattedPrice = new Intl.NumberFormat('vi-VN', {
-          style: 'currency',
-          currency: 'VND',
-        }).format(parsedPrice);
+        // const parsedPrice = parseFloat(price.price); // Assuming price.price is a string representation of a number
+        // const formattedPrice = new Intl.NumberFormat('vi-VN', {
+        //   style: 'currency',
+        //   currency: 'VND',
+        // }).format(parsedPrice);
 
         return {
           value: price.id,
           metadata: `${price.day}-d`,
-          label: `${price.day} days (${newDateStr}) - ${formattedPrice}`,
+          label: `${price.day} days (${newDateStr}) - ${price.price} đ`,
         };
       });
 
@@ -104,10 +159,12 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
       const result = await createReview(values.resume, expert.id, values.optionId, values);
       openNotification('bottomRight', `Send request successful.`);
       setIsOpen(false);
+      refreshBalance();
     } catch (error) {
       openNotification('bottomRight', `Error: ${error.response.data}`);
     } finally {
       setIsSubmitting(false);
+      // refreshMoney();
     }
   };
   return (

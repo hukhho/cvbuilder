@@ -22,6 +22,16 @@ const getJobList = async () => {
   }
 };
 
+const getJobListByTitle = async title => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`/user/${userId}/job-posting?title=${title}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getJobById = async jobId => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -51,4 +61,4 @@ const likeJob = async jobId => {
 //   }
 // };
 
-export { getJobList, getJobById, likeJob };
+export { getJobList, getJobById, likeJob, getJobListByTitle };

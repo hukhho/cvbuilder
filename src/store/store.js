@@ -1,3 +1,4 @@
+import { getBalance } from '@/app/utils/indexService';
 import { create } from 'zustand';
 
 const useStore = create(set => {
@@ -17,15 +18,34 @@ const useStore = create(set => {
     email: storedEmail, // Initialize with the value from localStorage
     avatar: storedAvatar, // Initialize with the value from localStorage
     userRole: storedUserRole, // Initialize with the value from localStorage
-    balance: 0,
+    balance: -1,
     balance1: 0,
     ats: [],
     setAts: ats => set({ ats }),
     setBalance: balance => set({ balance }),
     setBalance1: balance1 => set({ balance1 }),
-
     // Actions to update the state and localStorage
     setMessage: message => set({ message }),
+    // Asynchronous action to refresh balance
+    refreshBalance: async () => {
+      if (typeof window !== 'undefined') {
+        try {
+          const newBalance = await getBalance();
+          console.log('Fetched new balance:', newBalance); // Log fetched balance
+
+          if (typeof newBalance?.accountBalance === 'number' && newBalance?.accountBalance > -1) {
+            console.log('Setting balance to:', newBalance.accountBalance); // Log before setting state
+            set({ balance: newBalance.accountBalance });
+          } else {
+            console.log('Invalid balance, setting to -1'); // Log for invalid balance
+            set({ balance: -1 });
+          }
+        } catch (error) {
+          console.error('Error refreshing balance:', error); // Error logging
+        }
+      }
+    },
+
     setEmail: email => {
       set({ email });
       if (typeof window !== 'undefined') {

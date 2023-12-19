@@ -90,7 +90,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       setStartDate('');
       setIsCurrentlyWorking(false);
       setEndDate('');
-      setIsEditMode(false); // Set to create mode if experience prop is not provided
+      setIsEditMode(false);
     }
   }, [experience, form]);
 

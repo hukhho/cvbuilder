@@ -124,7 +124,7 @@ const Home = ({ params }) => {
   }));
   const coverOptions = coverLetters.map(cover => ({
     value: cover.id,
-    label: cover.name,
+    label: cover.title,
   }));
   return (
     <ConfigProvider>

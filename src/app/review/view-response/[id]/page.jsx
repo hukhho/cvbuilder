@@ -315,6 +315,7 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           experiences={filteredExperiences}
           onComment={handleMouseUp}
+          isShowCommentBox={false}
           onChangeOrder={sortedExperiences => {
             console.log('New order of experiences:', sortedExperiences);
           }}
@@ -646,6 +647,7 @@ export default function FinishUp({ params }) {
                           Back to list
                         </button>
                       </Link>
+
                       <Card>
                         <div className="flex justify-start">
                           <div style={{ textAlign: 'left' }}>
@@ -663,6 +665,7 @@ export default function FinishUp({ params }) {
                           </div>
                         </div>
                       </Card>
+
                       <CVLayoutReviewerView
                         key={[templateSelected, toolbarState]}
                         layoutStyles={toolbarState}
@@ -673,31 +676,36 @@ export default function FinishUp({ params }) {
                           section => section.canBeDisplayed && section.component,
                         )}
                       </CVLayoutReviewerView>
-                      <div>
-                        <RatingForm responseId={fetchedData?.id} onCreated={onCreated} />
+                      <div className="mb-16">
+                        {fetchedData?.score === null && (
+                          <RatingForm responseId={fetchedData?.id} onCreated={onCreated} />
+                        )}
                       </div>
                       <div>
-                        <Card className="mt-8">
-                          <div className="mt-4" style={{ textAlign: 'left' }}>
-                            <div className="flex">
-                              <div className="ml-4 flex">
-                                <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
-                                  {fetchedData?.score}
-                                </p>{' '}
-                                <StarFilled style={{ color: '#FFC107' }} />
+                        {fetchedData?.score && (
+                          <Card className="mt-8 mb-16">
+                            <div className="mt-4" style={{ textAlign: 'left' }}>
+                              <div className="flex">
+                                <div className="ml-4 flex">
+                                  <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
+                                    {fetchedData?.score}
+                                  </p>{' '}
+                                  <StarFilled style={{ color: '#FFC107' }} />
+                                </div>
+                                <div className="ml-4 text-gray-500"></div>
                               </div>
-                              <div className="ml-4 text-gray-500"></div>
+                              <div>
+                                {fetchedData?.comment ? (
+                                  <span
+                                    dangerouslySetInnerHTML={{ __html: fetchedData?.comment }}
+                                  />
+                                ) : (
+                                  <Empty />
+                                )}
+                              </div>
                             </div>
-
-                            <div>
-                              {fetchedData?.comment ? (
-                                <span dangerouslySetInnerHTML={{ __html: fetchedData?.comment }} />
-                              ) : (
-                                <Empty />
-                              )}
-                            </div>
-                          </div>
-                        </Card>
+                          </Card>
+                        )}
                       </div>
                       <div>
                         {/* <textarea

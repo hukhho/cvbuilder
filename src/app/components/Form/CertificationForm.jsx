@@ -10,8 +10,8 @@ import {
 
 const CertificationForm = ({ cvId, onEducationCreated, education }) => {
   const [form] = Form.useForm();
-  const [isEditMode, setIsEditMode] = useState(false); // Add this state
-  console.log('CertificationForm: ', education);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (education) {
@@ -25,6 +25,7 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
   }, [education, form]);
 
   const handleSubmit = async values => {
+    setIsSubmitting(true);
     try {
       if (isEditMode) {
         await updateCertification(cvId, education.id, values);
@@ -37,6 +38,8 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
       onEducationCreated();
     } catch (error) {
       console.log('Submit EducationForm. Error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -63,6 +66,12 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
         autoComplete="off"
         requiredMark={false}
       >
+        <Form.Item style={{ display: 'none' }} name="theOrder">
+          <Input hidden />
+        </Form.Item>
+        <Form.Item style={{ display: 'none' }} name="isDisplay">
+          <Input hidden />
+        </Form.Item>
         <Form.Item
           name="name"
           rules={[{ required: true }]}
@@ -131,20 +140,23 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
             placeholder="• Certified in a standardized and evolving set of project management principles."
           />
         </Form.Item>
-        <Button
-          htmlType="submit"
-          className="form-button w-full w-[769.22px] h-[47.86px] pl-[313.83px] pr-[315.39px] pt-[17.26px] pb-[17.60px] bg-indigo-500 rounded-md justify-center items-center inline-flex hover:text-white"
-          style={{
-            width: '769.22px',
-            height: '47.86px',
-            backgroundColor: 'rgb(77, 112, 235)',
-            color: 'white',
-          }}
-        >
-          <div className="hover:text-white text-center text-white text-opacity-80 text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap">
-            {isEditMode ? 'UPDATE EDUCATION' : 'SAVE TO EDUCATION LIST'}
+        <Form.Item>
+          <div className="form-submit-wrapper">
+            <button
+              style={{ width: '100%', height: '50px' }}
+              href=""
+              data-size="large"
+              data-theme="default"
+              data-busy="false"
+              className='contact-section form[data-theme="basic"] button'
+              id="contact-section-save-to-list"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              SAVE TO CERTIFICATION LIST{' '}
+            </button>
           </div>
-        </Button>
+        </Form.Item>
       </Form>
     </div>
   );

@@ -42,7 +42,7 @@ const beforeUpload = file => {
   }
   return isJpgOrPng && isLt2M;
 };
-const CandidateForm = ({ onCreated, data }) => {
+const CandidateForm = ({ onCreated, data, resumes }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -106,7 +106,7 @@ const CandidateForm = ({ onCreated, data }) => {
     }
   };
 
-  const resumeOptions = data?.cv?.map(resume => ({
+  const resumeOptions = resumes?.map(resume => ({
     value: resume.id,
     label: resume.resumeName,
   }));
@@ -127,7 +127,7 @@ const CandidateForm = ({ onCreated, data }) => {
       </div>
     </div>
   );
-  const token = getCookieToken(); // Replace with your actual function to get the token
+  const accessToken = localStorage.getItem('accessToken');
 
   return (
     <div className="" style={{ width: '700px' }}>
@@ -143,20 +143,12 @@ const CandidateForm = ({ onCreated, data }) => {
             listType="picture-circle"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://api-cvbuilder.monoinfinity.net/api/v1/auth/upload/image"
-            headers={{ authorization: `Bearer ${token}` }}
+            action="https://api-cvbuilder.monoinfinity.net/api/messages/public/upload/image"
+            headers={{ authorization: `Bearer ${accessToken}` }}
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {imageUrl ? (
-              <Avatar
-                src={imageUrl}
-                alt="avatar"
-                size={100}
-              />
-            ) : (
-              uploadButton
-            )}
+            {imageUrl ? <Avatar src={imageUrl} alt="avatar" size={100} /> : uploadButton}
           </Upload>
           <Form.Item
             name="avatar"

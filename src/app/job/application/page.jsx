@@ -21,6 +21,7 @@ import Link from 'next/link';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import { getCandidateApplication, getHrApplication } from '@/app/hr/hrServices';
 import useStore from '@/store/store';
+import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 const columns = [
@@ -141,6 +142,8 @@ const Home = () => {
   const initialData = [];
 
   const [data, setData] = useState(initialData);
+  const [filteredData, setFilteredData] = useState(initialData);
+
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
@@ -150,6 +153,7 @@ const Home = () => {
       console.log('fetchData fetchedDataFromAPI: ', fetchedDataFromAPI);
 
       setData(fetchedDataFromAPI);
+      setFilteredData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -157,9 +161,22 @@ const Home = () => {
 
   useEffect(() => {
     console.log('useEffect');
-
     fetchData();
   }, []);
+
+  const [searchValue, setSearchValue] = useState();
+
+  const onSearch = (value) => {
+    if (value) {
+      setSearchValue(value);
+      const filtered = data.filter(item => item.candidateName.toLowerCase().includes(value.toLowerCase()));
+      setFilteredData(filtered);
+    } else {
+      setSearchValue();
+      setFilteredData(data);
+    }
+  };
+  
 
   return (
     <ConfigProvider>
@@ -180,11 +197,17 @@ const Home = () => {
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-              <Input className="" placeholder="Search the candiatename" />
+              <Search
+                allowClear
+                placeholder="Search candidate name"
+                size="large"
+                defaultValue={searchValue}
+                onSearch={onSearch}
+              />
             </div>
             <div className="!p-0 mb-5 mt-8 card">
               <div className="">
-                <Table columns={columns} dataSource={data} onChange={onChange} />
+                <Table columns={columns} dataSource={filteredData} onChange={onChange} />
               </div>
             </div>
           </div>

@@ -1,18 +1,25 @@
 'use client';
 
-// SomeComponent.js
-import React from 'react';
-import useStore from '@/store/store';
+import React, { useRef, useState } from 'react';
 
-const SomeComponent = () => {
-  const { avatar, userRole } = useStore();
+// Wrap your component with React.memo to memoize it
+const App = React.memo(() => {
+  const [name, setName] = useState('');
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  // Add a console.log to check when the component renders
+  console.log('App component rendered');
 
   return (
     <div>
-      <p>Avatar: {avatar}</p>
-      <p>Counter: {userRole}</p>
+      <input type="text" value={name} onChange={e => setName(e.target.value)} ref={inputRef} />
+      <button onClick={handleClick}>Focus</button>
     </div>
   );
-};
+});
 
-export default SomeComponent;
+export default App;

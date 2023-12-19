@@ -26,6 +26,7 @@ import StandardItemV2 from '../StandardItemV2';
 const ExperiencesSection = ({
   onComment,
   onDeleteComment,
+  isShowCommentBox = true,
   experiences,
   onChangeOrder,
   templateType,
@@ -40,6 +41,7 @@ const ExperiencesSection = ({
         const { duration, description, companyName, role, location } = exp;
         return (
           <StandardItemV2
+            isShowCommentBox={isShowCommentBox}
             onComment={onComment}
             onDeleteComment={onDeleteComment}
             key={exp.id}

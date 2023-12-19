@@ -20,7 +20,7 @@ import HRApplicationPage from './hr/application/page';
 
 const Home = () => {
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } = useAuth0();
-  const { avatar, email, userRole } = useStore();
+  const { userRole } = useStore();
 
   if (isLoading) {
     return <PageLoader />;

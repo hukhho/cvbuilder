@@ -1,6 +1,7 @@
 // combinedService.js
 import Cookies from 'js-cookie';
 import axiosInstance from './axiosInstance';
+import axiosInstancev1 from './axiosInstancev1';
 
 const getUserIdFromLocalStorage = () => {
   const userId = localStorage.getItem('userId');
@@ -20,6 +21,24 @@ const getResumes = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/user/${userId}/cvs`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+const getBalance = async () => {
+  try {
+    const response = await axiosInstancev1.get('/messages/protected/me');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getResumesCoverLetter = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`user/${userId}/cv/detail/cover-letter`);
     return response.data;
   } catch (error) {
     throw error;
@@ -85,19 +104,6 @@ const getCoverLetters = async () => {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.get(`/chat-gpt/user/${userId}/cv/cover-letters`);
 
-    // const mockCoverLetter = [
-    //   {
-    //     id: 1,
-    //     title: 'Cover Letter 1',
-    //     description: 'This is a mock cover letter',
-    //   },
-    //   {
-    //     id: 2,
-    //     title: 'Cover Letter 2',
-    //     description: 'This is a mock cover letter',
-    //   },
-    // ];
-
     return response.data;
     // return mockCoverLetter;
   } catch (error) {
@@ -115,4 +121,6 @@ export {
   getProtectedResourceWithoutToken,
   getHistoryFinishUp,
   getUserIdFromLocalStorage,
+  getResumesCoverLetter,
+  getBalance,
 };

@@ -7,8 +7,9 @@ import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import JobCard from './JobCard';
-import { getJobList } from '../jobServices';
+import { getJobList, getJobListByTitle } from '../jobServices';
 import useStore from '@/store/store';
+import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 
@@ -62,6 +63,28 @@ const Home = () => {
     fetchData();
   }, []);
 
+  const [searchValue, setSearchValue] = useState('');
+
+  const onSearch = async (value, _e, info) => {
+    try {
+      const result = await getJobListByTitle(value);
+      console.log('result', result);
+      setData(result);
+      setSearchValue(value);
+      // Extract unique locations from job data
+      const uniqueLocations = Array.from(new Set(result.map(job => job.location)));
+      // Generate options for Select based on unique locations
+      const locationOptionsTemp = uniqueLocations.map(location => ({
+        label: location,
+        value: location,
+      }));
+      setLocationOptions(locationOptionsTemp);
+      setFilteredData(result);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <ConfigProvider>
       <UserLayout
@@ -77,10 +100,12 @@ const Home = () => {
               <div style={{ textAlign: 'left' }} />
               <div className="flex mt-6 mb-6">
                 <div style={{ width: '50%' }}>
-                  <Input
-                    style={{ width: '100%' }}
-                    className="custom-search"
+                  <Search
+                    allowClear
                     placeholder="Search by title or company"
+                    size="large"
+                    defaultValue={searchValue}
+                    onSearch={onSearch}
                   />
                 </div>
                 <div style={{ width: 400, height: 50 }} className="ml-8">

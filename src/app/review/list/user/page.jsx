@@ -48,7 +48,7 @@ const Home = () => {
       title: 'Resume Name',
       dataIndex: 'resumeName',
       render: (text, record) => {
-        if (record.status === 'Done') {
+        if (record.status !== "Processing" ) {
           return <Link href={`/review/view-response/${record.id}`}>{text}</Link>;
         } else {
           return text; // Display the text without a link if status is not "Done"
@@ -56,12 +56,12 @@ const Home = () => {
       },
     },
     {
-      title: 'Candidate',
-      dataIndex: 'name',
+      title: 'Expert Name',
+      dataIndex: 'expert',
       render: text => (
         <div>
-          {' '}
-          <Avatar icon={<UserOutlined />} /> {text}
+          <Avatar className='mr-2' icon={<UserOutlined />} /> 
+          {text}
         </div>
       ),
     },
@@ -74,10 +74,11 @@ const Home = () => {
       dataIndex: 'price',
       render: text => (
         <div>
-          {Number(text).toLocaleString('vi-VN', {
+          {/* {Number(text).toLocaleString('vi-VN', {
             style: 'currency',
             currency: 'VND',
-          })}
+          })} */}
+          {text}
         </div>
       ),
       sorter: {
@@ -152,6 +153,8 @@ const Home = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getReviewRequestsByCandiate();
+      fetchedDataFromAPI.sort((b, a) => moment(a.receivedDate) - moment(b.receivedDate));
+
       setData(fetchedDataFromAPI);
     } catch (error) {}
   };
