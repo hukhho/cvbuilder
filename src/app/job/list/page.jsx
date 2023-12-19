@@ -132,7 +132,7 @@ const Home = () => {
                   <Row gutter={[16, 48]}>
                     {filteredData.map((job, index) => (
                       <Col key={index} span={12}>
-                        <JobCard job={job} jobTitle={job.title} />
+                        <JobCard job={job} jobTitle={job?.title} />
                       </Col>
                     ))}
                   </Row>

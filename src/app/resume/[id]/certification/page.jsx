@@ -28,6 +28,8 @@ const Certification = ({ params }) => {
   const enabledCategories = { CERTIFICATIONS: true };
 
   const [isShow, setIsShow] = useState(true);
+  const [isSetData, setIsSetData] = useState(false);
+
   const handleDownButton = () => {
     setIsShow(!isShow);
   };
@@ -48,11 +50,15 @@ const Certification = ({ params }) => {
   };
 
   useEffect(() => {
-    fetchData();
+    if (!isSetData) {
+      fetchData();
+      setIsSetData(true);
+    }
   }, []);
 
   const handleEditData = item => {
     setSelectedData(item);
+    console.log('handleEditData', item);
   };
 
   const handleDeleteData = async itemId => {

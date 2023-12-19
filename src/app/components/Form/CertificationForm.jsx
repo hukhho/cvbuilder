@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, InputNumber, Typography } from 'antd';
+import { Button, Form, Input, InputNumber, Typography, notification } from 'antd';
 import { createEducation, updateEducation } from '@/app/resume/[id]/education/educationService';
 import './customtext.css';
 import Certification from '@/app/resume/[id]/certification/page';
@@ -13,14 +13,15 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSetData, setIsSetData] = useState(false);
-
   useEffect(() => {
+    setIsSetData(true);
     if (education) {
+      console.log("setFieldsValue", education)
       form.setFieldsValue(education);
       setIsEditMode(true); // Set to edit mode if education prop is provided
     } else if (!isSetData && !education) {
+      console.log("resetFields ", isSetData)
       form.resetFields();
-      console.log('form.resetFields');
       setIsEditMode(false); // Set to create mode if education prop is not provided
     }
   }, [education, form]);
@@ -32,12 +33,21 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
         await updateCertification(cvId, education.id, values);
         setIsEditMode(false); // Set to create mode after updating
         form.resetFields(); // Reset the form
+        notification.success({
+          message: 'Save changed',
+        });
       } else {
         await createCertification(cvId, values);
         form.resetFields();
+        notification.success({
+          message: 'Save changed',
+        });
       }
       onEducationCreated();
     } catch (error) {
+      notification.error({
+        message: 'Error during saving',
+      });
       console.log('Submit EducationForm. Error:', error);
     } finally {
       setIsSubmitting(false);
