@@ -7,7 +7,9 @@ import {
   Button,
   ConfigProvider,
   Input,
-  message, // This import should be sorted alphabetically
+  message,
+  Modal,
+  notification, // This import should be sorted alphabetically
   Table,
   Typography,
   Upload,
@@ -22,15 +24,16 @@ import { faCheck, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { getResumes } from '@/app/utils/indexService';
 
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { ExclamationCircleFilled, UploadOutlined, UserOutlined } from '@ant-design/icons';
 import { getReviewRequestsByCandiate } from '@/app/review/new/reviewService';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
-import { getWithdrawRequests, saveImage } from '../adminServices';
+import { approveWithdrawRequest, getWithdrawRequests, saveImage } from '../adminServices';
 import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
 
 const { Title } = Typography;
+const { confirm } = Modal;
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -48,6 +51,7 @@ const Home = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getWithdrawRequests();
+
       setData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
@@ -59,6 +63,36 @@ const Home = () => {
     fetchData();
     setAccessToken(localStorage?.getItem('accessToken'));
   }, []);
+
+  const confirmFinish = async id => {
+    try {
+      await approveWithdrawRequest(id);
+
+      message.success('Finish confirm success');
+      notification.success({
+        message: 'Finish confirm success',
+      });
+
+      fetchData();
+    } catch (error) {
+      notification.error({
+        message: `Finish confirm. Error: ${error?.response?.data}`,
+      });
+      console.log('error: ', error);
+    }
+  };
+  const showPromiseConfirm = id => {
+    confirm({
+      title: 'Do you want to confirm this withdraw?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this withdraw will be finished',
+      async onOk() {
+        await confirmFinish(id);
+      },
+      onCancel() {},
+    });
+  };
+
   const beforeUpload = file => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -101,7 +135,7 @@ const Home = () => {
     {
       title: 'Expert Name',
       dataIndex: 'userId',
-      render: text => <div>{text} Ko có</div>,
+      render: text => <div>{text}</div>,
     },
 
     {
@@ -157,7 +191,7 @@ const Home = () => {
     {
       title: 'Bank infomation',
       dataIndex: 'bankInfo',
-      render: text => <div>{text} Ko có</div>,
+      render: text => <div>{text}</div>,
     },
     {
       title: 'Proof money transfer',
@@ -194,9 +228,9 @@ const Home = () => {
     {
       title: 'Action',
       dataIndex: 'id',
-      render: text => (
+      render: (text, record) => (
         <div>
-          <button>Finish confirm</button>{' '}
+          <button onClick={() => showPromiseConfirm(record.id)}>Finish confirm</button>
         </div>
       ),
     },

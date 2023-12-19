@@ -160,7 +160,10 @@ const Dashboard = () => {
             <div className="!p-0 mt-4 mb-5 card">
               <div className="">
                 <Suspense fallback={<div>Loading Chart...</div>}>
-                  <ColumnChart data={data?.chart} />
+                  {
+                    data?.chart && (<ColumnChart data={data?.chart} />)
+                  }
+                  
                 </Suspense>
               </div>
             </div>

@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,6 +42,28 @@
 @import './button.css';
 @import './varriable.css';
 /* @import "./font.css"; */
+
+/* Override the primary button color */
+.ant-btn-primary {
+  background-color: #1677ff; /* Your desired primary color */
+  border-color: #1677ff;
+  color: #fff; /* Text color for primary button */
+}
+
+/* Override the secondary button color */
+.ant-btn-secondary {
+  background-color: #007bff; /* Your desired secondary color */
+  border-color: #007bff;
+  color: #fff; /* Text color for secondary button */
+}
+
+/* Override other button styles as needed */
+/* .ant-btn-danger, .ant-btn-link, etc. */
+
+/* Hover effect for buttons */
+.ant-btn:hover {
+  opacity: 0.8; /* Reduce opacity on hover (adjust as needed) */
+}
 
 /**
  * Document defaults

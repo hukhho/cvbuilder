@@ -2,7 +2,7 @@
 import axiosInstance from '@/app/utils/axiosInstance';
 import { getUserIdFromLocalStorage } from '../utils/indexService';
 
-const getWithdrawRequests = async data => {
+const getWithdrawRequests = async () => {
   try {
     const response = await axiosInstance.get('/transaction/view-withdraw-request');
     return response.data;
@@ -10,6 +10,19 @@ const getWithdrawRequests = async data => {
     throw error;
   }
 };
+
+// transaction/approve-withdraw-request/1
+const approveWithdrawRequest = async transactionId => {
+  try {
+    const response = await axiosInstance.post(
+      `/transaction/approve-withdraw-request/${transactionId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const saveImage = async (transactionId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -315,4 +328,5 @@ export {
   getChartsMoney,
   getChartsUser,
   saveImage,
+  approveWithdrawRequest,
 };
