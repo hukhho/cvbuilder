@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import {
   Avatar,
   Badge,
@@ -32,12 +32,13 @@ import Link from 'next/link';
 import { getChartsMoney, getUsers, getWithdrawRequests } from '../adminServices';
 import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
-import ColumnChart from './Column';
 
 import dayjs from 'dayjs';
 const { RangePicker } = DatePicker;
 
 const { Title } = Typography;
+
+const ColumnChart = React.lazy(() => import('./Column'));
 
 const Dashboard = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -158,7 +159,9 @@ const Dashboard = () => {
 
             <div className="!p-0 mt-4 mb-5 card">
               <div className="">
-                <ColumnChart data={data?.chart} />
+                <Suspense fallback={<div>Loading Chart...</div>}>
+                  <ColumnChart data={data?.chart} />
+                </Suspense>
               </div>
             </div>
           </div>
