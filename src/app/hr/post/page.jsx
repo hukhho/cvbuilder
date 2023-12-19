@@ -391,7 +391,7 @@ const HRPost = () => {
                     <Select
                       style={{
                         width: 350,
-                        height: 60,
+                        height: 50,
                       }}
                       value={salaryOptions}
                       onChange={handleChangeSelectSalary}
@@ -484,7 +484,7 @@ const HRPost = () => {
                       mode="tags"
                       style={{
                         width: '100%',
-                        height: 60,
+                        height: 50,
                       }}
                       placeholder="Tags Mode"
                       onChange={handleChangeTag}

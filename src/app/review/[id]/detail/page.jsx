@@ -137,8 +137,8 @@ const Home = ({ params }) => {
         content={
           <div className="container">
             <div className="!p-0 relative">
-              <div className="pl-16" style={{ paddingLeft: '', background: 'white' }}>
-                <div className="absolute top-10 left-5">
+              <div className="pl-20" style={{ paddingLeft: '', background: 'white' }}>
+                <div className="absolute top-4 left-5">
                   <Link href="/review/list/expert" passHref>
                     <button>
                       <FontAwesomeIcon icon={faChevronLeft} />
@@ -182,7 +182,7 @@ const Home = ({ params }) => {
                     <div />
                   </div>
                   <div className="flex justify-between	">
-                    <div style={{ textAlign: 'left', width: '900px' }}>
+                    <div style={{ textAlign: 'left', width: '800px' }}>
                       <div style={{ textAlign: 'left', minHeight: '200px' }}>
                         {' '}
                         {expert?.description ? (
@@ -213,16 +213,20 @@ const Home = ({ params }) => {
                   }}
                 >
                   <div>
-                    <Title style={{ color: '#4D70EB' }} level={5}>
+                    <Title style={{ color: '#4D70EB', marginBottom: 0 }} level={5}>
                       <span style={{ borderBottom: '2px solid #4D70EB' }}>Reviews</span>
                     </Title>
                   </div>
                   {expert?.comments &&
                     expert?.comments?.map((comment, index) => {
                       return (
-                        <div className="mt-4" key={index}>
+                        <div
+                          className="pt-4 "
+                          style={{ borderTop: '2px solid rgb(77, 112, 235)' }}
+                          key={index}
+                        >
                           <div className="flex">
-                            <div className="ml-4 flex">
+                            <div className=" flex">
                               <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
                                 {comment?.score}
                               </p>{' '}
@@ -231,7 +235,7 @@ const Home = ({ params }) => {
                             <div className="ml-4 text-gray-500">{comment?.dateComment}</div>
                           </div>
 
-                          <div>
+                          <div className="mt-3">
                             {comment?.comment ? (
                               <span dangerouslySetInnerHTML={{ __html: comment?.comment }} />
                             ) : (

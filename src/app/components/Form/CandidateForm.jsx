@@ -312,7 +312,7 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
             }
           >
             <Select
-              style={{ width: 300, height: 60, marginTop: 5 }}
+              style={{ width: 300, height: 50, marginTop: 5 }}
               mode="tags"
               onChange={handleChangeTag}
               options={resumeOptions}
