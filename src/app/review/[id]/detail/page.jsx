@@ -136,8 +136,8 @@ const Home = ({ params }) => {
         userHeader={<UserHeaderReview initialEnabledCategories={enabledCategories} />}
         content={
           <div className="container">
-            <div className="!p-0 relative">
-              <div className="pl-20" style={{ paddingLeft: '', background: 'white' }}>
+            <div className="!p-0 ">
+              <div className="pl-20 relative" style={{ paddingLeft: '', width: 1400, maxWidth: 1400, background: 'white' }}>
                 <div className="absolute top-4 left-5">
                   <Link href="/review/list/expert" passHref>
                     <button>
@@ -182,11 +182,12 @@ const Home = ({ params }) => {
                     <div />
                   </div>
                   <div className="flex justify-between	">
-                    <div style={{ textAlign: 'left', width: '800px' }}>
-                      <div style={{ textAlign: 'left', minHeight: '200px' }}>
+                    <div style={{ textAlign: 'left', width: '900px' }}>
+                      <div style={{ textAlign: 'left', width: '650px', minHeight: '200px' }}>
                         {' '}
+                        
                         {expert?.description ? (
-                          <p dangerouslySetInnerHTML={{ __html: expert?.description }} />
+                          <p className='text-justify' dangerouslySetInnerHTML={{ __html: expert?.description }} />
                         ) : (
                           <Empty />
                         )}
@@ -205,6 +206,7 @@ const Home = ({ params }) => {
                 <div
                   className="mt-8 bg-white"
                   style={{
+                    width: '1400px',
                     paddingLeft: '20px',
                     paddingBottom: '20px',
                     paddingTop: '20px',
@@ -222,7 +224,7 @@ const Home = ({ params }) => {
                       return (
                         <div
                           className="pt-4 "
-                          style={{ borderTop: '2px solid rgb(77, 112, 235)' }}
+                          // style={{ borderTop: '2px solid rgb(77, 112, 235)' }}
                           key={index}
                         >
                           <div className="flex">

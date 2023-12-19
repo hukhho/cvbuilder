@@ -30,7 +30,12 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import Image from 'next/image';
 import JobCard from './JobCard';
-import { getCandidateList, getCandidateListByKeyword, getCandidateListMatchByPostId, getHrPostList } from '../hrServices';
+import {
+  getCandidateList,
+  getCandidateListByKeyword,
+  getCandidateListMatchByPostId,
+  getHrPostList,
+} from '../hrServices';
 import UserHeaderHR from '@/app/components/UserHeaderHR';
 import HeaderHR from '@/app/components/HeaderHR';
 import useStore from '@/store/store';
@@ -52,17 +57,16 @@ const Home = () => {
     console.log(`selected ${value}`);
     if (value > 0) {
       try {
-      setSelectedJob(value)
+        setSelectedJob(value);
 
-      const fetchedDataFromAPI = await getCandidateListMatchByPostId(value);
-      
-      setData(fetchedDataFromAPI);
-      }
-      catch (error) {
+        const fetchedDataFromAPI = await getCandidateListMatchByPostId(value);
+
+        setData(fetchedDataFromAPI);
+      } catch (error) {
         console.log('error', error);
       }
     } else {
-      setSelectedJob(null)
+      setSelectedJob(null);
       fetchData();
     }
   };
@@ -120,19 +124,14 @@ const Home = () => {
           <div className="container">
             <div style={{ textAlign: 'left' }} />
             <div className="flex mt-6 mb-16">
-              <div style={{ width: 500 }}>
-              <Search
+              <div className="flex" style={{ width: 1000 }}>
+                <Search
                   placeholder="Search by title or company"
                   size="large"
-                  className="custom-search"
-
                   defaultValue={searchValue}
                   onSearch={onSearch}
-                
                 />
                
-              </div>
-              <div style={{ width: 400, height: 50 }} className="ml-8">
                 <Select
                   allowClear
                   style={{

@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAddressCard,
+  faCloud,
   faEnvelope,
   faGlobe,
   faMobile,
@@ -18,7 +19,7 @@ const ContactInfoItem = ({ icon, text }) => (
 );
 
 const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
-  const { name, email, phone, personalWebsite, address, linkedIn } = userInfo;
+  const { name, email, phone, personalWebsite, address, linkin, city } = userInfo;
 
   const isClassicalTemplate = templateType === 'classical';
 
@@ -59,14 +60,24 @@ const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
                   </span>
                 )}
 
-                <span className="inline-block mr-1">
-                  {phone && <FontAwesomeIcon className="mr-1" icon={faMobile} />}
-                  {phone}
-                </span>
-                <span className="inline-block mr-1">
-                  {linkedIn && <FontAwesomeIcon className="mr-1" icon={faLinkedin} />}
-                  {linkedIn}
-                </span>
+                {phone && (
+                  <span className="inline-block mr-1">
+                    <FontAwesomeIcon className="mr-1" icon={faMobile} />
+                    {phone}
+                  </span>
+                )}
+                {linkin && (
+                  <span className="inline-block mr-1">
+                    <FontAwesomeIcon className="mr-1" icon={faLinkedin} />
+                    {linkin}
+                  </span>
+                )}
+                {personalWebsite && (
+                  <span className="inline-block mr-1">
+                    <FontAwesomeIcon className="mr-1" icon={faCloud} />
+                    {personalWebsite}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -100,22 +111,33 @@ const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
                   justifyContent: 'left',
                 }}
               >
-                {/* <div className="flex flex-row gap-1 items-center mr-1">
-                  <div className=" [&:not(:last-child)]:after:content-[',']">New York City</div>
-                  <div className=" [&:not(:last-child)]:after:content-[',']">United States</div>
-                </div> */}
-                <span className="flex flex-row gap-1 items-center mr-1">
-                  {/* <i className="mr-1">•</i> */}
-                  <div>{email}</div>
-                </span>
-                <span className="flex flex-row gap-1 items-center mr-1">
-                  <i className="mr-1">•</i>
-                  <div>{phone}</div>
-                </span>
-                {linkedIn && (
+                <div className="flex flex-row gap-1 items-center mr-1">
+                  <div className="">{city}</div>
+                </div>
+                {email && (
                   <span className="flex flex-row gap-1 items-center mr-1">
-                    <i className="mr-1">•</i>
-                    <div>{linkedIn}</div>
+                    <FontAwesomeIcon className="mr-1" icon={faEnvelope} />
+
+                    <div>{email}</div>
+                  </span>
+                )}
+                {phone && (
+                  <span className="flex flex-row gap-1 items-center mr-1">
+                    <FontAwesomeIcon className="mr-1" icon={faMobile} />
+                    <div>{phone}</div>
+                  </span>
+                )}
+
+                {linkin && (
+                  <span className="flex flex-row gap-1 items-center mr-1">
+                    <FontAwesomeIcon className="mr-1" icon={faLinkedin} />
+                    <div>{linkin}</div>
+                  </span>
+                )}
+                {personalWebsite && (
+                  <span className="flex flex-row gap-1 items-center mr-1">
+                    <FontAwesomeIcon className="mr-1" icon={faCloud} />
+                    <div>{personalWebsite}</div>
                   </span>
                 )}
               </div>
@@ -157,7 +179,6 @@ const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
                   }}
                 >
                   <span className="inline-block mr-1">
-                    {/* <i className="mr-1">•</i> */}
                     <FontAwesomeIcon className="mr-1" icon={faEnvelope} />
                     {email}
                   </span>
@@ -165,11 +186,18 @@ const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
                     <FontAwesomeIcon className="mr-1" icon={faMobile} />
                     {phone}
                   </span>
-                  <span className="inline-block mr-1">
-                    {linkedIn && <FontAwesomeIcon className="mr-1" icon={faLinkedin} />}
-
-                    {linkedIn}
-                  </span>
+                  {linkin && (
+                    <span className="inline-block mr-1">
+                      <FontAwesomeIcon className="mr-1" icon={faLinkedin} />
+                      {linkin}
+                    </span>
+                  )}
+                  {personalWebsite && (
+                    <span className="inline-block mr-1">
+                      <FontAwesomeIcon className="mr-1" icon={faCloud} />
+                      {personalWebsite}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

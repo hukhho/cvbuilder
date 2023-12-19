@@ -135,7 +135,7 @@
   border-radius: 5px;
 }
 
-.custom-search {
+.custom-search  {
   height: auto;
   font: var(--font-input);
   /*width: 100%;*/
@@ -164,7 +164,6 @@
   }
   border-radius: 5px;
 }
-
 .custom-label {
   font-size: 0.75;
   font: var(--font-ui);
