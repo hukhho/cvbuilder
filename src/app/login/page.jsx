@@ -46,7 +46,7 @@ const Login = () => {
                   </svg>{' '}
                   Facebook
                 </button> */}
-                  <LoginButton />
+                  <LoginButton roles={['HR']} />
                 </div>
               </div>
             </div>

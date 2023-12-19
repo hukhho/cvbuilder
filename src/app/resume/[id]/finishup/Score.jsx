@@ -40,10 +40,10 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
     console.log('Score Finish Up: content', content);
   }, [data]);
 
-  const filteredContent = content?.filter(item => item.score < item.max);
-  const filteredOptimization = optimization?.filter(item => item.score < item.max);
-  const filteredPractice = practice?.filter(item => item.score < item.max);
-  const filteredFormat = format?.filter(item => item.score < item.max);
+  const filteredContent = content?.filter(item => item?.score < item?.max);
+  const filteredOptimization = optimization?.filter(item => item?.score < item?.max);
+  const filteredPractice = practice?.filter(item => item?.score < item?.max);
+  const filteredFormat = format?.filter(item => item?.score < item?.max);
 
   return (
     <div className="score-wrapper">
@@ -255,10 +255,10 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                                 {item?.analyze?.involvement} involvement
                               </span>
                             )}{' '}
-                            without {item?.title}
+                            without {item?.title.toLowerCase()}
                           </span>
                         </h6>
-                        <p>{item?.description}</p>
+                        <p>  {item?.description}</p>
                         <div>
                           {item?.analyze?.moreInfos?.map((itemChild, index) => (
                             <Link
@@ -302,7 +302,7 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                                 {item?.analyze?.involvement} involvement
                               </span>
                             )}{' '}
-                            without {item?.title}
+                            without {item?.title.toLowerCase()}
                           </span>
                         </h6>
                         <p>{item?.description}</p>
@@ -349,7 +349,7 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                                 {item?.analyze?.involvement} involvement
                               </span>
                             )}{' '}
-                            without {item?.title}
+                            without {item?.title.toLowerCase()}
                           </span>
                         </h6>
                         <p>{item?.description}</p>

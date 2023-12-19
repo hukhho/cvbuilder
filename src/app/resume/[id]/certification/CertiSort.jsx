@@ -25,7 +25,7 @@ import SortableItem from '@/app/components/SortableList/SortableItem';
 import StandarList from '@/app/components/List/StandarList';
 import SortableItemCV from '@/app/components/SortableList/SortableItemCV';
 
-const CertiSort = ({ skills, onChangeOrder, updateExperience, handleDeleteData, handleEditData, cvId }) => {
+const CertiSort = ({ skills, onChangeOrder, selectedExperience, updateExperience, handleDeleteData, handleEditData, cvId }) => {
   const skillItems = (
     <>
       {skills.map(edu => {
@@ -33,8 +33,8 @@ const CertiSort = ({ skills, onChangeOrder, updateExperience, handleDeleteData, 
         return (
           <StandarList
             key={edu.id}
-            data={edu}
-            selectedExperience={null}
+            data={edu}  
+            selectedExperience={selectedExperience}
             cvId={cvId}
             onDelete={handleDeleteData}
             onEdit={handleEditData}

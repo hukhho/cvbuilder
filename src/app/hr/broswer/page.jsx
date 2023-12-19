@@ -124,7 +124,8 @@ const Home = () => {
           <div className="container">
             <div style={{ textAlign: 'left' }} />
             <div className="flex mt-6 mb-16">
-              <div className="" style={{ width: 500 }}>
+
+              <div className="flex" style={{ width: 1000 }}>
                 <Search
                   placeholder="Search by title or company"
                   size="large"
@@ -132,8 +133,6 @@ const Home = () => {
                   defaultValue={searchValue}
                   onSearch={onSearch}
                 />
-              </div>
-              <div style={{ width: 400, height: 50 }} className="ml-8">
                 <Select
                   allowClear
                   style={{
