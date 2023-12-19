@@ -149,16 +149,16 @@ const Dashboard = () => {
             <div className="mt-8">
               <Title level={5}>Revenue Chart</Title>
             </div>
-            {/* <RangePicker
+            <RangePicker
               presets={rangePresets}
               value={selectedRang}
               className="mt-2 mb-5 "
               onChange={onRangeChange}
-            /> */}
+            />
 
             <div className="!p-0 mt-4 mb-5 card">
               <div className="">
-                {/* <ColumnChart data={data?.chart} /> */}
+                <ColumnChart data={data?.chart} />
               </div>
             </div>
           </div>
