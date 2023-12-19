@@ -125,8 +125,14 @@ const Home = () => {
       const dataSubmit = { image: uploadedImageUrl };
       try {
         await saveImage(record.id, dataSubmit);
+        notification.success({
+          message: 'Save changes',
+        });
         setData(newData);
       } catch (error) {
+        notification.error({
+          message: 'Upload image error',
+        });
         console.log('error: ', error);
       }
     }
@@ -134,8 +140,8 @@ const Home = () => {
   const columns = [
     {
       title: 'Expert Name',
-      dataIndex: 'userId',
-      render: text => <div>{text}</div>,
+      dataIndex: 'receiver',
+      render: receiver => <div>{receiver?.name}</div>,
     },
 
     {
@@ -149,6 +155,10 @@ const Home = () => {
           })}
         </div>
       ),
+      sorter: {
+        compare: (a, b) => a.expenditure - b.expenditure,
+        multiple: 3,
+      },
     },
     {
       title: 'Status',
@@ -172,12 +182,12 @@ const Home = () => {
         return <Badge status="warning" text={text} />;
       },
     },
+
     {
       title: 'Create Date',
       dataIndex: 'createdDate',
       sorter: {
-        compare: (a, b) => a.createdDate.valueOf() - b.createdDate.valueOf(),
-        multiple: 1,
+        compare: (a, b) => moment(a.createdDate) - moment(b.createdDate),
       },
       render: (text, record) => (
         <div className="flex flex-col">
@@ -190,8 +200,12 @@ const Home = () => {
     },
     {
       title: 'Bank infomation',
-      dataIndex: 'bankInfo',
-      render: text => <div>{text}</div>,
+      dataIndex: 'bank',
+      render: bank => (
+        <div>
+          {bank?.bankName} - {bank?.bankAccountNumber} - {bank?.bankAccountName}
+        </div>
+      ),
     },
     {
       title: 'Proof money transfer',
@@ -230,7 +244,7 @@ const Home = () => {
       dataIndex: 'id',
       render: (text, record) => (
         <div>
-          <button onClick={() => showPromiseConfirm(record.id)}>Finish confirm</button>
+          <button onClick={() => showPromiseConfirm(record.requestId)}>Finish confirm</button>
         </div>
       ),
     },

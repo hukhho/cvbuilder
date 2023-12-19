@@ -74,21 +74,8 @@ const FinishupToolbar = props => {
   };
 
   const renderAdjustment = () => (
-    <div className="adjustment bg-gray-100 asolute " id="div-toolbar">
+    <div className="adjustment bg-gray-100 asolute" id="div-toolbar">
       <Row className="m-auto">
-        {/* <Col className="element">
-          <Tooltip title="Profile picture">
-            <Button size="small" className="ml-1">
-              <FontAwesomeIcon icon={faUserCircle} />
-            </Button>
-          </Tooltip>
-        </Col>
-        <Divider
-          style={{
-            height: 'auto',
-          }}
-          type="vertical"
-        /> */}
         <Col className="font-family element">
           <Select
             size="small"

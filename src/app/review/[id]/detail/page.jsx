@@ -129,7 +129,7 @@ const Home = ({ params }) => {
     <ConfigProvider>
       <UserLayout
         selected="4"
-        isCollapsed={false}
+        isCollapsed={true}
         avatar={avatar}
         email={email}
         userRole={userRole}

@@ -27,7 +27,7 @@ const saveImage = async (transactionId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();
     const response = await axiosInstance.put(
-      `transaction/${transactionId}/user/${userId}/withdraw/image`,
+      `transaction/${transactionId}/admin/withdraw/image`,
       data,
     );
     return response.data;

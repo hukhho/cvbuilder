@@ -12,14 +12,15 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSetData, setIsSetData] = useState(false);
 
   useEffect(() => {
     if (education) {
       form.setFieldsValue(education);
-      console.log('set education: ', education, ' to form');
       setIsEditMode(true); // Set to edit mode if education prop is provided
-    } else {
+    } else if (!isSetData && !education) {
       form.resetFields();
+      console.log('form.resetFields');
       setIsEditMode(false); // Set to create mode if education prop is not provided
     }
   }, [education, form]);
