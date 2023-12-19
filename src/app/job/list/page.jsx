@@ -101,7 +101,7 @@ const Home = () => {
               <div className="flex mt-6 mb-6">
                 <div style={{ width: '50%' }}>
                   <Search
-                    allowClear
+                    className="custom-parent"
                     placeholder="Search by title or company"
                     size="large"
                     defaultValue={searchValue}

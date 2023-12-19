@@ -28,7 +28,7 @@ const JobCard = ({ job }) => {
             }
           </div>
           <div className="ml-4" style={{ textAlign: 'left' }}>
-            <Title className="custom-label" level={5} style={{ color: '#4D70EB', fontSize: 0 }}>
+            <Title className="custom-label" level={5} style={{ color: '#4D70EB', fontSize: 18 }}>
               {job?.title}
             </Title>
             <p className="custom-label">{job?.companyName}</p>
