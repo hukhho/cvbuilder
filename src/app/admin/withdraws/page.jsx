@@ -23,6 +23,123 @@ import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
 
 const { Title } = Typography;
+const props = {
+  name: 'file',
+  action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+  headers: {
+    authorization: 'authorization-text',
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+const columns = [
+  {
+    title: 'Expert Name',
+    dataIndex: 'userId',
+    render: text => <div>{text} Ko có</div>,
+  },
+
+  {
+    title: 'Money request',
+    dataIndex: 'expenditure',
+    render: text => (
+      <div>
+        {Number(text).toLocaleString('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        })}
+      </div>
+    ),
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    render: text => {
+      if (text === 'Done') {
+        return <Badge status="success" text={text} />;
+      }
+      if (text === 'Waiting') {
+        return <Badge status="warning" text={text} />;
+      }
+      if (text === 'Overdue') {
+        return <Badge status="error" text={text} />;
+      }
+      if (text === 'Unpiblish') {
+        return <Badge status="warning" text={text} />;
+      }
+      if (text === 'Disable') {
+        return <Badge status="warning" text={text} />;
+      }
+      return <Badge status="warning" text={text} />;
+    },
+  },
+  {
+    title: 'Create Date',
+    dataIndex: 'createdDate',
+    sorter: {
+      compare: (a, b) => a.createdDate.valueOf() - b.createdDate.valueOf(),
+      multiple: 1,
+    },
+    render: (text, record) => (
+      <div className="flex flex-col">
+        <div> {moment(record.createdDate).fromNow()}</div>{' '}
+        <div style={{ color: 'gray', fontSize: '11px' }}>
+          {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
+        </div>{' '}
+      </div>
+    ),
+  },
+  {
+    title: 'Bank infomation',
+    dataIndex: 'bankInfo',
+    render: text => <div>{text} Ko có</div>,
+  },
+  {
+    title: 'Proof money transfer',
+    dataIndex: 'bankInfo',
+    render: text => (
+      <div>
+        {text} Ko có{' '}
+        <Upload {...props}>
+          <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        </Upload>
+      </div>
+    ),
+  },
+  {
+    title: 'Action',
+    dataIndex: 'id',
+    render: text => <div><button>Finish confirm</button> </div>,
+
+  },
+];
+// const statuses = ['Waiting', 'Overdue', 'Done'];
+// const dateRandome = ['3 days ago', 'Next Tuesday'];
+
+// for (let i = 0; i < 100; i++) {
+//   const price = Math.floor(Math.random() * 10) + 1;
+//   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
+//   const status = statuses[Math.floor(Math.random() * statuses.length)];
+
+//   data.push({
+//     key: i,
+//     resumeName: 'Pham Viet Thuan Thien',
+//     name: '<User Name>',
+//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
+//     price,
+//     status,
+//     receiveDate: due,
+//     deadline: due,
+//   });
+// }
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -34,33 +151,6 @@ const Home = () => {
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
-  const beforeUpload = file => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-  };
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(data?.avatar);
-  const handleChange = info => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      const url = info.file.response;
-      console.log('info.file.response: ', url);
-      setLoading(false);
-      setImageUrl(url);
-    }
-  };
-
   const fetchData = async () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
@@ -76,102 +166,6 @@ const Home = () => {
 
     fetchData();
   }, []);
-  const accessToken = localStorage?.getItem('accessToken');
-
-  const columns = [
-    {
-      title: 'Expert Name',
-      dataIndex: 'userId',
-      render: text => <div>{text} Ko có</div>,
-    },
-
-    {
-      title: 'Money request',
-      dataIndex: 'expenditure',
-      render: text => (
-        <div>
-          {Number(text).toLocaleString('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-          })}
-        </div>
-      ),
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: text => {
-        if (text === 'Done') {
-          return <Badge status="success" text={text} />;
-        }
-        if (text === 'Waiting') {
-          return <Badge status="warning" text={text} />;
-        }
-        if (text === 'Overdue') {
-          return <Badge status="error" text={text} />;
-        }
-        if (text === 'Unpiblish') {
-          return <Badge status="warning" text={text} />;
-        }
-        if (text === 'Disable') {
-          return <Badge status="warning" text={text} />;
-        }
-        return <Badge status="warning" text={text} />;
-      },
-    },
-    {
-      title: 'Create Date',
-      dataIndex: 'createdDate',
-      sorter: {
-        compare: (a, b) => a.createdDate.valueOf() - b.createdDate.valueOf(),
-        multiple: 1,
-      },
-      render: (text, record) => (
-        <div className="flex flex-col">
-          <div> {moment(record.createdDate).fromNow()}</div>{' '}
-          <div style={{ color: 'gray', fontSize: '11px' }}>
-            {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
-          </div>{' '}
-        </div>
-      ),
-    },
-    {
-      title: 'Bank infomation',
-      dataIndex: 'bankInfo',
-      render: text => <div>{text} Ko có</div>,
-    },
-    {
-      title: 'Proof money transfer',
-      dataIndex: 'bankInfo',
-      render: text => (
-        <div>
-          {text}
-          <Upload
-            showUploadList={false}
-            action="https://api-cvbuilder.monoinfinity.net/api/messages/public/upload/image"
-            headers={{ authorization: `Bearer ${accessToken}` }}
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
-          >
-            {imageUrl ? (
-              <Avatar src={imageUrl} alt="avatar" size={100} />
-            ) : (
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            )}
-          </Upload>
-        </div>
-      ),
-    },
-    {
-      title: 'Action',
-      dataIndex: 'id',
-      render: text => (
-        <div>
-          <button>Finish confirm</button>{' '}
-        </div>
-      ),
-    },
-  ];
 
   return (
     <ConfigProvider>
