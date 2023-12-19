@@ -85,7 +85,7 @@ const Home = () => {
                 </div>
                 <div style={{ width: 400, height: 50 }} className="ml-8">
                   <Select
-                    className=""
+                    className="custom-parent"
                     mode="multiple"
                     allowClear
                     style={{
