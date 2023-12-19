@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, ConfigProvider, Divider, Space } from 'antd';
+import { Card, ConfigProvider, Divider, Modal, Space } from 'antd';
 import { Popover, Switch } from '@headlessui/react';
 import UserLayout from '../components/Layout/UserLayout';
 import UserHeader from '../components/UserHeader';
@@ -25,17 +25,20 @@ import {
 
 import styled from 'styled-components';
 import UpdateResume from '../components/Modal/UpdateResume';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 // This creates a custom component that wraps an <a> tag
 const RedLink = styled.a`
   color: black;
 `;
+const { confirm } = Modal;
+
 const ResumeCard = ({ onDeleted, resume }) => {
   const [enabled, setEnabled] = useState(false);
 
   const [isUpdateResumeOpen, setIsUpdateResumeOpen] = useState(false);
 
   const openUpdateResumeModal = () => {
-    console.log("openUpdateResumeModal")
+    console.log('openUpdateResumeModal');
     setIsUpdateResumeOpen(true);
   };
 
@@ -51,6 +54,19 @@ const ResumeCard = ({ onDeleted, resume }) => {
       console.log('handleDeleteResume');
     }
   };
+
+  const showPromiseConfirm = cvId => {
+    confirm({
+      title: 'Do you want to delete this resume?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this resume will be deleted',
+      async onOk() {
+        await handleDeleteResume(cvId);
+      },
+      onCancel() {},
+    });
+  };
+
   const handleDuplicateResume = async cvId => {
     try {
       await duplicateResume(cvId);
@@ -77,9 +93,9 @@ const ResumeCard = ({ onDeleted, resume }) => {
             }}
           />
           <div className="w-full h-full opacity-100 group-hover:opacity-50 transition-opacity">
-            <Link href={`/resume/${resume.id}/contact`} passHref legacyBehavior>
+            <Link href={`/resume/${resume?.id}/contact`} passHref legacyBehavior>
               <RedLink>
-                <FinishUpPreview cvId={resume.id} />
+                <FinishUpPreview cvId={resume?.id} />
               </RedLink>
             </Link>
           </div>
@@ -91,7 +107,7 @@ const ResumeCard = ({ onDeleted, resume }) => {
               <FontAwesomeIcon icon={faCog} />
             </button>
             <button
-              onClick={() => handleDeleteResume(resume.id)}
+              onClick={() => showPromiseConfirm(resume.id)}
               className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full "
             >
               <FontAwesomeIcon icon={faTrashAlt} />
@@ -109,7 +125,7 @@ const ResumeCard = ({ onDeleted, resume }) => {
     >
       <Space.Compact block>
         <span className="" style={{ width: '90%', fontWeight: 700, fontSize: 16 }}>
-          {resume.resumeName}
+          {resume?.resumeName}
         </span>
         <Popover className="relative">
           <Popover.Button>
@@ -117,45 +133,31 @@ const ResumeCard = ({ onDeleted, resume }) => {
           </Popover.Button>
           <Popover.Panel className="absolute z-10">
             <Card>
-              <div className="flex flex-col" style={{ color: '#565656' }}>
-                <Space align="center">
-                  <button onClick={openUpdateResumeModal}>
-                    <div className="flex">
+              <div className="flex flex-col items-start	" style={{ textAlign: 'left', color: '#565656' }}>
+                <button className='mt-3' onClick={openUpdateResumeModal}>
+                  <Space align="start">
                       <FontAwesomeIcon icon={faEdit} />
-                      <div className="ml-4" style={{ marginTop: -3 }}>
+                      <div className="" style={{ marginTop: -3 }}>
                         Edit
                       </div>
-                    </div>
-                  </button>
-                  {/* <button onClick={openUpdateResumeModal}></button> */}
-                </Space>
-                <Space align="center">
-                  <FontAwesomeIcon icon={faCopy} />
-                  Duplicate
-                </Space>
-                <Space align="center">
-                  <FontAwesomeIcon icon={faTrashAlt} />
-                  Delete
-                </Space>
+                  </Space>
+                </button>
+                <button className='mt-3' onClick={handleDuplicateResume}>
+                  <Space align="start">
+                    <FontAwesomeIcon icon={faCopy} />
+                    Duplicate
+                  </Space>
+                </button>
+                <button className='mt-3' onClick={() => showPromiseConfirm(resume.id)}>
+                  <Space align="start">
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                    Delete
+                  </Space>
+                </button>
               </div>
               <Divider />
-              <Space align="center">
-                <FontAwesomeIcon icon={faSearch} />
-                Searchable
-                <Switch
-                  checked={enabled}
-                  onChange={setEnabled}
-                  className={`${
-                    enabled ? 'bg-blue-600' : 'bg-gray-200'
-                  } relative inline-flex h-6 w-11 items-center rounded-full`}
-                >
-                  <span className="sr-only">Enable notifications</span>
-                  <span
-                    className={`${
-                      enabled ? 'translate-x-6' : 'translate-x-1'
-                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                  />
-                </Switch>
+              <Space align="start">
+             
               </Space>
             </Card>
           </Popover.Panel>

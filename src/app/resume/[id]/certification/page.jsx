@@ -152,6 +152,7 @@ const Certification = ({ params }) => {
                       <CertiSort
                         cvId={cvId}
                         selectedExperience={selectedData}
+                        onEdit={handleEditData}
                         updateExperience={updateCertification}
                         handleDeleteData={handleDeleteData}
                         handleEditData={handleEditData}
