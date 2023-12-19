@@ -10,6 +10,18 @@ const getWithdrawRequests = async data => {
     throw error;
   }
 };
+const saveImage = async (transactionId, data) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.put(
+      `transaction/${transactionId}/user/${userId}/withdraw/image`,
+      data,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getChartsMoney = async data => {
   try {
     const userId = getUserIdFromLocalStorage();
@@ -302,4 +314,5 @@ export {
   checkApiKey,
   getChartsMoney,
   getChartsUser,
+  saveImage,
 };
