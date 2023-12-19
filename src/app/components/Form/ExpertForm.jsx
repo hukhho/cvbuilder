@@ -276,7 +276,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               <Select
                 placeholder="Set your resume"
                 className="customtext"
-                style={{ height: 60, marginTop: '-10px' }}
+                style={{ height: 50, marginTop: '-10px' }}
                 options={resumeOptions}
               />
             </Form.Item>
