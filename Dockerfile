@@ -3,10 +3,9 @@ FROM node:20.10.0 AS dependency
 WORKDIR /app
 COPY package.json .
 
-# Remove node_modules and yarn.lock, then use npm to install and update packages
-RUN rm -rf node_modules yarn.lock \
-    && npm install --frozen-lockfile \
-    && npm update
+# Remove yarn.lock if it exists, then install dependencies using Yarn
+RUN rm -f yarn.lock \
+    && yarn install
 
 FROM node:20.10.0 AS builder
 WORKDIR /app
@@ -17,11 +16,8 @@ COPY --from=dependency /app/node_modules ./node_modules
 # Copy the rest of your app's source code
 COPY . .
 
-# You can still run env here if you need to check environment variables
-RUN env
-
-# Build your app
-RUN npm run build
+# Build your app using Yarn
+RUN yarn build
 
 # The command to start your app
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
