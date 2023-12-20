@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, InputNumber, Typography, notification } from 'antd';
+import { Button, Form, Input, InputNumber, notification, Typography } from 'antd';
 import { createEducation, updateEducation } from '@/app/resume/[id]/education/educationService';
 import './customtext.css';
 import Certification from '@/app/resume/[id]/certification/page';
@@ -16,11 +16,11 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
   useEffect(() => {
     setIsSetData(true);
     if (education) {
-      console.log("setFieldsValue", education)
+      console.log('setFieldsValue', education);
       form.setFieldsValue(education);
       setIsEditMode(true); // Set to edit mode if education prop is provided
     } else if (!isSetData && !education) {
-      console.log("resetFields ", isSetData)
+      console.log('resetFields ', isSetData);
       form.resetFields();
       setIsEditMode(false); // Set to create mode if education prop is not provided
     }

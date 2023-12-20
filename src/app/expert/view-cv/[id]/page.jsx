@@ -949,6 +949,16 @@ export default function FinishUp({ params }) {
                   >
                     {filteredSections.map(section => section.canBeDisplayed && section.component)}
                   </CVLayoutReviewerView>
+                  {fetchedData?.request?.status === 'Done' && (
+                    <div style={{ marginBottom: '10px' }}>
+                    <textarea
+                      className="inputEl mb-16"
+                      value={overall}
+                      disabled={true}
+                      onChange={e => handleChangeOverall(e)}
+                    />
+                    </div>
+                  )}
                   {fetchedData?.request?.status !== 'Done' ? (
                     <div>
                     <textarea

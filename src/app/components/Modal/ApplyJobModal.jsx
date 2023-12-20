@@ -153,7 +153,7 @@ export default function ApplyJobModal({
                     <div className="container px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
                         <div className="flex  justify-center">
-                          <div className="p-9 w-[70%]" style={{ color: 'black' }}>
+                          <div className="p-9" style={{ width: 1200, color: 'black' }}>
                             <h2>Select your CV and Cover Letter</h2>
                             <p>Choosing the suitable CV and Cover Letter to apply for the job.</p>
                             <div>
@@ -171,7 +171,7 @@ export default function ApplyJobModal({
                                 <Form.Item
                                   className="custom-label-normal"
                                   name="resume"
-                                  label="Select Resume"
+                                  label="Select Resume *"
                                   rules={[
                                     {
                                       required: true,
@@ -210,11 +210,7 @@ export default function ApplyJobModal({
                                   className="custom-label-normal"
                                   name="note"
                                   label="Notes for Hiring Manager"
-                                  rules={[
-                                    {
-                                      required: true,
-                                    },
-                                  ]}
+                                  
                                 >
                                   <Input
                                     className="custom-search"
