@@ -20,10 +20,14 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
+
+  const [isSubmiting, setIsSubmiting] = useState(false);
+
   const resizeTextArea = () => {
     inputRef.current.style.height = 'auto';
     inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
   };
+
   useEffect(resizeTextArea, [inputValue]);
   useEffect(() => {
     if (data) {
@@ -57,6 +61,8 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
   }, [data, form]);
 
   const handleSubmit = async values => {
+    setIsSubmiting(true);
+
     try {
       values.description = inputValue;
       if (isCurrentlyWorking) {
@@ -87,6 +93,8 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
       onCreated();
     } catch (error) {
       console.log('Submit Project Form. Error:', error);
+    } finally {
+      setIsSubmiting(false);
     }
   };
 
@@ -170,9 +178,16 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
 
   return (
     <div className=" " style={{ width: '100%' }}>
-      <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
+      <Form
+        onFinish={handleSubmit}
+        form={form}
+        layout="vertical"
+        autoComplete="off"
+        requiredMark={false}
+      >
         <Form.Item
           name="title"
+          rules={[{ required: true }]}
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
@@ -317,6 +332,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
           className="projects-section button "
           id="projects-section-save-to-list"
           type="submit"
+          disabled={isSubmiting}
         >
           Save to Project list
         </button>

@@ -171,7 +171,12 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                       </i>
                       <div>
                         <h6>
-                          {item?.critical && <span className="critical-badge">CRITICAL</span>}
+                          {item?.critical ?  (item?.score < item?.max) ? (
+                            <span className="critical-badge">CRITICAL</span>
+                          ) : (
+                            <span className="badge-green">CRITICAL</span>
+                          ) : null}
+
                           <span>
                             Your resume has{' '}
                             {item?.analyze?.experience > 0 && (

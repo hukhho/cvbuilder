@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Space } from 'antd';
+import { Button, Card, ConfigProvider, Space, notification } from 'antd';
 import dynamic from 'next/dynamic';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -23,6 +23,8 @@ import StandarList from '../../../components/List/StandarList';
 import { useRouter, useSearchParams } from 'next/navigation';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
+import ExperienceSort from './ExperienceSort';
+import DataService from '../../../utils/dataService';
 
 const { Meta } = Card;
 
@@ -31,6 +33,7 @@ const Experience = ({ params }) => {
   const [experiences, setExperiences] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
+  const dataService = new DataService('experiences', params.id);
 
   const { avatar, email, userRole } = useStore();
   const enabledCategories = { EXPERIENCE: true };
@@ -111,6 +114,27 @@ const Experience = ({ params }) => {
   // {
   //   return (<div>Loading...</div>)
   // }
+  const handleOrderChange = async newOrder => {
+    // Create a new JSON with updated "theOrder" property
+    const updatedOrder = newOrder.map((item, index) => ({
+      ...item,
+      theOrder: index + 1,
+    }));
+    console.log('updatedOrder', updatedOrder);
+
+    setExperiences(updatedOrder);
+    try {
+      await dataService.sortOrder(updatedOrder);
+      notification.success({
+        message: 'Save changed',
+      });
+    } catch (error) {
+      notification.error({
+        message: 'Save order error',
+      });
+      console.error('There was an error updating the data', error);
+    }
+  };
   return (
     <main>
       <ConfigProvider>
@@ -161,7 +185,7 @@ const Experience = ({ params }) => {
                   </div>
 
                   <div style={{ paddingTop: '0px' }}>
-                    {isShow &&
+                  {/* {isShow &&
                       !isLoadingPage &&
                       experiences?.length > 0 &&
                       experiences?.map(experience => (
@@ -176,7 +200,23 @@ const Experience = ({ params }) => {
                           subtitle={experience.companyName}
                           updateExperience={updateExperience}
                         />
-                      ))}
+                      ))}  */}
+
+                { 
+                      isShow &&
+                      !isLoadingPage &&
+                      experiences?.length > 0 && (
+                      <ExperienceSort
+                        cvId={cvId}
+                        selectedExperience={selectedExperience}
+                        onEdit={handleEditExperience}
+                        updateExperience={updateExperience}
+                        handleDeleteData={handleDeleteExperience}
+                        handleEditData={handleEditExperience}
+                        skills={experiences}
+                        onChangeOrder={handleOrderChange}
+                      />
+                    )}
                   </div>
                 </Card>
               </div>
