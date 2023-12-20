@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
   Alert,
@@ -38,7 +38,6 @@ import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
 import './gen.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
-import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';
 import { Box, VStack } from '@chakra-ui/react';
 import { CommentOutlined, StarFilled } from '@ant-design/icons';
 import Link from 'next/link';
@@ -56,166 +55,27 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
 import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const mockData = {
-  data: {
-    resume: {
-      id: 1,
-      fullName: 'Pham Viet Thuan Thien',
-      phone: 'xxxxxxxxxx',
-      personalWebsite: 'bcbcc .cyd',
-      emailAddress: 'pvtt@gmail.com',
-      summary:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      templateType: 'classical',
-      resumeStyle: {
-        fontSize: '9pt',
-        lineHeight: 1.4,
-        fontFamily: 'Merriweather',
-        fontWeight: 'normal',
-        zoom: '130%',
-        paperSize: 'letter',
-        hasDivider: true,
-        hasIndent: false,
-        fontColor: 'rgb(0, 0, 0)',
-      },
-      experiences: [
-        {
-          id: 1,
-          companyName: 'Holistics',
-          role: 'Product Manager',
-          startDate: '04 Aug',
-          endDate: '04 Dec',
-          location: 'Ho Chi Minh',
-          description:
-            '• Responsible for dashboard validation, metadata, and human factor projects within the Holistics platform',
-        },
-        {
-          id: 2,
-          companyName: 'Momo',
-          role: 'Product Manager',
-          startDate: '',
-          endDate: '',
-          location: 'Ho Chi Minh',
-          description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-        {
-          id: 3,
-          companyName: 'VNG',
-          role: 'Dev',
-          startDate: '',
-          endDate: '',
-          location: 'Ho Chi Minh',
-          description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-      ],
-      educations: [
-        {
-          id: 1,
-          degree: 'Bachelor of Engineering',
-          collegeName: 'FPT University',
-          startDate: '',
-          endDate: '',
-          location: 'Ho Chi Minh',
-          gpa: '3.2/4',
-          minor: 'AI',
-          description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-      ],
-      projects: [
-        {
-          id: 1,
-          organizations: 'Holistics',
-          title: 'Product Manager',
-          startDate: '',
-          endDate: '',
-          projectUrl: 'random.org',
-          location: 'Ho Chi Minh',
-          description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-        {
-          id: 2,
-          organizations: 'Momo',
-          title: 'Product Manager',
-          startDate: '',
-          endDate: '',
-          projectUrl: 'random.org',
-          location: 'Ho Chi Minh',
-          description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-      ],
-      certifications: [
-        {
-          id: 1,
-          certificationSource: 'Holistics',
-          name: 'Product Manager',
-          certificationRelevance: 1,
-          endYear: '2023',
-        },
-        {
-          id: 2,
-          certificationSource: 'Momo',
-          name: 'UX design',
-          certificationRelevance: 1,
-          endYear: '2023',
-        },
-      ],
-      skills: [
-        {
-          id: 1,
-          name: 'CSS',
-          description: 'CSS',
-        },
-        {
-          id: 2,
-          name: 'HTML',
-          description: 'CSS',
-        },
-        {
-          id: 3,
-          name: 'React',
-          description: 'CSS',
-        },
-        {
-          id: 4,
-          name: 'Vue',
-          description: 'CSS',
-        },
-      ],
-      involvements: [
-        {
-          id: 1,
-          organizationName: 'Holistics',
-          organizationRole: 'Product Manager',
-          startDate: '',
-          endDate: '',
-          projectUrl: 'random.org',
-          college: 'FPT University',
-          location: 'Ho Chi Minh',
-          description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-        {
-          id: 2,
-          organizationName: 'Momo',
-          organizationRole: 'Product Manager',
-          startDate: '',
-          endDate: '',
-          college: 'FPT University',
-          projectUrl: 'random.org',
-          location: 'Ho Chi Minh',
-          description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-      ],
-    },
+// import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';
+const CVLayoutReviewerView = dynamic(
+  () => import('@/app/components/Templates/CVLayoutReviewerView'),
+  {
+    ssr: false,
   },
-  status: true,
+);
+
+const DEFAULT_RESUME_STYLES = {
+  fontSize: '9pt',
+  lineHeight: 1.4,
+  fontFamily: 'Merriweather',
+  fontWeight: 'normal',
+  zoom: '130%',
+  paperSize: 'letter',
+  hasDivider: true,
+  hasIndent: false,
+  fontColor: 'rgb(0, 0, 0)',
 };
 
 export default function FinishUp({ params }) {
@@ -246,8 +106,8 @@ export default function FinishUp({ params }) {
   });
   const { avatar, email, userRole } = useStore();
 
-  const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
-  const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
+  const [templateSelected, setTemplateSelected] = useState('classical');
+  const [toolbarState, setToolbarState] = useState(DEFAULT_RESUME_STYLES);
 
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
@@ -273,6 +133,7 @@ export default function FinishUp({ params }) {
   const [summary, setSummary] = useState();
 
   const elementRef = useRef(null); // Reference to the HTML element to be converted
+  const router = useRouter();
 
   const [tooltip, setTooltip] = useState(null);
   const [currentText, setCurrentText] = useState(null);
@@ -314,11 +175,7 @@ export default function FinishUp({ params }) {
     comment.setAttribute('id', commentId);
     comment.setAttribute('class', 'select-none comment-marker');
     comment.setAttribute('content', inputValue);
-    // const deleteButton = document.createElement('span');
-    // deleteButton.textContent = 'x';
-    // deleteButton.setAttribute('class', 'delete-button');
-    // deleteButton.addEventListener('click', () => handleDeleteComment(commentId));
-    // comment.appendChild(deleteButton);
+
     const range = selection.getRangeAt(0);
     range.deleteContents();
     range.insertNode(comment);
@@ -363,6 +220,11 @@ export default function FinishUp({ params }) {
             const fetchedDataFromAPI = await getReviewResponse(requestId);
             setFetchedData(fetchedDataFromAPI);
             setOverall(fetchedDataFromAPI.overall);
+            // if (fetchedDataFromAPI.feedbackDetail === null) {
+
+            //   setErrorMessage('Some thing went wrong!');
+            //   return
+            // }
             const data = fetchedDataFromAPI.feedbackDetail;
             // const data = await getFinishUp(1)
             // const fetchedData = await getReviewResponse(expertId, requestId);
@@ -707,17 +569,19 @@ export default function FinishUp({ params }) {
         const requestId = params.id;
         const fetchedDataFromAPI = await getReviewResponse(requestId);
         setFetchedData(fetchedDataFromAPI);
-        setOverall(fetchedDataFromAPI.overall);
-        const data = fetchedDataFromAPI.feedbackDetail;
+        setOverall(fetchedDataFromAPI?.overall);
+        const data = fetchedDataFromAPI?.feedbackDetail;
         // const data = await getFinishUp(1)
         // const fetchedData = await getReviewResponse(expertId, requestId);
 
         console.log('FinishUp data: ', data);
 
         if (data === null) {
+          setErrorMessage('Feedback detail null');
           setFinishUpData(null);
           return;
-        }
+        } 
+
         const cvId = data.cvId;
         setFinishUpData(data);
 
@@ -731,10 +595,10 @@ export default function FinishUp({ params }) {
         // const data1 = await getAudit(cvId);
         // setAuditData(data1);
       } catch (error) {
-        if (error.response.data.error) {
-          setErrorMessage(error.response.data.error);
-        } else if (error.response.data) {
-          setErrorMessage(error.response.data);
+        if (error?.response?.data?.error) {
+          setErrorMessage(error?.response?.data?.error);
+        } else if (error?.response?.data) {
+          setErrorMessage(error?.response?.data);
         } else {
           setErrorMessage('Some thing went wrong!');
         }
@@ -834,14 +698,14 @@ export default function FinishUp({ params }) {
 
           setSummary(data.summary);
         } catch (error) {
-          setErrorMessage(error.response.data);
+          setErrorMessage(error?.response?.data);
           console.error('Error fetching FinishUp data:', error);
         }
       };
 
       fetchData();
     } catch (error) {
-      setErrorMessage(error.response.data);
+      setErrorMessage(error?.response?.data);
 
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
@@ -870,8 +734,15 @@ export default function FinishUp({ params }) {
           const requestId = params.id;
           const fetchedDataFromAPI = await getReviewResponse(requestId);
           setFetchedData(fetchedDataFromAPI);
-          setOverall(fetchedDataFromAPI.overall);
-          const data = fetchedDataFromAPI.feedbackDetail;
+          setOverall(fetchedDataFromAPI?.overall);
+
+          if (fetchedDataFromAPI.feedbackDetail === null) {
+            setErrorMessage('Feedback detail null');
+            return;
+          }
+
+          const data = fetchedDataFromAPI?.feedbackDetail;
+
           // const data = await getFinishUp(1)
           // const fetchedData = await getReviewResponse(expertId, requestId);
 
@@ -881,23 +752,23 @@ export default function FinishUp({ params }) {
             setFinishUpData(null);
             return;
           }
-          const cvId = data.cvId;
+          const cvId = data?.cvId;
           setFinishUpData(data);
 
           setShowFinishupCV(true);
 
-          setTemplateSelected(data.templateType);
-          setToolbarState(data.cvStyle);
+          setTemplateSelected(data?.templateType);
+          setToolbarState(data?.cvStyle);
 
-          setSummary(data.summary);
+          setSummary(data?.summary);
 
           // const data1 = await getAudit(cvId);
           // setAuditData(data1);
         } catch (error) {
-          if (error.response.data.error) {
-            setErrorMessage(error.response.data.error);
-          } else if (error.response.data) {
-            setErrorMessage(error.response.data);
+          if (error?.response?.data?.error) {
+            setErrorMessage(error?.response?.data?.error);
+          } else if (error?.response?.data) {
+            setErrorMessage(error?.response?.data);
           } else {
             setErrorMessage('Some thing went wrong!');
           }
@@ -925,6 +796,8 @@ export default function FinishUp({ params }) {
       notification.success({
         message: 'Success',
       });
+      router.push('/expert/requests');
+
     } catch (error) {
       console.log('error ', error);
       notification.error({
@@ -944,7 +817,17 @@ export default function FinishUp({ params }) {
       }
       content={
         <div className="flex mt-8">
-          {errorMessage && <Alert message="Error Text" description={errorMessage} type="error" />}
+          {errorMessage && (
+            <div>
+              <Link href="/expert/requests" passHref>
+                <button>
+                  <FontAwesomeIcon icon={faChevronLeft} />
+                </button>
+                <span className="ml-2">Back</span>
+              </Link>
+              <Alert message="Error Text" description={errorMessage} type="error" />
+            </div>
+          )}
           {finishUpData && showFinishupCV ? (
             <></>
           ) : (
@@ -1015,26 +898,47 @@ export default function FinishUp({ params }) {
                   <Card className="mt-4">
                     <div className="flex justify-start">
                       <div style={{ textAlign: 'left' }}>
-                        <div>Name: {dataRequest?.name}</div>
-                        <div>Status: {fetchedData?.request?.status}</div>
-                        <div>Note: {dataRequest?.note}</div>
                         <div>
-                          Deadline: <div> {moment(dataRequest?.deadline).fromNow()}</div>{' '}
+                          <b>Name:</b> {fetchedData?.request?.name}
+                        </div>
+                        <div>
+                          <b>Status: </b>
+                          {fetchedData?.request?.status}
+                        </div>
+                        <div>
+                          <b>Note:</b> {fetchedData?.request?.note}
+                        </div>
+                        <div>
+                          <b>Created Date:</b>{' '}
+                          <div> {moment(fetchedData?.request?.receivedDate).fromNow()}</div>{' '}
                           <div style={{ color: 'gray', fontSize: '11px' }}>
-                            {moment(dataRequest?.deadline).format('HH:mm:ss DD/MM/YYYY')}
+                            {moment(fetchedData?.request?.deadline).format('HH:mm:ss DD/MM/YYYY')}
+                          </div>{' '}
+                        </div>
+                        <div>
+                          <b>Deadline:</b>{' '}
+                          <div> {moment(fetchedData?.request?.deadline).fromNow()}</div>{' '}
+                          <div style={{ color: 'gray', fontSize: '11px' }}>
+                            {moment(fetchedData?.request?.deadline).format('HH:mm:ss DD/MM/YYYY')}
                           </div>{' '}
                         </div>
                       </div>
                     </div>
                   </Card>
-                  <CVLayoutReviewerView
-                    key={[templateSelected, toolbarState]}
-                    layoutStyles={toolbarState}
-                    sectionsOrder={sectionsOrder}
-                    onSectionsOrderChange={handleSectionsOrderChange}
-                  >
-                    {filteredSections.map(section => section.canBeDisplayed && section.component)}
-                  </CVLayoutReviewerView>
+
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <CVLayoutReviewerView
+                      key={[templateSelected, toolbarState]}
+                      layoutStyles={toolbarState}
+                      sectionsOrder={sectionsOrder}
+                      onSectionsOrderChange={handleSectionsOrderChange}
+                    >
+                      {filteredSections?.map(
+                        section => section.canBeDisplayed && section.component,
+                      )}
+                    </CVLayoutReviewerView>
+                  </Suspense>
+
                   {fetchedData?.request?.status === 'Waiting' && (
                     <div>
                       {' '}

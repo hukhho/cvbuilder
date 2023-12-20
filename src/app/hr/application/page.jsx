@@ -20,6 +20,7 @@ import { getHrApplication, getHrPostList } from '../hrServices';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import useStore from '@/store/store';
+import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 const columns = [
@@ -68,9 +69,7 @@ const columns = [
     dataIndex: 'coverLetters',
     render: cvs => (
       <a>
-        <Link href={`/hr/view-cover-letter/${cvs.historyCoverLetterId}`}>
-          {cvs.title}
-        </Link>{' '}
+        <Link href={`/hr/view-cover-letter/${cvs.historyCoverLetterId}`}>{cvs.title}</Link>{' '}
       </a>
     ),
   },
@@ -126,6 +125,8 @@ const HRApplicationPage = () => {
   const initialData = [];
 
   const [data, setData] = useState(initialData);
+  const [filteredData, setFilteredData] = useState(initialData);
+
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
@@ -134,6 +135,7 @@ const HRApplicationPage = () => {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getHrApplication();
       setData(fetchedDataFromAPI);
+      setFilteredData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -144,6 +146,23 @@ const HRApplicationPage = () => {
 
     fetchData();
   }, []);
+
+
+  const [searchValue, setSearchValue] = useState();
+
+  const onSearch = (value) => {
+    if (value) {
+      setSearchValue(value);
+      const filtered = data.filter(item => item.candidateName.toLowerCase().includes(value.toLowerCase()));
+      setFilteredData(filtered);
+    } else {
+      setSearchValue();
+      setFilteredData(data);
+    }
+  };
+
+
+
 
   return (
     <ConfigProvider>
@@ -164,11 +183,19 @@ const HRApplicationPage = () => {
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-              <Input className="" placeholder="Search the candiatename" />
+               <Search
+                allowClear
+                placeholder="Search candidate name"
+                size="large"
+                defaultValue={searchValue}
+                onSearch={onSearch}
+              />
+              
+              {/* <Input className="" placeholder="Search the candiatename" /> */}
             </div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
-                <Table columns={columns} dataSource={data} onChange={onChange} />
+                <Table columns={columns} dataSource={filteredData} onChange={onChange} />
               </div>
             </div>
           </div>

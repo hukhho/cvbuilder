@@ -20,13 +20,14 @@ import { getHrPostList } from '../hrServices';
 import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import useStore from '@/store/store';
+import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 const columns = [
   {
     title: 'Job posting',
     dataIndex: 'title',
-    render: (text, record)  => <Link href={`/hr/application/job/${record?.id}`}>{text}</Link>,
+    render: (text, record) => <Link href={`/hr/application/job/${record?.id}`}>{text}</Link>,
   },
   {
     title: 'Status',
@@ -58,10 +59,7 @@ const columns = [
     title: 'Application',
     dataIndex: 'application',
   },
- 
-  
- 
-  
+
   {
     title: 'Date Application',
     dataIndex: 'timestamp',
@@ -73,11 +71,15 @@ const columns = [
   {
     title: 'Action',
     dataIndex: 'id',
-    render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
-
+    render: text => (
+      <div>
+        <Link href={`/hr/post/${text}`}>
+          <FontAwesomeIcon icon={faEdit} />
+          Edit
+        </Link>{' '}
+      </div>
+    ),
   },
- 
-  
 ];
 // const statuses = ['Waiting', 'Overdue', 'Done'];
 // const dateRandome = ['3 days ago', 'Next Tuesday'];
@@ -108,6 +110,8 @@ const Home = () => {
   const initialData = [];
 
   const [data, setData] = useState(initialData);
+  const [filteredData, setFilteredData] = useState(initialData);
+
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
@@ -116,8 +120,10 @@ const Home = () => {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getHrPostList();
       setData(fetchedDataFromAPI);
+      setFilteredData(fetchedDataFromAPI);
+
     } catch (error) {
-      console.log("getReviewRequestsByCandiate:Error: ", error)
+      console.log('getReviewRequestsByCandiate:Error: ', error);
     }
   };
 
@@ -126,6 +132,19 @@ const Home = () => {
 
     fetchData();
   }, []);
+  const [searchValue, setSearchValue] = useState();
+
+  const onSearch = (value) => {
+    if (value) {
+      setSearchValue(value);
+      const filtered = data.filter(item => item?.title.toLowerCase().includes(value.toLowerCase()));
+      setFilteredData(filtered);
+    } else {
+      setSearchValue();
+      setFilteredData(data);
+    }
+  };
+
 
   return (
     <ConfigProvider>
@@ -146,11 +165,17 @@ const Home = () => {
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-              <Input className="" placeholder="Search the candiatename" />
+              <Search
+                allowClear
+                placeholder="Search candidate name"
+                size="large"
+                defaultValue={searchValue}
+                onSearch={onSearch}
+              />{' '}
             </div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
-                <Table columns={columns} dataSource={data} onChange={onChange} />
+                <Table columns={columns} dataSource={filteredData} onChange={onChange} />
               </div>
             </div>
           </div>

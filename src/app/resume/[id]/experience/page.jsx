@@ -30,6 +30,8 @@ const Experience = ({ params }) => {
   const router = useRouter();
   const [experiences, setExperiences] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState(null);
+  const [isLoadingPage, setIsLoadingPage] = useState(true);
+
   const { avatar, email, userRole } = useStore();
   const enabledCategories = { EXPERIENCE: true };
   console.log('Experiences: ', params);
@@ -59,6 +61,8 @@ const Experience = ({ params }) => {
       setExperiences(data);
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
+    } finally {
+      setIsLoadingPage(false);
     }
   };
 
@@ -103,6 +107,10 @@ const Experience = ({ params }) => {
   console.log('experiences: ', experiences);
   console.log('experiences.bulletPointDtos: ', experiences.bulletPointDtos);
 
+  // if (isLoadingPage)
+  // {
+  //   return (<div>Loading...</div>)
+  // }
   return (
     <main>
       <ConfigProvider>
@@ -116,7 +124,10 @@ const Experience = ({ params }) => {
           }
           content={
             <div className="flex w-full">
-              <div className="flex flex-col p-4 pl-0" style={{ width: '320px', marginRight: '36px' }}>
+              <div
+                className="flex flex-col p-4 pl-0"
+                style={{ width: '320px', marginRight: '36px' }}
+              >
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
                     <VideoComponent />
@@ -151,7 +162,9 @@ const Experience = ({ params }) => {
 
                   <div style={{ paddingTop: '0px' }}>
                     {isShow &&
-                      experiences.map(experience => (
+                      !isLoadingPage &&
+                      experiences?.length > 0 &&
+                      experiences?.map(experience => (
                         <StandarList
                           key={experience.id}
                           data={experience}
@@ -168,11 +181,19 @@ const Experience = ({ params }) => {
                 </Card>
               </div>
               <div className="flex flex-col px-4 w-full">
-                <ExperienceForm
-                  cvId={cvId}
-                  onExperienceCreated={fetchExperiences}
-                  experience={selectedExperience}
-                />
+                {!isLoadingPage ? (
+                  <ExperienceForm
+                    cvId={cvId}
+                    onExperienceCreated={fetchExperiences}
+                    experience={selectedExperience}
+                  />
+                ) : (
+                  <ExperienceForm
+                    cvId={cvId}
+                    onExperienceCreated={fetchExperiences}
+                    experience={null}
+                  />
+                )}
               </div>
             </div>
           }
