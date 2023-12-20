@@ -29,20 +29,15 @@ import './editable.moduel.css';
 import './alpha.css';
 import './beta.css';
 import './omega.css';
-import './lambda.css';
 import './template.css';
 
 import { NextPageContext } from 'next';
 // import DesignStudioBreakPage from './templatesStyles/DesignStudioBreakPage';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import * as htmlToImage from 'html-to-image';
 
-const CVLayout = React.forwardRef(
-  (
-    { children, onSectionsOrderChange, layoutStyles, templateType, stars, isShowBreak = false },
-    ref,
-  ) => {
+const CVLayoutV1 = React.forwardRef(
+  ({ children, onSectionsOrderChange, layoutStyles, stars }, ref) => {
     const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
 
     // Define font styles for different fonts
@@ -69,12 +64,19 @@ const CVLayout = React.forwardRef(
       // fontFamily: `${layoutStyles.fontFamily}, serif`,
       ...fontStyles, // Merge font styles with other styles
     };
-    console.log('CvStyles', CvStyles);
 
     useEffect(() => {
       const resumeId = document.getElementById('resume');
       resumeId?.style.setProperty('--text-indent', hasIndent ? '1em' : '0em');
     }, [hasIndent]);
+
+    // useEffect(() => {
+    //   WebFont.load({
+    //     google: {
+    //       families: ['Source Sans Pro'],
+    //     },
+    //   });
+    // }, []);
 
     const [components, setComponents] = useState(children);
 
@@ -108,125 +110,56 @@ const CVLayout = React.forwardRef(
       [components],
     );
 
-
-
-    
-
     const handleDragCancel = useCallback(() => {
       setActiveId(null);
     }, []);
 
     const cvHeightSize = layoutStyles.paperSize === 'A4' ? '297mm' : '11in';
-    const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
+    // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
 
     // const cvWidthSize = layoutStyles.paperSize === 'A4' ? '210mm' : '8.5in';
     const stylesTransform = {
-      // transform: `scale(${layoutStyles.zoom})`,
-      transform: 'scale(1)',
+      transform: `scale(${layoutStyles.zoom})`,
       transformOrigin: 'left top',
     };
 
-    const elementRef = useRef(null); // Reference to the HTML element to be converted
-    const captureOptions = {
-      scale: 10, // Increase the scale for higher resolution
-      useCORS: true, // Enable Cross-Origin Resource Sharing if needed
-      logging: true, // Enable logging for debugging (optional)
-    };
-    // const CaptureScreenshot = () => {
-    //   html2canvas(captureRef.current, captureOptions).then(canvas => {
-    //     console.log('canvas', canvas);
-    //     // Iterate through each element in the captured content
-    //     canvas.childNodes.forEach(element => {
-    //       // Apply sectionHeader styles
-    //       if (element.classList.contains('section-header')) {
-    //         Object.assign(element.style, sectionHeader);
-    //       }
-    //     });
 
-    //     const imgData = canvas.toDataURL('image/jpeg');
-    //     const pdf = new jsPDF('p', 'mm', [canvas.width / 10, canvas.height / 10]); // Adjust PDF size accordingly
-    //     pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 10, canvas.height / 10);
-    //     pdf.save(`${new Date().toISOString()}.pdf`);
-    //   });
-    // };
-    const captureRef = useRef();
-    const CaptureScreenshot = () => {
-      console.log('cap');
-      try {
-        htmlToImage
-          .toCanvas(captureRef.current, { quality: 1, pixelRatio: 10 })
-          .then(function (canvas) {
-            const imgData = canvas.toDataURL('image/jpeg');
-
-            // Adjust the width and height for A4 size (210mm x 297mm)
-            const pdfWidth = 210;
-            const pdfHeight = 297;
-
-            const pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
-            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`${new Date().toISOString()}.pdf`);
-          });
-      } catch (error) {
-        console.log('Error', error);
-      }
-    };
-    useImperativeHandle(ref, () => ({
-      CaptureScreenshot,
-    }));
-    const isClassicalTemplate = templateType === 'classical';
-    const templateName =
-      templateType === 'classical' ? 'omega' : templateType === 'modern' ? 'beta' : 'lambda';
     return (
-      <div className="">
-        <div
-          className="bg-gray-100 rounded-md p-4 select-none text-[#2e3d50]"
-          id="resume-preview"
-          style={stylesTransform}
-        >
-          {isShowBreak && (
-            <div
-              className="design-studio-break-page"
-              style={{
-                top: 'calc(10.4882in)',
-                fontFamily: 'Merriweather, serif',
-                lineHeight: '20px',
-                zIndex: 99,
-              }}
-            >
-              <div></div>
-              Break
-            </div>
-          )}
-
+      <div className="preview card">
+        <div className="flex bg-gray-100 rounded-md p-4 m-auto" id="resume-preview">
+          <div
+            className="design-studio-break-page"
+            style={{
+              top: 'calc(10.4882in)',
+              fontFamily: '"Source Sans Pro", sans-serif',
+              zIndex: 99,
+            }}
+          >
+            <div />
+            {/* Break */}
+          </div>
           <div
             ref={captureRef}
             style={{
               backgroundColor: 'rgb(255, 255, 255)',
-              minHeight: '11in',
+              minHeight: cvHeightSize,
               paddingBottom: '1.3cm',
             }}
           >
             <div
               id="resume"
-              className={
-                `relative bg-white transition-colors resume ` +
-                `${templateName} ` +
-                `${templateName === 'beta' ? 'border-t-[12px] border-solid box-border' : ''} `
-              }
+              className="relative bg-white transition-colors resume alpha"
               data-type="designStudio"
               data-format="letter"
               data-template="standard"
               style={{
                 ...fontStyles,
                 fontSize: CvStyles.fontSize,
-                lineHeight: CvStyles.lineHeight,
-                width: cvWidthSize,
-                transform: 'initial',
-                transformOrigin: 'initial',
+                // lineHeight: CvStyles.lineHeight,
+                // width: cvWidthSize,
                 // fontFamily: 'Merriweather, serif',
                 padding: '1.3cm 0cm 0cm',
-                // borderColor: 'rgb(0, 0, 0)',
-                borderColor: 'rgb(60, 120, 216)',
+                borderColor: 'rgb(0, 0, 0)',
                 textAlign: 'left',
               }}
             >
@@ -244,7 +177,7 @@ const CVLayout = React.forwardRef(
                           <div key={index}>
                             {React.cloneElement(child, {
                               layoutStyles,
-                            })}{' '}
+                            })}
                             {layoutStyles.hasDivider && (
                               <div
                                 style={{ color: 'red', padding: '0cm 1.4cm', margin: '10px 0px' }}
@@ -255,7 +188,11 @@ const CVLayout = React.forwardRef(
                           </div> // Render without drag if canBeDrag is false
                         ) : (
                           <div key={index}>
-                            <SortableItem key={index}>{child}</SortableItem>
+                            <SortableItem key={index}>
+                              {React.cloneElement(child, {
+                                layoutStyles,
+                              })}
+                            </SortableItem>
                             {index < components.length - 1 && layoutStyles.hasDivider && (
                               <div
                                 style={{ color: 'blue', padding: '0cm 1.4cm', margin: '10px 0px' }}
@@ -270,29 +207,7 @@ const CVLayout = React.forwardRef(
                   </SortableContext>
                 </DndContext>
 
-                <div id="DndDescribedBy-1" style={{ display: 'none' }}>
-                  To pick up a draggable item, press the space bar. While dragging, use the arrow
-                  keys to move the item. Press space again to drop the item in its new position, or
-                  press escape to cancel.
-                </div>
-                <div
-                  id="DndLiveRegion-4"
-                  role="status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                  style={{
-                    position: 'fixed',
-                    width: 1,
-                    height: 1,
-                    margin: '-1px',
-                    border: 0,
-                    padding: 0,
-                    overflow: 'hidden',
-                    clip: 'rect(0px, 0px, 0px, 0px)',
-                    clipPath: 'inset(100%)',
-                    whiteSpace: 'nowrap',
-                  }}
-                />
+             
               </div>
             </div>
           </div>
@@ -302,4 +217,4 @@ const CVLayout = React.forwardRef(
   },
 );
 
-export default CVLayout;
+export default CVLayoutV1;

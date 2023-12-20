@@ -210,8 +210,8 @@ a {
 .design-studio-break-page {
   position: absolute;
   /* top: calc(28cm - 1.6cm); */
-  left: -5%;
-  width: 110%;
+  left: -3%;
+  width: 105%;
   color: #717172;
   font-size: var(--scale-000);
   & div {

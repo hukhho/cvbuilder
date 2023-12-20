@@ -435,8 +435,8 @@
 .break-page {
   position: absolute;
   top: 10.83in;
-  left: -5%;
-  width: 110%;
+  left: -3%;
+  width: 105%;
   color: #717172;
   font-size: var(--scale-000); /* Define --scale-000 with a suitable value */
 }

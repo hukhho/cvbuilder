@@ -70,7 +70,7 @@ const AiFeedback = ({ cvId }) => {
           </div>
           <div style={{}} className="keyword-list">
             <span className="keyword-infos">
-              We will help you give a overall feedback for your CV123:
+              We will help you give a overall feedback for your CV:
             </span>
             <div>
               {data?.reply && (
@@ -81,8 +81,6 @@ const AiFeedback = ({ cvId }) => {
                   }}
                 />
               )}
-
-              {/* <p className="text-justify" dangerouslySetInnerHTML={{ __html: data?.reply }} /> */}
             </div>
           </div>
 

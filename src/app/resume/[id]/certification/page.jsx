@@ -112,7 +112,7 @@ const Certification = ({ params }) => {
               >
                 <div style={{ height: '185px', width: '320px' }}>
                   <div style={{ maxHeight: '185px' }}>
-                    <VideoComponent />
+                    <VideoComponent videoUrl="https://fast.wistia.net/embed/iframe/owet1h3scu" />
                   </div>
                 </div>
                 <Card

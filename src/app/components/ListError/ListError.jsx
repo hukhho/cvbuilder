@@ -9,7 +9,7 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
-const ListError = ({ errors }) => {
+const   ListError = ({ errors }) => {
   console.log('ListError errors: ', errors);
 
   const [isShow, setIsShow] = useState(true);
@@ -41,7 +41,6 @@ const ListError = ({ errors }) => {
                   <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
                     {error?.title}
                   </h6>
-
                   <p
                     className="text-gray-600 text-xs leading-4 m-0"
                     dangerouslySetInnerHTML={{
