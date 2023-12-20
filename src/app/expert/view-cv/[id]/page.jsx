@@ -866,7 +866,7 @@ export default function FinishUp({ params }) {
       const fetchData = async () => {
         try {
           setShowFinishupCV(false);
-  
+
           const requestId = params.id;
           const fetchedDataFromAPI = await getReviewResponse(requestId);
           setFetchedData(fetchedDataFromAPI);
@@ -874,23 +874,23 @@ export default function FinishUp({ params }) {
           const data = fetchedDataFromAPI.feedbackDetail;
           // const data = await getFinishUp(1)
           // const fetchedData = await getReviewResponse(expertId, requestId);
-  
+
           console.log('FinishUp data: ', data);
-  
+
           if (data === null) {
             setFinishUpData(null);
             return;
           }
           const cvId = data.cvId;
           setFinishUpData(data);
-  
+
           setShowFinishupCV(true);
-  
+
           setTemplateSelected(data.templateType);
           setToolbarState(data.cvStyle);
-  
+
           setSummary(data.summary);
-  
+
           // const data1 = await getAudit(cvId);
           // setAuditData(data1);
         } catch (error) {
@@ -901,15 +901,15 @@ export default function FinishUp({ params }) {
           } else {
             setErrorMessage('Some thing went wrong!');
           }
-  
+
           console.error('Error fetching FinishUp data:', error);
         }
       };
       const selection = window?.getSelection();
       const selectedText = selection?.toString();
-  
+
       console.log('selectedText: ', selectedText);
-  
+
       fetchData();
     } catch (error) {
       console.log('error ', error);
@@ -1103,7 +1103,8 @@ export default function FinishUp({ params }) {
                       </div>
                     </div>
                   )}
-                  {fetchedData?.request?.status === 'Processing' ? (
+                  {fetchedData?.request?.status === 'Processing' ||
+                  fetchedData?.request?.status === 'Accept' ? (
                     <div>
                       <textarea
                         className="inputEl"
