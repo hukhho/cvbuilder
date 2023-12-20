@@ -44,6 +44,7 @@ const FinishupToolbar = props => {
     auditData,
     onClickDownload,
     onClickSyncUp,
+    onClickSave,
   } = props;
 
   const [showAdjustment, setShowAdjustment] = useState(false);
@@ -387,9 +388,18 @@ const FinishupToolbar = props => {
           </div> */}
             <div className="flex ml-auto ">
               <div className="flex items-center ml-2">
-                {/* <Button type="text" className="font-bold">
-                  Auto-Adjust
-                </Button> */}
+                <Popover content="Sync up your data to this resume" title="Sync up">
+                  <button className="" onClick={onClickSave}>
+                    <i
+                      className="fas fa-magic src-components-GeneratorCompiler---kjja11t6fo="
+                      style={{ marginRight: 5 }}
+                      aria-hidden="true"
+                    />
+                    <span className="toolbar-button-adjustement">Save</span>
+                  </button>
+                </Popover>
+              </div>
+              <div className="flex items-center ml-2">
                 <Popover content="Sync up your data to this resume" title="Sync up">
                   <button className="" onClick={onClickSyncUp}>
                     <i

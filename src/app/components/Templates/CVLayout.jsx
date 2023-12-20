@@ -100,6 +100,8 @@ const CVLayout = React.forwardRef(
           const newIndex = components.indexOf(over.id);
           const newComponents = arrayMove(components, oldIndex, newIndex);
           setComponents([...newComponents]);
+         
+          
           onSectionsOrderChange(newComponents);
         }
 

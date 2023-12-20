@@ -232,6 +232,26 @@ export default function FinishUp({ params }) {
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
 
+  const theOrders = {
+    summary: 99,
+    experiences: 99,
+    educations: 99,
+    involvements: 99,
+    projects: 99,
+    certifications: 99,
+    skills: 99,
+  };
+  // const theOrders =  {
+  //   summary: 2,
+  //   experiences: 1,
+  //   educations: 3,
+  //   projects: 4,
+  //   certifications: 5,
+  //   involvements: 99,
+  //   skills: 6
+  // }
+  const [theOrder, setTheOrder] = useState(theOrders);
+
   const filteredEducations = educations?.filter(education => {
     // Check if education is displayable (isDisplay is true)
     if (education.isDisplay !== true) {
@@ -354,15 +374,57 @@ export default function FinishUp({ params }) {
   }, []);
 
   const handleSkillsOrderChange = useCallback(newOrder => {
+    console.log('handleSkillsOrderChange: ', newOrder);
     setSkillsOrder(newOrder);
   }, []);
 
   // to store order of template
 
   const [sectionsOrder, setSectionsOrder] = useState([]);
+
+  // const theOrders = {
+  //   summary: 2,
+  //   experiences: 1,
+  //   educations: 3,
+  //   involvements: 4,
+  //   projects: 5,
+  //   certifications: 6,
+  //   skills: 7,
+  // };
+
+  const componentToStateKey = {
+    SummarySection: 'summary',
+    ExperiencesSection: 'experiences',
+    EducationsSection: 'educations',
+    InvolvementSection: 'involvements',
+    ProjectSection: 'projects',
+    CertificationSection: 'certifications',
+    SkillsSection: 'skills',
+  };
+
   const handleSectionsOrderChange = newOrder => {
-    console.log('newOrder: ', newOrder);   
+    const updatedOrder = { ...theOrder }; // Copy the existing order
+
+    newOrder.forEach((item, index) => {
+      if (item && item.type) {
+        const componentName = item.type.name;
+        const stateKey = componentToStateKey[componentName];
+
+        if (stateKey !== undefined) {
+          updatedOrder[stateKey] = index;
+        }
+      }
+    });
+
+    setTheOrder(updatedOrder);
+    console.log('updatedOrder: ', updatedOrder);
     setSectionsOrder(newOrder);
+
+    let newFinishUpData = { ...finishUpData };
+    newFinishUpData.theOrder = updatedOrder;
+
+    setFinishUpData(newFinishUpData);
+    console.log('New finishup data after:', newFinishUpData);
   };
 
   const handleToolbarChange = values => {
@@ -421,6 +483,7 @@ export default function FinishUp({ params }) {
           }
         });
         console.log('updatedExperiences experience', updatedExperiences);
+
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.experiences = updatedExperiences;
 
@@ -458,6 +521,20 @@ export default function FinishUp({ params }) {
     setFinishUpData(newFinishUpData);
     console.log('New finishup data after handleSummaryChange:', newFinishUpData);
   };
+
+  // Accessing data from the `theOrders` object
+  const summaryOrderSection = theOrders.summary; // Retrieves the order for "summary"
+  const experiencesOrderSection = theOrders.experiences; // Retrieves the order for "experiences"
+  const skillsOrderSection = theOrders.skills; // Retrieves the order for "skills"
+  const educationsOrderSection = theOrders.educations; // Retrieves the order for "summary"
+  const involvementsOrderSection = theOrders.involvements; // Retrieves the order for "experiences"
+  const projectsOrderSection = theOrders.projects; // Retrieves the order for "skills"
+  const certificationOrderSection = theOrders.involvements; // Retrieves the order for "skills"
+
+  console.log('Summary Order:', summaryOrderSection);
+  console.log('Experiences Order:', experiencesOrderSection);
+  console.log('Skills Order:', skillsOrderSection);
+
   const sections = [
     {
       id: 'information',
@@ -469,7 +546,7 @@ export default function FinishUp({ params }) {
           layoutStyles={toolbarState}
         />
       ),
-      order: 1,
+      order: 0,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -483,7 +560,7 @@ export default function FinishUp({ params }) {
           handleSummaryChange={handleSummaryChange}
         />
       ),
-      order: 2,
+      order: finishUpData?.theOrder?.summary || 1,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -510,7 +587,7 @@ export default function FinishUp({ params }) {
           handleDescriptionChange={handleDescriptionChange}
         />
       ),
-      order: 3,
+      order: finishUpData?.theOrder?.experiences || 2,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredExperiences !== null,
     },
@@ -523,7 +600,7 @@ export default function FinishUp({ params }) {
           educations={filteredEducations}
         />
       ),
-      order: 4,
+      order: finishUpData?.theOrder?.educations || 3,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
     },
@@ -536,7 +613,7 @@ export default function FinishUp({ params }) {
           involvements={filteredInvolvements}
         />
       ),
-      order: 5,
+      order: finishUpData?.theOrder?.involvements || 4,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
     },
@@ -549,7 +626,7 @@ export default function FinishUp({ params }) {
           projects={filteredProjects}
         />
       ),
-      order: 6,
+      order: finishUpData?.theOrder?.projects || 4,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
     },
@@ -562,7 +639,7 @@ export default function FinishUp({ params }) {
           certifications={filteredCertifications}
         />
       ),
-      order: 7,
+      order: finishUpData?.theOrder?.certifications || 5,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
     },
@@ -577,11 +654,13 @@ export default function FinishUp({ params }) {
           canBeDisplayed={filteredSkills !== null}
         />
       ),
-      order: 8,
+      order: finishUpData?.theOrder?.skills || 6,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
     },
   ];
+
+  sections.sort((a, b) => a.order - b.order);
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
@@ -610,13 +689,18 @@ export default function FinishUp({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const data = await getFinishUp(params.id);
         console.log('FinishUp data: ', data);
+
+        setTheOrder(data.theOrder);
         setFinishUpData(data);
-        setShowFinishupCV(true);
         setTemplateSelected(data.templateType);
         setToolbarState(data.cvStyle);
         setSummary(data.summary);
+        setShowFinishupCV(true);
+
+        console.log('data.theOrder: ', data.theOrder)
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
       }
@@ -763,9 +847,6 @@ export default function FinishUp({ params }) {
             <div className="flex">
               {showFinishupCV && (
                 <div className="mr-2 flex flex-col">
-                  {/* <Button type="primary" onClick={() => setOpen(true)}>
-                    Open Modal of 1000px width
-                  </Button> */}
                   <Modal
                     title=""
                     centered
@@ -795,6 +876,7 @@ export default function FinishUp({ params }) {
                         toolbarState={toolbarState}
                         auditData={auditData}
                         onToolbarChange={handleToolbarChange}
+                        onClickSave={handleSave}
                         onClickDownload={handleDownloadButtonClick}
                         onClickSyncUp={handleSyncUp}
                         currentTemplate={templateSelected}

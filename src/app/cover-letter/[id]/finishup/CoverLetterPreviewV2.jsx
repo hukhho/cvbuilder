@@ -17,6 +17,7 @@ const CoverLetterPreviewV2 = React.forwardRef(({ coverLetterId }, ref) => {
   const [lineHeight, setLineHeight] = useState(1.55);
   const [fontSize, setFontSize] = useState(9);
   const [zoom, setZoom] = useState(100);
+  
   const [content, setContent] = useState({
     name: '',
     address: '',
@@ -82,11 +83,11 @@ const CoverLetterPreviewV2 = React.forwardRef(({ coverLetterId }, ref) => {
     try {
       const content2 = await getCoverLetterHistory(coverLetterId);
       setContent({
-        name: content2?.user?.name,
-        address: content2?.user?.address,
-        phone: content2?.user?.phone,
-        email: content2?.user?.email,
-        company: content2?.user?.company,
+        name: content2?.contact?.fullName,
+        address: content2?.contact?.city,
+        phone: content2?.contact?.phone,
+        email: content2?.contact?.email,
+        company: content2?.contact?.company,
         content: content2?.description,
       });
     } catch (error) {

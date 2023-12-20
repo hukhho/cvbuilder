@@ -30,15 +30,13 @@ const ViewCoverLetter = ({ params }) => {
       }
       content={
         <div>
-          <Link  href={'/hr/application'} passHref>
-            <button className='mt-16 ml-2'>
+          <Link href={'/hr/application'} passHref>
+            <button className="mt-16 ml-2">
               <FontAwesomeIcon icon={faChevronLeft} />
             </button>
             <span className="ml-2">Back</span>
           </Link>
-          <div className='mt-16'>
-            
-          </div>
+          <div className="mt-16"></div>
           <CoverLetterCardV2 coverLetterId={params.id} />
         </div>
       }

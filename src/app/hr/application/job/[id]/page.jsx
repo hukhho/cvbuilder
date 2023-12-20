@@ -84,6 +84,7 @@ const columns = [
   {
     title: 'note',
     dataIndex: 'note',
+    render: text => <div>{text !== "undefined" ? text : null}</div>,
   },
   {
     title: 'email',
