@@ -396,7 +396,7 @@ const UserLayout = React.memo(
                       style={{ width: '208px' }}
                     >
                       <div className="whitespace-nowrap text-left text-white text-xs font-black  uppercase leading-3">
-                        AI Credits
+                        Credits
                       </div>
                       <div className="pr-2 flex ml-4">
                         <div className="text-white text-xs font-bold uppercase leading-3">
@@ -457,7 +457,7 @@ const UserLayout = React.memo(
                   {!isCollapsed && (
                     <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
                       <Space align="center">
-                        <Avatar src={avatar} size={30} /> 
+                        <Avatar src={avatar} size={30} />
                         <span className="mock-block">{email}</span>
                       </Space>
                     </div>

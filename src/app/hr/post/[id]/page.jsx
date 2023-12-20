@@ -40,6 +40,7 @@ import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
 import { getJobPosting, updateHrPublic, updateHrShare, updateHrUnshare } from '../../hrServices';
 import useStore from '@/store/store';
+import '../../../components/Form/customtext.css';
 
 const { Title } = Typography;
 
@@ -264,6 +265,7 @@ const HRUpdatePost = ({ params }) => {
               </div>
               <div className="mt-16">
                 <Form
+                  className="custom-form"
                   labelCol={{
                     span: 4,
                   }}
@@ -304,37 +306,35 @@ const HRUpdatePost = ({ params }) => {
                       ]}
                     />
                   </Form.Item>
-                  <div className="">
-                    <Form.Item name="companyName" label="COMPANY NAME">
-                      <Input placeholder="Google" />
-                    </Form.Item>
-                    <Form.Item name="location" label="COMPANY LOCATION">
-                      <Input placeholder="New York" disabled />
-                    </Form.Item>
-                    <Form.Item name="avatar" label="COMPANY AVATAR">
-                      <Input hidden />
-                      <Avatar size="large" src={data?.avatar} />
-                    </Form.Item>
-                  </div>
-                  <Form.Item name="about" label="About">
+                  <Form.Item name="companyName" label="COMPANY NAME">
+                    <Input placeholder="Google" />
+                  </Form.Item>
+                  <Form.Item name="location" label="COMPANY LOCATION">
+                    <Input placeholder="New York" disabled />
+                  </Form.Item>
+                  <Form.Item name="avatar" label="COMPANY AVATAR">
+                    <Input hidden />
+                    <Avatar size="large" src={data?.avatar} />
+                  </Form.Item>
+                  <Form.Item name="about" label="ABOUT">
                     <Input.TextArea disabled placeholder="About the company" rows={10} />
                   </Form.Item>
                   <Form.Item name="salary" className="salary" label="SALARY">
                     <Input placeholder="Up to $5000" />
                   </Form.Item>
-                  <Form.Item name="benefit" label="Benefit">
+                  <Form.Item name="benefit" label="BENEFIT">
                     <Input.TextArea
                       placeholder="Say about what benefits candidate can recieve"
                       rows={10}
                     />
                   </Form.Item>
-                  <Form.Item name="requirement" label="Job Requirement">
+                  <Form.Item name="requirement" label="JOB REQUIREMENT">
                     <Input.TextArea placeholder="Say about requirement of the job" rows={10} />
                   </Form.Item>
-                  <Form.Item name="description" label="Job Description">
+                  <Form.Item name="description" label="JOB DESCRIPTION">
                     <Input.TextArea placeholder="Say about the description of the job" rows={10} />
                   </Form.Item>
-                  <Form.Item name="skill" label="Skills">
+                  <Form.Item name="skill" label="SKILLS">
                     <Select
                       mode="tags"
                       style={{
@@ -345,24 +345,36 @@ const HRUpdatePost = ({ params }) => {
                       options={options}
                     />
                   </Form.Item>
-                  <Form.Item name="deadline" label="Deadline">
+                  <Form.Item name="deadline" label="DEADLINE">
                     <DatePicker format="YYYY-MM-DD" onChange={onChangeDate} />
                   </Form.Item>
                   <div className="ml-20">
                     <Switch defaultChecked onChange={onChangeSwitch} />
                     <span className="ml-4">Not Allow Candidate to apply many time in a job</span>
                   </div>
-                  <Form.Item name="applyAgain" label="Apply Again">
+                  <Form.Item name="applyAgain" label="APPLY AGAIN">
                     <InputNumber defaultValue={0} />
                   </Form.Item>
                   <div className="flex ml-32 pb-16">
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="custom-button cta-button button cta "
+                    >
                       Update
                     </Button>
-                    <Button type="primary" onClick={handleClickShare} className="bg-blue-600 ml-10">
+                    <Button
+                      type="primary"
+                      onClick={handleClickShare}
+                      className="bg-blue-600 ml-10 custom-button cta-button button cta "
+                    >
                       Publish
                     </Button>
-                    <Button type="button" onClick={handleClickUnshare} className="bg-red-500 ml-10">
+                    <Button
+                      type="button"
+                      onClick={handleClickUnshare}
+                      className="bg-red-500 ml-10 custom-button cta-button button cta "
+                    >
                       Unpublish
                     </Button>
                   </div>

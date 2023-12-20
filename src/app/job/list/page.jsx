@@ -108,7 +108,7 @@ const Home = () => {
                     onSearch={onSearch}
                   />
                 </div>
-                <div style={{ width: 400, height: 50 }} className="ml-8">
+                <div style={{ width: '40%', height: 50 }} className="ml-8">
                   <Select
                     className="custom-parent"
                     mode="multiple"

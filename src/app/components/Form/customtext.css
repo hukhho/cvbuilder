@@ -63,6 +63,14 @@
   border-radius: 5px;
 }
 
+.custom-form > .ant-form-item > .ant-row > .ant-col {
+  text-align: start !important;
+}
+
+.custom-form > .ant-form-item > .ant-row > .ant-col {
+  text-align: start !important;
+}
+
 .ant-space-item > input.ant-input {
   display: block;
   font: var(--font-input);
@@ -109,7 +117,7 @@
   font: var(--font-input);
   cursor: pointer;
   /*width: 100%;*/
-  color: inherit;
+  color: white;
   /*background: white;*/
   outline: none;
   padding: 0.85em 0.75em 0.75em;
@@ -135,7 +143,7 @@
   border-radius: 5px;
 }
 
-.custom-search  {
+.custom-search {
   height: auto;
   font: var(--font-input);
   /*width: 100%;*/

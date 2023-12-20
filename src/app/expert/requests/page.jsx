@@ -20,6 +20,7 @@ import Link from 'next/link';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import moment from 'moment';
 import useStore from '@/store/store';
+import { color } from '@chakra-ui/react';
 
 const { Title } = Typography;
 
@@ -105,7 +106,7 @@ const ExpertRequestPage = () => {
           {/* {Number(text).toLocaleString('vi-VN', {
             style: 'currency',
             currency: 'VND',
-          })} */} 
+          })} */}
           {text}
         </div>
       ),
@@ -184,10 +185,16 @@ const ExpertRequestPage = () => {
         } else if (text === 'Waiting' || text === null) {
           return (
             <>
-              <a onClick={() => handleActionAccept(record.id)} className="mr-2">
+              <a
+                style={{ color: 'green' }}
+                onClick={() => handleActionAccept(record.id)}
+                className="mr-2"
+              >
                 Accept
               </a>
-              <a onClick={() => handleActionReject(record.id)}>Reject</a>
+              <a style={{ color: 'red' }} onClick={() => handleActionReject(record.id)}>
+                Reject
+              </a>
             </>
           );
         }

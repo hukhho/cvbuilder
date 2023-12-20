@@ -124,7 +124,6 @@ const Home = () => {
           <div className="container">
             <div style={{ textAlign: 'left' }} />
             <div className="flex mt-6 mb-16">
-
               <div className="flex" style={{ width: 1000 }}>
                 <Search
                   placeholder="Search by title or company"
@@ -136,6 +135,7 @@ const Home = () => {
                 <Select
                   allowClear
                   style={{
+                    marginLeft: 30,
                     height: '50px',
                     width: '100%',
                   }}
