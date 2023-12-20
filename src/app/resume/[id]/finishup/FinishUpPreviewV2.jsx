@@ -209,7 +209,25 @@ export default function FinishUpPreviewV2({ cvId }) {
 
   const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
   const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
-
+  const theOrders = {
+    summary: 99,
+    experiences: 99,
+    educations: 99,
+    involvements: 99,
+    projects: 99,
+    certifications: 99,
+    skills: 99,
+  };
+  // const theOrders =  {
+  //   summary: 2,
+  //   experiences: 1,
+  //   educations: 3,
+  //   projects: 4,
+  //   certifications: 5,
+  //   involvements: 99,
+  //   skills: 6
+  // }
+  const [theOrder, setTheOrder] = useState(theOrders);
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
     let newFinishUpData = { ...finishUpData };
@@ -221,14 +239,104 @@ export default function FinishUpPreviewV2({ cvId }) {
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
 
-  const filteredEducations = educations?.filter(education => education.isDisplay === true);
-  const filteredProjects = projects?.filter(project => project.isDisplay === true);
-  const filteredInvolvements = involvements?.filter(involvement => involvement.isDisplay === true);
-  const filteredCertifications = certifications?.filter(
-    certification => certification.isDisplay === true,
-  );
-  const filteredSkills = skills?.filter(skill => skill.isDisplay === true);
-  const filteredExperiences = experiences?.filter(experience => experience.isDisplay === true);
+  const filteredEducations = educations?.filter(education => {
+    // Check if education is displayable (isDisplay is true)
+    if (education.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if degree is not null
+    if (education.degree === null || education.degree === undefined || education.degree === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the education in the filtered list
+    return true;
+  });
+
+  const filteredProjects = projects?.filter(project => {
+    // Check if project is displayable (isDisplay is true)
+    if (project.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if title is not null, undefined, or an empty string
+    if (project.title === null || project.title === undefined || project.title === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the project in the filtered list
+    return true;
+  });
+  const filteredInvolvements = involvements?.filter(involvement => {
+    // Check if involvement is displayable (isDisplay is true)
+    if (involvement.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if organizationName is not null, undefined, or an empty string
+    if (
+      involvement.organizationName === null ||
+      involvement.organizationName === undefined ||
+      involvement.organizationName === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the involvement in the filtered list
+    return true;
+  });
+  const filteredCertifications = certifications?.filter(certification => {
+    // Check if certification is displayable (isDisplay is true)
+    if (certification.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if name is not null, undefined, or an empty string
+    if (
+      certification.name === null ||
+      certification.name === undefined ||
+      certification.name === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the certification in the filtered list
+    return true;
+  });
+
+  const filteredSkills = skills?.filter(skill => {
+    // Check if skill is displayable (isDisplay is true)
+    if (skill.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if description is not null, undefined, or an empty string
+    if (skill.description === null || skill.description === undefined || skill.description === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the skill in the filtered list
+    return true;
+  });
+  const filteredExperiences = experiences?.filter(experience => {
+    // Check if experience is displayable (isDisplay is true)
+    if (experience.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if companyName is not null, empty string, or undefined
+    if (
+      experience.companyName === null ||
+      experience.companyName === '' ||
+      experience.companyName === undefined
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the experience in the filtered list
+    return true;
+  });
 
   // Now you have filtered arrays for each category
   console.log(filteredEducations);
@@ -360,6 +468,7 @@ export default function FinishUpPreviewV2({ cvId }) {
           layoutStyles={toolbarState}
         />
       ),
+      order: 0,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -372,6 +481,7 @@ export default function FinishUpPreviewV2({ cvId }) {
           handleSummaryChange={handleSummaryChange}
         />
       ),
+      order: finishUpData?.theOrder?.summary || 1,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -397,6 +507,7 @@ export default function FinishUpPreviewV2({ cvId }) {
           handleDescriptionChange={handleDescriptionChange}
         />
       ),
+      order: finishUpData?.theOrder?.experiences || 2,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredExperiences !== null,
     },
@@ -405,6 +516,7 @@ export default function FinishUpPreviewV2({ cvId }) {
       component: (
         <EducationsSection templateType={templateSelected} educations={filteredEducations} />
       ),
+      order: finishUpData?.theOrder?.educations || 3,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
     },
@@ -413,12 +525,14 @@ export default function FinishUpPreviewV2({ cvId }) {
       component: (
         <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
       ),
+      order: finishUpData?.theOrder?.involvements || 4,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
     },
     {
       id: 'projects',
       component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
+      order: finishUpData?.theOrder?.projects || 5,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
     },
@@ -430,6 +544,7 @@ export default function FinishUpPreviewV2({ cvId }) {
           certifications={filteredCertifications}
         />
       ),
+      order: finishUpData?.theOrder?.certifications || 6,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
     },
@@ -443,10 +558,12 @@ export default function FinishUpPreviewV2({ cvId }) {
           canBeDisplayed={filteredSkills !== null}
         />
       ),
+      order: finishUpData?.theOrder?.skills || 7,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
     },
   ];
+  sections.sort((a, b) => a.order - b.order);
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
@@ -498,18 +615,18 @@ export default function FinishUpPreviewV2({ cvId }) {
     fetchData();
   }, []);
 
- 
   //   <div style={{ marginBottom: '12px' }}>
   //   <Button onClick={handleSyncUp}>Sync Up</Button>
   // </div>
 
   const cvLayoutRef = useRef(null);
 
-
   return (
     <>
       {showFinishupCV && (
-        <div style={{ pointerEvents: 'none', transform: 'scale(0.8)', transformOrigin: 'left top' }}>
+        <div
+          style={{ pointerEvents: 'none', transform: 'scale(0.8)', transformOrigin: 'left top' }}
+        >
           <CVLayout
             ref={cvLayoutRef}
             key={[templateSelected, toolbarState]}

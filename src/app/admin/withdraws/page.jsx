@@ -31,6 +31,7 @@ import Link from 'next/link';
 import { approveWithdrawRequest, getWithdrawRequests, saveImage } from '../adminServices';
 import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
+import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -42,6 +43,8 @@ const Home = () => {
   const initialData = [];
 
   const [data, setData] = useState(initialData);
+  const [filteredData, setFilteredData] = useState(initialData);
+
   const [accessToken, setAccessToken] = useState();
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -51,8 +54,10 @@ const Home = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getWithdrawRequests();
+      fetchedDataFromAPI.sort((b, a) => moment(a?.createdDate) - moment(b?.createdDate));
 
       setData(fetchedDataFromAPI);
+      setFilteredData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -163,23 +168,23 @@ const Home = () => {
     {
       title: 'Status',
       dataIndex: 'status',
+      filters: [
+        { text: 'PROCESSING', value: 'PROCESSING' },
+        { text: 'SUCCESSFUL', value: 'SUCCESSFUL' },
+        { text: 'FAIL', value: 'FAIL' },
+      ],
+      onFilter: (value, record) => record.status === value,
       render: text => {
-        if (text === 'Done') {
-          return <Badge status="success" text={text} />;
+        switch (text) {
+          case 'PROCESSING':
+            return <Badge status="warning" text={text} />;
+          case 'SUCCESSFUL':
+            return <Badge status="success" text={text} />;
+          case 'FAIL':
+            return <Badge status="error" text={text} />;
+          default:
+            return <Badge status="warning" text={text} />;
         }
-        if (text === 'Waiting') {
-          return <Badge status="warning" text={text} />;
-        }
-        if (text === 'Overdue') {
-          return <Badge status="error" text={text} />;
-        }
-        if (text === 'Unpiblish') {
-          return <Badge status="warning" text={text} />;
-        }
-        if (text === 'Disable') {
-          return <Badge status="warning" text={text} />;
-        }
-        return <Badge status="warning" text={text} />;
       },
     },
 
@@ -212,26 +217,14 @@ const Home = () => {
       dataIndex: 'proof',
       render: (text, record) => (
         <div>
-          {record.proof ? (
-            <>
-              <img src={record.proof} alt="Uploaded" style={{ width: '100px' }} />
-              <Upload
-                name="file"
-                action="https://api-cvbuilder.monoinfinity.net/api/messages/public/upload/image"
-                beforeUpload={beforeUpload}
-                headers={{ authorization: `Bearer ${accessToken}` }}
-                onChange={info => handleUploadChange(info, record)}
-              >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            </>
-          ) : (
+          {record?.proof && <img src={record?.proof} alt="Uploaded" style={{ width: '100px' }} />}
+          {record?.status === 'PROCESSING' && (
             <Upload
               name="file"
               action="https://api-cvbuilder.monoinfinity.net/api/messages/public/upload/image"
               beforeUpload={beforeUpload}
               headers={{ authorization: `Bearer ${accessToken}` }}
-              onChange={info => handleUploadChange(info, record, setData)}
+              onChange={info => handleUploadChange(info, record)}
             >
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
@@ -244,11 +237,29 @@ const Home = () => {
       dataIndex: 'id',
       render: (text, record) => (
         <div>
-          <button onClick={() => showPromiseConfirm(record.requestId)}>Finish confirm</button>
+          {record.status === 'PROCESSING' && (
+            <button onClick={() => showPromiseConfirm(record.id)}>Finish confirm</button>
+          )}
         </div>
       ),
     },
   ];
+
+  const [searchValue, setSearchValue] = useState();
+
+  const onSearch = value => {
+    if (value) {
+      setSearchValue(value);
+      const filtered = data.filter(item =>
+        item?.receiver?.name.toLowerCase().includes(value.toLowerCase()),
+      );
+      setFilteredData(filtered);
+    } else {
+      setSearchValue();
+      setFilteredData(data);
+    }
+  };
+
   return (
     <ConfigProvider>
       <AdminLayout
@@ -260,11 +271,17 @@ const Home = () => {
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-              <Input className="" placeholder="Search by name" />
+              <Search
+                allowClear
+                placeholder="Search expert name"
+                size="large"
+                defaultValue={searchValue}
+                onSearch={onSearch}
+              />
             </div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
-                <Table columns={columns} dataSource={data} onChange={onChange} />
+                <Table columns={columns} dataSource={filteredData} onChange={onChange} />
               </div>
             </div>
           </div>

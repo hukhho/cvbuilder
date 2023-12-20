@@ -557,7 +557,7 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           highlightAts={highlightAts}
           summary={summary}
-          handleSummaryChange={handleSummaryChange}
+        
         />
       ),
       order: finishUpData?.theOrder?.summary || 1,
@@ -626,7 +626,7 @@ export default function FinishUp({ params }) {
           projects={filteredProjects}
         />
       ),
-      order: finishUpData?.theOrder?.projects || 4,
+      order: finishUpData?.theOrder?.projects || 5,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
     },
@@ -639,7 +639,7 @@ export default function FinishUp({ params }) {
           certifications={filteredCertifications}
         />
       ),
-      order: finishUpData?.theOrder?.certifications || 5,
+      order: finishUpData?.theOrder?.certifications || 6,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
     },
@@ -654,7 +654,7 @@ export default function FinishUp({ params }) {
           canBeDisplayed={filteredSkills !== null}
         />
       ),
-      order: finishUpData?.theOrder?.skills || 6,
+      order: finishUpData?.theOrder?.skills || 7,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
     },

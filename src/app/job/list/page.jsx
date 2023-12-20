@@ -10,6 +10,7 @@ import JobCard from './JobCard';
 import { getJobList, getJobListByTitle } from '../jobServices';
 import useStore from '@/store/store';
 import Search from 'antd/es/input/Search';
+import HRHeaderJob from '@/app/components/HRHeaderJob';
 
 const { Title } = Typography;
 
@@ -93,7 +94,13 @@ const Home = () => {
         email={email}
         userRole={userRole}
         selected="8"
-        userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
+        userHeader={
+          userRole === 'CANDIDATE' ? (
+            <UserHeaderJob initialEnabledCategories={enabledCategories} />
+          ) : (
+            <HRHeaderJob initialEnabledCategories={enabledCategories} />
+          )
+        }
         content={
           <div className="container" style={{ marginBottom: '50px' }}>
             <div className="!p-0 mb-5 mt-0">

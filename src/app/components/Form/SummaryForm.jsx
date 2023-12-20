@@ -1,5 +1,5 @@
 import React, { use, useEffect, useRef, useState } from 'react';
-import { Button, Form, Input, InputNumber, Typography } from 'antd';
+import { Button, Form, Input, InputNumber, notification, Typography } from 'antd';
 import DataService from '@/app/utils/dataService';
 import updateSummary from './updateSummaryService';
 import './customtext.css';
@@ -12,6 +12,7 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
   const handleInputChange = event => {
     setInputValue(event.target.value);
   };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   console.log('SummaryForm::data: ', data);
   console.log('isAiWrite: ', isAiWrite);
@@ -31,6 +32,7 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
 
   const handleSubmit = async values => {
     try {
+      setIsSubmitting(true);
       values.summary = inputValue;
       if (isAiWrite) {
         values.summary = aiContent;
@@ -38,8 +40,15 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
       console.log('values: ', values);
       await updateSummary(cvId, values);
       onSubmit();
+      notification.success({
+        message: 'Save changes.',
+      });
     } catch (error) {
-      console.log('Submit. Error:', error);
+      notification.success({
+        message: 'Save error.',
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -118,6 +127,7 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
         </Form.Item>
         <div style={{}}>
           <button
+            disabled={isSubmitting}
             href=""
             data-size="large"
             data-theme="default"

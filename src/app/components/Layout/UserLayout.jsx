@@ -387,7 +387,11 @@ const UserLayout = React.memo(
                       </div>
                       <div className="pr-2 flex ml-4">
                         <div className="text-white text-xs font-bold uppercase leading-3">
-                          {balance}
+                          {/* {balance} */}
+                          {Number(balance).toLocaleString('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                          })}
                         </div>
                         <div className="ml-1 text-white text-xs font-black font-['Font Awesome 5 Free'] uppercase leading-3">
                           <FontAwesomeIcon icon={faCoins} />{' '}

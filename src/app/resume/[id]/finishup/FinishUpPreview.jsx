@@ -20,6 +20,9 @@ import './expert.css';
 import './gen.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
 import CVLayoutCard from '@/app/components/Templates/CVLayoutCard';
+import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
+import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
+import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 
 const DEFAULT_TOOLBAR = {
   fontSize: '9pt',
@@ -210,16 +213,144 @@ const FinishUpPreview = ({ cvId }) => {
   //   setShowFinishupCV(false);
   // }, []);
 
-  const [templateSelected, setTemplateSelected] = useState(DEFAULT_TEMPLATE);
-  const [toolbarState, setToolbarState] = useState(DEFAULT_TOOLBAR);
-
+  const [templateSelected, setTemplateSelected] = useState(mockData.data.resume.templateType);
+  const [toolbarState, setToolbarState] = useState(mockData.data.resume.resumeStyle);
+  const theOrders = {
+    summary: 99,
+    experiences: 99,
+    educations: 99,
+    involvements: 99,
+    projects: 99,
+    certifications: 99,
+    skills: 99,
+  };
+  // const theOrders =  {
+  //   summary: 2,
+  //   experiences: 1,
+  //   educations: 3,
+  //   projects: 4,
+  //   certifications: 5,
+  //   involvements: 99,
+  //   skills: 6
+  // }
+  const [theOrder, setTheOrder] = useState(theOrders);
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
+    let newFinishUpData = { ...finishUpData };
+    newFinishUpData.cvStyle = toolbarState;
+    setFinishUpData(newFinishUpData);
   }, [toolbarState]);
 
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
+
+  const filteredEducations = educations?.filter(education => {
+    // Check if education is displayable (isDisplay is true)
+    if (education.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if degree is not null
+    if (education.degree === null || education.degree === undefined || education.degree === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the education in the filtered list
+    return true;
+  });
+
+  const filteredProjects = projects?.filter(project => {
+    // Check if project is displayable (isDisplay is true)
+    if (project.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if title is not null, undefined, or an empty string
+    if (project.title === null || project.title === undefined || project.title === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the project in the filtered list
+    return true;
+  });
+  const filteredInvolvements = involvements?.filter(involvement => {
+    // Check if involvement is displayable (isDisplay is true)
+    if (involvement.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if organizationName is not null, undefined, or an empty string
+    if (
+      involvement.organizationName === null ||
+      involvement.organizationName === undefined ||
+      involvement.organizationName === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the involvement in the filtered list
+    return true;
+  });
+  const filteredCertifications = certifications?.filter(certification => {
+    // Check if certification is displayable (isDisplay is true)
+    if (certification.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if name is not null, undefined, or an empty string
+    if (
+      certification.name === null ||
+      certification.name === undefined ||
+      certification.name === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the certification in the filtered list
+    return true;
+  });
+
+  const filteredSkills = skills?.filter(skill => {
+    // Check if skill is displayable (isDisplay is true)
+    if (skill.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if description is not null, undefined, or an empty string
+    if (skill.description === null || skill.description === undefined || skill.description === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the skill in the filtered list
+    return true;
+  });
+  const filteredExperiences = experiences?.filter(experience => {
+    // Check if experience is displayable (isDisplay is true)
+    if (experience.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if companyName is not null, empty string, or undefined
+    if (
+      experience.companyName === null ||
+      experience.companyName === '' ||
+      experience.companyName === undefined
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the experience in the filtered list
+    return true;
+  });
+
+  // Now you have filtered arrays for each category
+  console.log(filteredEducations);
+  console.log(filteredProjects);
+  console.log(filteredInvolvements);
+  console.log(filteredCertifications);
+  console.log(filteredSkills);
+  console.log(filteredExperiences);
 
   // to store order of some user's information
   const [experiencesOrder, setExperiencesOrder] = useState([]);
@@ -251,82 +382,225 @@ const FinishUpPreview = ({ cvId }) => {
     setToolbarState(values);
   };
 
-  const sections = useMemo(
-    () => [
-      {
-        id: 'information',
-        component: (
-          <InformationSection
-            canBeDrag={false}
-            templateType={templateSelected}
-            userInfo={finishUpData}
-            layoutStyles={toolbarState}
-          />
-        ),
-        canBeDrag: false, // Set to true if this section can be dragged
-        canBeDisplayed: true,
-      },
-      {
-        id: 'summary',
-        component: (
-          <SummarySection
-            layoutStyles={toolbarState}
-            templateType={templateSelected}
-            summary={summary}
-          />
-        ),
-        canBeDrag: false, // Set to true if this section can be dragged
-        canBeDisplayed: true,
-      },
-      {
-        id: 'experiences',
-        component: (
-          <ExperiencesSection
-            templateType={templateSelected}
-            experiences={experiences}
-            layoutStyles={toolbarState}
-            onChangeOrder={sortedExperiences => {
-              // You can perform any necessary actions with the sorted experiences here.
-            }}
-          />
-        ),
-        canBeDrag: false, // Set to true if this section can be dragged
-        canBeDisplayed: experiences !== null,
-      },
-      {
-        id: 'educations',
-        component: (
-          <EducationsSection
-            layoutStyles={toolbarState}
-            templateType={templateSelected}
-            educations={educations}
-          />
-        ),
-        canBeDrag: false, // Set to true if this section can be dragged
-        canBeDisplayed: educations !== null,
-      },
-      {
-        id: 'skills',
-        component: (
-          <SkillsSection
-            layoutStyles={toolbarState}
-            templateType={templateSelected}
-            skills={skills}
-            onChangeOrder={handleSkillsOrderChange}
-          />
-        ),
-        canBeDrag: false, // Set to true if this section can be dragged
-        canBeDisplayed: skills !== null,
-      },
-    ],
-    [toolbarState, templateSelected],
-  );
+  const componentIDs = {
+    experience: {},
+    education: {},
+    // Add other types here
+  };
+  const handleRoleChange = (type, typeId, newRole) => {
+    console.log('handleRoleChange newRole', newRole, type, typeId);
+    switch (type) {
+      case 'experience':
+        console.log('handleRoleChange newRole experience', newRole, type, typeId);
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === typeId) {
+            return {
+              ...experience,
+              role: newRole,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+
+        setFinishUpData(newFinishUpData);
+        console.log('New finishup data after updatedExperiences:', newFinishUpData);
+    }
+  };
+  const handleOrgNameChange = (type, typeId, newData) => {
+    console.log('handleOrgNameChange newData', newData, type, typeId);
+    switch (type) {
+      case 'experience':
+        console.log('handleOrgNameChange newData experience', newData, type, typeId);
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === typeId) {
+            return {
+              ...experience,
+              companyName: newData,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+
+        setFinishUpData(newFinishUpData);
+        console.log('New finishup data after updatedExperiences:', newFinishUpData);
+    }
+  };
+  const handleDescriptionChange = (type, typeId, newData) => {
+    console.log('handleOrgNameChange newData', newData, type, typeId);
+    switch (type) {
+      case 'experience':
+        console.log('handleOrgNameChange newData experience', newData, type, typeId);
+        const updatedExperiences = experiences.map(experience => {
+          if (experience.id === typeId) {
+            return {
+              ...experience,
+              description: newData,
+            };
+          } else {
+            return experience;
+          }
+        });
+        console.log('updatedExperiences experience', updatedExperiences);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.experiences = updatedExperiences;
+
+        setFinishUpData(newFinishUpData);
+        console.log('New finishup data after updatedExperiences:', newFinishUpData);
+    }
+  };
+  const handleSummaryChange = newData => {
+    let newFinishUpData = { ...finishUpData };
+    newFinishUpData.summary = newData;
+
+    setFinishUpData(newFinishUpData);
+    console.log('New finishup data after handleSummaryChange:', newFinishUpData);
+  };
+  const sections = [
+    {
+      id: 'information',
+      component: (
+        <InformationSection
+          canBeDrag={false}
+          templateType={templateSelected}
+          userInfo={finishUpData}
+          layoutStyles={toolbarState}
+        />
+      ),
+      order: 0,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: true,
+    },
+    {
+      id: 'summary',
+      component: (
+        <SummarySection
+          templateType={templateSelected}
+          summary={summary}
+          handleSummaryChange={handleSummaryChange}
+        />
+      ),
+      order: finishUpData?.theOrder?.summary || 1,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: true,
+    },
+    {
+      id: 'experiences',
+      component: (
+        <ExperiencesSection
+          templateType={templateSelected}
+          experiences={filteredExperiences}
+          onChangeOrder={sortedExperiences => {
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+            console.log('Finishup data:', finishUpData);
+            let newFinishUpData = { ...finishUpData };
+            newFinishUpData.experiences = sortedExperiences;
+
+            setFinishUpData(newFinishUpData);
+            console.log('New finishup data:', newFinishUpData);
+          }}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
+        />
+      ),
+      order: finishUpData?.theOrder?.experiences || 2,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredExperiences !== null,
+    },
+    {
+      id: 'educations',
+      component: (
+        <EducationsSection templateType={templateSelected} educations={filteredEducations} />
+      ),
+      order: finishUpData?.theOrder?.educations || 3,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredEducations !== null,
+    },
+    {
+      id: 'involvements',
+      component: (
+        <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
+      ),
+      order: finishUpData?.theOrder?.involvements || 4,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredInvolvements !== null,
+    },
+    {
+      id: 'projects',
+      component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
+      order: finishUpData?.theOrder?.projects || 5,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredProjects != null,
+    },
+    {
+      id: 'certifications',
+      component: (
+        <CertificationSection
+          templateType={templateSelected}
+          certifications={filteredCertifications}
+        />
+      ),
+      order: finishUpData?.theOrder?.certifications || 6,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredCertifications !== null,
+    },
+    {
+      id: 'skills',
+      component: (
+        <SkillsSection
+          templateType={templateSelected}
+          skills={filteredSkills}
+          onChangeOrder={handleSkillsOrderChange}
+          canBeDisplayed={filteredSkills !== null}
+        />
+      ),
+      order: finishUpData?.theOrder?.skills || 7,
+      canBeDrag: false, // Set to true if this section can be dragged
+      canBeDisplayed: filteredSkills !== null,
+    },
+  ];
+  sections.sort((a, b) => a.order - b.order);
+
+  const filteredSections = sections.filter(section => {
+    if (section.id === 'educations') {
+      return filteredEducations && filteredEducations.length > 0;
+    } else if (section.id === 'experiences') {
+      return filteredExperiences && filteredExperiences.length > 0;
+    } else if (section.id === 'projects') {
+      return filteredProjects && filteredProjects.length > 0;
+    } else if (section.id === 'involvements') {
+      return filteredInvolvements && filteredInvolvements.length > 0;
+    } else if (section.id === 'certifications') {
+      return filteredCertifications && filteredCertifications.length > 0;
+    } else if (section.id === 'skills') {
+      return filteredSkills && filteredSkills.length > 0;
+    } else if (section.id === 'summary') {
+      return summary && summary !== null && summary.trim() !== ''; // Include if 'summary' is not null and not an empty string
+    }
+    return true; // Include other sections by default
+  });
+
+  // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
+
+  // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
+  console.log('filteredSections: ', filteredSections);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getFinishUp(cvId);
-        console.log('🚀 ~ file: page.jsx:330 ~ fetchData ~ data:cvId', cvId);
+
+        console.log('FinishUp data: ', data);
 
         setFinishUpData(data);
 
@@ -347,40 +621,10 @@ const FinishUpPreview = ({ cvId }) => {
     fetchData();
   }, []);
 
-  const handleSyncUp = async () => {
-    try {
-      setShowFinishupCV(false);
-
-      await syncUp(cvId); // Call the syncUp function
-
-      const fetchData = async () => {
-        try {
-          const data = await getFinishUp(cvId);
-
-          setFinishUpData(data);
-
-          setShowFinishupCV(true);
-
-          setTemplateSelected(data.templateType);
-          setToolbarState(data.cvStyle);
-
-          setSummary(data.summary);
-        } catch (error) {
-          console.error('Error fetching FinishUp data:', error);
-        }
-      };
-
-      fetchData();
-    } catch (error) {
-      console.error('Error during synchronization:', error);
-      // Handle errors or display an error message.
-    }
-  };
   //   <div style={{ marginBottom: '12px' }}>
   //   <Button onClick={handleSyncUp}>Sync Up</Button>
   // </div>
 
-  const [open, setOpen] = useState(false);
 
   return (
     <>

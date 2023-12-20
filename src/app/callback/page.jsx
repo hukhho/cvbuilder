@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth0 } from '@/lib/Auth0';
 import useStore from '@/store/store';
 import { getProtectedResource } from '../services/message.service';
+import { notification } from 'antd';
 
 // Helper function to set cookies
 const setCookie = (name, value, days) => {
@@ -34,7 +35,21 @@ const CallbackPage = () => {
           const accessToken = await getAccessTokenSilently();
           localStorage.setItem('accessToken', accessToken); // This is fine to keep in client-side code
           console.log('accessToken: ', accessToken);
+          try {
+            const { data } = await getProtectedResource(accessToken);
+            console.log('data: ', data);
+          } catch (errorMessage) {
+            console.log('error: ', errorMessage);
+          }
           const { data } = await getProtectedResource(accessToken);
+          if (!data) {
+            console.error('No data received from protected resource!');
+            notification.error({
+              message: 'You do not have permission to perform this operation.',
+            });
+            router.push('/login');
+            return;
+          }
           console.log('data: ', data);
 
           // Save user data to localStorage

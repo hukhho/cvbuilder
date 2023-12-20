@@ -31,6 +31,7 @@ import Link from 'next/link';
 import { banUser, getUsers, getWithdrawRequests, unbanUser } from '../adminServices';
 import AdminLayout from '@/app/components/Layout/AdminLayout';
 import moment from 'moment';
+import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 
@@ -79,6 +80,8 @@ const Home = () => {
   const initialData = [];
 
   const [data, setData] = useState(initialData);
+  const [filteredData, setFilteredData] = useState(initialData);
+
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
@@ -87,6 +90,7 @@ const Home = () => {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getUsers();
       setData(fetchedDataFromAPI);
+      setFilteredData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -104,7 +108,6 @@ const Home = () => {
       const result = await banUser(customerId);
       fetchData();
       openNotification('bottomRight', `Save changed ${result}`, 'success');
-
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`, 'error');
     }
@@ -115,7 +118,6 @@ const Home = () => {
       const result = await unbanUser(customerId);
       fetchData();
       openNotification('bottomRight', `Save changed ${result}`, 'success');
-
     } catch (error) {
       openNotification('bottomRight', `Error: ${error}`, 'error');
     }
@@ -124,6 +126,18 @@ const Home = () => {
     {
       title: 'Name',
       dataIndex: 'name',
+      render: text => <div>{text}</div>,
+    },
+    {
+      title: 'Role',
+      dataIndex: 'role',
+      filters: [
+        { text: 'ADMIN', value: 'ADMIN' },
+        { text: 'CANDIDATE', value: 'CANDIDATE' },
+        { text: 'EXPERT', value: 'EXPERT' },
+        { text: 'HR', value: 'HR' },
+      ],
+      onFilter: (value, record) => record.role === value,
       render: text => <div>{text}</div>,
     },
     {
@@ -176,28 +190,38 @@ const Home = () => {
       sorter: {
         compare: (a, b) => moment(a.createdDate) - moment(b.createdDate),
       },
-      render: (text, record) => (
-        <div className="flex flex-col">
-         {text}
-        </div>
-      ),
+      render: (text, record) => <div className="flex flex-col">{text}</div>,
     },
     {
       title: 'Action',
       dataIndex: 'id',
       render: (text, record) => (
         <div>
-          {record?.status === 'Banned' ? (
-            <button className="" onClick={() => handleUnbanUser(record.id)}>
-              Unban
-            </button>
-          ) : (
-            <button onClick={() => handleBanUser(record.id)}>Ban</button>
-          )}
+          {record?.role !== 'ADMIN' &&
+            (record?.status === 'Banned' ? (
+              <button className="" onClick={() => handleUnbanUser(record.id)}>
+                Unban
+              </button>
+            ) : (
+              <button onClick={() => handleBanUser(record.id)}>Ban</button>
+            ))}
         </div>
       ),
     },
   ];
+
+  const [searchValue, setSearchValue] = useState();
+
+  const onSearch = value => {
+    if (value) {
+      setSearchValue(value);
+      const filtered = data.filter(item => item?.name.toLowerCase().includes(value.toLowerCase()));
+      setFilteredData(filtered);
+    } else {
+      setSearchValue();
+      setFilteredData(data);
+    }
+  };
 
   return (
     <ConfigProvider>
@@ -211,11 +235,17 @@ const Home = () => {
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-              <Input className="" placeholder="Search by name" />
+              <Search
+                allowClear
+                placeholder="Search user name"
+                size="large"
+                defaultValue={searchValue}
+                onSearch={onSearch}
+              />{' '}
             </div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
-                <Table columns={columns} dataSource={data} onChange={onChange} />
+                <Table columns={columns} dataSource={filteredData} onChange={onChange} />
               </div>
             </div>
           </div>

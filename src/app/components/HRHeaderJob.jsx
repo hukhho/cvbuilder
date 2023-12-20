@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 const categories = [
   { name: 'OPPORTUNITIES', link: 'job/list' },
-  { name: 'MY APPLICATION', link: 'job/application' },
+  // { name: 'MY APPLICATION', link: 'job/application' },
 ];
 
-const UserHeaderJob = ({ initialEnabledCategories }) => {
+const HRHeaderJob = ({ initialEnabledCategories }) => {
   const [enabledCategories, setEnabledCategories] = useState(initialEnabledCategories);
 
   return (
@@ -26,4 +26,4 @@ const UserHeaderJob = ({ initialEnabledCategories }) => {
   );
 };
 
-export default UserHeaderJob;
+export default HRHeaderJob;

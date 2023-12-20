@@ -128,7 +128,7 @@ const Dashboard = () => {
                 <Card style={{ width: 278, height: 182 }}>
                   <div className="text-gray-500">Total revenue</div>
                   <div>
-                    <Title>$ {data?.income}</Title>
+                    <Title>{data?.income} đ</Title>
                   </div>
                 </Card>
                 <Card style={{ width: 278, height: 182 }}>

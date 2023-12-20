@@ -12,14 +12,7 @@ import { depositMoney, withdrawMoney } from '@/app/candidate/candidateServices';
 import useStore from '@/store/store';
 
 export default function Withdraw({ onCreated }) {
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (placement, message) => {
-    api.info({
-      message: 'Notification',
-      description: message,
-      placement,
-    });
-  };
+ 
   const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -70,17 +63,19 @@ export default function Withdraw({ onCreated }) {
       closeModal();
       onCreated();
 
-      openNotification('bottomRight', `Success: ${result.id}`);
+      notification.success({
+        message: 'Success',
+      });
       console.log("result: ", result)
 
       refreshBalance()
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
-    }
+      notification.success({
+        message: 'Error',
+      });    }
   };
   return (
     <>
-      {contextHolder}
       <div className="inset-0 flex items-center justify-center">
         <button
           style={{ width: '208px' }}
@@ -138,7 +133,7 @@ export default function Withdraw({ onCreated }) {
                           htmlFor="resumeName" // Add htmlFor with the correct id
                         >
                           <div className="flex gap-2 items-center">
-                            <span>Enter credit</span> *
+                            <span>Enter money (đ)</span> *
                           </div>
                           <div id="null-portal-root" />
                         </label>

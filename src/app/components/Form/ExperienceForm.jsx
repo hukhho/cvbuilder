@@ -44,6 +44,7 @@ import { CommentOutlined } from '@ant-design/icons';
 import { createAIWriter } from './aiwriter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt, faCopy } from '@fortawesome/free-solid-svg-icons';
+import useStore from '@/store/store';
 const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
@@ -415,6 +416,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
       textarea.setSelectionRange(selectionStartState, selectionEndState);
       textarea.focus();
+
+
     } catch (error) {
       setIsAiLoading(false);
       console.error('Error:', error);

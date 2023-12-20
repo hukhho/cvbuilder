@@ -246,7 +246,7 @@ const Summary = ({ params }) => {
                             <Input
                               style={{ marginTop: '-10px' }}
                               className="inputEl st-current"
-                              placeholder="Marketing Asistant at Sony"
+                              placeholder="Java Developer at Company A"
                             />
                           )}
                         </Form.Item>
@@ -269,7 +269,7 @@ const Summary = ({ params }) => {
                               width: '100%',
                             }}
                             className="inputEl st-current"
-                            placeholder="Marketing Asistant at Sony"
+                            placeholder="Javascript, React, NodeJS, ..."
                           />
                         </Form.Item>
                         <button

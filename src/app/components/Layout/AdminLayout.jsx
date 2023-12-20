@@ -37,6 +37,7 @@ import AuthenticationGuard from '@/app/components/AuthenticationGuard';
 import { parse, serialize } from 'cookie';
 import Image from 'next/image';
 import AuthLayout from './AuthLayout';
+import useStore from '@/store/store';
 // Dynamically import CanvasGradient with ssr: false
 const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), {
   ssr: false,
@@ -156,13 +157,9 @@ const styles = {
   },
 };
 const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) => {
-  const [message, setMessage] = useState('');
-  const [email, setEmail] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const { setMessage, setEmail, setAvatar, setUserRole, setBalance } = useStore();
 
   const { getAccessTokenSilently } = useAuth0();
-
-  const [userRole, setUserRole] = useState('CANDIDATE');
 
   useEffect(() => {
     let isMounted = true;
@@ -182,18 +179,18 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
       }
       if (data) {
         setMessage(JSON.stringify(data, null, 2));
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('avatar', data.avatar);
+        localStorage.setItem('userId', data.id);
+
+        // setCookie('userId', data.id, 7); // 7 days for cookie expiration
+
+        localStorage.setItem('userRole', data.role.roleName);
+
+        // Update Zustand store with user data
         setEmail(data.email);
         setAvatar(data.avatar);
-        document.cookie = serialize('userId', data.id, {
-          path: '/', // The path for which the cookie is valid
-          maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-          secure: false, // Use 'secure' in production for HTTPS-only cookies
-        });
-        document.cookie = serialize('roleName', data.role.roleName, {
-          path: '/', // The path for which the cookie is valid
-          maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
-          secure: false, // Use 'secure' in production for HTTPS-only cookies
-        });
+        setBalance(data.accountBalance);
         setUserRole(data.role.roleName);
       }
       if (error) {
@@ -205,8 +202,6 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
       isMounted = false;
     };
   }, [getAccessTokenSilently]);
-
-  const filteredItems = items.filter(item => item.roles.includes(userRole));
 
   console.log('selected', selected);
   const {
@@ -314,7 +309,7 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
               iconmargininlineend={50}
               mode="inline"
               defaultSelectedKeys={[selected]}
-              items={filteredItems}
+              items={items}
             />
 
             <div style={{ position: 'absolute', bottom: 30, left: 40, width: '100%' }}>

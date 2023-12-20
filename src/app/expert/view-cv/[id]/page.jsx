@@ -235,7 +235,6 @@ export default function FinishUp({ params }) {
               setFinishUpData(null);
               return;
             }
-            const cvId = data.cvId;
             const temp = finishUpData;
 
             setShowFinishupCV(false);
@@ -246,9 +245,9 @@ export default function FinishUp({ params }) {
             setFinishUpData(data);
             setShowFinishupCV(true);
 
-            setTemplateSelected(data.templateType);
-            setToolbarState(data.cvStyle);
-            setSummary(data.summary);
+            setTemplateSelected(data?.templateType);
+            setToolbarState(data?.cvStyle);
+            setSummary(data?.summary);
           } catch (error) {
             console.error('Error fetching FinishUp data:', error);
           }
@@ -330,7 +329,6 @@ export default function FinishUp({ params }) {
               setFinishUpData(null);
               return;
             }
-            const cvId = data.cvId;
 
             const temp = finishUpData;
 
@@ -342,9 +340,9 @@ export default function FinishUp({ params }) {
             setFinishUpData(data);
             setShowFinishupCV(true);
 
-            setTemplateSelected(data.templateType);
-            setToolbarState(data.cvStyle);
-            setSummary(data.summary);
+            setTemplateSelected(data?.templateType);
+            setToolbarState(data?.cvStyle);
+            setSummary(data?.summary);
           } catch (error) {
             console.error('Error fetching FinishUp data:', error);
           }
@@ -456,6 +454,7 @@ export default function FinishUp({ params }) {
       component: <SummarySection templateType={templateSelected} summary={summary} />,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
+      order: finishUpData?.theOrder?.summary || 1,
     },
     {
       id: 'experiences',
@@ -471,6 +470,7 @@ export default function FinishUp({ params }) {
           }}
         />
       ),
+      order: finishUpData?.theOrder?.experiences || 2,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredExperiences !== null,
     },
@@ -481,6 +481,7 @@ export default function FinishUp({ params }) {
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
+      order: finishUpData?.theOrder?.educations || 3,
     },
     {
       id: 'involvements',
@@ -489,12 +490,15 @@ export default function FinishUp({ params }) {
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
+      order: finishUpData?.theOrder?.involvements || 4,
     },
     {
       id: 'projects',
       component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
+      order: finishUpData?.theOrder?.projects || 5,
+
     },
     {
       id: 'certifications',
@@ -506,6 +510,8 @@ export default function FinishUp({ params }) {
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
+      order: finishUpData?.theOrder?.certifications || 6,
+
     },
     {
       id: 'skills',
@@ -518,8 +524,13 @@ export default function FinishUp({ params }) {
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
+      order: finishUpData?.theOrder?.skills || 7,
+
     },
   ];
+
+  sections.sort((a, b) => a.order - b.order);
+
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
@@ -584,7 +595,6 @@ export default function FinishUp({ params }) {
           return;
         }
 
-        const cvId = data.cvId;
         setFinishUpData(data);
 
         setShowFinishupCV(true);

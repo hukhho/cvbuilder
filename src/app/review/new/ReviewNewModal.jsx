@@ -17,49 +17,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 export default function ReviewNewModal({ onCreated, resumes, expert }) {
   const { isLoading, isAuthenticated, error, user, getAccessTokenSilently } = useAuth0();
   const { setMessage, setEmail, setAvatar, setUserRole, setBalance } = useStore();
-
-  const refreshMoney = async () => {
-    try {
-      const accessToken = await getAccessTokenSilently();
-      localStorage.setItem('accessToken', accessToken); // This is fine to keep in client-side code
-      console.log('accessToken: ', accessToken);
-      const { data } = await getProtectedResource(accessToken);
-      console.log('data: ', data);
-      // Save user data to localStorage
-      localStorage.setItem('email', data.email);
-      localStorage.setItem('avatar', data.avatar);
-      localStorage.setItem('userId', data.id);
-      localStorage.setItem('userRole', data.role.roleName);
-      // Update Zustand store with user data
-      setEmail(data.email);
-      setAvatar(data.avatar);
-      setBalance(data.accountBalance);
-      setUserRole(data.role.roleName);
-    } catch (fetchError) {
-      console.error('Fetching user data error:', fetchError);
-      setMessage(JSON.stringify(fetchError, null, 2));
-    }
-  };
-
-  // useEffect(() => {
-  //   // if (error) {
-  //   //   console.error('Auth0 error:', error);
-  //   //   setMessage(JSON.stringify(error, null, 2));
-  //   //   router.push('/error');
-  //   // } else if (isAuthenticated && !isLoading) {
-  //   //   refreshMoney();
-  //   // }
-  //   refreshMoney();
-
-  // }, []);
-
+  
   const { balance, refreshBalance } = useStore();
-
-  // useEffect(() => {
-  //   if (balance === -1) {
-  //     refreshBalance();
-  //   }
-  // }, [balance, refreshBalance]);
 
   console.log('price: ', expert?.price);
   const [form] = Form.useForm();
