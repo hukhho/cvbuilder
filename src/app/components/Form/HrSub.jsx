@@ -40,10 +40,7 @@ const HrSub = ({ data }) => {
     <div className="mt-16" style={{ width: '800px' }}>
       <Card>
         <Title>Your subscription</Title>
-        <p>
-          Your subscription will end in {formattedDate}. After that we will automatically extend
-          your subscription
-        </p>
+        <p>Your subscription end in {formattedDate}.</p>
       </Card>
     </div>
   );

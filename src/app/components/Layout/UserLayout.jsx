@@ -383,7 +383,7 @@ const UserLayout = React.memo(
                       style={{ width: '208px' }}
                     >
                       <div className="whitespace-nowrap text-left text-white text-xs font-black  uppercase leading-3">
-                        AI Credits
+                        Credits
                       </div>
                       <div className="pr-2 flex ml-4">
                         <div className="text-white text-xs font-bold uppercase leading-3">
