@@ -35,6 +35,7 @@ import ExpertReviewCard from './ExpertReviewCard';
 import VideoCard from './VideoCard';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
+import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
 
 const mockData = {
   data: {
@@ -251,16 +252,16 @@ export default function FinishUp({ params }) {
     if (project.isDisplay !== true) {
       return false;
     }
-  
+
     // Check if title is not null, undefined, or an empty string
     if (project.title === null || project.title === undefined || project.title === '') {
       return false;
     }
-  
+
     // If both conditions are met, keep the project in the filtered list
     return true;
   });
-    const filteredInvolvements = involvements?.filter(involvement => {
+  const filteredInvolvements = involvements?.filter(involvement => {
     // Check if involvement is displayable (isDisplay is true)
     if (involvement.isDisplay !== true) {
       return false;
@@ -283,31 +284,35 @@ export default function FinishUp({ params }) {
     if (certification.isDisplay !== true) {
       return false;
     }
-  
+
     // Check if name is not null, undefined, or an empty string
-    if (certification.name === null || certification.name === undefined || certification.name === '') {
+    if (
+      certification.name === null ||
+      certification.name === undefined ||
+      certification.name === ''
+    ) {
       return false;
     }
-  
+
     // If both conditions are met, keep the certification in the filtered list
     return true;
   });
-  
+
   const filteredSkills = skills?.filter(skill => {
     // Check if skill is displayable (isDisplay is true)
     if (skill.isDisplay !== true) {
       return false;
     }
-  
+
     // Check if description is not null, undefined, or an empty string
     if (skill.description === null || skill.description === undefined || skill.description === '') {
       return false;
     }
-  
+
     // If both conditions are met, keep the skill in the filtered list
     return true;
   });
-    const filteredExperiences = experiences?.filter(experience => {
+  const filteredExperiences = experiences?.filter(experience => {
     // Check if experience is displayable (isDisplay is true)
     if (experience.isDisplay !== true) {
       return false;
@@ -355,8 +360,8 @@ export default function FinishUp({ params }) {
   // to store order of template
 
   const [sectionsOrder, setSectionsOrder] = useState([]);
-
   const handleSectionsOrderChange = newOrder => {
+    console.log('newOrder: ', newOrder);   
     setSectionsOrder(newOrder);
   };
 
@@ -464,6 +469,7 @@ export default function FinishUp({ params }) {
           layoutStyles={toolbarState}
         />
       ),
+      order: 1,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -477,6 +483,7 @@ export default function FinishUp({ params }) {
           handleSummaryChange={handleSummaryChange}
         />
       ),
+      order: 2,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -503,6 +510,7 @@ export default function FinishUp({ params }) {
           handleDescriptionChange={handleDescriptionChange}
         />
       ),
+      order: 3,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredExperiences !== null,
     },
@@ -515,6 +523,7 @@ export default function FinishUp({ params }) {
           educations={filteredEducations}
         />
       ),
+      order: 4,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
     },
@@ -527,6 +536,7 @@ export default function FinishUp({ params }) {
           involvements={filteredInvolvements}
         />
       ),
+      order: 5,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
     },
@@ -539,6 +549,7 @@ export default function FinishUp({ params }) {
           projects={filteredProjects}
         />
       ),
+      order: 6,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
     },
@@ -551,6 +562,7 @@ export default function FinishUp({ params }) {
           certifications={filteredCertifications}
         />
       ),
+      order: 7,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
     },
@@ -565,6 +577,7 @@ export default function FinishUp({ params }) {
           canBeDisplayed={filteredSkills !== null}
         />
       ),
+      order: 8,
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
     },
@@ -738,7 +751,7 @@ export default function FinishUp({ params }) {
   return (
     <main>
       <ConfigProvider>
-        <UserLayout
+        <UserLayoutNoAuth
           isCollapsed={true}
           avatar={avatar}
           email={email}
@@ -822,8 +835,6 @@ export default function FinishUp({ params }) {
                     onGen={handleSetHighlight}
                     onDisableHightlight={handleUnSetHighlight}
                   />
-
-                 
                 </div>
               )}
             </div>

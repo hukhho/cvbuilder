@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+  Avatar,
   Button,
   Card,
   Col,
@@ -136,17 +137,7 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt="avatar"
-                style={{
-                  width: '100px',
-                }}
-              />
-            ) : (
-              uploadButton
-            )}
+            {imageUrl ? <Avatar src={imageUrl} alt="avatar" size={100} /> : uploadButton}
           </Upload>
           <Form.Item name="avatar" label={<></>}>
             <Input

@@ -6,6 +6,7 @@ import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react
 import Image from 'next/image';
 import {
   Alert,
+  Avatar,
   Button,
   Card,
   ConfigProvider,
@@ -39,7 +40,7 @@ import './expert.css';
 import './gen.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
 import { Box, VStack } from '@chakra-ui/react';
-import { CommentOutlined, StarFilled } from '@ant-design/icons';
+import { CommentOutlined, ExclamationCircleFilled, StarFilled } from '@ant-design/icons';
 import Link from 'next/link';
 import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
@@ -57,6 +58,7 @@ import useStore from '@/store/store';
 import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+const { confirm } = Modal;
 
 // import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';
 const CVLayoutReviewerView = dynamic(
@@ -580,7 +582,7 @@ export default function FinishUp({ params }) {
           setErrorMessage('Feedback detail null');
           setFinishUpData(null);
           return;
-        } 
+        }
 
         const cvId = data.cvId;
         setFinishUpData(data);
@@ -614,6 +616,7 @@ export default function FinishUp({ params }) {
     fetchData();
   }, []);
 
+ 
   const handleSave = async () => {
     try {
       await handleSaveDraft();
@@ -630,6 +633,8 @@ export default function FinishUp({ params }) {
         message: 'Save changed',
       });
       openNotification('bottomRight', `Save changed`);
+
+      router.push('/expert/history');
     } catch (error) {
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
@@ -638,6 +643,19 @@ export default function FinishUp({ params }) {
       });
     }
   };
+
+  const showPromiseConfirmSave = () => {
+    confirm({
+      title: 'Do you want to save this review?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this review will be Done!',
+      async onOk() {
+        await handleSave();
+      },
+      onCancel() {},
+    });
+  };
+  
   const handleSaveDraft = async () => {
     try {
       const sendObj = {
@@ -719,7 +737,7 @@ export default function FinishUp({ params }) {
   const handleChange = event => {
     setInputValue(event.target.value);
   };
-  const handleActionAccept = async async => {
+  const handleActionAccept = async () => {
     try {
       console.log('handleActionAccept ', fetchedData?.request?.id);
       const result = await acceptRequest(params.id);
@@ -797,13 +815,37 @@ export default function FinishUp({ params }) {
         message: 'Success',
       });
       router.push('/expert/requests');
-
     } catch (error) {
       console.log('error ', error);
       notification.error({
         message: 'Error',
       });
     }
+  };
+
+
+
+  const showPromiseConfirmAccept = () => {
+    confirm({
+      title: 'Do you want to save this review?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this review will be Accept!',
+      async onOk() {
+        await handleActionAccept();
+      },
+      onCancel() {},
+    });
+  };
+  const showPromiseConfirmReject = () => {
+    confirm({
+      title: 'Do you want to reject this review?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this review will be Reject!',
+      async onOk() {
+        await handleActionReject();
+      },
+      onCancel() {},
+    });
   };
   return (
     <UserLayoutNoAuth
@@ -951,7 +993,7 @@ export default function FinishUp({ params }) {
                         }}
                         className="button"
                         type=""
-                        onClick={() => handleActionAccept()}
+                        onClick={() => showPromiseConfirmAccept()}
                       >
                         Accecpt
                       </button>
@@ -964,7 +1006,7 @@ export default function FinishUp({ params }) {
                         }}
                         className="button bg-red-500"
                         type=""
-                        onClick={() => handleActionReject()}
+                        onClick={() => showPromiseConfirmReject()}
                       >
                         Reject
                       </button>
@@ -978,33 +1020,37 @@ export default function FinishUp({ params }) {
                         disabled={true}
                         onChange={e => handleChangeOverall(e)}
                       />
+                      {fetchedData?.score && (
+                        <div className="pt-4 ">
+                          <div className="flex">
+                            <div className=" flex">
+                              <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
+                                {fetchedData?.score}
+                              </p>{' '}
+                              <StarFilled style={{ color: '#FFC107' }} />
+                            </div>
+                            <div className="ml-4 text-gray-500">{fetchedData?.dateComment}</div>
+                          </div>
 
-                      <div>
-                        {fetchedData?.score && (
-                          <Card className="mt-8 mb-16">
-                            <div className="mt-4" style={{ textAlign: 'left' }}>
-                              <div className="flex">
-                                <div className="ml-4 flex">
-                                  <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
-                                    {fetchedData?.score}
-                                  </p>{' '}
-                                  <StarFilled style={{ color: '#FFC107' }} />
+                          <div className="mt-3">
+                            {fetchedData?.request ? (
+                              <span dangerouslySetInnerHTML={{ __html: fetchedData?.comment }} />
+                            ) : (
+                              <Empty />
+                            )}
+
+                            <div className="flex mt-4">
+                              <Avatar shape="square" size="large" src={fetchedData?.user?.avatar} />
+                              <div className="ml-4">
+                                <div>{fetchedData?.user?.name}</div>
+                                <div>
+                                  {/* <p style={{ color: '#4D70EB' }}> job title - Developer ne</p> */}
                                 </div>
-                                <div className="ml-4 text-gray-500"></div>
-                              </div>
-                              <div>
-                                {fetchedData?.comment ? (
-                                  <span
-                                    dangerouslySetInnerHTML={{ __html: fetchedData?.comment }}
-                                  />
-                                ) : (
-                                  <Empty />
-                                )}
                               </div>
                             </div>
-                          </Card>
-                        )}
-                      </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                   {fetchedData?.request?.status === 'Processing' ||
@@ -1039,7 +1085,7 @@ export default function FinishUp({ params }) {
                         }}
                         className="button"
                         type=""
-                        onClick={() => handleSave()}
+                        onClick={() => showPromiseConfirmSave()}
                       >
                         Submit
                       </button>

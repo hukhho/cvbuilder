@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Avatar,
   Button,
   Card,
   Col,
@@ -198,17 +199,7 @@ const HrForm = ({ onCreated, data, resumeOptions }) => {
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
               >
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="avatar"
-                    style={{
-                      width: '100px',
-                    }}
-                  />
-                ) : (
-                  uploadButton
-                )}
+                {imageUrl ? <Avatar src={imageUrl} alt="avatar" size={100} /> : uploadButton}
               </Upload>
             </div>
           </Form.Item>

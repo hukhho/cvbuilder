@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const categories = [
   { name: 'OPPORTUNITIES', link: 'job/list' },
-  { name: 'MY APPLICATION', link: 'job/application' },
+  // { name: 'MY APPLICATION', link: 'job/application' },
 ];
 
 const UserHeaderJob = ({ initialEnabledCategories }) => {
@@ -12,10 +12,7 @@ const UserHeaderJob = ({ initialEnabledCategories }) => {
   return (
     <div className="flex items-center space-x-6  mt-10">
       {categories.map(category => (
-        <Link
-          key={category.name}
-          href={`/${category.link}`} // Use the custom link here
-        >
+        <Link key={category.name} href={`/${category.link}`}>
           <div
             className={`text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap ${
               enabledCategories[category.name] ? 'bg-indigo-500 text-white' : 'text-neutral-600'

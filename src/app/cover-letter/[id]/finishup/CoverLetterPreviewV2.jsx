@@ -211,7 +211,7 @@ const CoverLetterPreviewV2 = React.forwardRef(({ coverLetterId }, ref) => {
                           className="editableContent cursor-text contact-item"
                           id="cl-company-company"
                           contentEditable="true"
-                          dangerouslySetInnerHTML={{ __html: content.company }}
+                          dangerouslySetInnerHTML={{ __html: content?.company }}
                         />
                       </div>
                       <div className="item">

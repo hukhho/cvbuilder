@@ -19,6 +19,7 @@ import {
   Switch,
   TreeSelect,
   Typography,
+  notification,
 } from 'antd';
 import '../../components/Form/customtext.css';
 import UserLayout from '@/app/components/Layout/UserLayout';
@@ -185,8 +186,11 @@ const HRPost = () => {
     setDeadlineString(dateString);
   };
 
+  const [isLimited, setIsLimited] = useState(false);
+
   const onChangeSwitch = checked => {
     console.log(`switch to ${checked}`);
+    setIsLimited(checked);
   };
 
   const [openSuccess, setOpenSuccess] = useState(false);
@@ -202,22 +206,42 @@ const HRPost = () => {
   }
 
   const onFinish = async values => {
-    values.salary = salaryName;
-    values.deadline = deadlineString;
+    // values.salary = salaryName;
 
+    values.deadline = deadlineString;
+    values.isLimited = isLimited;
+    if (!isLimited) {
+      values.applyAgain = 99;
+    }
     console.log('Form data:', values);
-    const result = await postHrPublic(values);
-    setIsOpen(true);
+    try {
+      const result = await postHrPublic(values);
+      notification.success({
+        message: 'Save changed',
+      });
+      setIsOpen(true);
+    } catch (error) {
+      notification.error({
+        message: 'Save error',
+      });
+    }
   };
 
   const saveDraft = async values => {
     values.salary = salaryName;
     values.deadline = deadlineString;
     // Make an API call to save the draft on the server
-    const result = await postHrDraft(values); // You should implement this function
-    // Handle the result, e.g., show a success message
-    console.log('Draft saved:', result);
-    setIsOpen(true);
+    try {
+      const result = await postHrDraft(values); // You should implement this function
+      // Handle the result, e.g., show a success message
+      console.log('Draft saved:', result);
+      setIsOpen(true);
+      notification.success({
+        message: 'Save changed',
+      });
+    } catch (error) {
+      // Handle the error
+    }
   };
 
   const router = useRouter();
@@ -225,6 +249,22 @@ const HRPost = () => {
   const handleClick = e => {
     e.preventDefault();
     router.push('/hr/list');
+  };
+
+
+  const validateDate = (_, date) => {
+    // Convert the selected date to a moment object
+    const selectedDate = moment(date);
+
+    // Get today's date
+    const today = moment();
+
+    // Check if the selected date is greater than or equal to today's date
+    if (selectedDate.isSameOrAfter(today, 'day')) {
+      return Promise.resolve();
+    } else {
+      return Promise.reject('The date must be greater than or equal to today');
+    }
   };
 
   return (
@@ -311,6 +351,8 @@ const HRPost = () => {
                   initialValues={{
                     size: 'large',
                     workingType: 'Full Time', // Set the default value here
+                    applyAgain: 1,
+                    salary: "From 1,000$ to 2,000$",
                   }}
                   requiredMark={false}
                   form={form}
@@ -387,7 +429,7 @@ const HRPost = () => {
                   <Form.Item className="custom-label" name="about" label="About">
                     <Input.TextArea className="inputEl" placeholder="About the company" rows={10} />
                   </Form.Item>
-                  <Form.Item className="custom-label" name="" label="SALARY">
+                  {/* <Form.Item className="custom-label" name="" label="SALARY">
                     <Select
                       style={{
                         width: 350,
@@ -457,7 +499,12 @@ const HRPost = () => {
                         />
                       </>
                     )}
+                  </Form.Item> */}
+
+                  <Form.Item className="custom-label" name="salary" label="SALARY">
+                    <Input className="inputEl" placeholder="Salary" />
                   </Form.Item>
+
                   <Form.Item className="custom-label" name="benefit" label="Benefit">
                     <Input.TextArea
                       className="inputEl"
@@ -465,6 +512,7 @@ const HRPost = () => {
                       rows={10}
                     />
                   </Form.Item>
+
                   <Form.Item className="custom-label" name="requirement" label="Job Requirement">
                     <Input.TextArea
                       className="inputEl"
@@ -498,7 +546,13 @@ const HRPost = () => {
                     <Form.Item
                       className="custom-item custom-label"
                       name="deadline"
-                      rules={[{ required: true }]}
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Please select a deadline',
+                        },
+                 
+                      ]}
                       label="Deadline *"
                     >
                       <DatePicker
@@ -507,15 +561,22 @@ const HRPost = () => {
                         format="YYYY-MM-DD"
                         onChange={onChangeDate}
                       />
+                
                     </Form.Item>
 
                     <div className="custom-item custom-label">
                       <div className="">
-                        <Switch defaultChecked onChange={onChangeSwitch} />
+                        <Switch
+                          value={isLimited}
+                          defaultChecked={isLimited}
+                          onChange={onChangeSwitch}
+                        />
                         <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
                       </div>
                       <Form.Item className="mb-4" name="applyAgain">
-                        <InputNumber className="inputEl" defaultValue={1} min={1} type="number" />
+                        {isLimited && (
+                          <InputNumber className="inputEl" defaultValue={1} min={1} type="number" />
+                        )}
                       </Form.Item>
                     </div>
                   </div>

@@ -10,7 +10,6 @@ import { getResumes } from './utils/indexService';
 import { RadiusBottomrightOutlined } from '@ant-design/icons';
 import ResumeIndex from './resume/page';
 import { useAuth0 } from '@auth0/auth0-react';
-import { LoginButton } from './components/Button/LoginButton';
 import Login from './login/page';
 import { PageLoader } from './components/PageLoader';
 import useStore from '@/store/store';

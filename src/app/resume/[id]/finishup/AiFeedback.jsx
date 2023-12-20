@@ -73,19 +73,14 @@ const AiFeedback = ({ cvId }) => {
               We will help you give a overall feedback for your CV:
             </span>
             <div>
-              <div>
-                {/* {data?.map((content, index) => {
-                  return (
-                    <div key={index} className="bold">
-                      <span>
-                        {content.reply}{' '}
-                        <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 ml-4" />
-                      </span>
-                    </div>
-                  );
-                })} */}
-                {data?.reply}
-              </div>
+              {data?.reply && (
+                <p
+                  className="text-justify"
+                  dangerouslySetInnerHTML={{
+                    __html: `${data?.reply.replace(/\n/g, '<br />')}`,
+                  }}
+                />
+              )}
             </div>
           </div>
 

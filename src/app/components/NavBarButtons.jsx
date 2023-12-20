@@ -2,7 +2,7 @@
 
 import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
-import { LoginButton } from './Button/LoginButton';
+import { LoginButton } from './Button/LoginButtonHR';
 import { SignupButton } from './Button/SignupButton';
 import { LogoutButton } from './Button/LogoutButton';
 

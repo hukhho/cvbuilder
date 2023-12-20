@@ -114,7 +114,7 @@ const CoverLetterCard = ({ coverLetterId }) => {
                         <span
                           className="editableContent cursor-text contact-item"
                           id="cl-company-company"
-                          dangerouslySetInnerHTML={{ __html: content.company }}
+                          dangerouslySetInnerHTML={{ __html: content?.company }}
                         />
                       </div>
                       <div className="item">

@@ -54,6 +54,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
+  const [isSubmiting, setIsSubmiting] = useState(false);
 
   const resizeTextArea = () => {
     inputRef.current.style.height = 'auto';
@@ -95,6 +96,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   }, [experience, form]);
 
   const handleSubmit = async values => {
+    setIsSubmiting(true);
     try {
       values.description = inputValue;
       if (isCurrentlyWorking) {
@@ -121,6 +123,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       onExperienceCreated();
     } catch (error) {
       console.log('Submit ExperienceForm. Error:', error);
+    } finally {
+      setIsSubmiting(false);
     }
   };
 
@@ -502,7 +506,13 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
   return (
     <div className="" style={{}}>
-      <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
+      <Form
+        onFinish={handleSubmit}
+        form={form}
+        layout="vertical"
+        autoComplete="off"
+        requiredMark={false}
+      >
         <Form.Item
           name="role"
           label={
@@ -530,11 +540,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         </Form.Item>
         <Form.Item
           name="companyName"
+          rules={[{ required: true }]}
           label={
             <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
               <div className="flex gap-2 items-center text-xs">
                 <span>
-                  FOR WHICH <strong>COMPANY</strong> DID YOU WORK?
+                  FOR WHICH <strong>COMPANY</strong> DID YOU WORK? *
                 </span>
               </div>
             </label>
@@ -554,7 +565,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Form.Item name="endDate" hidden>
           <Input type="hidden" />
         </Form.Item>
-        <Space.Compact style={{ }} block>
+        <Space.Compact style={{}} block>
           <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
               label={
@@ -724,7 +735,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                                 <FontAwesomeIcon icon={faCopy} />
                               </button>
                             </div>
-                            
                           );
                         })}
                         {!isAiLoading && replyContent?.length === 0 && <Empty />}
@@ -779,29 +789,27 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
           <Input type="hidden" value={inputValue} />
         </Form.Item>
-
-        <button
-          disable={isAiWrite}
-          href=""
-          data-size="large"
-          data-theme="default"
-          data-busy="false"
-          className="experience-section button "
-          id="experience-section-save-to-list"
-          type="submit"
-        >
-          Save to Experience list
-        </button>
+        <Form.Item>
+          <div className="form-submit-wrapper">
+            <button
+              style={{ width: '100%', height: '50px' }}
+              href=""
+              data-size="large"
+              data-theme="default"
+              data-busy="false"
+              className='contact-section form[data-theme="basic"] button'
+              id="contact-section-save-to-list"
+              type="submit"
+              disabled={isSubmiting}
+            >
+              SAVE TO EXPERIENCE LIST{' '}
+            </button>
+          </div>
+        </Form.Item>
+     
       </Form>
 
-      {/* <div className="relative">
-        <Card className="flex flex-col mt-2" style={{ textAlign: 'left' }}>
-          Dev log:
-          <Code>MarkText: {markText}</Code>
-          <Code className="bg-blue-100">Selected: {selectedTextState}</Code>
-          <Code className="bg-red-100 mt-2">{message}</Code>
-        </Card>
-      </div> */}
+    
     </div>
   );
 };

@@ -2,8 +2,8 @@ const DesignStudioBreakPage = ({ paperSize }) => {
   const containerStyle = {
     position: 'absolute',
     top: `calc(${paperSize})`,
-    left: '-5%',
-    width: '110%',
+    left: '-3%',
+    width: '105%',
     color: '#717172',
     fontSize: '0.7rem',
     fontFamily: '"Source Sans Pro", sans-serif',

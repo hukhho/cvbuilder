@@ -171,7 +171,14 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                       </i>
                       <div>
                         <h6>
-                          {item?.critical && <span className="critical-badge">CRITICAL</span>}
+                          {item?.critical ? (
+                            item?.score < item?.max ? (
+                              <span className="critical-badge">CRITICAL</span>
+                            ) : (
+                              <span className="badge-green">CRITICAL</span>
+                            )
+                          ) : null}
+
                           <span>
                             Your resume has{' '}
                             {item?.analyze?.experience > 0 && (
@@ -189,7 +196,7 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                                 {item?.analyze?.involvement} involvement
                               </span>
                             )}{' '}
-                            without {item?.title.toLowerCase()}
+                            {item?.score < item?.max ? 'without' : 'with'} {item?.title.toLowerCase()}
                           </span>
                         </h6>
                         <p> {item?.description}</p>
@@ -239,7 +246,7 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                                 {item?.analyze?.involvement} involvement
                               </span>
                             )}{' '}
-                            without {item?.title.toLowerCase()}
+                            {item?.score < item?.max ? 'without' : 'with'} {item?.title.toLowerCase()}
                           </span>
                         </h6>
                         <p>{item?.description}</p>
@@ -290,7 +297,7 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                                 {item?.analyze?.involvement} involvement
                               </span>
                             )}{' '}
-                            without {item?.title.toLowerCase()}
+                            {item?.score < item?.max ? 'without' : 'with'} {item?.title.toLowerCase()}
                           </span>
                         </h6>
                         <p>{item?.description}</p>
@@ -341,7 +348,7 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                                 {item?.analyze?.involvement} involvement
                               </span>
                             )}{' '}
-                            without {item?.title}
+                            {item?.score < item?.max ? 'without ' : 'with '} {item?.title}
                           </span>
                         </h6>
                         <p>{item?.description}</p>
