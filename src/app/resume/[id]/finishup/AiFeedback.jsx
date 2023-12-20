@@ -73,7 +73,16 @@ const AiFeedback = ({ cvId }) => {
               We will help you give a overall feedback for your CV123:
             </span>
             <div>
-              <p className="text-justify" dangerouslySetInnerHTML={{ __html: data?.reply }} />
+              {data?.reply && (
+                <p
+                  className="text-justify"
+                  dangerouslySetInnerHTML={{
+                    __html: `${data?.reply.replace(/\n/g, '<br />')}`,
+                  }}
+                />
+              )}
+
+              {/* <p className="text-justify" dangerouslySetInnerHTML={{ __html: data?.reply }} /> */}
             </div>
           </div>
 
