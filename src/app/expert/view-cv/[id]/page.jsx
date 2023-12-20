@@ -10,6 +10,7 @@ import {
   Card,
   ConfigProvider,
   Divider,
+  Empty,
   Input,
   Modal,
   Result,
@@ -39,7 +40,7 @@ import './gen.css';
 import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloader';
 import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';
 import { Box, VStack } from '@chakra-ui/react';
-import { CommentOutlined } from '@ant-design/icons';
+import { CommentOutlined, StarFilled } from '@ant-design/icons';
 import Link from 'next/link';
 import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
@@ -48,7 +49,7 @@ import ProjectSection from '@/app/components/Templates/SectionComponents/Project
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
-import { getRequestList } from '../../expertServices';
+import { acceptRequest, getRequestList, rejectRequest } from '../../expertServices';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
@@ -597,6 +598,7 @@ export default function FinishUp({ params }) {
       component: (
         <ExperiencesSection
           templateType={templateSelected}
+          isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
           experiences={filteredExperiences}
           onComment={handleMouseUp}
           onDeleteComment={onDeleteComment}
@@ -740,8 +742,8 @@ export default function FinishUp({ params }) {
         console.error('Error fetching FinishUp data:', error);
       }
     };
-    const selection = window.getSelection();
-    const selectedText = selection.toString();
+    const selection = window?.getSelection();
+    const selectedText = selection?.toString();
 
     console.log('selectedText: ', selectedText);
 
@@ -760,12 +762,16 @@ export default function FinishUp({ params }) {
 
       await updateReviewResponsePublic(fetchedData.id, sendObj); // Call the syncUp <function styleName=""></function>
       console.log('Save completed.');
-
+      notification.success({
+        message: 'Save changed',
+      });
       openNotification('bottomRight', `Save changed`);
     } catch (error) {
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
-      openNotification('bottomRight', error.response.data);
+      notification.error({
+        message: 'Error',
+      });
     }
   };
   const handleSaveDraft = async () => {
@@ -778,6 +784,9 @@ export default function FinishUp({ params }) {
 
       await updateReviewResponse(fetchedData.id, sendObj); // Call the syncUp <function styleName=""></function>
       console.log('Save completed.');
+      notification.success({
+        message: 'Save changes',
+      });
       openNotification('bottomRight', `Save changed`);
     } catch (error) {
       console.error('Error during synchronization:', error);
@@ -795,7 +804,9 @@ export default function FinishUp({ params }) {
 
       await updateReviewResponse(fetchedData.id, sendObj); // Call the syncUp <function styleName=""></function>
       console.log('Save completed.');
-      openNotification('bottomRight', `Save changed`);
+      notification.success({
+        message: 'Save changes',
+      });
     } catch (error) {
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
@@ -844,7 +855,83 @@ export default function FinishUp({ params }) {
   const handleChange = event => {
     setInputValue(event.target.value);
   };
-
+  const handleActionAccept = async async => {
+    try {
+      console.log('handleActionAccept ', fetchedData?.request?.id);
+      const result = await acceptRequest(params.id);
+      // fetchData();
+      notification.success({
+        message: 'Success',
+      });
+      const fetchData = async () => {
+        try {
+          setShowFinishupCV(false);
+  
+          const requestId = params.id;
+          const fetchedDataFromAPI = await getReviewResponse(requestId);
+          setFetchedData(fetchedDataFromAPI);
+          setOverall(fetchedDataFromAPI.overall);
+          const data = fetchedDataFromAPI.feedbackDetail;
+          // const data = await getFinishUp(1)
+          // const fetchedData = await getReviewResponse(expertId, requestId);
+  
+          console.log('FinishUp data: ', data);
+  
+          if (data === null) {
+            setFinishUpData(null);
+            return;
+          }
+          const cvId = data.cvId;
+          setFinishUpData(data);
+  
+          setShowFinishupCV(true);
+  
+          setTemplateSelected(data.templateType);
+          setToolbarState(data.cvStyle);
+  
+          setSummary(data.summary);
+  
+          // const data1 = await getAudit(cvId);
+          // setAuditData(data1);
+        } catch (error) {
+          if (error.response.data.error) {
+            setErrorMessage(error.response.data.error);
+          } else if (error.response.data) {
+            setErrorMessage(error.response.data);
+          } else {
+            setErrorMessage('Some thing went wrong!');
+          }
+  
+          console.error('Error fetching FinishUp data:', error);
+        }
+      };
+      const selection = window?.getSelection();
+      const selectedText = selection?.toString();
+  
+      console.log('selectedText: ', selectedText);
+  
+      fetchData();
+    } catch (error) {
+      console.log('error ', error);
+      notification.error({
+        message: 'Error',
+      });
+    }
+  };
+  const handleActionReject = async () => {
+    try {
+      console.log('handleActionReject ', params.id);
+      const result = await rejectRequest(params.id);
+      notification.success({
+        message: 'Success',
+      });
+    } catch (error) {
+      console.log('error ', error);
+      notification.error({
+        message: 'Error',
+      });
+    }
+  };
   return (
     <UserLayoutNoAuth
       selected="5"
@@ -857,7 +944,6 @@ export default function FinishUp({ params }) {
       }
       content={
         <div className="flex mt-8">
-          {contextHolder}
           {errorMessage && <Alert message="Error Text" description={errorMessage} type="error" />}
           {finishUpData && showFinishupCV ? (
             <></>
@@ -949,56 +1035,112 @@ export default function FinishUp({ params }) {
                   >
                     {filteredSections.map(section => section.canBeDisplayed && section.component)}
                   </CVLayoutReviewerView>
-                  {fetchedData?.request?.status === 'Done' && (
-                    <div style={{ marginBottom: '10px' }}>
-                    <textarea
-                      className="inputEl mb-16"
-                      value={overall}
-                      disabled={true}
-                      onChange={e => handleChangeOverall(e)}
-                    />
+                  {fetchedData?.request?.status === 'Waiting' && (
+                    <div>
+                      {' '}
+                      <button
+                        style={{
+                          height: '30px',
+                          marginTop: '10px',
+                          marginLeft: '10px',
+                          marginBottom: '10px',
+                        }}
+                        className="button"
+                        type=""
+                        onClick={() => handleActionAccept()}
+                      >
+                        Accecpt
+                      </button>
+                      <button
+                        style={{
+                          height: '30px',
+                          marginTop: '10px',
+                          marginLeft: '10px',
+                          marginBottom: '10px',
+                        }}
+                        className="button bg-red-500"
+                        type=""
+                        onClick={() => handleActionReject()}
+                      >
+                        Reject
+                      </button>
                     </div>
                   )}
-                  {fetchedData?.request?.status !== 'Done' ? (
-                    <div>
-                    <textarea
-                      className="inputEl"
-                      value={overall}
-                      onChange={e => handleChangeOverall(e)}
-                    />
+                  {fetchedData?.request?.status === 'Done' && (
+                    <div style={{ marginBottom: '10px' }}>
+                      <textarea
+                        className="inputEl mb-16"
+                        value={overall}
+                        disabled={true}
+                        onChange={e => handleChangeOverall(e)}
+                      />
 
-                    <button
-                      style={{
-                        height: '30px',
-                        marginTop: '10px',
-                        marginLeft: '10px',
-                        marginBottom: '10px',
-                      }}
-                      className="button"
-                      type=""
-                      onClick={() => handleSaveDraft()}
-                    >
-                      Save draft
-                    </button>
-
-                    <button
-                      style={{
-                        height: '30px',
-                        marginTop: '10px',
-                        marginLeft: '10px',
-                        marginBottom: '10px',
-                      }}
-                      className="button"
-                      type=""
-                      onClick={() => handleSave()}
-                    >
-                      Submit
-                    </button>
-                  </div>
-                  ) : (
-                    <div>
-                      
+                      <div>
+                        {fetchedData?.score && (
+                          <Card className="mt-8 mb-16">
+                            <div className="mt-4" style={{ textAlign: 'left' }}>
+                              <div className="flex">
+                                <div className="ml-4 flex">
+                                  <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
+                                    {fetchedData?.score}
+                                  </p>{' '}
+                                  <StarFilled style={{ color: '#FFC107' }} />
+                                </div>
+                                <div className="ml-4 text-gray-500"></div>
+                              </div>
+                              <div>
+                                {fetchedData?.comment ? (
+                                  <span
+                                    dangerouslySetInnerHTML={{ __html: fetchedData?.comment }}
+                                  />
+                                ) : (
+                                  <Empty />
+                                )}
+                              </div>
+                            </div>
+                          </Card>
+                        )}
+                      </div>
                     </div>
+                  )}
+                  {fetchedData?.request?.status === 'Processing' ? (
+                    <div>
+                      <textarea
+                        className="inputEl"
+                        value={overall}
+                        onChange={e => handleChangeOverall(e)}
+                      />
+
+                      <button
+                        style={{
+                          height: '30px',
+                          marginTop: '10px',
+                          marginLeft: '10px',
+                          marginBottom: '10px',
+                        }}
+                        className="button"
+                        type=""
+                        onClick={() => handleSaveDraft()}
+                      >
+                        Save draft
+                      </button>
+
+                      <button
+                        style={{
+                          height: '30px',
+                          marginTop: '10px',
+                          marginLeft: '10px',
+                          marginBottom: '10px',
+                        }}
+                        className="button"
+                        type=""
+                        onClick={() => handleSave()}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  ) : (
+                    <div></div>
                   )}
                 </div>
               ) : (

@@ -20,14 +20,6 @@ export default function ApplyJobModal({
   jobId,
   handleSuccess,
 }) {
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (placement, message) => {
-    api.info({
-      message: 'Notification',
-      description: message,
-      placement,
-    });
-  };
   const [form] = Form.useForm();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -91,20 +83,21 @@ export default function ApplyJobModal({
     try {
       setIsSubmitting(true);
       const result = await applyJob(jobId, values.resume, values.coverletter, values.note);
-      openNotification('bottomRight', `Success: ${result}`);
+      notification.success({
+        message: 'Success',
+      });
       setIsOpen(false);
       handleSuccess();
     } catch (error) {
-      console.log('error: ', error);
-      openNotification('bottomRight', `Error: ${error}`);
-      setIsOpen(false);
+      notification.error({
+        message: `Error: ${error?.response?.data}`,
+      }); 
     } finally {
       setIsSubmitting(false);
     }
   };
   return (
     <>
-      {contextHolder}
       <div className="inset-0 flex items-start justify-center ">
         <button
           style={{ width: '300px' }}
@@ -210,7 +203,6 @@ export default function ApplyJobModal({
                                   className="custom-label-normal"
                                   name="note"
                                   label="Notes for Hiring Manager"
-                                  
                                 >
                                   <Input
                                     className="custom-search"

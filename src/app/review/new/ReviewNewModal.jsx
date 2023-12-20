@@ -15,7 +15,6 @@ import useStore from '@/store/store';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export default function ReviewNewModal({ onCreated, resumes, expert }) {
-  const [api, contextHolder] = notification.useNotification();
 
 
   const { isLoading, isAuthenticated, error, user, getAccessTokenSilently } = useAuth0();
@@ -68,13 +67,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
   // }, [balance, refreshBalance]);
 
 
-  const openNotification = (placement, message) => {
-    api.info({
-      message: 'Notification',
-      description: message,
-      placement,
-    });
-  };
+
   console.log('price: ', expert?.price);
   const [form] = Form.useForm();
 
@@ -157,11 +150,15 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
     try {
       setIsSubmitting(true);
       const result = await createReview(values.resume, expert.id, values.optionId, values);
-      openNotification('bottomRight', `Send request successful.`);
+      notification.success({
+        message: 'Send request successful.',
+      });
       setIsOpen(false);
       refreshBalance();
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error.response.data}`);
+      notification.error({
+        message: `Error: ${error?.response?.data}`,
+      });
     } finally {
       setIsSubmitting(false);
       // refreshMoney();
@@ -169,7 +166,6 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
   };
   return (
     <>
-      {contextHolder}
       <div className="inset-0 flex items-start justify-center ">
         <button
           style={{ width: '300px' }}

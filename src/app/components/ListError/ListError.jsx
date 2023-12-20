@@ -41,7 +41,16 @@ const ListError = ({ errors }) => {
                   <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
                     {error?.title}
                   </h6>
-                  <p className="text-gray-600 text-xs leading-4 m-0">{error?.result}</p>
+
+                  <p
+                    className="text-gray-600 text-xs leading-4 m-0"
+                    dangerouslySetInnerHTML={{
+                      __html: `${error?.description.replace(
+                        /\n/g,
+                        '<br />',
+                      )} ${error?.result.replace(/\n/g, '<br />')}`,
+                    }}
+                  ></p>
                 </div>
                 <div className="pl-2 font-semibold min-w-[15px]">
                   <span className="text-red-700">{error?.count ? error?.count : 0}</span>
@@ -62,7 +71,15 @@ const ListError = ({ errors }) => {
                   <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
                     {error.title}
                   </h6>
-                  <p className="text-gray-600 text-xs leading-4 m-0">{error?.result}</p>
+                  <p
+                    className="text-gray-600 text-xs leading-4 m-0"
+                    dangerouslySetInnerHTML={{
+                      __html: `${error?.description?.replace(
+                        /\n/g,
+                        '<br />',
+                      )} ${error?.result?.replace(/\n/g, '<br />')}`,
+                    }}
+                  ></p>{' '}
                 </div>
                 <div className="pl-2 font-semibold min-w-[15px]">
                   <span className="text-orange-400">{error?.count ? error?.count : 0}</span>
@@ -106,7 +123,15 @@ const ListError = ({ errors }) => {
                         <h6 className="text-gray-600 text-sm align-baseline inline-block m-0 font-normal">
                           {error?.title}
                         </h6>
-                        <p className="text-gray-600 text-xs leading-4 m-0">{error?.description}</p>
+                        <p
+                          className="text-gray-600 text-xs leading-4 m-0"
+                          dangerouslySetInnerHTML={{
+                            __html: `${error?.description?.replace(
+                              /\n/g,
+                              '<br />',
+                            )} ${error?.result?.replace(/\n/g, '<br />')}`,
+                          }}
+                        ></p>{' '}
                       </div>
                       <div className="pl-2 font-semibold min-w-[15px]">
                         <span className="text-teal-400">{error?.count ? error?.count : 0}</span>

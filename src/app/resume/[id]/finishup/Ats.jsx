@@ -7,10 +7,12 @@ import { faCheckCircle, faCircle, faWarning } from '@fortawesome/free-solid-svg-
 import JobModal from '@/app/components/Modal/JobModal';
 import JobModalCreate from '@/app/components/Modal/JobModalCreate';
 import useStore from '@/store/store';
+import { data } from 'autoprefixer';
 
-const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
+const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
+  console.log('dataAts:', dataAts);
+  const [title, setTitle] = useState(dataAts?.title);
+  const [description, setDescription] = useState(dataAts?.description);
   const [isFetched, setIsFetched] = useState(false);
   function filterPass(filterData) {
     return filterData?.filter(content => content?.status === 'Pass');
@@ -20,14 +22,18 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
     try {
       console.log('cvId: ', cvId);
       const result = await getAts(cvId);
-      setDataAts(result.ats);
+      setDataAts(result);
       console.log('Ats:data: ', result);
-      setTitle(result.title);
-      setDescription(result.description);
-      setIsFetched(true);
+      // setTitle(result.title);
+      // setDescription(result.description);
+      const passed = filterPass(result.ats);
+      console.log(':passed: ', passed);
+
+      onGen(passed);
     } catch (error) {
-      setIsFetched(true);
       console.error('Error fetching FinishUp data:', error);
+    } finally {
+      setIsFetched(true);
     }
   };
 
@@ -110,10 +116,10 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
         },
       ],
     };
-    setDataAts(result.ats);
+    setDataAts(result);
 
-    setTitle(result.title);
-    setDescription(result.description);
+    // setTitle(result.title);
+    // setDescription(result.description);
     setIsFetched(true);
 
     const passed = filterPass(result.ats);
@@ -123,11 +129,15 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
     // setAts(passed);
   };
 
+  const handleCLickDisableHighLight = () => {
+    onDisableHightlight();
+  };
+
   const onCreated = () => {
     fetchData();
   };
 
-  const passedData = filterPass(dataAts);
+  const passedData = filterPass(dataAts?.ats);
 
   return (
     <div style={{ color: 'black', textAlign: 'left' }}>
@@ -156,12 +166,17 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen }) => {
               <button className="button cta mb-8" onClick={handleCLick}>
                 GENERATE
               </button>
-              Want to improve your chances of getting this role? Consider adding the following
-              keywords to your resume:
+              <button className="button cta mb-8" onClick={handleCLickDisableHighLight}>
+                DISABLE HIGHLIGHT
+              </button>
+              <div className="mt-4">
+                Want to improve your chances of getting this role? Consider adding the following
+                keywords to your resume:
+              </div>
             </span>
             <div className="mt-4">
               <div>
-                {dataAts?.map((content, index) => {
+                {dataAts?.ats?.map((content, index) => {
                   return (
                     <div key={index}>
                       {content.status === 'Warning' && (

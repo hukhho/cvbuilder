@@ -3,7 +3,7 @@
 import React, { use, useEffect, useState } from 'react';
 import './score.css';
 // import './button.css';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScoreCircle from './ScoreCirle';
 import Link from 'next/link';
@@ -39,11 +39,30 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
     console.log('Score Finish Up: data', data);
     console.log('Score Finish Up: content', content);
   }, [data]);
-
+  // Define a custom comparator function
+  const customComparator = (a, b) => {
+    if (a.score < a.max && b.score === b.max) {
+      return -1; // a should come before b
+    } else if (a.score === a.max && b.score < b.max) {
+      return 1; // b should come before a
+    } else {
+      return 0; // leave the order unchanged
+    }
+  };
+  // Sort the filtered arrays using the custom comparator
+  content.sort(customComparator);
+  optimization.sort(customComparator);
+  practice.sort(customComparator);
+  format.sort(customComparator);
   const filteredContent = content?.filter(item => item?.score < item?.max);
   const filteredOptimization = optimization?.filter(item => item?.score < item?.max);
   const filteredPractice = practice?.filter(item => item?.score < item?.max);
   const filteredFormat = format?.filter(item => item?.score < item?.max);
+
+  // const filteredContentPass = content?.filter(item => item?.score = item?.max);
+  // const filteredOptimizationPass = optimization?.filter(item => item?.score = item?.max);
+  // const filteredPracticePass = practice?.filter(item => item?.score = item?.max);
+  // const filteredFormatPass = format?.filter(item => item?.score = item?.max);
 
   return (
     <div className="score-wrapper">
@@ -75,86 +94,6 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
       <section>
         <h3>Score Breakdown</h3>
         <p>Audit results which affect your resume's score</p>
-        {/* <div className="breakdown-wrapper">
-          <div>
-            <a href="#audit-details" className="lh-gauge__wrapper lh-gauge__wrapper--average">
-              <div className="lh-gauge__svg-wrapper ">
-                <svg viewBox="0 0 120 120" className="lh-gauge">
-                  <circle className="lh-gauge-base" r={56} cx={60} cy={60} />
-                  <circle
-                    className="lh-gauge-arc"
-                    transform="rotate(-90 60 60)"
-                    r={56}
-                    cx={60}
-                    cy={60}
-                    style={{ strokeDasharray: `${scaledScoreContent}, 352` }}
-                  />
-                </svg>
-              </div>
-
-              <div className="lh-gauge__percentage">{scoreContent?.score}</div>
-              <div className="lh-gauge__label">Content</div>
-            </a>
-          </div>
-          <div>
-            <a href="#audit-details" className="lh-gauge__wrapper lh-gauge__wrapper--pass">
-              <div className="lh-gauge__svg-wrapper ">
-                <svg viewBox="0 0 120 120" className="lh-gauge">
-                  <circle className="lh-gauge-base" r={56} cx={60} cy={60} />
-                  <circle
-                    className="lh-gauge-arc"
-                    transform="rotate(-90 60 60)"
-                    r={56}
-                    cx={60}
-                    cy={60}
-                    style={{ strokeDasharray: `${scaledScoreFormat} , 352` }}
-                  />
-                </svg>
-              </div>
-              <div className="lh-gauge__percentage">{scoreFormat?.score}</div>
-              <div className="lh-gauge__label">Format</div>
-            </a>
-          </div>
-          <div>
-            <a href="#audit-details" className="lh-gauge__wrapper lh-gauge__wrapper--fail">
-              <div className="lh-gauge__svg-wrapper ">
-                <svg viewBox="0 0 120 120" className="lh-gauge">
-                  <circle className="lh-gauge-base" r={56} cx={60} cy={60} />
-                  <circle
-                    className="lh-gauge-arc"
-                    transform="rotate(-90 60 60)"
-                    r={56}
-                    cx={60}
-                    cy={60}
-                    style={{ strokeDasharray: `${scaledScoreOptimization} , 352` }}
-                  />
-                </svg>
-              </div>
-              <div className="lh-gauge__percentage">{scoreOptimization?.score}</div>
-              <div className="lh-gauge__label">Optimization</div>
-            </a>
-          </div>
-          <div>
-            <a href="#audit-details" className="lh-gauge__wrapper lh-gauge__wrapper--pass">
-              <div className="lh-gauge__svg-wrapper ">
-                <svg viewBox="0 0 120 120" className="lh-gauge">
-                  <circle className="lh-gauge-base" r={56} cx={60} cy={60} />
-                  <circle
-                    className="lh-gauge-arc"
-                    transform="rotate(-90 60 60)"
-                    r={56}
-                    cx={60}
-                    cy={60}
-                    style={{ strokeDasharray: `${scaledScorePractice} , 352` }}
-                  />
-                </svg>
-              </div>
-              <div className="lh-gauge__percentage">{scorePractice?.score}</div>
-              <div className="lh-gauge__label">Best practices</div>
-            </a>
-          </div>
-          <div></div>
-        </div> */}
         <ScoreCircle
           scoreContent={scoreContent}
           scoreFormat={scoreFormat}
@@ -206,15 +145,6 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
           >
             Practice
           </button>
-          {/* <button
-            href
-            data-size="default"
-            data-theme="default"
-            data-busy="false"
-            className="src-components-Button--kYf2WsZ80yU="
-          >
-            Best Practices
-          </button> */}
         </div>
         <div className="audit-details">
           <div className="details-head">
@@ -229,11 +159,15 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
           <div className="details-list">
             <ul>
               {activeSection === 'Content' &&
-                filteredContent?.map((item, index) => {
+                content?.map((item, index) => {
                   return (
                     <li>
                       <i>
-                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        {item?.score < item?.max ? (
+                          <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        ) : (
+                          <FontAwesomeIcon icon={faCircleCheck} className="text-teal-400" />
+                        )}
                       </i>
                       <div>
                         <h6>
@@ -258,7 +192,7 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                             without {item?.title.toLowerCase()}
                           </span>
                         </h6>
-                        <p>  {item?.description}</p>
+                        <p> {item?.description}</p>
                         <div>
                           {item?.analyze?.moreInfos?.map((itemChild, index) => (
                             <Link
@@ -274,13 +208,16 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                     </li>
                   );
                 })}
-
               {activeSection === 'Optimization' &&
-                filteredOptimization?.map((item, index) => {
+                optimization?.map((item, index) => {
                   return (
                     <li>
                       <i>
-                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        {item?.score < item?.max ? (
+                          <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        ) : (
+                          <FontAwesomeIcon icon={faCircleCheck} className="text-teal-400" />
+                        )}
                       </i>
                       <div>
                         <h6>
@@ -323,11 +260,15 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                 })}
 
               {activeSection === 'Practice' &&
-                filteredPractice?.map((item, index) => {
+                practice?.map((item, index) => {
                   return (
                     <li>
                       <i>
-                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        {item?.score < item?.max ? (
+                          <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        ) : (
+                          <FontAwesomeIcon icon={faCircleCheck} className="text-teal-400" />
+                        )}
                       </i>
                       <div>
                         <h6>
@@ -370,11 +311,15 @@ const ScoreFinishUp = ({ checked, onChange, data, cvId }) => {
                 })}
 
               {activeSection === 'Format' &&
-                filteredFormat?.map((item, index) => {
+                format?.map((item, index) => {
                   return (
                     <li>
                       <i>
-                        <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        {item?.score < item?.max ? (
+                          <FontAwesomeIcon icon={faTimesCircle} style={{ color: '#d40000' }} />
+                        ) : (
+                          <FontAwesomeIcon icon={faCircleCheck} className="text-teal-400" />
+                        )}
                       </i>
                       <div>
                         <h6>

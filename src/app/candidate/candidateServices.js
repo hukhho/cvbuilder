@@ -15,7 +15,7 @@ const getCandidateConfig = async () => {
 const getCandidatePurchases = async () => {
   try {
     const userId = getUserIdFromLocalStorage();
-    const response = await axiosInstance.get(`transaction/get-all/{user-id}?user-id=${userId}`);
+    const response = await axiosInstance.get(`transaction/get-all/${userId}`);
     return response.data;
   } catch (error) {
     throw error;

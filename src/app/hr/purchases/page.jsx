@@ -86,6 +86,7 @@ const Home = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getCandidatePurchases();
+      fetchedDataFromAPI.sort((b, a) => moment(a.createdDate) - moment(b.createdDate));
       setData(fetchedDataFromAPI);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
