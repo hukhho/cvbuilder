@@ -377,82 +377,82 @@ export default function FinishUp({ params }) {
     education: {},
     // Add other types here
   };
-  const handleRoleChange = (type, typeId, newRole) => {
-    console.log('handleRoleChange newRole', newRole, type, typeId);
-    switch (type) {
-      case 'experience':
-        console.log('handleRoleChange newRole experience', newRole, type, typeId);
-        const updatedExperiences = experiences.map(experience => {
-          if (experience.id === typeId) {
-            return {
-              ...experience,
-              role: newRole,
-            };
-          } else {
-            return experience;
-          }
-        });
-        console.log('updatedExperiences experience', updatedExperiences);
-        let newFinishUpData = { ...finishUpData };
-        newFinishUpData.experiences = updatedExperiences;
+  // const handleRoleChange = (type, typeId, newRole) => {
+  //   console.log('handleRoleChange newRole', newRole, type, typeId);
+  //   switch (type) {
+  //     case 'experience':
+  //       console.log('handleRoleChange newRole experience', newRole, type, typeId);
+  //       const updatedExperiences = experiences.map(experience => {
+  //         if (experience.id === typeId) {
+  //           return {
+  //             ...experience,
+  //             role: newRole,
+  //           };
+  //         } else {
+  //           return experience;
+  //         }
+  //       });
+  //       console.log('updatedExperiences experience', updatedExperiences);
+  //       let newFinishUpData = { ...finishUpData };
+  //       newFinishUpData.experiences = updatedExperiences;
 
-        setFinishUpData(newFinishUpData);
-        console.log('New finishup data after updatedExperiences:', newFinishUpData);
-    }
-  };
-  const handleOrgNameChange = (type, typeId, newData) => {
-    console.log('handleOrgNameChange newData', newData, type, typeId);
-    switch (type) {
-      case 'experience':
-        console.log('handleOrgNameChange newData experience', newData, type, typeId);
-        const updatedExperiences = experiences.map(experience => {
-          if (experience.id === typeId) {
-            return {
-              ...experience,
-              companyName: newData,
-            };
-          } else {
-            return experience;
-          }
-        });
-        console.log('updatedExperiences experience', updatedExperiences);
-        let newFinishUpData = { ...finishUpData };
-        newFinishUpData.experiences = updatedExperiences;
+  //       setFinishUpData(newFinishUpData);
+  //       console.log('New finishup data after updatedExperiences:', newFinishUpData);
+  //   }
+  // };
+  // const handleOrgNameChange = (type, typeId, newData) => {
+  //   console.log('handleOrgNameChange newData', newData, type, typeId);
+  //   switch (type) {
+  //     case 'experience':
+  //       console.log('handleOrgNameChange newData experience', newData, type, typeId);
+  //       const updatedExperiences = experiences.map(experience => {
+  //         if (experience.id === typeId) {
+  //           return {
+  //             ...experience,
+  //             companyName: newData,
+  //           };
+  //         } else {
+  //           return experience;
+  //         }
+  //       });
+  //       console.log('updatedExperiences experience', updatedExperiences);
+  //       let newFinishUpData = { ...finishUpData };
+  //       newFinishUpData.experiences = updatedExperiences;
 
-        setFinishUpData(newFinishUpData);
-        console.log('New finishup data after updatedExperiences:', newFinishUpData);
-    }
-  };
-  const handleDescriptionChange = (type, typeId, newData) => {
-    console.log('handleOrgNameChange newData', newData, type, typeId);
-    switch (type) {
-      case 'experience':
-        console.log('handleOrgNameChange newData experience', newData, type, typeId);
-        const updatedExperiences = experiences.map(experience => {
-          if (experience.id === typeId) {
-            return {
-              ...experience,
-              description: newData,
-            };
-          } else {
-            return experience;
-          }
-        });
-        console.log('updatedExperiences experience', updatedExperiences);
-        let newFinishUpData = { ...finishUpData };
-        newFinishUpData.experiences = updatedExperiences;
+  //       setFinishUpData(newFinishUpData);
+  //       console.log('New finishup data after updatedExperiences:', newFinishUpData);
+  //   }
+  // };
+  // const handleDescriptionChange = (type, typeId, newData) => {
+  //   console.log('handleOrgNameChange newData', newData, type, typeId);
+  //   switch (type) {
+  //     case 'experience':
+  //       console.log('handleOrgNameChange newData experience', newData, type, typeId);
+  //       const updatedExperiences = experiences.map(experience => {
+  //         if (experience.id === typeId) {
+  //           return {
+  //             ...experience,
+  //             description: newData,
+  //           };
+  //         } else {
+  //           return experience;
+  //         }
+  //       });
+  //       console.log('updatedExperiences experience', updatedExperiences);
+  //       let newFinishUpData = { ...finishUpData };
+  //       newFinishUpData.experiences = updatedExperiences;
 
-        setFinishUpData(newFinishUpData);
-        console.log('New finishup data after updatedExperiences:', newFinishUpData);
-    }
-  };
-  const handleSummaryChange = newData => {
-    let newFinishUpData = { ...finishUpData };
-    newFinishUpData.summary = newData;
+  //       setFinishUpData(newFinishUpData);
+  //       console.log('New finishup data after updatedExperiences:', newFinishUpData);
+  //   }
+  // };
+  // const handleSummaryChange = newData => {
+  //   let newFinishUpData = { ...finishUpData };
+  //   newFinishUpData.summary = newData;
 
-    setFinishUpData(newFinishUpData);
-    console.log('New finishup data after handleSummaryChange:', newFinishUpData);
-  };
+  //   setFinishUpData(newFinishUpData);
+  //   console.log('New finishup data after handleSummaryChange:', newFinishUpData);
+  // };
   const sections = [
     {
       id: 'information',
@@ -474,7 +474,6 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           highlightAts={highlightAts}
           summary={summary}
-          handleSummaryChange={handleSummaryChange}
         />
       ),
       canBeDrag: true, // Set to true if this section can be dragged
@@ -498,9 +497,6 @@ export default function FinishUp({ params }) {
             setFinishUpData(newFinishUpData);
             console.log('New finishup data:', newFinishUpData);
           }}
-          handleRoleChange={handleRoleChange}
-          handleOrgNameChange={handleOrgNameChange}
-          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       canBeDrag: true, // Set to true if this section can be dragged

@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, ConfigProvider, Input, Table, Typography, notification } from 'antd';
+import { Avatar, Badge, ConfigProvider, Input, Modal, Table, Typography, notification } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -41,8 +41,14 @@ const ExpertRequestPage = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getRequestList();
+
+
       setData(fetchedDataFromAPI);
+
+      fetchedDataFromAPI.sort((b, a) => moment(a?.receivedDate) - moment(b?.receivedDate));
+
       setSearchData(fetchedDataFromAPI);
+
     } catch (error) {}
   };
 
@@ -215,6 +221,7 @@ const ExpertRequestPage = () => {
         item.note.toLowerCase().includes(searchString)
       );
     });
+
     // Update the data state with the filtered data
     setSearchData(filteredData);
   };
@@ -222,6 +229,7 @@ const ExpertRequestPage = () => {
   useEffect(() => {
     console.log('useEffect');
     fetchData();
+
   }, []);
 
   return (

@@ -128,23 +128,7 @@ const CVLayout = React.forwardRef(
       useCORS: true, // Enable Cross-Origin Resource Sharing if needed
       logging: true, // Enable logging for debugging (optional)
     };
-    // const CaptureScreenshot = () => {
-    //   html2canvas(captureRef.current, captureOptions).then(canvas => {
-    //     console.log('canvas', canvas);
-    //     // Iterate through each element in the captured content
-    //     canvas.childNodes.forEach(element => {
-    //       // Apply sectionHeader styles
-    //       if (element.classList.contains('section-header')) {
-    //         Object.assign(element.style, sectionHeader);
-    //       }
-    //     });
 
-    //     const imgData = canvas.toDataURL('image/jpeg');
-    //     const pdf = new jsPDF('p', 'mm', [canvas.width / 10, canvas.height / 10]); // Adjust PDF size accordingly
-    //     pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 10, canvas.height / 10);
-    //     pdf.save(`${new Date().toISOString()}.pdf`);
-    //   });
-    // };
     const captureRef = useRef();
     const CaptureScreenshot = () => {
       console.log('cap');

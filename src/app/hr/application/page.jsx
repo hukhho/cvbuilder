@@ -52,6 +52,13 @@ const columns = [
     },
   },
   {
+    title: 'Job Posting',
+    dataIndex: 'jobPosting',
+    render: jobPosting => {
+      return <div>{jobPosting?.name}</div>;
+    },
+  },
+  {
     title: 'Candidate',
     dataIndex: 'candidateName',
   },
@@ -147,22 +154,20 @@ const HRApplicationPage = () => {
     fetchData();
   }, []);
 
-
   const [searchValue, setSearchValue] = useState();
 
-  const onSearch = (value) => {
+  const onSearch = value => {
     if (value) {
       setSearchValue(value);
-      const filtered = data.filter(item => item.candidateName.toLowerCase().includes(value.toLowerCase()));
+      const filtered = data.filter(item =>
+        item.candidateName.toLowerCase().includes(value.toLowerCase()),
+      );
       setFilteredData(filtered);
     } else {
       setSearchValue();
       setFilteredData(data);
     }
   };
-
-
-
 
   return (
     <ConfigProvider>
@@ -183,14 +188,14 @@ const HRApplicationPage = () => {
               {/* <Title level={5}>CV Review Table</Title> */}
             </div>
             <div>
-               <Search
+              <Search
                 allowClear
                 placeholder="Search candidate name"
                 size="large"
                 defaultValue={searchValue}
                 onSearch={onSearch}
               />
-              
+
               {/* <Input className="" placeholder="Search the candiatename" /> */}
             </div>
             <div className="!p-0 mb-5 mt-5 card">

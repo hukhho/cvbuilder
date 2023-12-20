@@ -51,6 +51,7 @@ const columns = [
       return <Badge status="warning" text={text} />;
     },
   },
+  
   {
     title: 'View',
     dataIndex: 'view',

@@ -109,7 +109,7 @@ const items = [
     ), // fad fa-file
     label: (
       <Link href="/hr/list">
-        <span style={{ color: '#ffffff', fontSize: 11 }}>HR ZONE</span>
+        <span style={{ color: '#ffffff', fontSize: 11 }}>MY DASHBOARD</span>
       </Link>
     ),
     roles: ['ADMIN', 'HR'], // Define roles that can access this item
@@ -119,7 +119,7 @@ const items = [
     icon: <FileDoneOutlined />, // fad fa-file
     label: (
       <Link href="/review/list/expert">
-        <span style={{ color: '#ffffff', fontSize: 11 }}>REVIEW MY RESUME</span>
+        <span style={{ color: '#ffffff', fontSize: 11 }}>REVIEW BY EXPERT</span>
       </Link>
     ),
     roles: ['ADMIN', 'CANDIDATE'], // Define roles that can access this item
@@ -129,7 +129,7 @@ const items = [
     icon: <FileDoneOutlined />, // fad fa-file
     label: (
       <Link href="/expert/config">
-        <span style={{ color: '#ffffff', fontSize: 11 }}>EXPERT CONFIG</span>
+        <span style={{ color: '#ffffff', fontSize: 11 }}>MY PROFILE</span>
       </Link>
     ),
     roles: ['ADMIN', 'EXPERT'], // Define roles that can access this item
@@ -139,7 +139,7 @@ const items = [
     icon: <FileDoneOutlined />, // fad fa-file
     label: (
       <Link href="/hr/config">
-        <span style={{ color: '#ffffff', fontSize: 11 }}>HR CONFIG</span>
+        <span style={{ color: '#ffffff', fontSize: 11 }}>MY PROFILE</span>
       </Link>
     ),
     roles: ['ADMIN', 'HR'], // Define roles that can access this item
@@ -149,7 +149,7 @@ const items = [
     icon: <FileDoneOutlined />, // fad fa-file
     label: (
       <Link href="/candidate/config">
-        <span style={{ color: '#ffffff', fontSize: 11 }}>CANDIDATE CONFIG</span>
+        <span style={{ color: '#ffffff', fontSize: 11 }}>MY PROFILE</span>
       </Link>
     ),
     roles: ['ADMIN', 'CANDIDATE'], // Define roles that can access this item
@@ -159,7 +159,7 @@ const items = [
     icon: <FileDoneOutlined />, // fad fa-file
     label: (
       <Link href="/job/list">
-        <span style={{ color: '#ffffff', fontSize: 11 }}>JOB LIST</span>
+        <span style={{ color: '#ffffff', fontSize: 11 }}>BROWSE THE JOB</span>
       </Link>
     ),
     roles: ['ADMIN', 'CANDIDATE', 'HR'], // Define roles that can access this item
@@ -252,19 +252,6 @@ const UserLayout = React.memo(
                 zIndex: 99,
               }}
             >
-              {/* <div style={{ ...styles.compareBox }}>
-           <CanvasGradient
-             animated
-             angle={62} // Adjust the angle to create a wave effect (e.g., 0 for a horizontal wave)
-             stops={[
-               { offset: 0.1, color: COLORS.Primary },
-               { offset: 0.2, color: COLORS.Primary },
-               { offset: 0.75, color: COLORS.Secondary },
-               { offset: 0.75, color: COLORS.Three },
-               { offset: 0.5, color: COLORS.Primary },
-             ]}
-           />
-         </div> */}
               <Space
                 direction="vertical"
                 size="middle"
@@ -457,7 +444,7 @@ const UserLayout = React.memo(
                   {!isCollapsed && (
                     <div style={{ position: 'absolute', top: '-15px', right: 50, zIndex: 0 }}>
                       <Space align="center">
-                        <Avatar src={avatar} size={30} /> 
+                        <Avatar src={avatar} size={30} />
                         <span className="mock-block">{email}</span>
                       </Space>
                     </div>

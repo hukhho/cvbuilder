@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
   Avatar,
   Button,
@@ -16,6 +16,7 @@ import {
   Modal,
   Radio,
   Select,
+  Space,
   Switch,
   TreeSelect,
   Typography,
@@ -29,7 +30,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getResumes } from '@/app/utils/indexService';
 
-import { StarFilled } from '@ant-design/icons';
+import { ExclamationCircleFilled, StarFilled } from '@ant-design/icons';
 import Search from 'antd/es/input/Search';
 import Link from 'next/link';
 import UserHeaderHR from '@/app/components/UserHeaderHR';
@@ -40,6 +41,7 @@ import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
 import { getJobPosting, updateHrPublic, updateHrShare, updateHrUnshare } from '../../hrServices';
 import useStore from '@/store/store';
+import { Dialog, Transition } from '@headlessui/react';
 
 const { Title } = Typography;
 
@@ -80,6 +82,7 @@ const HRUpdatePost = ({ params }) => {
   const { avatar, email, userRole } = useStore();
 
   const [form] = Form.useForm();
+  const { confirm } = Modal;
 
   const [deadlineString, setDeadlineString] = useState();
 
@@ -124,6 +127,7 @@ const HRUpdatePost = ({ params }) => {
   const [salaryName, setSalaryName] = useState('');
   const [salaryFrom, setSalaryFrom] = useState('');
   const [salaryTo, setSalaryTo] = useState('');
+  const [isLimited, setIsLimited] = useState(false);
 
   const handleChangeSalaryName = value => {
     setSalaryName(value);
@@ -163,7 +167,14 @@ const HRUpdatePost = ({ params }) => {
   };
 
   const [searchValue, setSearchValue] = useState('');
+  let [isOpen, setIsOpen] = useState(false);
+  function closeModal() {
+    setIsOpen(false);
+  }
 
+  function openModal() {
+    setIsOpen(true);
+  }
   const onSearch = async (value, _e, info) => {
     const result = await searchExperts(value);
     setExperts(result);
@@ -192,19 +203,33 @@ const HRUpdatePost = ({ params }) => {
 
   const onChangeSwitch = checked => {
     console.log(`switch to ${checked}`);
+    setIsLimited(checked);
   };
 
   const [openSuccess, setOpenSuccess] = useState(false);
 
   const onFinish = async values => {
-    values.salary = salaryName;
     values.deadline = deadlineString;
-
+    values.isLimited = isLimited;
+    if (!isLimited) {
+      values.applyAgain = 99;
+    }
     console.log('Form data:', values);
     try {
       const result = await updateHrPublic(params.id, values);
+      notification.success({
+        message: 'Save success',
+      });
+
       setOpenSuccess(true);
+      setIsOpen(true);
+      fetchJobPosting();
+
     } catch (error) {
+      notification.error({
+        message: 'Save error',
+      });
+
       console.log('error: ', error);
     }
   };
@@ -218,22 +243,57 @@ const HRUpdatePost = ({ params }) => {
     e.preventDefault();
     try {
       const result = await updateHrUnshare(params.id);
-      openNotification('bottomRight', `Save changed: ${result}`);
+      notification.success({
+        message: 'Save success',
+      });
+      fetchJobPosting();
+
     } catch (error) {
-      console.log('error: ', error);
-      openNotification('bottomRight', `Error: ${error}`);
+      notification.eror({
+        message: 'Error',
+      });
     }
   };
   const handleClickShare = async e => {
     e.preventDefault();
     try {
       const result = await updateHrShare(params.id);
-      openNotification('bottomRight', `Save changed: ${result}`);
+      notification.success({
+        message: 'Save success',
+      });
+      fetchJobPosting();
+
     } catch (error) {
       console.log('error: ', error);
-      openNotification('bottomRight', `Error: ${error}`);
+      notification.error({
+        message: 'Error',
+      });
     }
   };
+  const showPromiseConfirmShare = e => {
+    confirm({
+      title: 'Do you want to publish this post?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this Post will be Published!',
+      async onOk() {
+        await handleClickShare(e);
+      },
+      onCancel() {},
+    });
+  };
+
+  const showPromiseConfirmUnshare = e => {
+    confirm({
+      title: 'Do you want to unpublish this post?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this Post will be Unpublished!',
+      async onOk() {
+        await handleClickUnshare(e);
+      },
+      onCancel() {},
+    });
+  };
+
   return (
     <ConfigProvider>
       <UserLayout
@@ -244,48 +304,99 @@ const HRUpdatePost = ({ params }) => {
         selected="3"
         userHeader={<HeaderHR initialEnabledCategories={enabledCategories} />}
         content={
-          <div className="container">
-            {contextHolder}
-            <Modal
-              title="Update post success"
-              centered
-              open={openSuccess}
-              onOk={e => handleClick(e)}
-              width={1000}
-            >
-              Successs
-            </Modal>{' '}
-            <div className="!p-0">
+          <div className="">
+            <div>
+              <>
+                <Transition appear show={isOpen} as={Fragment}>
+                  <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0"
+                      enterTo="opacity-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <div className="fixed inset-0 bg-black/25" />
+                    </Transition.Child>
+
+                    <div className="fixed inset-0 overflow-y-auto">
+                      <div className="flex min-h-full items-center justify-center p-4 text-center">
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-out duration-300"
+                          enterFrom="opacity-0 scale-95"
+                          enterTo="opacity-100 scale-100"
+                          leave="ease-in duration-200"
+                          leaveFrom="opacity-100 scale-100"
+                          leaveTo="opacity-0 scale-95"
+                        >
+                          <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Title
+                              as="h3"
+                              className="text-lg font-medium leading-6 text-gray-900"
+                            >
+                              Successful
+                            </Dialog.Title>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                Your post has been save successfully.
+                              </p>
+                            </div>
+
+                            <div className="mt-4">
+                              <button
+                                type="button"
+                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                onClick={() => {
+                                  closeModal();
+                                }}
+                              >
+                                Got it, thanks!
+                              </button>
+                            </div>
+                          </Dialog.Panel>
+                        </Transition.Child>
+                      </div>
+                    </div>
+                  </Dialog>
+                </Transition>
+              </>
+            </div>
+            <div className="!p-0" style={{ width: 900 }}>
               <div className="mt-8">
                 <Card>
                   <Title level={4}>Update a job posting</Title>
-                  <p>Update a job posting</p>
+                  <p>Update job posting</p>
                 </Card>
               </div>
-              <div className="mt-16">
+              <div className="mt-16" style={{ width: 900 }}>
                 <Form
-                  labelCol={{
-                    span: 4,
-                  }}
-                  wrapperCol={{
-                    span: 10,
-                  }}
-                  layout="horizontal"
+                  layout="vertical"
                   initialValues={{
                     size: 'large',
+                    workingType: 'Full Time', // Set the default value here
+                    applyAgain: 1,
                   }}
-                  style={{}}
+                  requiredMark={false}
                   form={form}
                   onFinish={onFinish}
                 >
-                  <Form.Item name="title" label="JOB TITLE">
-                    <Input />
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    className="custom-label"
+                    name="title"
+                    label="JOB TITLE *"
+                  >
+                    <Input className="inputEl" />
                   </Form.Item>
-                  <Form.Item name="workingType" label="TYPE OF JOB">
+                  <Form.Item className="custom-label" name="workingType" label="TYPE OF JOB">
                     <Select
                       defaultValue="Full Time"
                       style={{
-                        width: 120,
+                        width: 350,
+                        height: '60px',
                       }}
                       onChange={handleChangeSelectJobType}
                       options={[
@@ -304,68 +415,161 @@ const HRUpdatePost = ({ params }) => {
                       ]}
                     />
                   </Form.Item>
-                  <div className="">
-                    <Form.Item name="companyName" label="COMPANY NAME">
-                      <Input placeholder="Google" />
+                  <Space.Compact block>
+                    {' '}
+                    <Form.Item
+                      className="custom-label"
+                      name="companyName"
+                      label="COMPANY NAME"
+                      style={{
+                        width: '40%',
+                        marginRight: '10px',
+                      }}
+                    >
+                      <Input className="inputEl" placeholder="Google" disabled />
                     </Form.Item>
-                    <Form.Item name="location" label="COMPANY LOCATION">
-                      <Input placeholder="New York" disabled />
+                    <Form.Item
+                      className="custom-label"
+                      name="location"
+                      label="COMPANY LOCATION"
+                      style={{
+                        width: '40%',
+                        marginRight: '10px',
+                      }}
+                    >
+                      <Input className="inputEl" placeholder="New York" disabled />
                     </Form.Item>
-                    <Form.Item name="avatar" label="COMPANY AVATAR">
+                    <Form.Item
+                      className="custom-label"
+                      name="avatar"
+                      label="COMPANY AVATAR"
+                      style={{
+                        width: '20%',
+                      }}
+                    >
                       <Input hidden />
-                      <Avatar size="large" src={data?.avatar} />
+                      <Avatar size="large" src={data?.companyLogo} />
                     </Form.Item>
-                  </div>
-                  <Form.Item name="about" label="About">
-                    <Input.TextArea disabled placeholder="About the company" rows={10} />
+                  </Space.Compact>
+                  <Form.Item className="custom-label" name="about" label="About">
+                    <Input.TextArea className="inputEl" placeholder="About the company" rows={10} />
                   </Form.Item>
-                  <Form.Item name="salary" className="salary" label="SALARY">
-                    <Input placeholder="Up to $5000" />
+                  <Form.Item className="custom-label" name="salary" label="SALARY">
+                    <Input className="inputEl" placeholder="Salary" />
                   </Form.Item>
-                  <Form.Item name="benefit" label="Benefit">
+                  <Form.Item className="custom-label" name="benefit" label="Benefit">
                     <Input.TextArea
+                      className="inputEl"
                       placeholder="Say about what benefits candidate can recieve"
                       rows={10}
                     />
                   </Form.Item>
-                  <Form.Item name="requirement" label="Job Requirement">
-                    <Input.TextArea placeholder="Say about requirement of the job" rows={10} />
+                  <Form.Item className="custom-label" name="requirement" label="Job Requirement">
+                    <Input.TextArea
+                      className="inputEl"
+                      placeholder="Say about requirement of the job"
+                      rows={10}
+                    />
                   </Form.Item>
-                  <Form.Item name="description" label="Job Description">
-                    <Input.TextArea placeholder="Say about the description of the job" rows={10} />
+                  <Form.Item className="custom-label" name="description" label="Job Description">
+                    <Input.TextArea
+                      className="inputEl"
+                      placeholder="Say about the description of the job"
+                      rows={10}
+                    />
                   </Form.Item>
-                  <Form.Item name="skill" label="Skills">
+                  <Form.Item name="skill" className="custom-label" label="Skills">
                     <Select
                       mode="tags"
                       style={{
                         width: '100%',
+                        height: 50,
                       }}
                       placeholder="Tags Mode"
                       onChange={handleChangeTag}
                       options={options}
                     />
                   </Form.Item>
-                  <Form.Item name="deadline" label="Deadline">
-                    <DatePicker format="YYYY-MM-DD" onChange={onChangeDate} />
-                  </Form.Item>
-                  <div className="ml-20">
-                    <Switch defaultChecked onChange={onChangeSwitch} />
-                    <span className="ml-4">Not Allow Candidate to apply many time in a job</span>
+                  <div
+                    className="custom-space-item-2"
+                    style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <Form.Item
+                      className="custom-item custom-label"
+                      name="deadline"
+                      rules={[{ required: true }]}
+                      label="Deadline *"
+                    >
+                      <DatePicker
+                        style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
+                        className="inputEl"
+                        format="YYYY-MM-DD"
+                        onChange={onChangeDate}
+                      />
+                    </Form.Item>
+
+                    <div className="custom-item custom-label">
+                      <div className="">
+                        <Switch
+                          value={isLimited}
+                          defaultChecked={isLimited}
+                          onChange={onChangeSwitch}
+                        />
+                        <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                      </div>
+                      <Form.Item className="mb-4" name="applyAgain">
+                        {isLimited && (
+                          <InputNumber className="inputEl" defaultValue={1} min={1} type="number" />
+                        )}
+                      </Form.Item>
+
+                      <Form.Item
+                        className="custom-label"
+                        name="share"
+                        label="Status"
+                      >
+                        <Input
+                          className="inputEl"
+                          disabled
+                        />
+                      </Form.Item>
+                    </div>
                   </div>
-                  <Form.Item name="applyAgain" label="Apply Again">
-                    <InputNumber defaultValue={0} />
+                  <Form.Item>
+                    <div className="flex items-between">
+                      <Button
+                        style={{
+                          height: 35,
+                          width: '78%',
+                          marginRight: '12px',
+                        }}
+                        type="primary"
+                        htmlType="submit"
+                      >
+                        UPDATE
+                      </Button>
+                      <Button
+                        style={{
+                          height: 35,
+                          width: '18%',
+                          background: 'white',
+                        }}
+                        onClick={e => showPromiseConfirmShare(e)}
+                      >
+                        PUBLISH
+                      </Button>
+                      <Button
+                        style={{
+                          height: 35,
+                          width: '18%',
+                          background: 'white',
+                        }}
+                        onClick={e => showPromiseConfirmUnshare(e)}
+                      >
+                        UNPUBLISH
+                      </Button>
+                    </div>
                   </Form.Item>
-                  <div className="flex ml-32 pb-16">
-                    <Button type="primary" htmlType="submit">
-                      Update
-                    </Button>
-                    <Button type="primary" onClick={handleClickShare} className="bg-blue-600 ml-10">
-                      Publish
-                    </Button>
-                    <Button type="button" onClick={handleClickUnshare} className="bg-red-500 ml-10">
-                      Unpublish
-                    </Button>
-                  </div>
                 </Form>
               </div>
             </div>

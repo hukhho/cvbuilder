@@ -22,9 +22,6 @@ const StandardItem = props => {
     threeItem,
     fourItem,
     fiveItem,
-    handleRoleChange,
-    handleOrgNameChange,
-    handleDescriptionChange,
     highlightAts,
   } = props;
 
@@ -33,29 +30,6 @@ const StandardItem = props => {
     searchWords = highlightAts.map(at => at?.ats);
   }
   console.log('hStandardItem:highlightAts::: ', highlightAts);
-  const roleState = useRef(role);
-  const orgNameState = useRef(orgName);
-  const descriptionState = useRef(description);
-
-  const handleChange = (evt, targetName) => {
-    console.log('handleChange: ', evt.target.value);
-    if (targetName === 'role') {
-      orgNameState.current = evt.target.value;
-      handleRoleChange(type, typeId, evt.target.value);
-    } else if (targetName === 'orgName') {
-      orgNameState.current = evt.target.value;
-      handleOrgNameChange(type, typeId, evt.target.value);
-    } else if (targetName === 'description') {
-      descriptionState.current = evt.target.value;
-      handleDescriptionChange(type, typeId, evt.target.value);
-    }
-  };
-
-  const handleBlur = (evt, targetName) => {
-    if (targetName === 'role') {
-      console.log('handleBlur: ', roleState.current);
-    }
-  };
 
   const renderTitle = () => {
     if (titleProps) {
@@ -72,13 +46,6 @@ const StandardItem = props => {
             className="relative whitespace-pre-line"
             style={{ fontWeight: 700, fontSize: '0.85em' }}
           >
-            <div className="relative">
-              {/* <p className="editableContent ghost-hightlight w-full designStudio ">
-              <span>
-                <span className="">{titleProps}</span>
-              </span>
-            </p> */}
-            </div>
             {searchWords && searchWords.length > 0 ? (
               <Highlighter
                 id="XHKKXx5eVL-skill"
@@ -495,45 +462,42 @@ const StandardItem = props => {
                       marginBottom: 11,
                     }}
                   >
-                    <i
-                      className="fas fa-sort absolute left-[20px] null top-1 text-gray-400 opacity-0 group-hover:opacity-100 transition duration-300 cursor-grab z-50 "
-                      aria-hidden="true"
-                    />
                     <div className="">
-                      <div className="flex gap-2">
-                        <span className="text-[#000000]" style={{ color: 'rgb(0, 0, 0)' }}>
-                          {roleState && (
+                      {role && (
+                        <div className="flex gap-2">
+                          <span className="text-[#1E2245]" style={{ color: 'rgb(30, 34, 69)' }}>
                             <div
                               className="inline-block font-semibold text-[1em] before:first:hidden before:absolute before:content-[',_']"
-                              style={{ color: 'rgb(0, 0, 0)' }}
+                              style={{ color: 'rgb(30, 34, 69)' }}
                             >
-                              <ContentEditable
-                                className="editableContent cursor-text text-[1em]  ml-0 designStudio "
-                                html={roleState.current}
-                                onBlur={e => handleBlur(e, 'role')}
-                                onChange={e => handleChange(e, 'role')}
-                              />
+                              <span
+                                className="editableContent cursor-text text-[1em] leading-snug ml-0 designStudio "
+                                id="LfWZnVqHS-qualification"
+                                // // contentEditable="true"
+                              >
+                                {role}
+                              </span>
                             </div>
-                          )}
-                        </span>
-                      </div>
+                          </span>
+                        </div>
+                      )}
+
                       <div className="flex gap-2 justify-between font-semibold">
                         <div>
-                          {orgNameState && (
+                          {orgName && (
                             <span
                               className="before:first:hidden before:content-['•_'] before:mr-0.5 font-semibold"
                               style={{ fontSize: '0.85em' }}
                             >
-                              <ContentEditable
+                              <p
                                 className="editableContent cursor-text mr-1 whitespace-pre-wrap designStudio "
                                 style={{
                                   display: 'inline',
                                   verticalAlign: 'initial',
                                 }}
-                                html={orgNameState.current}
-                                onBlur={e => handleBlur(e, 'orgName')}
-                                onChange={e => handleChange(e, 'orgName')}
-                              />
+                              >
+                                {orgName}
+                              </p>
                             </span>
                           )}
                         </div>
@@ -546,7 +510,6 @@ const StandardItem = props => {
                               <span
                                 className="editableContent cursor-text ml-0 designStudio "
                                 id="smpl125032021-duration"
-                                // contentEditable="true"
                               >
                                 {duration}
                               </span>
@@ -560,7 +523,6 @@ const StandardItem = props => {
                               <span
                                 className="editableContent cursor-text ml-2 designStudio "
                                 id="smpl125032021-location"
-                                // contentEditable="true"
                               >
                                 {location}
                               </span>
@@ -569,76 +531,35 @@ const StandardItem = props => {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="text-[0.85em] relative whitespace-pre-line "
-                      style={{
-                        fontSize: '0.85em',
-                        fontWeight: 100,
-                      }}
-                    >
-                      {/* <div className="relative">
-                        <p className="editableContent ghost-hightlight w-full designStudio ">
-                          <span>
-                            <span className="">{description}</span>
-                          </span>
-                        </p>
-                      </div> */}
-                      {searchWords && searchWords.length > 0 ? (
-                        <Highlighter
-                          id="LfWZnVqHS-description"
-                          highlightClassName="editableContent cursor-text  designStudio"
-                          searchWords={searchWords} // Use dynamically generated searchWords
-                          autoEscape
-                          textToHighlight={description}
-                        />
-                      ) : (
-                        <p
-                          className="editableContent cursor-text  designStudio "
-                          id="LfWZnVqHS-description"
-                          // // contentEditable="true"
-                        >
-                          {description}
-                        </p>
-                      )}
-
-                      {/* <p
-                        className="editableContent cursor-text  designStudio "
-                        id="smpl125032021-description"
-                        // contentEditable="true"
+                    {description && (
+                      <div
+                        className="text-[0.85em] relative whitespace-pre-line "
+                        style={{
+                          fontSize: '0.85em',
+                          fontWeight: 100,
+                        }}
                       >
-                        <ContentEditable
-                          html={descriptionState.current}
-                          onBlur={e => handleBlur(e, 'description')}
-                          onChange={e => handleChange(e, 'description')}
-                        />
-                        {description}
-                      </p> */}
-                    </div>
+                        {searchWords && searchWords?.length > 0 ? (
+                          <Highlighter
+                            id="LfWZnVqHS-description"
+                            highlightClassName="editableContent cursor-text designStudio"
+                            searchWords={searchWords}
+                            autoEscape
+                            textToHighlight={description}
+                          />
+                        ) : (
+                          <p
+                            className="designStudio"
+                            id="LfWZnVqHS-description"
+                            dangerouslySetInnerHTML={{
+                              __html: description,
+                            }}
+                          />
+                        )}
+                      </div>
+                    )}
                   </li>
                 </ul>
-                <div id="DndDescribedBy-2" style={{ display: 'none' }}>
-                  To pick up a draggable item, press the space bar. While dragging, use the arrow
-                  keys to move the item. Press space again to drop the item in its new position, or
-                  press escape to cancel.
-                </div>
-                <div
-                  id="DndLiveRegion-1"
-                  role="status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                  style={{
-                    position: 'fixed',
-                    width: 1,
-                    height: 1,
-                    margin: '-1px',
-                    border: 0,
-                    padding: 0,
-                    overflow: 'hidden',
-                    clip: 'rect(0px, 0px, 0px, 0px)',
-                    clipPath: 'inset(100%)',
-                    whiteSpace: 'nowrap',
-                  }}
-                />
               </div>
             </div>
           );
@@ -654,22 +575,23 @@ const StandardItem = props => {
                   aria-hidden="true"
                 />
                 <div className="">
-                  <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
-                    <span
-                      className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
-                      id="smpl029042021-role"
-                      // contentEditable="true"
-                      style={{ display: 'inline', verticalAlign: 'baseline' }}
-                    >
-                      {role}
+                  {role && (
+                    <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
+                      <span
+                        className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
+                        id="smpl029042021-role"
+                        style={{ display: 'inline', verticalAlign: 'baseline' }}
+                      >
+                        {role}
+                      </span>
                     </span>
-                  </span>
+                  )}
+
                   {orgName && (
                     <span className="text-[#2e3d50] text-[9pt] leading-normal inline whitespace-pre-wrap font-bold before:first:hidden before:content-['|_'] before:mr-[2px] before:inline">
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-company"
-                        // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {orgName}
@@ -681,7 +603,6 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-location"
-                        // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {location}
@@ -693,7 +614,6 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text whitespace-pre-wrap mr-[3px] designStudio "
                         id="smpl029042021-duration"
-                        // contentEditable="true"
                         style={{ display: 'inline', verticalAlign: 'baseline' }}
                       >
                         {duration}
@@ -722,7 +642,6 @@ const StandardItem = props => {
                     <p
                       className="editableContent cursor-text  designStudio "
                       id="LfWZnVqHS-description"
-                      // // contentEditable="true"
                     >
                       {description}
                     </p>
@@ -749,7 +668,6 @@ const StandardItem = props => {
                   <span
                     className="editableContent cursor-text mr-1.5 ml-0 designStudio "
                     id="smpl125032021-role"
-                    // contentEditable="true"
                     style={{ display: 'inline' }}
                   >
                     {role}
@@ -762,7 +680,6 @@ const StandardItem = props => {
                   <span
                     className="editableContent cursor-text mr-1.5 ml-2 designStudio "
                     id="smpl125032021-company"
-                    // contentEditable="true"
                     style={{ display: 'inline' }}
                   >
                     {orgName}
@@ -777,7 +694,6 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text  designStudio "
                         id="smpl125032021-duration"
-                        // contentEditable="true"
                         style={{ display: 'inline' }}
                       >
                         {duration}
@@ -792,7 +708,6 @@ const StandardItem = props => {
                       <span
                         className="editableContent cursor-text  designStudio "
                         id="smpl125032021-location"
-                        // contentEditable="true"
                         style={{ display: 'inline' }}
                       >
                         {location}
@@ -810,13 +725,6 @@ const StandardItem = props => {
                   fontWeight: 400,
                 }}
               >
-                {/* <div className="relative">
-                  <p className="editableContent ghost-hightlight w-full designStudio ">
-                    <span>
-                      <span className="">• cc</span>
-                    </span>
-                  </p>
-                </div> */}
                 {searchWords && searchWords.length > 0 ? (
                   <Highlighter
                     id="LfWZnVqHS-description"
