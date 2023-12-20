@@ -15,8 +15,6 @@ import useStore from '@/store/store';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export default function ReviewNewModal({ onCreated, resumes, expert }) {
-
-
   const { isLoading, isAuthenticated, error, user, getAccessTokenSilently } = useAuth0();
   const { setMessage, setEmail, setAvatar, setUserRole, setBalance } = useStore();
 
@@ -37,7 +35,6 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
       setAvatar(data.avatar);
       setBalance(data.accountBalance);
       setUserRole(data.role.roleName);
- 
     } catch (fetchError) {
       console.error('Fetching user data error:', fetchError);
       setMessage(JSON.stringify(fetchError, null, 2));
@@ -56,8 +53,6 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
 
   // }, []);
 
-
-
   const { balance, refreshBalance } = useStore();
 
   // useEffect(() => {
@@ -65,8 +60,6 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
   //     refreshBalance();
   //   }
   // }, [balance, refreshBalance]);
-
-
 
   console.log('price: ', expert?.price);
   const [form] = Form.useForm();
@@ -220,44 +213,7 @@ export default function ReviewNewModal({ onCreated, resumes, expert }) {
                     </button>
                     <div className="container px-4 py-6">
                       <div className="!p-0 mb-5 mt-9 card">
-                        <div className="flex ">
-                          <div className="bg-rezi-blue text-white p-9 rounded-l-lg w-[30%]">
-                            <h5 className="uppercase mb-1 text-xs text-yellow-400">
-                              Your Selection
-                            </h5>
-                            <div>
-                              <h1 className="text-4xl">
-                                {/* <sup className="text-sm align-top top-0"> total</sup> */}
-                              </h1>
-                              <span className="text-xs mt-1 mb-6 leading-4 block"></span>
-                            </div>
-                            <ul className="mb-6">
-                              <li className="text-xs mb-2 py-0.5 min-w-[200px]">
-                                <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />
-                                Score 90 or above
-                              </li>
-                              <li className="text-xs mb-2 py-0.5 min-w-[200px]">
-                                <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />{' '}
-                                Corrected Formatting
-                              </li>
-                              <li className="text-xs mb-2 py-0.5 min-w-[200px]">
-                                <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />{' '}
-                                Analyzed Content
-                              </li>
-                              <li className="text-xs mb-2 py-0.5 min-w-[200px]">
-                                <FontAwesomeIcon icon={faCheck} className="mr-1 text-[#48c9b0]" />{' '}
-                                Improved Grammar
-                              </li>
-                            </ul>
-                            <hr className="mb-6" />
-                            <h4>Questions?</h4>
-                            <span className="text-xs mt-1 mb-6 leading-4 block">
-                              <a target="_blank" style={{ color: 'white' }}>
-                                Frequent Questions &amp; Answers{' '}
-                                <i className="fad fa-chevron-right" aria-hidden="true" />
-                              </a>
-                            </span>
-                          </div>
+                        <div className="flex justify-center" style={{}}>
                           <div className="p-9 w-[70%]" style={{ color: 'black' }}>
                             <h2>Resume Review</h2>
                             <p>

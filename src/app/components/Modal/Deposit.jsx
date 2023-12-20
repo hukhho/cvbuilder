@@ -89,7 +89,7 @@ export default function Deposit({ onCreated }) {
           onClick={openModal}
         >
           <i className="fad fa-file-plus" aria-hidden="true" />
-          <span>Deposit Money</span>
+          <span>Deposit credit</span>
         </button>
       </div>
 
@@ -138,7 +138,7 @@ export default function Deposit({ onCreated }) {
                           </div>
                           <div id="null-portal-root" />
                         </label>
-                       
+
                         <div className="relative">
                           <input
                             name="expenditure"
@@ -157,7 +157,6 @@ export default function Deposit({ onCreated }) {
                               : ''}
                           </span>
                         </div>
-
                       </div>
 
                       <button

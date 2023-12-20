@@ -113,9 +113,9 @@ const Home = () => {
                     <span className="text-gray-600">Add Resume Photo</span>
                   </div>
                 </div>
-                <Card style={{ width: 200, height: 300, marginRight: 50 }}>
+                <Card style={{ width: 200, height: 300, marginRight: 50, textAlign: 'center' }}>
                   <Title level={5}>Monthly</Title>
-                  <div>
+                  <div style={{ fontSize: '30px', fontWeight: 700 }}>
                     {Number(data?.vipMonthRatio).toLocaleString('vi-VN', {
                       style: 'currency',
                       currency: 'VND',
@@ -125,9 +125,9 @@ const Home = () => {
                     <MonthSub money={data?.vipMonthRatio} />
                   </div>
                 </Card>
-                <Card style={{ width: 200, height: 300, marginRight: 50 }}>
+                <Card style={{ width: 200, height: 300, marginRight: 50, textAlign: 'center' }}>
                   <Title level={5}>Annualy</Title>
-                  <div>
+                  <div style={{ fontSize: '30px', fontWeight: 700 }}>
                     {Number(data?.vipYearRatio).toLocaleString('vi-VN', {
                       style: 'currency',
                       currency: 'VND',

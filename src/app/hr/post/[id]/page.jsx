@@ -41,6 +41,7 @@ import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
 import { getJobPosting, updateHrPublic, updateHrShare, updateHrUnshare } from '../../hrServices';
 import useStore from '@/store/store';
+import '../../../components/Form/customtext.css';
 import { Dialog, Transition } from '@headlessui/react';
 
 const { Title } = Typography;
