@@ -238,7 +238,7 @@ const Home = () => {
       render: (text, record) => (
         <div>
           {record.status === 'PROCESSING' && (
-            <button onClick={() => showPromiseConfirm(record.id)}>Finish confirm</button>
+            <button onClick={() => showPromiseConfirm(record?.requestId)}>Finish confirm</button>
           )}
         </div>
       ),
