@@ -163,9 +163,9 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
                   );
                 })}
               </div>
-              <button className="button cta mb-8" onClick={handleCLick}>
+              {/* <button className="button cta mb-8" onClick={handleCLick}>
                 GENERATE
-              </button>
+              </button> */}
               <button className="button cta mb-8" onClick={handleCLickDisableHighLight}>
                 DISABLE HIGHLIGHT
               </button>
