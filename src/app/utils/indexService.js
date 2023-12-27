@@ -26,6 +26,16 @@ const getResumes = async () => {
     throw error;
   }
 };
+
+const getResumesCvs = async () => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(`/user/${userId}/cvs/resume`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getBalance = async () => {
   try {
     const response = await axiosInstancev1.get('/messages/protected/me');
@@ -123,4 +133,5 @@ export {
   getUserIdFromLocalStorage,
   getResumesCoverLetter,
   getBalance,
+  getResumesCvs,
 };

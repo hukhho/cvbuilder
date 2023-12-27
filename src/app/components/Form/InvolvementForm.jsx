@@ -1,13 +1,13 @@
 /* eslint-disable */
 
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import { Button, Form, Input, InputNumber, Space, Switch, Typography } from 'antd';
+import { Button, Form, Input, InputNumber, Space, Switch, Typography, notification } from 'antd';
 import moment from 'moment';
 import DataService from '@/app/utils/dataService';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
-import { format, parse } from 'date-fns';
+import { format, parse, startOfMonth } from 'date-fns';
 import './customtext.css';
 import { Box } from '@chakra-ui/react';
 
@@ -20,6 +20,8 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
+  const minStartDate = startOfMonth(new Date());
+  const [isSubmiting, setIsSubmiting] = useState(false);
 
   const resizeTextArea = () => {
     inputRef.current.style.height = 'auto';
@@ -60,7 +62,14 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
 
   const handleSubmit = async values => {
     try {
+      setIsSubmiting(true);
       values.description = inputValue;
+      if (endDate < startDate) {
+        notification.error({
+          message: `Error: End date must be after start date`,
+        });
+        return;
+      }
       if (isCurrentlyWorking) {
         values.duration = `${format(startDate, 'MMMM yyyy')} - Present`;
       } else {
@@ -88,7 +97,12 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
       }
       onCreated();
     } catch (error) {
+      notification.error({
+        message: `Error: ${error}`,
+      });
       console.log('Submit Project Form. Error:', error);
+    } finally {
+      setIsSubmiting(false);
     }
   };
 
@@ -122,7 +136,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
       }
     }
   };
-  
+
   const handleInputChange = event => {
     const newInputValue = event.target.value;
 
@@ -172,7 +186,13 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
 
   return (
     <div className="" style={{ width: '100%' }}>
-      <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
+      <Form
+        onFinish={handleSubmit}
+        form={form}
+        layout="vertical"
+        autoComplete="off"
+        requiredMark={false}
+      >
         <Form.Item
           name="organizationRole"
           label={
@@ -192,10 +212,11 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
         </Form.Item>
         <Form.Item
           name="organizationName"
+          rules={[{ required: true }]}
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                FOR WHICH <strong>ORGANIZATION</strong> DID YOU WORK?
+                FOR WHICH <strong>ORGANIZATION</strong> DID YOU WORK? *
               </span>
             </label>
           }
@@ -211,10 +232,11 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
         <Space.Compact block>
           <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
+              rules={[{ required: true }]}
               label={
                 <label style={{}}>
                   <span className="custom-text whitespace-nowrap">
-                    <strong>HOW LONG</strong> WERE YOU WITH THE ORGANIZATION?
+                    <strong>HOW LONG</strong> WERE YOU WITH THE ORGANIZATION? *
                   </span>
                 </label>
               }
@@ -229,6 +251,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
                       selected={startDate}
                       onChange={date => setStartDate(date)}
                       placeholderText={format(new Date(), 'MMMM yyyy')}
+                      maxDate={endDate || minStartDate}
                     />
                   </div>
                   <div style={{ marginTop: '13px', marginLeft: '6px', marginRight: '6px' }}>-</div>
@@ -241,6 +264,9 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
                       onChange={date => setEndDate(date)}
                       customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
                       placeholderText={format(new Date(), 'MMMM yyyy')}
+                      disabled={!startDate} // Disable if start date is not selected
+                      minDate={startDate || minStartDate}
+                      maxDate={minStartDate}
                     />
                   </div>
                 </div>
@@ -267,7 +293,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
             </Form.Item>
           </div>
         </Space.Compact>
-       
+
         <Form.Item
           name="description"
           label={
@@ -309,6 +335,7 @@ const InvolvementForm = ({ cvId, onCreated, data }) => {
           className="involvement-section button "
           id="involvement-section-save-to-list"
           type="submit"
+          disabled={isSubmiting}
         >
           Save to Involvement list
         </button>

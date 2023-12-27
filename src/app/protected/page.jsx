@@ -25,6 +25,7 @@ const ProtectedPage = () => {
         return;
       }
       if (data) {
+        console.log('ProtectedPage accessToken', accessToken);
         localStorage.setItem('accessToken', accessToken);
 
         localStorage.setItem('email', data?.email);

@@ -1,4 +1,4 @@
-import { getBalance } from '@/app/utils/indexService';
+import { getBalance, getResumesCvs } from '@/app/utils/indexService';
 import { create } from 'zustand';
 
 const useStore = create(set => {
@@ -21,6 +21,20 @@ const useStore = create(set => {
     balance: -1,
     balance1: 0,
     ats: [],
+    resumes: [], // Initialize as an empty array
+    setResumes: resumes => set({ resumes }),
+    refreshResumes: async () => {
+      if (typeof window !== 'undefined') {
+        try {
+          const newResumes = await getResumesCvs();
+          console.log('Fetched new resumes:', newResumes); // Log fetched balance
+          set({ resumes: newResumes });
+        } catch (error) {
+          console.error('Error refreshing balance:', error); // Error logging
+        }
+      }
+    },
+
     setAts: ats => set({ ats }),
     setBalance: balance => set({ balance }),
     setBalance1: balance1 => set({ balance1 }),

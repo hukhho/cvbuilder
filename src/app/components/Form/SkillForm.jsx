@@ -59,13 +59,20 @@ const SkillsForm = ({ cvId, onCreated, data }) => {
   };
   return (
     <div className="" style={{ minWidth: '852.13px' }}>
-      <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
+      <Form
+        onFinish={handleSubmit}
+        form={form}
+        layout="vertical"
+        autoComplete="off"
+        requiredMark={false}
+      >
         <Form.Item
           name="description"
+          rules={[{ required: true }]}
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                ENTER THE <strong>SKILLS</strong> YOU POSSESS
+                ENTER THE <strong>SKILLS</strong> YOU POSSESS *
               </span>
             </label>
           }

@@ -1,13 +1,13 @@
 /* eslint-disable */
 
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import { Button, Form, Input, InputNumber, Space, Switch, Typography } from 'antd';
+import { Button, Form, Input, InputNumber, Space, Switch, Typography, notification } from 'antd';
 import moment from 'moment';
 import DataService from '@/app/utils/dataService';
 import { createExperience, updateExperience } from '@/app/resume/[id]/experience/experienceService';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
 import TextArea from 'antd/es/input/TextArea';
-import { format, parse } from 'date-fns';
+import { format, parse, startOfMonth } from 'date-fns';
 import './customtext.css';
 import { Box } from '@chakra-ui/react';
 
@@ -20,6 +20,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
+  const minStartDate = startOfMonth(new Date());
 
   const [isSubmiting, setIsSubmiting] = useState(false);
 
@@ -65,6 +66,12 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
 
     try {
       values.description = inputValue;
+      if (endDate < startDate) {
+        notification.error({
+          message: `Error: End date must be after start date`,
+        });
+        return;
+      }
       if (isCurrentlyWorking) {
         values.duration = `${format(startDate, 'MMMM yyyy')} - Present`;
       } else {
@@ -92,6 +99,9 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
       }
       onCreated();
     } catch (error) {
+      notification.error({
+        message: `Error: ${error}`,
+      });
       console.log('Submit Project Form. Error:', error);
     } finally {
       setIsSubmiting(false);
@@ -248,6 +258,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
                       selected={startDate}
                       onChange={date => setStartDate(date)}
                       placeholderText={format(new Date(), 'MMMM yyyy')}
+                      maxDate={endDate || minStartDate}
                     />
                   </div>
                   <div style={{ marginTop: '13px', marginLeft: '6px', marginRight: '6px' }}>-</div>
@@ -260,6 +271,9 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
                       onChange={date => setEndDate(date)}
                       customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
                       placeholderText={format(new Date(), 'MMMM yyyy')}
+                      disabled={!startDate} // Disable if start date is not selected
+                      minDate={startDate || minStartDate}
+                      maxDate={minStartDate}
                     />
                   </div>
                 </div>

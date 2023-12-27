@@ -1,6 +1,10 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import getContact from '../resume/[id]/contact/contactService';
+import { getResumesCvs } from '../utils/indexService';
+import useStore from '@/store/store';
 
 // Define the categories outside of the component.
 const categories = [
@@ -17,21 +21,36 @@ const categories = [
 
 const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
   const [enabledCategories, setEnabledCategories] = useState(initialEnabledCategories);
-  const [data, setData] = useState();
+  // const [data, setData] = useState();
 
   // const fetchData = async () => {
   //   try {
-  //     const fetchedData = await getContact(cvId);
+  //     const fetchedData = await getResumesCvs();
   //     setData(fetchedData);
+  //     console.log('fetchedData', fetchedData);
   //   } catch (error) {
   //     console.error('There was an error fetching the data', error);
   //   }
   // };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [cvId]); // Dependency array should include cvId.
+  const { resumes, refreshResumes } = useStore();
+  let isMounted = true;
+  useEffect(() => {
+    isMounted = true;
+    if (!isMounted) {
+      return;
+    }
+    if (resumes.length === 0) {
+      refreshResumes();
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Dependency array should include cvId.
+  console.log('resumes: ', resumes);
 
+  const resumeName = resumes.find(resume => resume.id == cvId)?.resumeName;
+  console.log('resumeName: ', resumeName);
   return (
     <div className="w-[1255px] h-[25px] relative flex space-x-8">
       <div className="flex items-center">
@@ -39,7 +58,7 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
           <div
             className="text-neutral-600 text-xs font-bold uppercase leading-3 truncate ..."
             style={{
-              maxWidth: '100px',
+              maxWidth: '200px',
               fontFamily: '"Source Sans Pro", sans-serif',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
@@ -50,7 +69,7 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
               letterSpacing: 'normal',
             }}
           >
-            RESUME
+            {resumeName}
           </div>
         </div>
       </div>

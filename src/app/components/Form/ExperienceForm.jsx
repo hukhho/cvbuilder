@@ -15,6 +15,7 @@ import {
   Spin,
   Switch,
   Typography,
+  notification,
 } from 'antd';
 import moment from 'moment';
 import DatePicker, { CalendarContainer } from 'react-datepicker';
@@ -22,7 +23,7 @@ import TextArea from 'antd/es/input/TextArea';
 // import './date.css';
 // import './datepicker.css';
 import './ai.css';
-import { format, parse } from 'date-fns';
+import { format, parse, startOfMonth } from 'date-fns';
 import { lobster } from '@/app/font';
 import {
   Box,
@@ -56,6 +57,8 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
+  // Ensure start date is this month or later
+  const minStartDate = startOfMonth(new Date());
 
   const resizeTextArea = () => {
     inputRef.current.style.height = 'auto';
@@ -100,6 +103,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     setIsSubmiting(true);
     try {
       values.description = inputValue;
+      if (endDate < startDate) {
+        notification.error({
+          message: `Error: End date must be after start date`,
+        });
+        return;
+      }
       if (isCurrentlyWorking) {
         values.duration = `${format(startDate, 'MMMM yyyy')} - Present`;
       } else {
@@ -123,6 +132,9 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       }
       onExperienceCreated();
     } catch (error) {
+      notification.error({
+        message: `Error: ${error}`,
+      });
       console.log('Submit ExperienceForm. Error:', error);
     } finally {
       setIsSubmiting(false);
@@ -416,8 +428,6 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
 
       textarea.setSelectionRange(selectionStartState, selectionEndState);
       textarea.focus();
-
-
     } catch (error) {
       setIsAiLoading(false);
       console.error('Error:', error);
@@ -571,11 +581,12 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         <Space.Compact style={{}} block>
           <div style={{ width: '50%', textAlign: 'start', marginRight: '10px' }}>
             <Form.Item
+              rules={[{ required: true }]}
               label={
                 <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                   <div className="flex gap-2 items-center text-xs">
                     <span>
-                      <strong>HOW LONG</strong> WERE YOU WITH THE COMPANY?
+                      <strong>HOW LONG</strong> WERE YOU WITH THE COMPANY? *
                     </span>
                   </div>
                 </label>
@@ -591,6 +602,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                       selected={startDate}
                       onChange={date => setStartDate(date)}
                       placeholderText={format(new Date(), 'MMMM yyyy')}
+                      maxDate={endDate || minStartDate}
                     />
                   </div>
                   <div style={{ marginTop: '13px', marginLeft: '6px', marginRight: '6px' }}>-</div>
@@ -603,6 +615,9 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
                       onChange={date => setEndDate(date)}
                       customInput={isCurrentlyWorking ? <ExampleCustomInput /> : null}
                       placeholderText={format(new Date(), 'MMMM yyyy')}
+                      disabled={!startDate} // Disable if start date is not selected
+                      minDate={startDate || minStartDate}
+                      maxDate={minStartDate}
                     />
                   </div>
                 </div>
@@ -809,10 +824,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
             </button>
           </div>
         </Form.Item>
-     
       </Form>
-
-    
     </div>
   );
 };
