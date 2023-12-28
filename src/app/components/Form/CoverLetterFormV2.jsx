@@ -13,6 +13,7 @@ import {
   Select,
   Slider,
   Spin,
+  Switch,
 } from 'antd';
 
 import DataService from '@/app/utils/dataService';
@@ -45,7 +46,14 @@ const formatter = value => {
   return `${value}`; // Default case
 };
 
-const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCreated }) => {
+const CoverLetterFormV2 = ({
+  coverLetterId,
+  data,
+  resumeData,
+  listResumes,
+  onCreated,
+  options,
+}) => {
   const router = useRouter();
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
@@ -67,7 +75,33 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
     setDate(dateString);
   };
   const [cvId, setCvId] = useState();
+  const [selectedOption, setSelectedOption] = useState();
 
+  const handleChange = value => {
+    setSelectedOption(value);
+
+    // Assuming 'value' is a string that needs to be compared, parse it to an integer first.
+    const valueToFind = parseInt(value, 10);
+
+    // Now, find the option where the parsed integer value of option.value matches valueToFind.
+    const option = options.find(option => parseInt(option?.value, 10) === valueToFind);
+
+    // 'option' will be the object from the options array where the value matches, or undefined if no match is found.
+
+    console.log('option', option);
+
+    console.log(`selected ${value}`);
+    form.setFieldsValue({
+      job_title: option?.title,
+      company: option?.company,
+      job_description: option?.description,
+    });
+  };
+  const [disabled, setDisabled] = useState(false);
+
+  const toggle = () => {
+    setDisabled(!disabled);
+  };
   const handleSubmit = async values => {
     try {
       values.temperature = slider;
@@ -173,6 +207,34 @@ const CoverLetterFormV2 = ({ coverLetterId, data, resumeData, listResumes, onCre
             value={cvId}
             options={resumeOptions}
           />
+        </Form.Item>
+        <Form.Item
+          name="jobPostingId"
+          label={
+            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
+              <div className="flex gap-2 items-center text-xs">CHOOSE THE TARGET JOB *</div>
+              <div className="ml-10 flex">
+                <span className="text-gray-300" style={{ fontSize: 13 }}>
+                  Choose from job list
+                </span>
+              </div>
+              <Switch className="mt-2" onClick={toggle} defaultChecked />
+            </label>
+          }
+        >
+          {!disabled && (
+            <Select
+              style={{
+                height: 50,
+                maxWidth: '270px',
+                width: '100%',
+              }}
+              className=""
+              value={selectedOption}
+              onChange={handleChange}
+              options={options}
+            />
+          )}
         </Form.Item>
         <Form.Item
           name="job_title"

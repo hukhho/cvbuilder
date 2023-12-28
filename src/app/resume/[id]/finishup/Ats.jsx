@@ -7,7 +7,8 @@ import { faCheckCircle, faCircle, faWarning } from '@fortawesome/free-solid-svg-
 import JobModal from '@/app/components/Modal/JobModal';
 import JobModalCreate from '@/app/components/Modal/JobModalCreate';
 import useStore from '@/store/store';
-import { data } from 'autoprefixer';
+import { getAllExperiences } from '../experience/experienceService';
+import { getJobLists } from '@/app/utils/indexService';
 
 const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
   console.log('dataAts:', dataAts);
@@ -22,10 +23,12 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
     try {
       console.log('cvId: ', cvId);
       const result = await getAts(cvId);
+
       setDataAts(result);
       console.log('Ats:data: ', result);
       // setTitle(result.title);
       // setDescription(result.description);
+
       const passed = filterPass(result.ats);
       console.log(':passed: ', passed);
 
@@ -37,10 +40,32 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
     }
   };
 
+  const [experiences, setExperiences] = useState([]);
+
+  const fetchExperiences = async () => {
+    try {
+      const data = await getJobLists();
+      console.log('data getAllExperiences ', data);
+
+      setExperiences(data);
+    } catch (error) {
+      console.error('There was an error fetching the experiences', error);
+    }
+  };
+
+  const options = experiences.map(item => ({
+    value: `${item?.id}`,
+    label: `${item?.title} at ${item?.companyName}`,
+    title: item?.title,
+    description: item?.description,
+    company: item?.companyName,
+  }));
+
   useEffect(() => {
     console.log('~page Ats.jsx');
     if (dataAts === undefined || dataAts === null) {
       fetchData();
+      fetchExperiences();
     }
   }, []);
 
@@ -202,6 +227,7 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
                 onCreated={onCreated}
                 title={title}
                 description={description}
+                options={options}
               />
             )}
           </div>

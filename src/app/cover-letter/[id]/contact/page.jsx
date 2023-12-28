@@ -10,7 +10,7 @@ import UserCoverLetterBuilderHeader from '@/app/components/UserCoverLetterBuilde
 
 import CoverLetterFormV2 from '@/app/components/Form/CoverLetterFormV2';
 
-import { getResumes, getResumesCoverLetter } from '@/app/utils/indexService';
+import { getJobLists, getResumes, getResumesCoverLetter } from '@/app/utils/indexService';
 import getCoverLetter from '../finishup/getCoverLetter';
 import getContact from '@/app/resume/[id]/contact/contactService';
 import UserLayout from '@/app/components/Layout/UserLayout';
@@ -54,9 +54,30 @@ const Contact = ({ params }) => {
     }
   };
 
+  const [experiences, setExperiences] = useState([]);
+
+  const fetchExperiences = async () => {
+    try {
+      const data = await getJobLists();
+      console.log('data getAllExperiences ', data);
+
+      setExperiences(data);
+    } catch (error) {
+      console.error('There was an error fetching the experiences', error);
+    }
+  };
+
+  const options = experiences.map(item => ({
+    value: `${item?.id}`,
+    label: `${item?.title} at ${item?.companyName}`,
+    title: item?.title,
+    description: item?.description,
+    company: item?.companyName,
+  }));
   useEffect(() => {
     fetchData();
     fetchResumes();
+    fetchExperiences();
   }, []);
 
   return (
@@ -82,6 +103,7 @@ const Contact = ({ params }) => {
                   resumeData={resumeData}
                   listResumes={listResumes}
                   data={contactData}
+                  options={options}
                 />
               </div>
             </div>

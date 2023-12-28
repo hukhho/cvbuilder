@@ -36,6 +36,15 @@ const getResumesCvs = async () => {
     throw error;
   }
 };
+
+const getJobLists = async () => {
+  try {
+    const response = await axiosInstance.get('/job-postings/generation/description');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 const getBalance = async () => {
   try {
     const response = await axiosInstancev1.get('/messages/protected/me');
@@ -134,4 +143,5 @@ export {
   getResumesCoverLetter,
   getBalance,
   getResumesCvs,
+  getJobLists,
 };

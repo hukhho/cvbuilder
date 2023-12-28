@@ -207,7 +207,8 @@ export default function FinishUp({ params }) {
 
   const { avatar, email, userRole, ats, setAts } = useStore();
   const enabledCategories = { 'FINISH UP': true };
-
+  
+  
   // useEffect(() => {
   //   setShowFinishupCV(false);
   // }, []);
