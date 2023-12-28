@@ -17,6 +17,7 @@ const AuthenticationGuard = ({ children }) => {
     let isMounted = true;
     const getMessage = async () => {
       const accessToken = await getAccessTokenSilently();
+      localStorage.setItem('accessToken', accessToken);
 
       console.log('accessToken123', accessToken);
 
@@ -27,8 +28,6 @@ const AuthenticationGuard = ({ children }) => {
       }
       if (data) {
         console.log("ProtectedPage accessToken", accessToken)
-        localStorage.setItem('accessToken', accessToken);
-
         localStorage.setItem('email', data?.email);
         localStorage.setItem('avatar', data?.avatar);
         localStorage.setItem('userId', data?.id);

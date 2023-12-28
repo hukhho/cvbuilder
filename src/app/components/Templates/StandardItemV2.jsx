@@ -68,28 +68,27 @@ const StandardItemV2 = props => {
     const commentRegex = /<comment[^>]*>([\s\S]*?)<\/comment>/g;
     const comments = [];
     let match;
-    
+
     while ((match = commentRegex.exec(description))) {
       const commentContent = match[0].trim();
       if (commentContent) {
         comments.push(commentContent);
       }
     }
-    
+
     console.log('comments: ', comments);
-    
+
     if (comments.length === 0) {
       return null;
     }
-    
-  
+
     // Extracting comments from the description using a regular expression
 
     // const comments = description.match(/<comment(.*?)<\/comment>/s);
     if (!comments || isShowCommentBox === false) {
       return null;
     }
-    
+
     return comments.map((comment, index) => {
       const commentId = comment.match(/id="(.*?)"/)[1];
       console.log('commentId:', commentId);
@@ -258,13 +257,20 @@ const StandardItemV2 = props => {
                   fontWeight: 100,
                 }}
               >
-                <p
+                {/* <p
                   className="editableContent cursor-text  designStudio "
                   id="LfWZnVqHS-description"
                   // // contentEditable="true"
                 >
                   {description}
-                </p>
+                </p> */}
+                <p
+                  className="editableContent cursor-text designStudio"
+                  id={randomId}
+                  onMouseUp={event => onComment(event, type, randomId, dataId)}
+                  dangerouslySetInnerHTML={{ __html: description }}
+                />
+                {renderComments()}
               </div>
             </div>
           );
@@ -361,13 +367,20 @@ const StandardItemV2 = props => {
                       fontWeight: 400,
                     }}
                   >
-                    <p
+                    {/* <p
                       className="editableContent cursor-text  designStudio "
                       id="smpl029042021-description"
                       // // contentEditable="true"
                     >
                       {description}
-                    </p>
+                    </p> */}
+                    <p
+                      className="editableContent cursor-text designStudio"
+                      id={randomId}
+                      onMouseUp={event => onComment(event, type, randomId, dataId)}
+                      dangerouslySetInnerHTML={{ __html: description }}
+                    />
+                    {renderComments()}
                   </div>
                 </div>
               </div>
@@ -479,13 +492,20 @@ const StandardItemV2 = props => {
                     </span>
                   </p> */}
                 </div>
-                <p
+                {/* <p
                   className="editableContent cursor-text  designStudio "
                   id="ncQ-wVn_6-description"
                   // // contentEditable="true"
                 >
                   {description}
-                </p>
+                </p> */}
+                <p
+                  className="editableContent cursor-text designStudio"
+                  id={randomId}
+                  onMouseUp={event => onComment(event, type, randomId, dataId)}
+                  dangerouslySetInnerHTML={{ __html: description }}
+                />
+                {renderComments()}
               </div>
             </div>
           );
@@ -686,13 +706,20 @@ const StandardItemV2 = props => {
                     fontWeight: 400,
                   }}
                 >
-                  <p
+                  {/* <p
                     className="editableContent cursor-text  designStudio "
                     id="smpl029042021-description"
                     // contentEditable="true"
                   >
                     {description}
-                  </p>
+                  </p> */}
+                  <p
+                    className="editableContent cursor-text designStudio"
+                    id={randomId}
+                    onMouseUp={event => onComment(event, type, randomId, dataId)}
+                    dangerouslySetInnerHTML={{ __html: description }}
+                  />
+                  {renderComments()}
                 </div>
               </div>
             </div>
@@ -783,13 +810,20 @@ const StandardItemV2 = props => {
                     </span>
                   </p>
                 </div> */}
-                <p
+                {/* <p
                   className="editableContent cursor-text  designStudio "
                   id="smpl125032021-description"
                   // contentEditable="true"
                 >
                   {description}
-                </p>
+                </p> */}
+                <p
+                  className="editableContent cursor-text designStudio"
+                  id={randomId}
+                  onMouseUp={event => onComment(event, type, randomId, dataId)}
+                  dangerouslySetInnerHTML={{ __html: description }}
+                />
+                {renderComments()}
               </div>
             </div>
           );

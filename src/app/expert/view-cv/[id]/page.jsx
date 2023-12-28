@@ -43,11 +43,11 @@ import { Box, VStack } from '@chakra-ui/react';
 import { CommentOutlined, ExclamationCircleFilled, StarFilled } from '@ant-design/icons';
 import Link from 'next/link';
 import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
-import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
-import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
-import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
-import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
-import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
+import EducationsSection from '@/app/components/Templates/SectionComponentsV2/EducationsSection';
+import SkillsSection from '@/app/components/Templates/SectionComponentsV2/SkillsSection';
+import ProjectSection from '@/app/components/Templates/SectionComponentsV2/ProjectSection';
+import CertificationSection from '@/app/components/Templates/SectionComponentsV2/CertificationSection';
+import InvolvementSection from '@/app/components/Templates/SectionComponentsV2/InvolvementsSection';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import { acceptRequest, getRequestList, rejectRequest } from '../../expertServices';
 import moment from 'moment';
@@ -119,14 +119,124 @@ export default function FinishUp({ params }) {
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
 
-  const filteredEducations = educations?.filter(education => education.isDisplay === true);
-  const filteredProjects = projects?.filter(project => project.isDisplay === true);
-  const filteredInvolvements = involvements?.filter(involvement => involvement.isDisplay === true);
-  const filteredCertifications = certifications?.filter(
-    certification => certification.isDisplay === true,
-  );
-  const filteredSkills = skills?.filter(skill => skill.isDisplay === true);
-  const filteredExperiences = experiences?.filter(experience => experience.isDisplay === true);
+  const theOrders = {
+    summary: 99,
+    experiences: 99,
+    educations: 99,
+    involvements: 99,
+    projects: 99,
+    certifications: 99,
+    skills: 99,
+  };
+  // const theOrders =  {
+  //   summary: 2,
+  //   experiences: 1,
+  //   educations: 3,
+  //   projects: 4,
+  //   certifications: 5,
+  //   involvements: 99,
+  //   skills: 6
+  // }
+  const [theOrder, setTheOrder] = useState(theOrders);
+
+  const filteredEducations = educations?.filter(education => {
+    // Check if education is displayable (isDisplay is true)
+    if (education.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if degree is not null
+    if (education.degree === null || education.degree === undefined || education.degree === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the education in the filtered list
+    return true;
+  });
+
+  const filteredProjects = projects?.filter(project => {
+    // Check if project is displayable (isDisplay is true)
+    if (project.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if title is not null, undefined, or an empty string
+    if (project.title === null || project.title === undefined || project.title === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the project in the filtered list
+    return true;
+  });
+  const filteredInvolvements = involvements?.filter(involvement => {
+    // Check if involvement is displayable (isDisplay is true)
+    if (involvement.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if organizationName is not null, undefined, or an empty string
+    if (
+      involvement.organizationName === null ||
+      involvement.organizationName === undefined ||
+      involvement.organizationName === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the involvement in the filtered list
+    return true;
+  });
+  const filteredCertifications = certifications?.filter(certification => {
+    // Check if certification is displayable (isDisplay is true)
+    if (certification.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if name is not null, undefined, or an empty string
+    if (
+      certification.name === null ||
+      certification.name === undefined ||
+      certification.name === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the certification in the filtered list
+    return true;
+  });
+
+  const filteredSkills = skills?.filter(skill => {
+    // Check if skill is displayable (isDisplay is true)
+    if (skill.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if description is not null, undefined, or an empty string
+    if (skill.description === null || skill.description === undefined || skill.description === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the skill in the filtered list
+    return true;
+  });
+  const filteredExperiences = experiences?.filter(experience => {
+    // Check if experience is displayable (isDisplay is true)
+    if (experience.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if companyName is not null, empty string, or undefined
+    if (
+      experience.companyName === null ||
+      experience.companyName === '' ||
+      experience.companyName === undefined
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the experience in the filtered list
+    return true;
+  });
 
   // to store order of some user's information
   const [experiencesOrder, setExperiencesOrder] = useState([]);
@@ -161,6 +271,44 @@ export default function FinishUp({ params }) {
   async function onSubmitComment() {
     await handleSubmitComment(selectionState, selectedTextState);
   }
+  const fetchDataComment = async newFinishUpData => {
+    try {
+      await handleSaveDraftWithData(newFinishUpData);
+      setShowFinishupCV(true);
+      const requestId = params.id;
+      const fetchedDataFromAPI = await getReviewResponse(requestId);
+      setFetchedData(fetchedDataFromAPI);
+      setOverall(fetchedDataFromAPI.overall);
+      // if (fetchedDataFromAPI.feedbackDetail === null) {
+
+      //   setErrorMessage('Some thing went wrong!');
+      //   return
+      // }
+      const data = fetchedDataFromAPI.feedbackDetail;
+      // const data = await getFinishUp(1)
+      // const fetchedData = await getReviewResponse(expertId, requestId);
+      console.log('FinishUp data: ', data);
+      if (data === null) {
+        setFinishUpData(null);
+        return;
+      }
+      const temp = finishUpData;
+
+      setShowFinishupCV(false);
+      setFinishUpData(temp);
+
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      setFinishUpData(data);
+      setShowFinishupCV(true);
+
+      setTemplateSelected(data?.templateType);
+      setToolbarState(data?.cvStyle);
+      setSummary(data?.summary);
+    } catch (error) {
+      console.error('Error fetching FinishUp data:', error);
+    }
+  };
 
   async function handleSubmitComment(selection, selectedText) {
     const comment = document.createElement('comment');
@@ -214,46 +362,87 @@ export default function FinishUp({ params }) {
         newFinishUpData.experiences = updatedExperiences;
         setFinishUpData(newFinishUpData);
 
-        const fetchData = async () => {
-          try {
-            await handleSaveDraftWithData(newFinishUpData);
-            setShowFinishupCV(true);
-            const requestId = params.id;
-            const fetchedDataFromAPI = await getReviewResponse(requestId);
-            setFetchedData(fetchedDataFromAPI);
-            setOverall(fetchedDataFromAPI.overall);
-            // if (fetchedDataFromAPI.feedbackDetail === null) {
-
-            //   setErrorMessage('Some thing went wrong!');
-            //   return
-            // }
-            const data = fetchedDataFromAPI.feedbackDetail;
-            // const data = await getFinishUp(1)
-            // const fetchedData = await getReviewResponse(expertId, requestId);
-            console.log('FinishUp data: ', data);
-            if (data === null) {
-              setFinishUpData(null);
-              return;
-            }
-            const temp = finishUpData;
-
-            setShowFinishupCV(false);
-            setFinishUpData(temp);
-
-            await new Promise(resolve => setTimeout(resolve, 10));
-
-            setFinishUpData(data);
-            setShowFinishupCV(true);
-
-            setTemplateSelected(data?.templateType);
-            setToolbarState(data?.cvStyle);
-            setSummary(data?.summary);
-          } catch (error) {
-            console.error('Error fetching FinishUp data:', error);
+        fetchDataComment(newFinishUpData);
+      } else if (currentDataType === 'education') {
+        const updatedEducations = educations.map(education => {
+          if (education.id === currentDataId) {
+            return {
+              ...education,
+              description: content,
+            };
+          } else {
+            return education;
           }
-        };
-
-        fetchData();
+        });
+        console.log('updatedEducations education', updatedEducations);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.educations = updatedEducations;
+        setFinishUpData(newFinishUpData);
+        fetchDataComment(newFinishUpData);
+      } else if (currentDataType === 'skill') {
+        const updatedSkills = skills.map(skill => {
+          if (skill.id === currentDataId) {
+            return {
+              ...skill,
+              description: content,
+            };
+          } else {
+            return skill;
+          }
+        });
+        console.log('updatedSkills skill', updatedSkills);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.skills = updatedSkills;
+        setFinishUpData(newFinishUpData);
+        fetchDataComment(newFinishUpData);
+      } else if (currentDataType === 'project') {
+        const updatedProjects = projects.map(project => {
+          if (project.id === currentDataId) {
+            return {
+              ...project,
+              description: content,
+            };
+          } else {
+            return project;
+          }
+        });
+        console.log('updatedProjects project', updatedProjects);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.projects = updatedProjects;
+        setFinishUpData(newFinishUpData);
+        fetchDataComment(newFinishUpData);
+      } else if (currentDataType === 'certification') {
+        const updatedCertifications = certifications.map(certification => {
+          if (certification.id === currentDataId) {
+            return {
+              ...certification,
+              description: content,
+            };
+          } else {
+            return certification;
+          }
+        });
+        console.log('updatedCertifications certification', updatedCertifications);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.certifications = updatedCertifications;
+        setFinishUpData(newFinishUpData);
+        fetchDataComment(newFinishUpData);
+      } else if (currentDataType === 'involvement') {
+        const updatedInvolvements = involvements.map(involvement => {
+          if (involvement.id === currentDataId) {
+            return {
+              ...involvement,
+              description: content,
+            };
+          } else {
+            return involvement;
+          }
+        });
+        console.log('updatedInvolvements involvement', updatedInvolvements);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.involvements = updatedInvolvements;
+        setFinishUpData(newFinishUpData);
+        fetchDataComment(newFinishUpData);
       }
     } else {
       console.log('Element with id', currentId, 'not found');
@@ -297,7 +486,7 @@ export default function FinishUp({ params }) {
 
     if (descriptionAfter) {
       const content = descriptionAfter.innerHTML;
-
+      //experiences, educations, projects, involvements, certifications, skills,
       if (type === 'experience') {
         const updatedExperiences = experiences.map(experience => {
           if (experience.id === dataId) {
@@ -312,43 +501,82 @@ export default function FinishUp({ params }) {
         console.log('updatedExperiences experience', updatedExperiences);
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.experiences = updatedExperiences;
-
-        const fetchData = async () => {
-          try {
-            await handleSaveDraftWithData(newFinishUpData);
-            setShowFinishupCV(true);
-            const requestId = params.id;
-            const fetchedDataFromAPI = await getReviewResponse(requestId);
-            setFetchedData(fetchedDataFromAPI);
-            setOverall(fetchedDataFromAPI.overall);
-            const data = fetchedDataFromAPI.feedbackDetail;
-            // const data = await getFinishUp(1)
-            // const fetchedData = await getReviewResponse(expertId, requestId);
-            console.log('FinishUp data: ', data);
-            if (data === null) {
-              setFinishUpData(null);
-              return;
-            }
-
-            const temp = finishUpData;
-
-            setShowFinishupCV(false);
-            setFinishUpData(temp);
-
-            await new Promise(resolve => setTimeout(resolve, 10));
-
-            setFinishUpData(data);
-            setShowFinishupCV(true);
-
-            setTemplateSelected(data?.templateType);
-            setToolbarState(data?.cvStyle);
-            setSummary(data?.summary);
-          } catch (error) {
-            console.error('Error fetching FinishUp data:', error);
+        fetchDataComment(newFinishUpData);
+      } else if (type === 'education') {
+        const updatedEducations = educations.map(education => {
+          if (education.id === dataId) {
+            return {
+              ...education,
+              description: content,
+            };
+          } else {
+            return education;
           }
-        };
-
-        fetchData();
+        });
+        console.log('updatedEducations education', updatedEducations);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.educations = updatedEducations;
+        fetchDataComment(newFinishUpData);
+      } else if (type === 'skill') {
+        const updatedSkills = skills.map(skill => {
+          if (skill.id === dataId) {
+            return {
+              ...skill,
+              description: content,
+            };
+          } else {
+            return skill;
+          }
+        });
+        console.log('updatedSkills skill', updatedSkills);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.skills = updatedSkills;
+        fetchDataComment(newFinishUpData);
+      } else if (type === 'project') {
+        const updatedProjects = projects.map(project => {
+          if (project.id === dataId) {
+            return {
+              ...project,
+              description: content,
+            };
+          } else {
+            return project;
+          }
+        });
+        console.log('updatedProjects project', updatedProjects);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.projects = updatedProjects;
+        fetchDataComment(newFinishUpData);
+      } else if (type === 'certification') {
+        const updatedCertifications = certifications.map(certification => {
+          if (certification.id === dataId) {
+            return {
+              ...certification,
+              description: content,
+            };
+          } else {
+            return certification;
+          }
+        });
+        console.log('updatedCertifications certification', updatedCertifications);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.certifications = updatedCertifications;
+        fetchDataComment(newFinishUpData);
+      } else if (type === 'involvement') {
+        const updatedInvolvements = involvements.map(involvement => {
+          if (involvement.id === dataId) {
+            return {
+              ...involvement,
+              description: content,
+            };
+          } else {
+            return involvement;
+          }
+        });
+        console.log('updatedInvolvements involvement', updatedInvolvements);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.involvements = updatedInvolvements;
+        fetchDataComment(newFinishUpData);
       }
     } else {
       console.log('Element with id not found');
@@ -477,7 +705,13 @@ export default function FinishUp({ params }) {
     {
       id: 'educations',
       component: (
-        <EducationsSection templateType={templateSelected} educations={filteredEducations} />
+        <EducationsSection
+          templateType={templateSelected}
+          educations={filteredEducations}
+          isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+          onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
+        />
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
@@ -486,7 +720,13 @@ export default function FinishUp({ params }) {
     {
       id: 'involvements',
       component: (
-        <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
+        <InvolvementSection
+          isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+          onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
+          templateType={templateSelected}
+          involvements={filteredInvolvements}
+        />
       ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
@@ -494,16 +734,26 @@ export default function FinishUp({ params }) {
     },
     {
       id: 'projects',
-      component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
+      component: (
+        <ProjectSection
+          templateType={templateSelected}
+          projects={filteredProjects}
+          isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+          onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
+        />
+      ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
       order: finishUpData?.theOrder?.projects || 5,
-
     },
     {
       id: 'certifications',
       component: (
         <CertificationSection
+          isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+          onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
           templateType={templateSelected}
           certifications={filteredCertifications}
         />
@@ -511,12 +761,14 @@ export default function FinishUp({ params }) {
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
       order: finishUpData?.theOrder?.certifications || 6,
-
     },
     {
       id: 'skills',
       component: (
         <SkillsSection
+          isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+          onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
           templateType={templateSelected}
           skills={filteredSkills}
           onChangeOrder={handleSkillsOrderChange}
@@ -525,12 +777,10 @@ export default function FinishUp({ params }) {
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
       order: finishUpData?.theOrder?.skills || 7,
-
     },
   ];
 
   sections.sort((a, b) => a.order - b.order);
-
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
@@ -626,7 +876,6 @@ export default function FinishUp({ params }) {
     fetchData();
   }, []);
 
- 
   const handleSave = async () => {
     try {
       await handleSaveDraft();
@@ -665,7 +914,7 @@ export default function FinishUp({ params }) {
       onCancel() {},
     });
   };
-  
+
   const handleSaveDraft = async () => {
     try {
       const sendObj = {
@@ -832,8 +1081,6 @@ export default function FinishUp({ params }) {
       });
     }
   };
-
-
 
   const showPromiseConfirmAccept = () => {
     confirm({

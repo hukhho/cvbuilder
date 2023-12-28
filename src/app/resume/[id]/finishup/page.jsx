@@ -856,6 +856,7 @@ export default function FinishUp({ params }) {
                     onCancel={() => setOpen(false)}
                     width={1000}
                     className="custom"
+                    footer={[]}
                   >
                     <ScoreFinishUp data={auditData} cvId={params.id} />
                   </Modal>

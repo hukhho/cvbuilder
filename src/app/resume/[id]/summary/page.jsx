@@ -111,6 +111,7 @@ const Summary = ({ params }) => {
   const handleSortChange = () => {
     setSortByDate(!sortByDate);
   };
+  const [isReady, setIsReady] = useState(false); // State to track readiness
 
   // const summaryHistory = [
   //   { id: 1, version: 'This is content 1' },
@@ -164,11 +165,14 @@ const Summary = ({ params }) => {
   };
   const handleChange = value => {
     console.log(`selected ${value}`);
+    setIsReady(true);
   };
+
   const [disabled, setDisabled] = useState(false);
   const toggle = () => {
     setDisabled(!disabled);
   };
+
   return (
     <main>
       <ConfigProvider>
@@ -225,7 +229,11 @@ const Summary = ({ params }) => {
                                 <span className="text-gray-300" style={{ fontSize: 13 }}>
                                   from resume
                                 </span>
-                                <Switch className="mt-2" onClick={toggle} defaultChecked />
+                                <Switch
+                                  className="mt-2"
+                                  onClick={toggle}
+                                  defaultChecked={!disabled}
+                                />
                               </div>
                             </label>
                           }
@@ -281,7 +289,7 @@ const Summary = ({ params }) => {
                           id="summary-section-save-to-list"
                           type="submit"
                         >
-                          AI WRITER READY
+                          {isReady ? 'AI WRITER READY' : 'AI WRITER NOT READY'}
                         </button>
                       </Form>
                     </div>
