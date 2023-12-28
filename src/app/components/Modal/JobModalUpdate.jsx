@@ -1,18 +1,18 @@
 /* eslint-disable */
 
 import { Dialog, Switch, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 // import './setting.css';
 // import './input.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
 import { Form, Input, Select, notification } from 'antd';
-import { createJobDescription } from './updateJobDescription';
+import { createJobDescription, updateJobDescription } from './updateJobDescription';
 import { getAllExperiences } from '@/app/resume/[id]/experience/experienceService';
 import TextArea from 'antd/es/input/TextArea';
 
-const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
+const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -33,17 +33,17 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
   const [disabled, setDisabled] = useState(false);
   const [isSetData, setIsSetData] = useState(false);
 
-  // useEffect(() => {
-  //   if (options && !isSetData) {
-  //     const mockData = {
-  //       title: options.title,
-  //       description: options.description,
-  //     };
-  //     const initialData = mockData;
-  //     form.setFieldsValue(initialData);
-  //     setIsSetData(true);
-  //   }
-  // }, [data, form]);
+  useEffect(() => {
+    if (title && description && !isSetData) {
+      const mockData = {
+        title: title,
+        description: description,
+      };
+      const initialData = mockData;
+      form.setFieldsValue(initialData);
+      setIsSetData(true);
+    }
+  }, [title, description, form]);
 
   const [selectedOption, setSelectedOption] = useState();
 
@@ -70,11 +70,29 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
   };
 
   function closeModal() {
+    setIsSetData(false);
+    const mockData = {
+      title: title,
+      description: description,
+    };
+    const initialData = mockData;
+    form.setFieldsValue(initialData);
+    console.log("closeModal")
+    setSelectedOption(null);
     setIsOpen(false);
+
   }
 
   function openModal() {
     setIsOpen(true);
+    console.log("setSelectedOption null")
+    setSelectedOption();
+    const mockData = {
+      title: title,
+      description: description,
+    };
+    const initialData = mockData;
+    form.setFieldsValue(initialData);
   }
 
   const handleInputChange = event => {
@@ -98,7 +116,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
   const handleSubmit = async values => {
     try {
       console.log('summary page: submit: ', values);
-      const result = await createJobDescription(cvId, values);
+      const result = await updateJobDescription(cvId, values);
       notification.success({
         message: `Save changed`,
       });      // console.log(summary, result);
@@ -144,7 +162,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
           type="submit"
           onClick={openModal}
         >
-          Create Job Description
+          Update Job Description
         </button>
       </div>
 
@@ -178,12 +196,12 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                     as="h2"
                     className="w-full flex leading-7 text-xl font-semibold bg-slate-50 rounded-t-lg text-gray-900 items-center px-6 py-5 border-b border-slate-200"
                   >
-                    <div className="grow font-semibold">Create Job Description</div>
+                    <div className="grow font-semibold">Update Job Description</div>
                     <i className="fal fa-times cursor-pointer" aria-hidden="true" />
                   </Dialog.Title>
 
                   <div className="p-6">
-                    <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
+                    <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off" requiredMark={false}>
                       <Form.Item
                         name="jobPostingId"
                         label={
@@ -198,7 +216,6 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                             </div>
                             <Switch
                               className="mt-2"
-                              style={{ backgroundColor: 'red' }}
                               onClick={toggle}
                               defaultChecked
                             />
@@ -212,6 +229,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                               width: '100%',
                             }}
                             className=""
+                            rules={[{ required: true }]}
                             value={selectedOption}
                             onChange={handleChange}
                             options={options}
@@ -227,7 +245,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                         rules={[{ required: true }]}
                         label={
                           <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
-                            <div className="flex gap-2 items-center text-xs">JOB TITLE</div>
+                            <div className="flex gap-2 items-center text-xs">JOB TITLE *</div>
                           </label>
                         }
                       >
@@ -382,4 +400,4 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
   );
 };
 
-export default JobModalCreate;
+export default JobModalUpdate;

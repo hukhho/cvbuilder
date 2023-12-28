@@ -218,7 +218,8 @@ export default function FinishUp({ params }) {
   const [highlightAts, setHighlightAts] = useState([]);
 
   const [dataAts, setDataAts] = useState();
-
+  const [isCreatedAts, setIsCreatedAts] = useState(false);
+  
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
     let newFinishUpData = { ...finishUpData };
@@ -915,6 +916,8 @@ export default function FinishUp({ params }) {
                   <Ats
                     cvId={params.id}
                     dataAts={dataAts}
+                    isCreatedAts={isCreatedAts}
+                    setIsCreatedAts={setIsCreatedAts}
                     setDataAts={setDataAts}
                     onGen={handleSetHighlight}
                     onDisableHightlight={handleUnSetHighlight}

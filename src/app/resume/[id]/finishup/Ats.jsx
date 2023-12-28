@@ -9,12 +9,24 @@ import JobModalCreate from '@/app/components/Modal/JobModalCreate';
 import useStore from '@/store/store';
 import { getAllExperiences } from '../experience/experienceService';
 import { getJobLists } from '@/app/utils/indexService';
+import { ExportOutlined, EyeOutlined } from '@ant-design/icons';
+import Link from 'next/link';
+import JobModalUpdate from '@/app/components/Modal/JobModalUpdate';
 
-const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
+const Ats = ({
+  cvId,
+  dataAts,
+  setDataAts,
+  onGen,
+  onDisableHightlight,
+  isCreatedAts,
+  setIsCreatedAts,
+}) => {
   console.log('dataAts:', dataAts);
   const [title, setTitle] = useState(dataAts?.title);
   const [description, setDescription] = useState(dataAts?.description);
   const [isFetched, setIsFetched] = useState(false);
+
   function filterPass(filterData) {
     return filterData?.filter(content => content?.status === 'Pass');
   }
@@ -26,6 +38,11 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
 
       setDataAts(result);
       console.log('Ats:data: ', result);
+      if (result?.title && result?.description) {
+        setTitle(result.title);
+        setDescription(result.description);
+        setIsCreatedAts(true);
+      }
       // setTitle(result.title);
       // setDescription(result.description);
 
@@ -55,7 +72,15 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
 
   const options = experiences.map(item => ({
     value: `${item?.id}`,
-    label: `${item?.title} at ${item?.companyName}`,
+    // label: `${item?.title} at ${item?.companyName}`,
+    label: (
+      <div className="relative">
+        <span style={{ marginRight: '8px' }}>{`${item?.title} at ${item?.companyName}`}</span>
+        <Link className="absolute" style={{ right: '8px' }} href={`/job/${item?.jobId}`}>
+          <ExportOutlined />
+        </Link>
+      </div>
+    ),
     title: item?.title,
     description: item?.description,
     company: item?.companyName,
@@ -232,7 +257,13 @@ const Ats = ({ cvId, dataAts, setDataAts, onGen, onDisableHightlight }) => {
             )}
           </div>
           {!(isFetched && (title === undefined || title === null)) && (
-            <JobModal cvId={cvId} onCreated={onCreated} title={title} description={description} />
+            <JobModalUpdate
+              cvId={cvId}
+              options={options}
+              onCreated={onCreated}
+              title={title}
+              description={description}
+            />
           )}
           {/* <button className="keyword-button button" onClick={handleCLick}>
             Update job description
