@@ -1247,29 +1247,28 @@ export default function FinishUp({ params }) {
                     </div>
                   </Card>
                   {fetchedData?.request?.status === 'Processing' ||
-                    fetchedData?.request?.status === 'Accept' ? (
-                      <>
-                        {' '}
-                        <Alert
-                          message="Informational Notes"
-                          description={
-                            <div>
-                              <p>
-                                To add a comment, selected the text (only description of each
-                                section or summary). You will be prompted to enter your comment in a
-                                pop-up window. If you want leave the comment for Role, Location,
-                                Duration or other, comment on overall in the last of page.
-                              </p>
-                            </div>
-                          }
-                          type="info"
-                          showIcon
-                          className="mt-10"
-                          style={{ width: 850 }}
-                        />
-                      </>
-                    ) : null}
-
+                  fetchedData?.request?.status === 'Accept' ? (
+                    <>
+                      {' '}
+                      <Alert
+                        message="Informational Notes"
+                        description={
+                          <div>
+                            <p>
+                              To add a comment, selected the text (only description of each section
+                              or summary). You will be prompted to enter your comment in a pop-up
+                              window. If you want leave the comment for Role, Location, Duration or
+                              other, comment on overall in the last of page.
+                            </p>
+                          </div>
+                        }
+                        type="info"
+                        showIcon
+                        className="mt-10"
+                        style={{ width: 850 }}
+                      />
+                    </>
+                  ) : null}
                   <Suspense fallback={<div>Loading...</div>}>
                     <CVLayoutReviewerView
                       key={[templateSelected, toolbarState]}
@@ -1361,7 +1360,7 @@ export default function FinishUp({ params }) {
                       <textarea
                         className="inputEl"
                         value={overall}
-                        placeholder='Overall comment'
+                        placeholder="Overall comment"
                         onChange={e => handleChangeOverall(e)}
                       />
 

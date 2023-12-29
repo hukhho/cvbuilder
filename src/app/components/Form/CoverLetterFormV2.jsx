@@ -208,34 +208,40 @@ const CoverLetterFormV2 = ({
             options={resumeOptions}
           />
         </Form.Item>
-        <Form.Item
-          name="jobPostingId"
-          label={
-            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
-              <div className="flex gap-2 items-center text-xs">CHOOSE THE TARGET JOB *</div>
-              <div className="ml-10 flex">
-                <span className="text-gray-300" style={{ fontSize: 13 }}>
-                  Choose from job list
+
+        <div className="flex mt-10 mb-10">
+          <Switch className="mr-2" onClick={toggle} defaultChecked />
+
+          <span className="" style={{ fontSize: 13 }}>
+            Choose from job list
+          </span>
+        </div>
+        {!disabled && (
+          <Form.Item
+            name="jobPostingId"
+            label={
+              <label style={{}}>
+                <span className="custom-text whitespace-nowrap">
+                  <strong>CHOOSE THE TARGET JOB *</strong>
                 </span>
-              </div>
-              <Switch className="mt-2" onClick={toggle} defaultChecked />
-            </label>
-          }
-        >
-          {!disabled && (
-            <Select
-              style={{
-                height: 50,
-                maxWidth: '270px',
-                width: '100%',
-              }}
-              className=""
-              value={selectedOption}
-              onChange={handleChange}
-              options={options}
-            />
-          )}
-        </Form.Item>
+              </label>
+            }
+          >
+            {!disabled && (
+              <Select
+                style={{
+                  height: 50,
+                  width: '100%',
+                }}
+                className=""
+                value={selectedOption}
+                onChange={handleChange}
+                options={options}
+              />
+            )}
+          </Form.Item>
+        )}
+
         <Form.Item
           name="job_title"
           rules={[

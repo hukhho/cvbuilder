@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -15,6 +16,7 @@ import getCoverLetter from '../finishup/getCoverLetter';
 import getContact from '@/app/resume/[id]/contact/contactService';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
+import { ExportOutlined } from '@ant-design/icons';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]);
@@ -66,14 +68,43 @@ const Contact = ({ params }) => {
       console.error('There was an error fetching the experiences', error);
     }
   };
+  const handleLabelClick = (e, value) => {
+    // Handle the label click to select the option
+    e.stopPropagation(); // Prevents the click from reaching the outer div
+    // Your logic to handle the label click (e.g., set the selected value)
+  };
 
+  const handleLinkClick = (e, link) => {
+    // Handle the link click to open the link
+    e.stopPropagation(); // Prevents the click from reaching the outer div
+    window.open(link, '_blank');
+  };
   const options = experiences.map(item => ({
-    value: `${item?.id}`,
-    label: `${item?.title} at ${item?.companyName}`,
+    value: item?.id,
+    label: (
+      <div className="relative">
+        <span style={{ marginRight: '20px' }}>{`${item?.title} at ${item?.companyName}`}</span>
+        <a
+          className="absolute"
+          style={{ right: '8px' }}
+          onClick={e => handleLinkClick(e, `/job/${item?.id}`)}
+        >
+          <ExportOutlined />
+        </a>
+      </div>
+    ),
     title: item?.title,
     description: item?.description,
     company: item?.companyName,
   }));
+
+  // const options = experiences.map(item => ({
+  //   value: `${item?.id}`,
+  //   label: `${item?.title} at ${item?.companyName}`,
+  //   title: item?.title,
+  //   description: item?.description,
+  //   company: item?.companyName,
+  // }));
   useEffect(() => {
     fetchData();
     fetchResumes();
