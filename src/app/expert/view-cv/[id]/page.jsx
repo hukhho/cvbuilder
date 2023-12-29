@@ -21,7 +21,7 @@ import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import CVLayout from '@/app/components/Templates/CVLayout';
 import InformationSection from '@/app/components/Templates/SectionComponentsV2/InformationSection';
-// import SummarySection from '@/app/components/Templates/SectionComponentsV2/SummarySection';
+import SummarySection from '@/app/components/Templates/SectionComponentsV2/SummarySection';
 import ExperiencesSection from '@/app/components/Templates/SectionComponentsV2/ExperiencesSection';
 // import EducationsSection from '@/app/components/Templates/SectionComponentsV2/EducationsSection';
 // import SkillsSection from '@/app/components/Templates/SectionComponentsV2/SkillsSection';
@@ -42,7 +42,6 @@ import GenericPdfDownloader from '@/app/components/Templates/GenericPdfDownloade
 import { Box, VStack } from '@chakra-ui/react';
 import { CommentOutlined, ExclamationCircleFilled, StarFilled } from '@ant-design/icons';
 import Link from 'next/link';
-import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
 import EducationsSection from '@/app/components/Templates/SectionComponentsV2/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponentsV2/SkillsSection';
 import ProjectSection from '@/app/components/Templates/SectionComponentsV2/ProjectSection';
@@ -443,7 +442,13 @@ export default function FinishUp({ params }) {
         newFinishUpData.involvements = updatedInvolvements;
         setFinishUpData(newFinishUpData);
         fetchDataComment(newFinishUpData);
-      }
+      } else if (currentDataType === 'summary') {
+         
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.summary = content;
+        setFinishUpData(newFinishUpData);
+        fetchDataComment(newFinishUpData);
+      } 
     } else {
       console.log('Element with id', currentId, 'not found');
     }
@@ -577,6 +582,16 @@ export default function FinishUp({ params }) {
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.involvements = updatedInvolvements;
         fetchDataComment(newFinishUpData);
+      } else if (type === 'summary') {
+        console.log('NEW SUMMARY', content);
+        // let newFinishUpData = { ...finishUpData };
+        // newFinishUpData.involvements = updatedInvolvements;
+        // fetchDataComment(newFinishUpData);
+           
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.summary = content;
+        setFinishUpData(newFinishUpData);
+        fetchDataComment(newFinishUpData);
       }
     } else {
       console.log('Element with id not found');
@@ -679,7 +694,16 @@ export default function FinishUp({ params }) {
     },
     {
       id: 'summary',
-      component: <SummarySection templateType={templateSelected} summary={summary} />,
+      component: (
+        <SummarySection
+          isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+          experiences={filteredExperiences}
+          onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
+          templateType={templateSelected}
+          summary={summary}
+        />
+      ),
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
       order: finishUpData?.theOrder?.summary || 1,

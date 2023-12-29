@@ -1,19 +1,98 @@
 /* eslint-disable */
 
 import useStore from '@/store/store';
-import { Divider, Typography } from 'antd';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Card, Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Highlighter from 'react-highlight-words';
 
-const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) => {
-
+const SummarySection = ({
+  summary,
+  templateType,
+  layoutStyles,
+  highlightAts,
+  onComment,
+  onDeleteComment,
+  isShowCommentBox = true,
+}) => {
   let searchWords = [];
   if (highlightAts && highlightAts.length > 0) {
     // Extract 'ats' values from the highlightAts array
     searchWords = highlightAts.map(at => at?.ats);
   }
+  // const descriptionState = useRef(summary);
 
+  // const handleChange = (evt, targetName) => {
+  //   console.log('handleChange: ', evt.target.value);
+  //   if (targetName === 'description') {
+  //     descriptionState.current = evt.target.value;
+  //     handleDescriptionChange(type, typeId, evt.target.value);
+  //   }
+  // };
+
+  const handleBlur = (evt, targetName) => {
+    if (targetName === 'role') {
+      console.log('handleBlur: ', roleState.current);
+    }
+  };
+  const type = 'summary';
+  const dataId = 'summary';
+  function generateRandomId() {
+    return `type-${type}-dataId-${dataId}`;
+  }
+
+  const randomId = generateRandomId();
+
+  const renderComments = () => {
+    console.log('renderComments: ', summary);
+
+    // Extracting comments from the description using a regular expression
+    const commentRegex = /<comment[^>]*>([\s\S]*?)<\/comment>/g;
+    const comments = [];
+    let match;
+
+    while ((match = commentRegex.exec(summary))) {
+      const commentContent = match[0].trim();
+      if (commentContent) {
+        comments.push(commentContent);
+      }
+    }
+
+    console.log('comments: ', comments);
+
+    if (comments.length === 0) {
+      return null;
+    }
+
+    // Extracting comments from the description using a regular expression
+
+    // const comments = description.match(/<comment(.*?)<\/comment>/s);
+    if (!comments || isShowCommentBox === false) {
+      return null;
+    }
+
+    return comments.map((comment, index) => {
+      const commentId = comment.match(/id="(.*?)"/)[1];
+      console.log('commentId:', commentId);
+      // Parse comment content using regular expression
+      const contentMatch = comment.match(/content="(.*?)"/);
+      const content = contentMatch ? contentMatch[1] : '';
+
+      return (
+        <Card key={commentId} className="comment-bubble" style={{ '--comment-index': index }}>
+          {content}
+          <button
+            className="ml-4"
+            onClick={() => onDeleteComment(commentId, type, randomId, dataId)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </Card>
+      );
+    });
+  };
   if (templateType === 'modern') {
     return (
       <>
@@ -46,9 +125,19 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
               textToHighlight={summary}
             />
           ) : (
-            <p className="editableContent cursor-text  designStudio " id="summary-summary">
-            {summary}
-          </p>
+            // <p className="editableContent cursor-text  designStudio " id="summary-summary">
+            //   {summary}
+            // </p>
+            <>
+              {' '}
+              <p
+                className="editableContent cursor-text designStudio"
+                id={randomId}
+                onMouseUp={event => onComment(event, type, randomId, dataId)}
+                dangerouslySetInnerHTML={{ __html: summary }}
+              />
+              {renderComments()}
+            </>
           )}
         </div>
       </>
@@ -96,9 +185,19 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
             textToHighlight={summary}
           />
         ) : (
-          <p className="editableContent cursor-text  designStudio " id="summary-summary">
-            {summary}
-          </p>
+          // <p className="editableContent cursor-text  designStudio " id="summary-summary">
+          //   {summary}
+          // </p>
+          <>
+          {' '}
+          <p
+            className="editableContent cursor-text designStudio"
+            id={randomId}
+            onMouseUp={event => onComment(event, type, randomId, dataId)}
+            dangerouslySetInnerHTML={{ __html: summary }}
+          />
+          {renderComments()}
+        </>
         )}
       </div>
     </div>;
@@ -147,9 +246,19 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
                 textToHighlight={summary}
               />
             ) : (
-              <p className="editableContent cursor-text  designStudio " id="summary-summary">
-                {summary}
-              </p>
+              // <p className="editableContent cursor-text  designStudio " id="summary-summary">
+              //   {summary}
+              // </p>
+              <>
+              {' '}
+              <p
+                className="editableContent cursor-text designStudio"
+                id={randomId}
+                onMouseUp={event => onComment(event, type, randomId, dataId)}
+                dangerouslySetInnerHTML={{ __html: summary }}
+              />
+              {renderComments()}
+            </>
             )}
           </div>
         </div>

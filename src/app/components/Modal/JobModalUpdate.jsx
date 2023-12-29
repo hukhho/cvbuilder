@@ -125,6 +125,8 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
       notification.success({
         message: `Save changed`,
       }); // console.log(summary, result);
+      onCreated();
+      closeModal();
     } catch (error) {
       notification.error({
         message: `Submit. Error: ${error}`,

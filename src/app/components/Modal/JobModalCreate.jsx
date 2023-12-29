@@ -1,14 +1,14 @@
 /* eslint-disable */
 
 import { Dialog, Switch, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 // import './setting.css';
 // import './input.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
 import { Form, Input, Select, notification } from 'antd';
-import { createJobDescription } from './updateJobDescription';
+import { createJobDescription, updateJobDescription } from './updateJobDescription';
 import { getAllExperiences } from '@/app/resume/[id]/experience/experienceService';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -22,7 +22,6 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
     });
   };
   const [isOpen, setIsOpen] = useState(false);
-  const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [formData, setFormData] = useState({
     title: '',
@@ -33,20 +32,22 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
   const [disabled, setDisabled] = useState(false);
   const [isSetData, setIsSetData] = useState(false);
 
-  // useEffect(() => {
-  //   if (options && !isSetData) {
-  //     const mockData = {
-  //       title: options.title,
-  //       description: options.description,
-  //     };
-  //     const initialData = mockData;
-  //     form.setFieldsValue(initialData);
-  //     setIsSetData(true);
-  //   }
-  // }, [data, form]);
+  useEffect(() => {
+    if (title && description && !isSetData) {
+      const mockData = {
+        title: title,
+        description: description,
+      };
+      const initialData = mockData;
+      form.setFieldsValue(initialData);
+      setIsSetData(true);
+    }
+  }, [title, description, form]);
 
   const [selectedOption, setSelectedOption] = useState();
-
+  useEffect(() => {
+    console.log(selectedOption)
+  }, [selectedOption])
   const handleChange = value => {
     setSelectedOption(value);
 
@@ -63,18 +64,40 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
     console.log(`selected ${value}`);
     form.setFieldValue('title', option?.title);
     form.setFieldValue('description', option?.description);
-
+  };
+  const [enabled, setEnabled] = useState(false);
+  const resetFormState = () => {
+    form.resetFields();
+    setSelectedOption(undefined);
+    setEnabled(false);
   };
   const toggle = () => {
     setDisabled(!disabled);
   };
 
   function closeModal() {
+    // const mockData = {
+    //   title: title,
+    //   description: description,
+    // };
+    // const initialData = mockData;
+    // form.setFieldsValue(initialData);
+    console.log('closeModal');
+    setIsSetData(false);
+    resetFormState();
     setIsOpen(false);
   }
 
   function openModal() {
     setIsOpen(true);
+    console.log('setSelectedOption null');
+    setSelectedOption(undefined);
+    const mockData = {
+      title: title,
+      description: description,
+    };
+    const initialData = mockData;
+    form.setFieldsValue(initialData);
   }
 
   const handleInputChange = event => {
@@ -101,7 +124,9 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
       const result = await createJobDescription(cvId, values);
       notification.success({
         message: `Save changed`,
-      });      // console.log(summary, result);
+      }); // console.log(summary, result);
+      onCreated();
+      closeModal();
     } catch (error) {
       notification.error({
         message: `Submit. Error: ${error}`,
@@ -173,7 +198,10 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="relative w-full transform rounded-lg bg-white text-left align-middle shadow-sm transition-all max-w-md opacity-100 scale-100">
+                <Dialog.Panel
+                  style={{ witdh: 1000 }}
+                  className="relative transform rounded-lg bg-white text-left align-middle shadow-sm transition-all  opacity-100 scale-100"
+                >
                   <Dialog.Title
                     as="h2"
                     className="w-full flex leading-7 text-xl font-semibold bg-slate-50 rounded-t-lg text-gray-900 items-center px-6 py-5 border-b border-slate-200"
@@ -183,112 +211,141 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                   </Dialog.Title>
 
                   <div className="p-6">
-                    <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
-                      <Form.Item
-                        name="jobPostingId"
-                        label={
-                          <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
-                            <div className="flex gap-2 items-center text-xs">
-                              CHOOSE THE TARGET JOB *
-                            </div>
-                            <div className="ml-10 flex">
-                              <span className="text-gray-300" style={{ fontSize: 13 }}>
-                                Choose from job list
-                              </span>
-                            </div>
-                            <Switch
-                              className="mt-2"
-                              style={{ backgroundColor: 'red' }}
-                              onClick={toggle}
-                              defaultChecked
-                            />
-                          </label>
-                        }
-                      >
-                        {!disabled && (
-                          <Select
-                            style={{
-                              height: 50,
-                              width: '100%',
-                            }}
-                            className=""
-                            value={selectedOption}
-                            onChange={handleChange}
-                            options={options}
+                    <Form
+                      onFinish={handleSubmit}
+                      form={form}
+                      layout="vertical"
+                      autoComplete="off"
+                      requiredMark={false}
+                    >
+                      <div className="flex mb-10">
+                        <Switch
+                          checked={enabled}
+                          onChange={setEnabled}
+                          className={`${
+                            enabled ? 'bg-blue-600' : 'bg-gray-200'
+                          } relative inline-flex h-6 w-11 items-center rounded-full`}
+                        >
+                          <span
+                            className={`${
+                              enabled ? 'translate-x-6' : 'translate-x-1'
+                            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
                           />
-                        )}
-                      </Form.Item>
-                    
-                      <Form.Item
-                        style={{
-                          marginTop: '-20px',
-                        }}
-                        name="title"
-                        rules={[{ required: true }]}
-                        label={
-                          <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
-                            <div className="flex gap-2 items-center text-xs">JOB TITLE</div>
-                          </label>
-                        }
-                      >
-                        <Input
-                          style={{
-                            marginTop: '-10px',
-                            height: 50,
-                            width: '100%',
-                          }}
-                          className="inputEl st-current"
-                          placeholder="Java Developer"
-                        />
-                      </Form.Item>
-                       
-                      <Form.Item
-                        style={{
-                          display: 'none',
-                          marginTop: '-20px',
-                        }}
-                        name="company"
-                        label={
-                          <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
-                            <div className="flex gap-2 items-center text-xs">COMPANY</div>
-                          </label>
-                        }
-                      >
-                        <Input
-                          style={{
-                            marginTop: '-10px',
-                            height: 50,
-                            width: '100%',
-                          }}
-                          className="inputEl st-current"
-                          placeholder="Google"
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        style={{
-                          marginTop: '-20px',
-                        }}
-                        name="description"
-                        label={
-                          <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
-                            <div className="flex gap-2 items-center text-xs">DESCRIPTION</div>
-                          </label>
-                        }
-                      >
-                        <TextArea
-                          style={{
-                            marginTop: '-10px',
-                            height: 50,
-                            width: '100%',
-                          }}
-                          autoSize={{
-                            minRows: 3,
-                            maxRows: 5,
-                          }}
-                          className="inputEl st-current"
-                          placeholder="Description"
-                        />
-                      </Form.Item>
+                        </Switch>{' '}
+                        <div className="ml-10 flex">
+                          <span className="text-gray-300" style={{ fontSize: 13 }}>
+                            Choose from job list
+                          </span>
+                        </div>
+                      </div>
+
+                      {enabled && (
+                        <Form.Item
+                          name="jobPostingId"
+                          label={
+                            <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
+                              <div className="flex gap-2 items-center text-xs">
+                                CHOOSE THE TARGET JOB *
+                              </div>
+                            </label>
+                          }
+                        >
+                          {enabled && (
+                            <Select
+                              style={{
+                                height: 50,
+                                width: '100%',
+                                minWidth: 700,
+                                maxWidth: 1000,
+                              }}
+                              className=""
+                              rules={[{ required: true }]}
+                              value={selectedOption}
+                              onChange={handleChange}
+                              options={options}
+                            />
+                          )}
+                        </Form.Item>
+                      )}
+                      {((enabled && selectedOption) || (!enabled)) && (
+                        <>
+                          {' '}
+                          <Form.Item
+                            style={{
+                              marginTop: '-20px',
+                              minWidth: 700,
+                              maxWidth: 1000,
+                            }}
+                            name="title"
+                            rules={[{ required: true }]}
+                            label={
+                              <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
+                                <div className="flex gap-2 items-center text-xs">JOB TITLE *</div>
+                              </label>
+                            }
+                          >
+                            <Input
+                              style={{
+                                marginTop: '-10px',
+                                height: 50,
+                                width: '100%',
+                              }}
+                              className="inputEl st-current"
+                              placeholder="Java Developer"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            style={{
+                              display: 'none',
+                              marginTop: '-20px',
+                              minWidth: 700,
+                              maxWidth: 1000,
+                            }}
+                            name="company"
+                            label={
+                              <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
+                                <div className="flex gap-2 items-center text-xs">COMPANY</div>
+                              </label>
+                            }
+                          >
+                            <Input
+                              style={{
+                                marginTop: '-10px',
+                                height: 50,
+                                width: '100%',
+                              }}
+                              className="inputEl st-current"
+                              placeholder="Google"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            style={{
+                              marginTop: '-20px',
+                            }}
+                            name="description"
+                            label={
+                              <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
+                                <div className="flex gap-2 items-center text-xs">DESCRIPTION</div>
+                              </label>
+                            }
+                          >
+                            <TextArea
+                              style={{
+                                marginTop: '-10px',
+                                height: 50,
+                                width: '100%',
+                              }}
+                              autoSize={{
+                                minRows: 3,
+                                maxRows: 5,
+                              }}
+                              className="inputEl st-current"
+                              placeholder="Description"
+                            />
+                          </Form.Item>
+                        </>
+                      )}
+
                       <button
                         href=""
                         data-size="large"
