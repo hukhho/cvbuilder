@@ -88,9 +88,7 @@ const ResumeCard = ({ onDeleted, resume }) => {
             onOpenModal={closeUpdateResumeModal}
             onClose={closeUpdateResumeModal}
             resume={resume}
-            onCreated={() => {
-              console.log('update');
-            }}
+            onCreated={onDeleted}
           />
           <div className="w-full h-full opacity-100 group-hover:opacity-50 transition-opacity">
             <Link href={`/resume/${resume?.id}/contact`} passHref legacyBehavior>

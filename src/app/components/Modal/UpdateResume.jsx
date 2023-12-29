@@ -80,12 +80,15 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
     try {
       formData.jobDescriptionTarget = formData.jobDescription;
       const result = await updateResumeService(resume.id, formData);
-      openNotification('bottomRight', `Update: ${result.id}`);
+      notification.success({
+        message: 'Save changed',
+      });
       onCreated();
       closeModal();
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
-    }
+      notification.error({
+        message: 'Error',
+      });    }
   };
   return (
     <>
@@ -152,7 +155,7 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
 
                       <br />
 
-                      <div style={{ position: 'relative' }}>
+                      {/* <div style={{ position: 'relative' }}>
                         <div className="flex justify-between">
                           <h3 className="info-supp">Target your resume</h3>
 
@@ -171,8 +174,8 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
                             />
                           </Switch>
                         </div>
-                      </div>
-                      {!enabled && (
+                      </div> */}
+                      {/* {!enabled && (
                         <div className="warning-target">
                           <i className="fas fa-check-circle" aria-hidden="true" />
                           <FontAwesomeIcon
@@ -264,7 +267,7 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
                             </div>
                           </div>
                         </div>
-                      )}
+                      )} */}
                       <button
                         href=""
                         data-size="default"

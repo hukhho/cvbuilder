@@ -153,7 +153,7 @@ export default function MyModal({ onCreated }) {
                       <br />
 
                       <br />
-
+{/* 
                       <div style={{ position: 'relative' }}>
                         <div className="flex justify-between">
                           <h3 className="info-supp">Target your resume</h3>
@@ -173,8 +173,8 @@ export default function MyModal({ onCreated }) {
                             />
                           </Switch>
                         </div>
-                      </div>
-                      {!enabled && (
+                      </div> */}
+                      {/* {!enabled && (
                         <div className="warning-target">
                           <i className="fas fa-check-circle" aria-hidden="true" />
                           <FontAwesomeIcon
@@ -266,7 +266,7 @@ export default function MyModal({ onCreated }) {
                             </div>
                           </div>
                         </div>
-                      )}
+                      )} */}
 
                       <button
                         href=""

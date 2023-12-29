@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -70,15 +72,29 @@ const Ats = ({
     }
   };
 
+  const handleLabelClick = (e, value) => {
+    // Handle the label click to select the option
+    e.stopPropagation(); // Prevents the click from reaching the outer div
+    // Your logic to handle the label click (e.g., set the selected value)
+  };
+
+  const handleLinkClick = (e, link) => {
+    // Handle the link click to open the link
+    e.stopPropagation(); // Prevents the click from reaching the outer div
+    window.open(link, '_blank');
+  };
   const options = experiences.map(item => ({
-    value: `${item?.id}`,
-    // label: `${item?.title} at ${item?.companyName}`,
+    value: item?.id,
     label: (
       <div className="relative">
-        <span style={{ marginRight: '8px' }}>{`${item?.title} at ${item?.companyName}`}</span>
-        <Link className="absolute" style={{ right: '8px' }} href={`/job/${item?.jobId}`}>
+        <span style={{ marginRight: '20px' }}>{`${item?.title} at ${item?.companyName}`}</span>
+        <a
+          className="absolute"
+          style={{ right: '8px' }}
+          onClick={e => handleLinkClick(e, `/job/${item?.id}`)}
+        >
           <ExportOutlined />
-        </Link>
+        </a>
       </div>
     ),
     title: item?.title,
