@@ -443,12 +443,11 @@ export default function FinishUp({ params }) {
         setFinishUpData(newFinishUpData);
         fetchDataComment(newFinishUpData);
       } else if (currentDataType === 'summary') {
-         
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.summary = content;
         setFinishUpData(newFinishUpData);
         fetchDataComment(newFinishUpData);
-      } 
+      }
     } else {
       console.log('Element with id', currentId, 'not found');
     }
@@ -587,7 +586,7 @@ export default function FinishUp({ params }) {
         // let newFinishUpData = { ...finishUpData };
         // newFinishUpData.involvements = updatedInvolvements;
         // fetchDataComment(newFinishUpData);
-           
+
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.summary = content;
         setFinishUpData(newFinishUpData);
@@ -1193,7 +1192,6 @@ export default function FinishUp({ params }) {
                           onChange={handleChange}
                           placeholder="Add a comment..."
                           // onFocus={handleMouseDown}
-
                           onBlur={() => handleInputBlur(selectionRange)}
                         />
                         <div className="mt-4">
@@ -1248,6 +1246,29 @@ export default function FinishUp({ params }) {
                       </div>
                     </div>
                   </Card>
+                  {fetchedData?.request?.status === 'Processing' ||
+                    fetchedData?.request?.status === 'Accept' ? (
+                      <>
+                        {' '}
+                        <Alert
+                          message="Informational Notes"
+                          description={
+                            <div>
+                              <p>
+                                To add a comment, selected the text (only description of each
+                                section or summary). You will be prompted to enter your comment in a
+                                pop-up window. If you want leave the comment for Role, Location,
+                                Duration or other, comment on overall in the last of page.
+                              </p>
+                            </div>
+                          }
+                          type="info"
+                          showIcon
+                          className="mt-10"
+                          style={{ width: 850 }}
+                        />
+                      </>
+                    ) : null}
 
                   <Suspense fallback={<div>Loading...</div>}>
                     <CVLayoutReviewerView
@@ -1340,6 +1361,7 @@ export default function FinishUp({ params }) {
                       <textarea
                         className="inputEl"
                         value={overall}
+                        placeholder='Overall comment'
                         onChange={e => handleChangeOverall(e)}
                       />
 
