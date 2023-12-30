@@ -41,12 +41,11 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     ACCOUNT: true,
   });
-  const { avatar, email, userRole } = useStore();
+  const { avatar, email, userRole, balance, refreshBalance } = useStore();
 
   const [form] = Form.useForm();
   const [data, setData] = useState();
   const [protectedData, setProtectedData] = useState();
-
 
   const [resumes, setResumes] = useState([]);
 
@@ -57,7 +56,6 @@ const Home = () => {
 
       setData(fetchedDataFromAPI);
       form.setFieldsValue(fetchedDataFromAPI);
-
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -75,7 +73,7 @@ const Home = () => {
   useEffect(() => {
     console.log('useEffect');
     fetchData();
-    fetchResumes()
+    fetchResumes();
   }, []);
 
   const onCreated = () => {
@@ -112,8 +110,7 @@ const Home = () => {
         content={
           <div className="container">
             <div className="!p-0 mb-5 mt-16">
-              <div style={{ textAlign: 'left' }}>
-              </div>
+              <div style={{ textAlign: 'left' }}></div>
               <div></div>
               <div>
                 <div>
@@ -121,7 +118,7 @@ const Home = () => {
                 </div>
                 <div>
                   <Card className="mt-16" style={{ width: '700px' }}>
-                    Your Balance: <b>0</b>
+                    Your Balance: <b>{formatBalance(balance)}</b>
                     <Deposit />
                   </Card>
                 </div>
