@@ -34,46 +34,45 @@ const CallbackPage = () => {
         try {
           const accessToken = await getAccessTokenSilently();
           localStorage.setItem('accessToken', accessToken); // This is fine to keep in client-side code
-          console.log('accessToken: ', accessToken);
+          console.log('accessToken123: ', accessToken);
           try {
             const { data } = await getProtectedResource(accessToken);
             console.log('data: ', data);
+            if (!data) {
+              console.error('No data received from protected resource!');
+              notification.error({
+                message: 'You do not have permission to perform this operation.',
+              });
+              router.push('/login');
+              return;
+            }
+            console.log('data: ', data);
+
+            // Save user data to localStorage
+            localStorage.setItem('email', data.email);
+            localStorage.setItem('avatar', data.avatar);
+            localStorage.setItem('userId', data.id);
+
+            // setCookie('userId', data.id, 7); // 7 days for cookie expiration
+
+            localStorage.setItem('userRole', data.role.roleName);
+
+            // Update Zustand store with user data
+            setEmail(data.email);
+            setAvatar(data.avatar);
+            setBalance(data.accountBalance);
+            setUserRole(data.role.roleName);
+
+            // Redirect based on user role
+            if (data.role.roleName === 'ADMIN') {
+              router.push('/admin/dashboard');
+            } else if (data.role.roleName === 'HR') {
+              router.push('/hr/list');
+            } else {
+              router.push('/resume');
+            }
           } catch (errorMessage) {
             console.log('error: ', errorMessage);
-          }
-          const { data } = await getProtectedResource(accessToken);
-          if (!data) {
-            console.error('No data received from protected resource!');
-            notification.error({
-              message: 'You do not have permission to perform this operation.',
-            });
-            router.push('/login');
-            return;
-          }
-          console.log('data: ', data);
-
-          // Save user data to localStorage
-          localStorage.setItem('email', data.email);
-          localStorage.setItem('avatar', data.avatar);
-          localStorage.setItem('userId', data.id);
-
-          // setCookie('userId', data.id, 7); // 7 days for cookie expiration
-
-          localStorage.setItem('userRole', data.role.roleName);
-
-          // Update Zustand store with user data
-          setEmail(data.email);
-          setAvatar(data.avatar);
-          setBalance(data.accountBalance);
-          setUserRole(data.role.roleName);
-
-          // Redirect based on user role
-          if (data.role.roleName === 'ADMIN') {
-            router.push('/admin/dashboard');
-          } else if (data.role.roleName === 'HR') {
-            router.push('/hr/list');
-          } else {
-            router.push('/resume');
           }
         } catch (fetchError) {
           console.error('Fetching user data error:', fetchError);

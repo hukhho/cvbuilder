@@ -1,4 +1,5 @@
 // axiosInstance.js
+import useStore from '@/store/store';
 import axios from 'axios';
 
 const instance = axios.create({
@@ -29,4 +30,27 @@ instance.interceptors.request.use(config => {
   return config;
 });
 
+// Add an interceptor to handle 401 errors
+instance.interceptors.response.use(
+  response => response,
+  error => {
+    // Handle 401 errors
+    if (error.response.status === 401) {
+      // Log out the user and delete the accessToken from localStorage
+      if (typeof window !== 'undefined') {
+        // Clear localStorage when logging out
+        localStorage.removeItem('email');
+        localStorage.removeItem('avatar');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('accessToken');
+
+        console.log('logout');
+        // Redirect to the login page or perform any other logout-related action
+        window.location.href = '/login';
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
 export default instance;

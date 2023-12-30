@@ -11,37 +11,40 @@ const ProtectedPage = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [message, setMessage] = useState('');
   const { setEmail, setAvatar, setUserRole, setBalance } = useStore();
+  const { logout } = useAuth0();
+
+  const handleLogout = () => {
+    // Clear the Zustand store
+    setEmail('');
+    setAvatar('');
+    setUserRole('');
+    if (typeof window !== 'undefined') {
+      // Clear localStorage when logging out
+      localStorage.removeItem('email');
+      localStorage.removeItem('avatar');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('accessToken');
+    }
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
 
   useEffect(() => {
     let isMounted = true;
     const getMessage = async () => {
       const accessToken = await getAccessTokenSilently();
-
-      console.log('accessToken', accessToken);
-
-      const { data, error } = await getProtectedResource(accessToken);
-
       if (!isMounted) {
         return;
       }
-      if (data) {
-        console.log('ProtectedPage accessToken', accessToken);
-        localStorage.setItem('accessToken', accessToken);
-
-        localStorage.setItem('email', data?.email);
-        localStorage.setItem('avatar', data?.avatar);
-        localStorage.setItem('userId', data?.id);
-
-        localStorage.setItem('userRole', data?.role?.roleName);
-
-        // Update Zustand store with user data
-        setEmail(data?.email);
-        setAvatar(data?.avatar);
-        setBalance(data?.accountBalance);
-        setUserRole(data?.role?.roleName);
-
-        setMessage(JSON.stringify(data, null, 2));
-      }
+      const userId = localStorage.getItem('userId');
+      // if (!userId) {
+      //   handleLogout()
+      // } else if (accessToken && !userId) {
+      //   localStorage.setItem('accessToken', accessToken); // This is fine to keep in client-side code
+      // }
       if (error) {
         setMessage(JSON.stringify(error, null, 2));
       }

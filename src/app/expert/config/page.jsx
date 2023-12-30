@@ -40,7 +40,7 @@ const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     ACCOUNT: true,
   });
-  const { avatar, email, userRole } = useStore();
+  const { avatar, email, userRole, balance, refreshBalance } = useStore();
 
   const [form] = Form.useForm();
   const [data, setData] = useState();
@@ -55,9 +55,7 @@ const Home = () => {
       setData(fetchedDataFromAPI);
       form.setFieldsValue(fetchedDataFromAPI);
 
-      const fetchProtected = await getProtectedResource();
-      console.log("fetchProtected: ", fetchProtected)
-      setProtectedData(fetchProtected);
+      
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -139,7 +137,7 @@ const Home = () => {
                 <div>
                   {' '}
                   <Card className="mt-16" style={{ width: '700px' }}>
-                    Your Balance: <b>{formatBalance(protectedData?.data?.accountBalance)}</b>
+                    Your Balance: <b>{formatBalance(balance)}</b>
                     <Withdraw onCreated={onCreated}/>
                   </Card>
                 </div>

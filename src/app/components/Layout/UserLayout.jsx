@@ -217,7 +217,7 @@ const UserLayout = React.memo(
     return (
       // <AuthenticationGuard>
       // <AuthLayout>
-      <AuthenticationGuard>
+      // <AuthenticationGuard>
         <ConfigProvider
           theme={{
             components: {
@@ -477,7 +477,6 @@ const UserLayout = React.memo(
             </Layout>
           </Layout>
         </ConfigProvider>
-      </AuthenticationGuard>
     );
   },
 );

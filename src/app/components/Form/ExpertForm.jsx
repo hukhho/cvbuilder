@@ -116,8 +116,18 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
     </div>
   );
 
-  const accessToken = localStorage.getItem('accessToken');
+  const [accessToken, setAccessToken] = useState();
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Get the accessToken from localStorage
+      const accessTokenLocal = localStorage.getItem('accessToken');
 
+      // Set the Authorization header if the accessToken is available
+      if (accessTokenLocal) {
+        setAccessToken(accessTokenLocal);
+      }
+    }
+  }, []);
   return (
     <div className="" style={{ width: '700px' }}>
       {contextHolder}

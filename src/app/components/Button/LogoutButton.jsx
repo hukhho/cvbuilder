@@ -20,6 +20,7 @@ export const LogoutButton = ({ isCollapsed }) => {
       localStorage.removeItem('email');
       localStorage.removeItem('avatar');
       localStorage.removeItem('userRole');
+      localStorage.removeItem('accessToken');
     }
     logout({
       logoutParams: {

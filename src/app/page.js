@@ -18,17 +18,16 @@ import ExpertRequestPage from './expert/requests/page';
 import HRApplicationPage from './hr/application/page';
 
 const Home = () => {
-  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } = useAuth0();
   const { userRole } = useStore();
 
-  if (isLoading) {
-    return <PageLoader />;
-  }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
-  }
+  // if (isLoading) {
+  //   return <PageLoader />;
+  // }
+  // if (error) {
+  //   return <div>Oops... {error.message}</div>;
+  // }
 
-  if (isAuthenticated) {
+  if (userRole) {
     if (userRole === 'ADMIN') {
       return <Dashboard />;
     }

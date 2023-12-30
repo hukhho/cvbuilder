@@ -6,16 +6,14 @@ import updateContact from './updateContactService';
 import './customtext.css';
 import ButtonContact from './ButtonContact';
 
-const ContactForm = React.memo(({ cvId, onCreated, data }) => {
+const ContactForm = ({ cvId, onCreated, data }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
-
-  const [isLoadingPage, setIsLoadingPage] = useState(true);
 
   const [isSetData, setIsSetData] = useState(false);
 
   useEffect(() => {
-    if (data && !isSetData) {
+    if (data) {
       const mockData = {
         fullName: data.fullName,
         email: data.email,
@@ -28,7 +26,6 @@ const ContactForm = React.memo(({ cvId, onCreated, data }) => {
       form.setFieldsValue(initialData);
       setIsSetData(true);
     }
-    setIsLoadingPage(false);
   }, [data, form]);
 
   const handleSubmit = async values => {
@@ -49,9 +46,7 @@ const ContactForm = React.memo(({ cvId, onCreated, data }) => {
       console.log('Submit. Error:', error);
     }
   };
-  if (isLoadingPage) {
-    return <div>Loading...</div>;
-  }
+
   return (
     <div className="w-full">
       <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
@@ -224,6 +219,6 @@ const ContactForm = React.memo(({ cvId, onCreated, data }) => {
       </Form>
     </div>
   );
-});
+};
 
 export default ContactForm;

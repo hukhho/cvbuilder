@@ -47,6 +47,7 @@ const Home = () => {
   const [data, setData] = useState();
   const [protectedData, setProtectedData] = useState();
 
+
   const [resumes, setResumes] = useState([]);
 
   const fetchData = async () => {
@@ -57,9 +58,6 @@ const Home = () => {
       setData(fetchedDataFromAPI);
       form.setFieldsValue(fetchedDataFromAPI);
 
-      const fetchProtected = await getProtectedResource();
-      console.log('fetchProtected: ', fetchProtected);
-      setProtectedData(fetchProtected);
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -123,7 +121,7 @@ const Home = () => {
                 </div>
                 <div>
                   <Card className="mt-16" style={{ width: '700px' }}>
-                    Your Balance: <b>{formatBalance(protectedData?.data?.accountBalance)}</b>
+                    Your Balance: <b>0</b>
                     <Deposit />
                   </Card>
                 </div>
