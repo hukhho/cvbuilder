@@ -49,6 +49,8 @@ const Experience = ({ params }) => {
   };
   const fetchExperiences = async () => {
     try {
+      setIsDnd(false)
+
       const data = await getAllExperiences(cvId);
       console.log('data getAllExperiences ', data);
 
@@ -60,13 +62,20 @@ const Experience = ({ params }) => {
       } else {
         setSelectedExperience(null);
       }
-
+      console.log('setExperiences ', data);
       setExperiences(data);
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
     } finally {
       setIsLoadingPage(false);
+      setIsDnd(true)
+
     }
+  };
+  const onUpdateExperience = async () => {
+    console.log('onUpdateExperience');
+    fetchExperiences();
+
   };
 
   useEffect(() => {
@@ -75,12 +84,13 @@ const Experience = ({ params }) => {
 
   const handleEditExperience = experience => {
     handleRemoveSearchParam();
-
     setSelectedExperience(experience);
+    setIsDnd(false)
   };
   const handleDeleteExperience = async experienceId => {
     try {
       console.log('deleteExperience id ', experienceId);
+      setIsDnd(false)
 
       await deleteExperience(cvId, experienceId);
 
@@ -90,6 +100,8 @@ const Experience = ({ params }) => {
       setExperiences(updatedExperiences);
     } catch (error) {
       console.error('There was an error deleting the experience', error);
+    } finally {
+      setIsDnd(true)
     }
   };
   const [sortByDate, setSortByDate] = useState(true);
@@ -104,6 +116,8 @@ const Experience = ({ params }) => {
   // });
 
   const [isShow, setIsShow] = useState(true);
+  const [isDnd, setIsDnd] = useState(false);
+
   const handleDownButton = () => {
     setIsShow(!isShow);
   };
@@ -121,7 +135,7 @@ const Experience = ({ params }) => {
       theOrder: index + 1,
     }));
     console.log('updatedOrder', updatedOrder);
-
+    setIsDnd(false)
     setExperiences(updatedOrder);
     try {
       await dataService.sortOrder(updatedOrder);
@@ -133,6 +147,8 @@ const Experience = ({ params }) => {
         message: 'Save order error',
       });
       console.error('There was an error updating the data', error);
+    } finally {
+      setIsDnd(true)
     }
   };
   return (
@@ -185,7 +201,7 @@ const Experience = ({ params }) => {
                   </div>
 
                   <div style={{ paddingTop: '0px' }}>
-                  {/* {isShow &&
+                    {isShow && !isDnd &&
                       !isLoadingPage &&
                       experiences?.length > 0 &&
                       experiences?.map(experience => (
@@ -200,12 +216,9 @@ const Experience = ({ params }) => {
                           subtitle={experience.companyName}
                           updateExperience={updateExperience}
                         />
-                      ))}  */}
+                      ))}
 
-                { 
-                      isShow &&
-                      !isLoadingPage &&
-                      experiences?.length > 0 && (
+                    {isShow && isDnd && !isLoadingPage && experiences?.length > 0 && (
                       <ExperienceSort
                         cvId={cvId}
                         selectedExperience={selectedExperience}
@@ -224,13 +237,13 @@ const Experience = ({ params }) => {
                 {!isLoadingPage ? (
                   <ExperienceForm
                     cvId={cvId}
-                    onExperienceCreated={fetchExperiences}
+                    onExperienceCreated={onUpdateExperience}
                     experience={selectedExperience}
                   />
                 ) : (
                   <ExperienceForm
                     cvId={cvId}
-                    onExperienceCreated={fetchExperiences}
+                    onExperienceCreated={onUpdateExperience}
                     experience={null}
                   />
                 )}

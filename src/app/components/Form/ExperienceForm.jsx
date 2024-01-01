@@ -130,7 +130,11 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
         setIsCurrentlyWorking(false);
         setEndDate('');
       }
+      notification.success({
+        message: `Save changed`,
+      });
       onExperienceCreated();
+      
     } catch (error) {
       notification.error({
         message: `Error: ${error}`,
