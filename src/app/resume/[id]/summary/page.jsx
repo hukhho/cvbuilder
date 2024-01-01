@@ -167,6 +167,14 @@ const Summary = ({ params }) => {
     console.log(`selected ${value}`);
     setIsReady(true);
   };
+  const handleChangeInput = e => {
+    // console.log("selected", e.target.value);
+    if (e.target.value) {
+      setIsReady(true);
+    } else {
+      setIsReady(false);
+    }
+  };
 
   const [disabled, setDisabled] = useState(false);
   const toggle = () => {
@@ -217,13 +225,17 @@ const Summary = ({ params }) => {
                         form={form}
                         layout="vertical"
                         autoComplete="off"
+                        style={{
+                          maxWidth: '270px',
+                          width: '100%',
+                        }}
                       >
                         <Form.Item
                           name="position_highlight"
                           label={
                             <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs  text-gray-600">
                               <div className="flex gap-2 items-center text-xs">
-                                Position Highlight
+                                Position Highlight *
                               </div>
                               <div className="ml-10 flex">
                                 <span className="text-gray-300" style={{ fontSize: 13 }}>
@@ -252,8 +264,9 @@ const Summary = ({ params }) => {
                           )}
                           {disabled && (
                             <Input
-                              style={{ marginTop: '-10px' }}
+                              style={{ marginTop: '-10px', maxWidth: '270px', width: '100%' }}
                               className="inputEl st-current"
+                              onChange={handleChangeInput}
                               placeholder="Java Developer at Company A"
                             />
                           )}
@@ -281,6 +294,7 @@ const Summary = ({ params }) => {
                           />
                         </Form.Item>
                         <button
+                          disabled={!isReady}
                           href=""
                           data-size="large"
                           data-theme="default"
