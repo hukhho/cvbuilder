@@ -24,6 +24,15 @@ instance.interceptors.request.use(config => {
     // Set the Authorization header if the accessToken is available
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+      localStorage.removeItem('email');
+      localStorage.removeItem('avatar');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('accessToken');
+
+      console.log('logout');
+      // Redirect to the login page or perform any other logout-related action
+      window.location.href = '/login';
     }
   }
 
