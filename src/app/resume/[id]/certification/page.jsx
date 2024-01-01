@@ -140,7 +140,7 @@ const Certification = ({ params }) => {
                     {/* {isShow && selectedEducation && <ListError errors={selectedEducation?.bulletPointDtos} />} */}
                   </div>
                   <div style={{ paddingTop: '0px' }}>
-                    {/* {isShow &&
+                    {isShow &&
                       data.map(project => (
                         <StandarList
                           key={project.id}
@@ -153,8 +153,8 @@ const Certification = ({ params }) => {
                           subtitle=""
                           updateExperience={updateCertification}
                         />
-                      ))} */}
-                    {isShow && (
+                      ))}
+                    {/* {isShow && (
                       <CertiSort
                         cvId={cvId}
                         selectedExperience={selectedData}
@@ -165,7 +165,7 @@ const Certification = ({ params }) => {
                         skills={data}
                         onChangeOrder={handleOrderChange}
                       />
-                    )}
+                    )} */}
                   </div>
                 </Card>
               </div>

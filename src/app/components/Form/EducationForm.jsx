@@ -50,14 +50,21 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
 
   return (
     <div className="" style={{ width: '100%' }}>
-      <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
+      <Form
+        onFinish={handleSubmit}
+        form={form}
+        layout="vertical"
+        autoComplete="off"
+        requiredMark={false}
+      >
         <Form.Item
           name="degree"
+          rules={[{ required: true }]}
           label={
             <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
               <div className="flex gap-2 items-center text-xs">
                 What is your <strong>degree</strong>or other <strong>qualification</strong>and
-                <strong>major</strong>?
+                <strong>major</strong>? *
               </div>
             </label>
           }
