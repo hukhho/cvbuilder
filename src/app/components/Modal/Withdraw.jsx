@@ -21,8 +21,8 @@ export default function Withdraw({ onCreated }) {
    
   const [formData, setFormData] = useState({
     sentId: 'string',
-    expenditure: 0,
-    conversionAmount: 0,
+    expenditure: 10000,
+    conversionAmount: 10000,
     userId: 0,
   });
 
