@@ -124,7 +124,11 @@ const ProjectSection = ({
       </div>
       {/* <Divider className="divider-section" /> */}
       <div>
-        <DndContext
+        {components.map((child, index) => (
+          <div key={index}>{child}</div>
+        ))}
+
+        {/* <DndContext
           sensors={sensors}
           onDragCancel={handleDragCancel}
           onDragStart={handleDragStart}
@@ -139,7 +143,7 @@ const ProjectSection = ({
               </div>
             ))}
           </SortableContext>
-        </DndContext>
+        </DndContext> */}
       </div>
     </div>
   );

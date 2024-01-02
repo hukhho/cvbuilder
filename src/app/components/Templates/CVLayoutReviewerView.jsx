@@ -39,7 +39,13 @@ import { Button, Card, Divider, Input, Popover, Tooltip } from 'antd';
 import { Box, ChakraProvider, VStack } from '@chakra-ui/react';
 import { CommentOutlined } from '@ant-design/icons';
 
-const CVLayoutReviewerView = ({ children, onSectionsOrderChange, layoutStyles, stars }) => {
+const CVLayoutReviewerView = ({
+  children,
+  onSectionsOrderChange,
+  layoutStyles,
+  stars,
+  isDnd = false,
+}) => {
   const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
 
   // Define font styles for different fonts
@@ -252,7 +258,45 @@ const CVLayoutReviewerView = ({ children, onSectionsOrderChange, layoutStyles, s
                 {/* Break */}
               </div>
               <div id="sortable-area" className="relative z-50 mb-[10px] transition-all">
-                <DndContext
+                {/* {components.map((child, index) => (
+                      <div key={child.key || index}>
+                        {child.props.canBeDrag === false ? ( // Check if the section can be dragged
+                          <div key={child.key || index}>
+                            {child}
+                            {layoutStyles.hasDivider && (
+                              <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                                <hr />
+                              </div>
+                            )}
+                          </div> // Render without drag if canBeDrag is false
+                        ) : (
+                          <div key={child.key || index}>
+                            <SortableItem key={child.key || index}>{child}</SortableItem>
+                            {index < components.length - 1 && layoutStyles.hasDivider && (
+                              <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                                <hr />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))} */}
+                {components.map((child, index) => (
+                  <div key={child.key || index}>
+                    {
+                      // Check if the section can be dragged
+                      <div key={child.key || index}>
+                        {child}
+                        {layoutStyles.hasDivider && (
+                          <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
+                            <hr />
+                          </div>
+                        )}
+                      </div> // Render without drag if canBeDrag is false
+                    }
+                  </div>
+                ))}
+                {/* <DndContext
                   sensors={sensors}
                   onDragCancel={handleDragCancel}
                   onDragStart={handleDragStart}
@@ -283,7 +327,7 @@ const CVLayoutReviewerView = ({ children, onSectionsOrderChange, layoutStyles, s
                       </div>
                     ))}
                   </SortableContext>
-                </DndContext>
+                </DndContext> */}
 
                 <div id="DndDescribedBy-1" style={{ display: 'none' }}>
                   To pick up a draggable item, press the space bar. While dragging, use the arrow

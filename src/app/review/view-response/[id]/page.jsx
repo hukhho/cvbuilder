@@ -5,6 +5,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
+  Avatar,
   Button,
   Card,
   ConfigProvider,
@@ -41,12 +42,12 @@ import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerVie
 import { Box, VStack } from '@chakra-ui/react';
 import { CommentOutlined, StarFilled } from '@ant-design/icons';
 import Link from 'next/link';
-import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
-import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
-import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
-import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
-import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
-import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
+import SummarySection from '@/app/components/Templates/SectionComponentsV2/SummarySection';
+import EducationsSection from '@/app/components/Templates/SectionComponentsV2/EducationsSection';
+import SkillsSection from '@/app/components/Templates/SectionComponentsV2/SkillsSection';
+import ProjectSection from '@/app/components/Templates/SectionComponentsV2/ProjectSection';
+import CertificationSection from '@/app/components/Templates/SectionComponentsV2/CertificationSection';
+import InvolvementSection from '@/app/components/Templates/SectionComponentsV2/InvolvementsSection';
 import UserHeaderExpert from '@/app/components/UserHeaderExpert';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
 import RatingForm from '@/app/components/Form/RatingForm';
@@ -97,14 +98,124 @@ export default function FinishUp({ params }) {
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
 
-  const filteredEducations = educations?.filter(education => education.isDisplay === true);
-  const filteredProjects = projects?.filter(project => project.isDisplay === true);
-  const filteredInvolvements = involvements?.filter(involvement => involvement.isDisplay === true);
-  const filteredCertifications = certifications?.filter(
-    certification => certification.isDisplay === true,
-  );
-  const filteredSkills = skills?.filter(skill => skill.isDisplay === true);
-  const filteredExperiences = experiences?.filter(experience => experience.isDisplay === true);
+  const theOrders = {
+    summary: 99,
+    experiences: 99,
+    educations: 99,
+    involvements: 99,
+    projects: 99,
+    certifications: 99,
+    skills: 99,
+  };
+  // const theOrders =  {
+  //   summary: 2,
+  //   experiences: 1,
+  //   educations: 3,
+  //   projects: 4,
+  //   certifications: 5,
+  //   involvements: 99,
+  //   skills: 6
+  // }
+  const [theOrder, setTheOrder] = useState(theOrders);
+
+  const filteredEducations = educations?.filter(education => {
+    // Check if education is displayable (isDisplay is true)
+    if (education.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if degree is not null
+    if (education.degree === null || education.degree === undefined || education.degree === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the education in the filtered list
+    return true;
+  });
+
+  const filteredProjects = projects?.filter(project => {
+    // Check if project is displayable (isDisplay is true)
+    if (project.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if title is not null, undefined, or an empty string
+    if (project.title === null || project.title === undefined || project.title === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the project in the filtered list
+    return true;
+  });
+  const filteredInvolvements = involvements?.filter(involvement => {
+    // Check if involvement is displayable (isDisplay is true)
+    if (involvement.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if organizationName is not null, undefined, or an empty string
+    if (
+      involvement.organizationName === null ||
+      involvement.organizationName === undefined ||
+      involvement.organizationName === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the involvement in the filtered list
+    return true;
+  });
+  const filteredCertifications = certifications?.filter(certification => {
+    // Check if certification is displayable (isDisplay is true)
+    if (certification.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if name is not null, undefined, or an empty string
+    if (
+      certification.name === null ||
+      certification.name === undefined ||
+      certification.name === ''
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the certification in the filtered list
+    return true;
+  });
+
+  const filteredSkills = skills?.filter(skill => {
+    // Check if skill is displayable (isDisplay is true)
+    if (skill.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if description is not null, undefined, or an empty string
+    if (skill.description === null || skill.description === undefined || skill.description === '') {
+      return false;
+    }
+
+    // If both conditions are met, keep the skill in the filtered list
+    return true;
+  });
+  const filteredExperiences = experiences?.filter(experience => {
+    // Check if experience is displayable (isDisplay is true)
+    if (experience.isDisplay !== true) {
+      return false;
+    }
+
+    // Check if companyName is not null, empty string, or undefined
+    if (
+      experience.companyName === null ||
+      experience.companyName === '' ||
+      experience.companyName === undefined
+    ) {
+      return false;
+    }
+
+    // If both conditions are met, keep the experience in the filtered list
+    return true;
+  });
 
   // to store order of some user's information
   const [experiencesOrder, setExperiencesOrder] = useState([]);
@@ -299,6 +410,7 @@ export default function FinishUp({ params }) {
           layoutStyles={toolbarState}
         />
       ),
+      order: 0,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
     },
@@ -307,6 +419,7 @@ export default function FinishUp({ params }) {
       component: <SummarySection templateType={templateSelected} summary={summary} />,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: true,
+      order: finishUpData?.theOrder?.summary || 1,
     },
     {
       id: 'experiences',
@@ -315,34 +428,55 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           experiences={filteredExperiences}
           onComment={handleMouseUp}
+          isDnd={false}
           isShowCommentBox={false}
           onChangeOrder={sortedExperiences => {
             console.log('New order of experiences:', sortedExperiences);
           }}
         />
       ),
+      order: finishUpData?.theOrder?.experiences || 2,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredExperiences !== null,
     },
     {
       id: 'educations',
       component: (
-        <EducationsSection templateType={templateSelected} educations={filteredEducations} />
+        <EducationsSection
+          isDnd={false}
+          templateType={templateSelected}
+          educations={filteredEducations}
+          isShowCommentBox={false}
+        />
       ),
+      order: finishUpData?.theOrder?.educations || 3,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredEducations !== null,
     },
     {
       id: 'involvements',
       component: (
-        <InvolvementSection templateType={templateSelected} involvements={filteredInvolvements} />
+        <InvolvementSection
+          isDnd={false}
+          isShowCommentBox={false}
+          templateType={templateSelected}
+          involvements={filteredInvolvements}
+        />
       ),
+      order: finishUpData?.theOrder?.involvements || 4,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredInvolvements !== null,
     },
     {
       id: 'projects',
-      component: <ProjectSection templateType={templateSelected} projects={filteredProjects} />,
+      component: (
+        <ProjectSection
+          isShowCommentBox={false}
+          templateType={templateSelected}
+          projects={filteredProjects}
+        />
+      ),
+      order: finishUpData?.theOrder?.projects || 5,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredProjects != null,
     },
@@ -350,10 +484,12 @@ export default function FinishUp({ params }) {
       id: 'certifications',
       component: (
         <CertificationSection
+          isShowCommentBox={false}
           templateType={templateSelected}
           certifications={filteredCertifications}
         />
       ),
+      order: finishUpData?.theOrder?.certifications || 6,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredCertifications !== null,
     },
@@ -361,15 +497,18 @@ export default function FinishUp({ params }) {
       id: 'skills',
       component: (
         <SkillsSection
+          isShowCommentBox={false}
           templateType={templateSelected}
           skills={filteredSkills}
           onChangeOrder={handleSkillsOrderChange}
         />
       ),
+      order: finishUpData?.theOrder?.skills || 7,
       canBeDrag: false, // Set to true if this section can be dragged
       canBeDisplayed: filteredSkills !== null,
     },
   ];
+  sections.sort((a, b) => a.order - b.order);
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
@@ -542,6 +681,9 @@ export default function FinishUp({ params }) {
   const onCreated = () => {
     fetchData();
   };
+
+  const [isDnd, setIsDnd] = useState(false);
+
   return (
     <main>
       <ConfigProvider>
@@ -659,7 +801,6 @@ export default function FinishUp({ params }) {
                             >
                               Comment for Cv
                             </textarea> */}
-                            Comment: {overall}
                             <div>Status: {request?.status}</div>
                             <div>Price: {request?.price}</div>
                           </div>
@@ -670,6 +811,7 @@ export default function FinishUp({ params }) {
                         key={[templateSelected, toolbarState]}
                         layoutStyles={toolbarState}
                         sectionsOrder={sectionsOrder}
+                        isDnd={isDnd}
                         onSectionsOrderChange={handleSectionsOrderChange}
                       >
                         {filteredSections.map(
@@ -677,12 +819,65 @@ export default function FinishUp({ params }) {
                         )}
                       </CVLayoutReviewerView>
                       <div className="mb-16">
-                        {fetchedData?.score === null && (
+                        {request?.status === 'Done' && (
+                          <textarea
+                            className="inputEl"
+                            value={overall}
+                            disabled={true}
+                            placeholder="Overall comment"
+                          />
+                        )}
+                      </div>
+                      <div className="mb-16">
+                        {request?.status === 'Done' && fetchedData?.score === null && (
                           <RatingForm responseId={fetchedData?.id} onCreated={onCreated} />
                         )}
                       </div>
                       <div>
-                        {fetchedData?.score && (
+                        {fetchedData?.request?.status === 'Done' && (
+                          <div style={{ marginBottom: '10px' }}>
+                            {fetchedData?.score && (
+                              <div className="pt-4 ">
+                                <div className="flex">
+                                  <div className=" flex">
+                                    <p style={{ fontWeight: 'bold', marginRight: '2px' }}>
+                                      {fetchedData?.score}
+                                    </p>{' '}
+                                    <StarFilled style={{ color: '#FFC107' }} />
+                                  </div>
+                                  <div className="ml-4 text-gray-500">
+                                    {fetchedData?.dateComment}
+                                  </div>
+                                </div>
+
+                                <div className="mt-3">
+                                  {fetchedData?.request ? (
+                                    <span
+                                      dangerouslySetInnerHTML={{ __html: fetchedData?.comment }}
+                                    />
+                                  ) : (
+                                    <Empty />
+                                  )}
+
+                                  <div className="flex mt-4">
+                                    <Avatar
+                                      shape="square"
+                                      size="large"
+                                      src={fetchedData?.user?.avatar}
+                                    />
+                                    <div className="ml-4">
+                                      <div>{fetchedData?.user?.name}</div>
+                                      <div>
+                                        {/* <p style={{ color: '#4D70EB' }}> job title - Developer ne</p> */}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {/* {fetchedData?.score && (
                           <Card className="mt-8 mb-16">
                             <div className="mt-4" style={{ textAlign: 'left' }}>
                               <div className="flex">
@@ -705,7 +900,7 @@ export default function FinishUp({ params }) {
                               </div>
                             </div>
                           </Card>
-                        )}
+                        )} */}
                       </div>
                       <div>
                         {/* <textarea

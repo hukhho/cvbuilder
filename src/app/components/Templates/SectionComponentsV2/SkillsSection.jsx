@@ -125,7 +125,11 @@ const SkillsSection = ({
         <hr />
       </div>{' '} */}
       <div>
-        <DndContext
+        {components.map((child, index) => (
+          <div key={index}>{child}</div>
+        ))}
+
+        {/* <DndContext
           sensors={sensors}
           onDragCancel={handleDragCancel}
           onDragStart={handleDragStart}
@@ -140,7 +144,7 @@ const SkillsSection = ({
               </div>
             ))}
           </SortableContext>
-        </DndContext>
+        </DndContext> */}
       </div>
     </div>
   );

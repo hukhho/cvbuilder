@@ -31,10 +31,11 @@ const columns = [
   },
   {
     title: 'Candidate',
-    dataIndex: 'name',
+    dataIndex: 'candidate',
     render: text => (
       <div>
-        <Avatar icon={<UserOutlined />} /> {text}
+        {text}
+        {/* <Avatar icon={<UserOutlined />} /> {text} */}
       </div>
     ),
   },
@@ -131,7 +132,7 @@ const Home = () => {
   return (
     <ConfigProvider>
       <UserLayout
-        selected="3"
+        selected="2"
         isCollapsed={false}
         avatar={avatar}
         email={email}

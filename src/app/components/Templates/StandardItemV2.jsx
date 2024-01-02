@@ -9,6 +9,7 @@ import ContentEditable from 'react-contenteditable';
 
 const StandardItemV2 = props => {
   const {
+    isDnd,
     onComment,
     isShowCommentBox,
     onDeleteComment,

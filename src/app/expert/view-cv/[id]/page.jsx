@@ -601,6 +601,12 @@ export default function FinishUp({ params }) {
     if (key === null || key === undefined) {
       return;
     }
+    if (
+      fetchedData?.request?.status !== 'Processing' &&
+      fetchedData?.request?.status !== 'Accept'
+    ) {
+      return;
+    }
 
     setCurrentId(id);
     setCurrentDataType(key);
@@ -1332,14 +1338,12 @@ export default function FinishUp({ params }) {
                             </div>
                             <div className="ml-4 text-gray-500">{fetchedData?.dateComment}</div>
                           </div>
-
                           <div className="mt-3">
                             {fetchedData?.request ? (
                               <span dangerouslySetInnerHTML={{ __html: fetchedData?.comment }} />
                             ) : (
                               <Empty />
                             )}
-
                             <div className="flex mt-4">
                               <Avatar shape="square" size="large" src={fetchedData?.user?.avatar} />
                               <div className="ml-4">

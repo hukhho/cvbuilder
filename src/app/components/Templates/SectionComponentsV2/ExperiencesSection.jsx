@@ -41,6 +41,7 @@ const ExperiencesSection = ({
         const { duration, description, companyName, role, location } = exp;
         return (
           <StandardItemV2
+            isDnd={false}
             isShowCommentBox={isShowCommentBox}
             onComment={onComment}
             onDeleteComment={onDeleteComment}
@@ -131,14 +132,19 @@ const ExperiencesSection = ({
 
       {/* <Divider className="section-header" /> */}
       <div>
-      {/* {components.map((child, index) => (
+        {/* {components.map((child, index) => (
               <div key={index}>
                 <SortableItem className="hello" key={index}>
                   {child}
                 </SortableItem>
               </div>
             ))} */}
-        <DndContext
+        {components.map((child, index) => (
+          <div key={index}>
+              {child}
+          </div>
+        ))}
+        {/* <DndContext
           sensors={sensors}
           onDragCancel={handleDragCancel}
           onDragStart={handleDragStart}
@@ -153,7 +159,7 @@ const ExperiencesSection = ({
               </div>
             ))}
           </SortableContext>
-        </DndContext>
+        </DndContext> */}
       </div>
     </div>
   );

@@ -159,7 +159,7 @@ const Home = () => {
   return (
     <UserLayout
       selected="5"
-      isCollapsed={false}
+      isCollapsed={true}
       avatar={avatar}
       email={email}
       userRole={userRole}

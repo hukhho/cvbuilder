@@ -124,7 +124,10 @@ const CertificationSection = ({
       </div>
       {/* <Divider className="divider-section" /> */}
       <div>
-        <DndContext
+        {components.map((child, index) => (
+          <div key={index}>{child}</div>
+        ))}
+        {/* <DndContext
           sensors={sensors}
           onDragCancel={handleDragCancel}
           onDragStart={handleDragStart}
@@ -139,7 +142,7 @@ const CertificationSection = ({
               </div>
             ))}
           </SortableContext>
-        </DndContext>
+        </DndContext> */}
       </div>
     </div>
   );
