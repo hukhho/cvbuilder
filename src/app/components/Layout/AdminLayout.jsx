@@ -38,6 +38,7 @@ import { parse, serialize } from 'cookie';
 import Image from 'next/image';
 import AuthLayout from './AuthLayout';
 import useStore from '@/store/store';
+import { LogoutButton } from '../Button/LogoutButton';
 // Dynamically import CanvasGradient with ssr: false
 const CanvasGradient = dynamic(() => import('../../testlayout/CanvasGradient'), {
   ssr: false,
@@ -211,6 +212,8 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
   console.log('colorPrimary:', colorPrimary);
   console.log('borderRadius:', borderRadius);
   console.log('colorBgContainer:', colorBgContainer);
+
+
   const { logout } = useAuth0();
 
   const handleLogout = () => {
@@ -329,7 +332,8 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
                   <div style={{ display: 'none' }} />
                   <div className="space-align-block">
                     <Space align="center">
-                      <FontAwesomeIcon
+                     <LogoutButton isCollapsed={false}/> 
+                      {/* <FontAwesomeIcon
                         style={{
                           color: 'white',
                           fontFamily: 'Source Sans Pro, sans-serif',
@@ -354,7 +358,7 @@ const AdminLayout = React.memo(({ userHeader, content, selected, onCreated }) =>
                         onClick={handleLogout}
                       >
                         Log out
-                      </span>
+                      </span> */}
                     </Space>
                   </div>
                 </div>
