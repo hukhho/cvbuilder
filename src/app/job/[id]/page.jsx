@@ -125,6 +125,7 @@ const Home = ({ params }) => {
   const coverOptions = coverLetters.map(cover => ({
     value: cover.id,
     label: cover.title,
+    metadata: cover,
   }));
   return (
     <ConfigProvider>
@@ -219,6 +220,7 @@ const Home = ({ params }) => {
                         resumeOptions={resumeOptions}
                         coverOptions={coverOptions}
                         jobId={params.id}
+                        jobTitle={data?.title}
                         handleSuccess={handleSuccess}
                       />
 

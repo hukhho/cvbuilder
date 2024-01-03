@@ -1,34 +1,48 @@
 /* eslint-disable */
 
-import { Dialog, Switch, Transition } from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import { Button, Form, Input, Select, Spin, notification } from 'antd';
+import { Button, Form, Input, Select, Spin, Switch, notification } from 'antd';
 import './card.css';
 import '../../components/Form/customtext.css';
 // import './button.css';
 import { applyJob, createReview } from './reviewService';
 import { LoadingOutlined } from '@ant-design/icons';
 import SuccessJob from './SuccessJob';
+import Link from 'next/link';
+import createCoverLetterService from './createCoverLetterService';
+import { useRouter } from 'next/navigation';
 
 export default function ApplyJobModal({
   onCreated,
   resumeOptions,
   coverOptions,
   jobId,
+  jobTitle,
   handleSuccess,
 }) {
   const [form] = Form.useForm();
-
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [selectedResume, setSelectedResume] = useState();
+  const [selectedCover, setSelectedCover] = useState();
+
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [resumeId, setResumeId] = useState();
+
+  const [disabled, setDisabled] = useState(false);
+
+  const toggle = () => {
+    setDisabled(!disabled);
+  };
+
   const handleChangeResume = value => {
     setResumeId(value);
   };
@@ -91,9 +105,57 @@ export default function ApplyJobModal({
     } catch (error) {
       notification.error({
         message: `Error: ${error?.response?.data}`,
-      }); 
+      });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const onChangeResume = value => {
+    console.log('onChangeResume: ', value);
+    console.log('coverOptions: ', coverOptions);
+
+    setSelectedResume(value);
+  };
+  const nameOfSelectedResume = resumeOptions?.find(
+    resume => resume.value === selectedResume,
+  )?.label;
+
+  const onChangeCover = value => {
+    setSelectedCover(value);
+  };
+
+  const handleCreateNewCoverLetter = async () => {
+    // Here you can perform any actions with the form data, such as sending it to the server
+    // const submitData123 = { selectedResume: selectedResume, jobId: jobId, jobTitle: jobTitle };
+    // console.log('Form data submitted: ', submitData123);
+    // console.log('jobTitle: ', jobTitle);
+    try {
+      const timestamp = new Date().getTime();
+
+      const submitData = { title: `Cover letter for ${jobTitle} - ${timestamp}` };
+      const result = await createCoverLetterService(selectedResume, submitData);
+      notification.success({
+        message: 'Success',
+      });
+      console.log('result: ', result);
+
+      // router.push(`/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`);
+      // Open the new tab using window.open
+      const newTab = window.open(
+        `/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`,
+        '_blank',
+      );
+
+      // Check if the new tab was successfully opened
+      if (newTab) {
+        // Close the new tab's reference to the current tab to avoid circular references
+        newTab.opener = null;
+      }
+    } catch (error) {
+      notification.error({
+        message: `Error: ${error?.response?.data}`,
+      });
     }
   };
   return (
@@ -174,19 +236,49 @@ export default function ApplyJobModal({
                                   <Select
                                     className=""
                                     style={{ width: '100%', height: 50 }}
+                                    value={selectedResume}
+                                    onChange={onChangeResume}
                                     options={resumeOptions}
                                   />
                                 </Form.Item>
-                                <Form.Item
-                                  className="custom-label-normal"
-                                  name="coverletter"
-                                  label="select Cover Letter "
-                                >
-                                  <Select
-                                    style={{ width: '100%', height: 50 }}
-                                    options={coverOptions}
-                                  />
-                                </Form.Item>
+                                {selectedResume && (
+                                  <>
+                                    {' '}
+                                    <div className="flex mt-10 mb-5">
+                                      <Switch className="mr-2" onClick={toggle} value={disabled} />
+
+                                      <span className="" style={{ fontSize: 13 }}>
+                                        Choose from existed cover letter
+                                      </span>
+                                    </div>
+                                    {disabled && (
+                                      <button
+                                        type="button"
+                                        style={{ color: 'blue' }}
+                                        onClick={handleCreateNewCoverLetter}
+                                        class="mb-5"
+                                      >
+                                        Create new cover letter for this job with resume{' '}
+                                        {nameOfSelectedResume}
+                                      </button>
+                                    )}
+                                    <Form.Item
+                                      className="custom-label-normal"
+                                      name="coverletter"
+                                      hidden={disabled}
+                                      value={selectedCover}
+                                      onChange={onChangeCover}
+                                      disabled={coverOptions.length === 0}
+                                      label="select Cover Letter "
+                                    >
+                                      <Select
+                                        style={{ width: '100%', height: 50 }}
+                                        options={coverOptions}
+                                      />
+                                    </Form.Item>
+                                  </>
+                                )}
+
                                 {/* <Form.Item
                                   name="deadline"
                                   label="Deadline"

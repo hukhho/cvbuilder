@@ -48,6 +48,8 @@ const formatter = value => {
 
 const CoverLetterFormV2 = ({
   coverLetterId,
+  jobIdParam = null,
+  isApplyProcess = false,
   data,
   resumeData,
   listResumes,
@@ -75,7 +77,9 @@ const CoverLetterFormV2 = ({
     setDate(dateString);
   };
   const [cvId, setCvId] = useState();
-  const [selectedOption, setSelectedOption] = useState();
+  console.log('CoverLetterFormV2 page ~ jobIdParam: ', jobIdParam);
+
+  const [selectedOption, setSelectedOption] = useState(2);
 
   const handleChange = value => {
     setSelectedOption(value);
@@ -138,7 +142,9 @@ const CoverLetterFormV2 = ({
     job_description: data?.jobDescription,
     cvId: data?.cvId,
   };
-
+  const formDataApplyProcess = {
+    cvId: data?.cvId,
+  };
   console.log('listResumes123', listResumes);
 
   const resumeOptions = listResumes.map(resume => ({
@@ -164,15 +170,47 @@ const CoverLetterFormV2 = ({
       });
     }
   };
-
+  const [isSetInitialValue, setIsSetInitialValue] = useState(false);
   useEffect(() => {
     console.log('form.setFieldsValue(formData): ', formData);
-    form.setFieldsValue(formData);
+    if (isApplyProcess) {
+      form.setFieldsValue(formDataApplyProcess);
+      handleChange(jobIdParam);
+      setSelectedOption(jobIdParam);
+    } else {
+      form.setFieldsValue(formData);
+    }
   }, [data, form]);
+
+  useEffect(() => {
+    if (jobIdParam) {
+      handleChange(jobIdParam);
+      setSelectedOption(jobIdParam);
+    }
+    setIsSetInitialValue(true);
+  }, [jobIdParam]);
+
+  let jobIdParamInt = 0;
+  if (jobIdParam) {
+    try {
+      jobIdParamInt = parseInt(jobIdParam, 10);
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
 
   return (
     <div className="w-full">
       {contextHolder}
+      {isApplyProcess && (
+        <Alert
+          className="mb-10"
+          message="Informational Notes"
+          description="You are in processing of creating a new cover letter for a specific job."
+          type="info"
+          showIcon
+        />
+      )}
 
       <Form
         onFinish={handleSubmit}
@@ -234,6 +272,7 @@ const CoverLetterFormV2 = ({
                   width: '100%',
                 }}
                 className=""
+                defaultValue={jobIdParamInt > 0 ? jobIdParamInt : null}
                 value={selectedOption}
                 onChange={handleChange}
                 options={options}

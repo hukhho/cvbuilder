@@ -17,6 +17,7 @@ import getContact from '@/app/resume/[id]/contact/contactService';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
 import { ExportOutlined } from '@ant-design/icons';
+import { useSearchParams } from 'next/navigation';
 
 const Contact = ({ params }) => {
   const [contactData, setContactData] = useState([]);
@@ -30,6 +31,14 @@ const Contact = ({ params }) => {
   const { avatar, email, userRole } = useStore();
 
   const cvId = params.id;
+  const searchParams = useSearchParams();
+  const jobIdParam = searchParams.get('jobId');
+  const isApplyProcess = searchParams.get('isApplyProcess');
+
+  console.log('jobIdParam: ', jobIdParam);
+  console.log('isApplyProcess: ', isApplyProcess);
+
+
 
   const fetchData = async () => {
     try {
@@ -130,6 +139,8 @@ const Contact = ({ params }) => {
               <div className="flex flex-col p-4 pl-0" style={{ width: '800px' }}>
                 <CoverLetterFormV2
                   coverLetterId={params.id}
+                  jobIdParam={jobIdParam || null}
+                  isApplyProcess={isApplyProcess || false}
                   onCreated={fetchData}
                   resumeData={resumeData}
                   listResumes={listResumes}

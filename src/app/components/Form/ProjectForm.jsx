@@ -201,7 +201,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
           label={
             <label style={{}}>
               <span className="custom-text whitespace-nowrap">
-                GIVE YOUR PROJECT A <strong>TITLE</strong>
+                GIVE YOUR PROJECT A <strong>TITLE</strong> *
               </span>
             </label>
           }
