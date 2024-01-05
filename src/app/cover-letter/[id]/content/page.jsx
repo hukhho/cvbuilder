@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, ConfigProvider, DatePicker, Form, Input, notification, Select } from 'antd';
+import { Alert, Button, ConfigProvider, DatePicker, Form, Input, notification, Select } from 'antd';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
@@ -13,7 +13,7 @@ import ContactForm from '@/app/components/Form/ContactForm';
 import CoverLetterForm from '@/app/components/Form/CoverLetterForm';
 import CoverLetterContent from '@/app/components/Form/CoverLetterContent';
 import getContent from './contentService';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { format, parse } from 'date-fns';
 import updateCoverLetter from '@/app/components/Form/updateCoverLetterService';
 import TextArea from 'antd/es/input/TextArea';
@@ -42,6 +42,14 @@ const Content = ({ params }) => {
   const [cvId, setCvId] = useState();
   const [loading, setLoading] = useState(false);
 
+  const searchParams = useSearchParams();
+
+  const jobIdParam = searchParams.get('jobId');
+  const isApplyProcess = searchParams.get('isApplyProcess');
+
+  console.log('jobIdParam: ', jobIdParam);
+  console.log('isApplyProcess: ', isApplyProcess);
+
   const onChange = e => {
     console.log('Change:', e.target.value);
   };
@@ -68,13 +76,22 @@ const Content = ({ params }) => {
       console.log('contentData:', data);
       data.description = values.description;
       const response = await updateCoverLetter(cvId, params.id, data);
-
-      router.push(`/cover-letter/${params.id}/finishup`);
+      if (jobIdParam && isApplyProcess) {
+        router.push(
+          `/cover-letter/${params.id}/finishup?jobId=${jobIdParam}&isApplyProcess=${isApplyProcess}`,
+        );
+      } else {
+        router.push(`/cover-letter/${params.id}/finishup`);
+      }
     } catch (error) {
       console.log('Submit. Error:', error);
     }
   };
+  const [isUpdateResumeOpen, setIsUpdateResumeOpen] = useState(false);
 
+  const openUpdateResumeModal = () => {
+    setIsUpdateResumeOpen(true);
+  };
   return (
     <UserLayout
       isCollapsed
@@ -83,6 +100,9 @@ const Content = ({ params }) => {
       userRole={userRole}
       userHeader={
         <UserCoverLetterBuilderHeader
+          jobIdParam={jobIdParam || null}
+          isApplyProcess={isApplyProcess || false}
+          coverLetterTitle={data?.title}
           coverLetterId={coverLetterId}
           initialEnabledCategories={enabledCategories}
         />
@@ -92,7 +112,16 @@ const Content = ({ params }) => {
           <div className="flex flex-col p-4 pb-8">
             <div styles={{ width: '900px' }}>
               {contextHolder}
-              <div className="" styles={{ width: '900px' }}>
+              {isApplyProcess && (
+                <Alert
+                  className="mb-10"
+                  message="Informational Notes"
+                  description="You are in processing of creating a new cover letter for a specific job."
+                  type="info"
+                  showIcon
+                />
+              )}
+              <div className="mt-10" styles={{ width: '900px' }}>
                 <Form onFinish={handleSubmitSave} form={form} layout="vertical" autoComplete="off">
                   <Form.Item
                     name="description"

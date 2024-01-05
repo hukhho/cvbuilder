@@ -26,6 +26,9 @@ import './coverletter.css';
 import updateCoverLetter from './updateCoverLetterService';
 import { getResumes } from '@/app/utils/indexService';
 import { useRouter } from 'next/navigation';
+import UpdateCoverLetter from '../Modal/UpdateCoverLetter';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 const { TextArea } = Input;
 const marks = {
@@ -123,7 +126,13 @@ const CoverLetterFormV2 = ({
 
       if (contentResponse.reply) {
         openNotification('bottomRight', 'Done, redirecting!!!');
-        router.push(`/cover-letter/${coverLetterId}/content`);
+        if (jobIdParam && isApplyProcess) {
+          router.push(
+            `/cover-letter/${coverLetterId}/content?jobId=${jobIdParam}&isApplyProcess=true`,
+          );
+        } else {
+          router.push(`/cover-letter/${coverLetterId}/content`);
+        }
       }
       console.log('content state: ', content);
       setLoading(false);
@@ -133,6 +142,8 @@ const CoverLetterFormV2 = ({
       openNotification('bottomRight', `Submit. Error: ${error}`);
 
       setLoading(false);
+
+      // router.push(`/cover-letter/${coverLetterId}/content?jobId=${jobIdParam}&isApplyProcess=true`);
     }
   };
   const formData = {
@@ -198,18 +209,46 @@ const CoverLetterFormV2 = ({
       console.log('error: ', error);
     }
   }
+  const [isUpdateResumeOpen, setIsUpdateResumeOpen] = useState(true);
+
+  const openUpdateResumeModal = () => {
+    setIsUpdateResumeOpen(true);
+  };
+
+  const closeUpdateResumeModal = () => {
+    setIsUpdateResumeOpen(false);
+  };
 
   return (
     <div className="w-full">
       {contextHolder}
       {isApplyProcess && (
-        <Alert
-          className="mb-10"
-          message="Informational Notes"
-          description="You are in processing of creating a new cover letter for a specific job."
-          type="info"
-          showIcon
-        />
+        <>
+          <Alert
+            className="mb-10"
+            message="Informational Notes"
+            description={
+              <div>
+                You are in processing of creating a new cover letter for a specific job.
+                <button
+                  onClick={openUpdateResumeModal}
+                  className="px-4 py-2 text-white bg-gray-300 hover:bg-blue-500 rounded-full "
+                >
+                  Update cover letter name
+                </button>
+              </div>
+            }
+            type="info"
+            showIcon
+          />
+          <UpdateCoverLetter
+            isOpen={isUpdateResumeOpen}
+            onOpenModal={closeUpdateResumeModal}
+            onClose={closeUpdateResumeModal}
+            resume={data}
+            onCreated={onCreated}
+          />
+        </>
       )}
 
       <Form

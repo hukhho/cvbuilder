@@ -38,8 +38,6 @@ const Contact = ({ params }) => {
   console.log('jobIdParam: ', jobIdParam);
   console.log('isApplyProcess: ', isApplyProcess);
 
-
-
   const fetchData = async () => {
     try {
       const data = await getCoverLetter(params.id);
@@ -130,6 +128,9 @@ const Contact = ({ params }) => {
           userRole={userRole}
           userHeader={
             <UserCoverLetterBuilderHeader
+              jobIdParam={jobIdParam || null}
+              isApplyProcess={isApplyProcess || false}
+              coverLetterTitle={contactData?.title}
               coverLetterId={cvId}
               initialEnabledCategories={enabledCategories}
             />
