@@ -140,8 +140,8 @@ export default function ApplyJobModal({
       });
       console.log('result: ', result);
 
-      // router.push(`/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`);
-      // Open the new tab using window.open
+        // router.push(`/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`);
+        // Open the new tab using window.open
       const newTab = window.open(
         `/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`,
         '_blank',
