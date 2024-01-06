@@ -101,32 +101,32 @@ const Home = ({ params }) => {
       console.error('There was an error fetching resumes', error);
     }
   };
-  const fetchCoverletters = async () => {
-    try {
-      // Simulate fetching resumes (replace with your actual fetch logic)
-      const fetchedCoverLetters = await getCoverLetters();
-      console.log('fetchedCoverLetters: ', fetchedCoverLetters);
-      setCoverLetters(fetchedCoverLetters);
-    } catch (error) {
-      console.error('There was an error fetching coverletters', error);
-    }
-  };
+  // const fetchCoverletters = async () => {
+  //   try {
+  //     // Simulate fetching resumes (replace with your actual fetch logic)
+  //     const fetchedCoverLetters = await getCoverLetters();
+  //     console.log('fetchedCoverLetters: ', fetchedCoverLetters);
+  //     setCoverLetters(fetchedCoverLetters);
+  //   } catch (error) {
+  //     console.error('There was an error fetching coverletters', error);
+  //   }
+  // };
   useEffect(() => {
     console.log('useEffect');
     fetchData();
     fetchResumes();
-    fetchCoverletters();
+    // fetchCoverletters();
   }, []);
 
   const resumeOptions = resumes.map(resume => ({
     value: resume.id,
     label: resume.resumeName,
   }));
-  const coverOptions = coverLetters.map(cover => ({
-    value: cover.id,
-    label: cover.title,
-    metadata: cover,
-  }));
+  // const coverOptions = coverLetters.map(cover => ({
+  //   value: cover.id,
+  //   label: cover.title,
+  //   metadata: cover,
+  // }));
   return (
     <ConfigProvider>
       <UserLayout
@@ -218,7 +218,6 @@ const Home = ({ params }) => {
                       </button> */}
                       <ApplyJobModal
                         resumeOptions={resumeOptions}
-                        coverOptions={coverOptions}
                         jobId={params.id}
                         jobTitle={data?.title}
                         handleSuccess={handleSuccess}
@@ -318,7 +317,6 @@ const Home = ({ params }) => {
               <div style={{ marginTop: '20px', width: '314px' }}>
                 <ApplyJobModal
                   resumeOptions={resumeOptions}
-                  coverOptions={coverOptions}
                   handleSuccess={handleSuccess}
                   jobId={params.id}
                 />

@@ -100,8 +100,7 @@ const CVLayout = React.forwardRef(
           const newIndex = components.indexOf(over.id);
           const newComponents = arrayMove(components, oldIndex, newIndex);
           setComponents([...newComponents]);
-         
-          
+
           onSectionsOrderChange(newComponents);
         }
 
@@ -109,10 +108,6 @@ const CVLayout = React.forwardRef(
       },
       [components],
     );
-
-
-
-    
 
     const handleDragCancel = useCallback(() => {
       setActiveId(null);
@@ -271,30 +266,6 @@ const CVLayout = React.forwardRef(
                     ))}
                   </SortableContext>
                 </DndContext>
-
-                <div id="DndDescribedBy-1" style={{ display: 'none' }}>
-                  To pick up a draggable item, press the space bar. While dragging, use the arrow
-                  keys to move the item. Press space again to drop the item in its new position, or
-                  press escape to cancel.
-                </div>
-                <div
-                  id="DndLiveRegion-4"
-                  role="status"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                  style={{
-                    position: 'fixed',
-                    width: 1,
-                    height: 1,
-                    margin: '-1px',
-                    border: 0,
-                    padding: 0,
-                    overflow: 'hidden',
-                    clip: 'rect(0px, 0px, 0px, 0px)',
-                    clipPath: 'inset(100%)',
-                    whiteSpace: 'nowrap',
-                  }}
-                />
               </div>
             </div>
           </div>

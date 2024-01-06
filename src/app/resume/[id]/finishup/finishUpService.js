@@ -6,8 +6,164 @@ import { mockData } from './mockData';
 export const getFinishUp = async cvId => {
   try {
     const response = await axiosInstance.get(`/user/cv/${cvId}/finish-up`);
-    // return mockData.data.resume;
     return response.data;
+
+    // return {
+    //   sharable: false,
+    //   searchable: false,
+    //   email: 'cvbuildercandidate@gmail.com',
+    //   personalWebsite: null,
+    //   phone: '0888888888',
+    //   name: 'Pham Viet Thuan Thien',
+    //   resumeName: 'Thien Pham - Software Engineer',
+    //   companyName: '',
+    //   jobTitle: '',
+    //   fieldOrDomain: null,
+    //   jobDescription: '',
+    //   experience: null,
+    //   linkin: null,
+    //   city: null,
+    //   id: 10,
+    //   content: null,
+    //   summary: null,
+    //   theOrder: {
+    //     summary: 1,
+    //     experiences: 2,
+    //     educations: 3,
+    //     projects: 4,
+    //     certifications: 5,
+    //     involvements: 6,
+    //     skills: 7,
+    //   },
+    //   status: 'ACTIVE',
+    //   templateType: 'classical',
+    //   cvStyle: {
+    //     fontSize: '9pt',
+    //     lineHeight: 1.4,
+    //     fontFamily: 'Merriweather',
+    //     fontWeight: 'normal',
+    //     zoom: '130%',
+    //     paperSize: 'letter',
+    //     hasDivider: true,
+    //     hasIndent: false,
+    //     fontColor: 'rgb(0, 0, 0)',
+    //   },
+    //   skills: [],
+    //   certifications: [],
+    //   educations: [],
+    //   experiences: [
+    //     {
+    //       id: 11,
+    //       theOrder: 1,
+    //       isDisplay: false,
+    //       duration: 'June 2023 - Present',
+    //       location: null,
+    //       companyName: 'FPT Software',
+    //       role: 'Software Engineer (Associate)',
+    //       description:
+    //         '• Led the development of a service that provides automated pen-testing to internal front-office facing teams while managing and mentoring 3 pen-testers (Python, Java Spring Boot, Angular JS, OracleDB).\n• Developed a web application that orchestrates vendor vulnerability scanners to scan over 100,000 cloud and hardware infrastructure within the firm, while also providing metrics via an API and  UI (Java, Spring Boot, Angular JS, OracleDB).\n• Led the analyst peer mentoring committee for Jersey City by conducting event planning, budget analysis, mentor and mentee pairing, and mentor training for over 200 analysts.',
+    //     },
+    //     {
+    //       id: 12,
+    //       theOrder: 2,
+    //       isDisplay: true,
+    //       duration: 'July 2022 - April 2023',
+    //       location: null,
+    //       companyName: 'NashTech',
+    //       role: 'Corporate Technology Analyst Intern',
+    //       description:
+    //         "• Increased the firm's technology risk oversight by 60% with the development and integration of new infrastructure scanners into the risk reporting engine (C#, T-SQL).\n• Automated 75% of the manual QA testing by developing a new UI test tool for the risk dashboard (Python, Selenium).\n• Improved satisfaction rating by 50% by building documentation and training for the risk dashboard.",
+    //     },
+    //     {
+    //       id: 13,
+    //       theOrder: 3,
+    //       isDisplay: true,
+    //       duration: 'June 2022 - December 2022',
+    //       location: null,
+    //       companyName: 'MoMo',
+    //       role: 'Data Analyst Intern',
+    //       description:
+    //         "• Increase the performance of the firm's technology risk dashboard by 80% by integrating a new infrastructure data source into the pipeline (Java, T-SQL).\n• Reduce 45% of the overhead costs of the analytics team by implementing an excel exporting integration into the risk report engine (Java, Python).",
+    //     },
+    //     {
+    //       id: 14,
+    //       theOrder: 4,
+    //       isDisplay: true,
+    //       duration: 'June 2021 - July 2022',
+    //       location: null,
+    //       companyName: 'NAB Innovation Centre Vietnam',
+    //       role: 'Assistant Lab Supervisor',
+    //       description:
+    //         '• Supervised 60 consultants on campus, led onsite training, and conducted employee recruitment.\n• Created a staff dashboard that serviced over 350 computer lab employees by providing specific tools and metrics based on their lab location (HTML/CSS, JS).\n• Increased the accuracy of recording the student capacity in each lab by 95% with a script that utilized API services to track computer usage and location (Python, Google Script).',
+    //     },
+    //   ],
+    //   involvements: [],
+    //   projects: [],
+    //   sourceWorks: [],
+    //   customSections: [
+    //     {
+    //       sectionName: 'Custom Section',
+    //       sectionData: [
+    //         {
+    //           id: 1,
+    //           theOrder: 1,
+    //           isDisplay: false,
+    //           duration: 'July 2022 - April 2023',
+    //           location: null,
+    //           subTitle: 'sub title',
+    //           title: 'Custom Title',
+    //           description: 'Custom',
+    //         },
+    //         {
+    //           id: 2,
+    //           theOrder: 2,
+    //           isDisplay: true,
+    //           duration: 'July 2022 - April 2023',
+    //           location: 'Thu Duc',
+    //           subTitle: 'sub title 2',
+    //           title: 'Custom Title 2',
+    //           description: 'Custom 2',
+    //         },
+    //         {
+    //           id: 3,
+    //           theOrder: 3,
+    //           isDisplay: true,
+    //           duration: 'July 2022 - April 2023',
+    //           location: 'Thu Duc',
+    //           subTitle: 'sub title 5',
+    //           title: 'Custom Title 5',
+    //           description: 'Custom 5',
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       sectionName: 'Custom Section 2',
+    //       sectionData: [
+    //         {
+    //           id: 1,
+    //           theOrder: 1,
+    //           isDisplay: false,
+    //           duration: 'July 2022 - April 2023',
+    //           location: null,
+    //           subTitle: 'sub title 3',
+    //           title: 'Custom Title 3',
+    //           description: 'Custom 3',
+    //         },
+    //         {
+    //           id: 2,
+    //           theOrder: 2,
+    //           isDisplay: true,
+    //           duration: 'July 2022 - April 2023',
+    //           location: 'Thu Duc',
+    //           subTitle: 'sub title 4',
+    //           title: 'Custom Title 4',
+    //           description: 'Custom 4',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // };
+    // return mockData.data.resume;
   } catch (error) {
     throw error;
   }

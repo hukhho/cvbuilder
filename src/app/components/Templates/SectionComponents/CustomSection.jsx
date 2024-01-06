@@ -22,7 +22,7 @@ import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 import he from 'he';
 
-const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highlightAts }) => {
+const CustomSections = ({ experiences, onChangeOrder, templateType, highlightAts }) => {
   console.log('ExperiencesSection::: ', highlightAts);
 
   const mockDes = 'This is some text with encoded parentheses: (Hello) ';
@@ -31,7 +31,7 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
   const experienceItems = (
     <>
       {experiences.map(exp => {
-        const { duration, description, companyName, role, location } = exp;
+        const { duration, description, subTitle, title, location } = exp;
         // Decode HTML entities
         const decodedString = he.encode(description).trim();
 
@@ -39,14 +39,14 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
         return (
           <StandardItem
             highlightAts={highlightAts}
-            type="experience"
+            type="customSection"
             typeId={exp.id}
             key={exp.id}
             templateType={templateType}
-            role={role}
+            role={title}
             location={location}
             duration={duration}
-            orgName={companyName}
+            orgName={subTitle}
             renderRightSubtitle
             description={decodedString}
           />
@@ -113,7 +113,7 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
             display: 'block',
           }}
         >
-          Experience
+          Custom Sections
         </span>
         <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
 
@@ -143,4 +143,4 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
     </div>
   );
 };
-export default ExperiencesSection;
+export default CustomSections;

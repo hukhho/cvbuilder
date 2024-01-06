@@ -36,6 +36,8 @@ import VideoCard from './VideoCard';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
 import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
+import Custom from './Custom';
 
 const mockData = {
   data: {
@@ -207,8 +209,7 @@ export default function FinishUp({ params }) {
 
   const { avatar, email, userRole, ats, setAts } = useStore();
   const enabledCategories = { 'FINISH UP': true };
-  
-  
+
   // useEffect(() => {
   //   setShowFinishupCV(false);
   // }, []);
@@ -219,7 +220,7 @@ export default function FinishUp({ params }) {
 
   const [dataAts, setDataAts] = useState();
   const [isCreatedAts, setIsCreatedAts] = useState(false);
-  
+
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
     let newFinishUpData = { ...finishUpData };
@@ -559,7 +560,6 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           highlightAts={highlightAts}
           summary={summary}
-        
         />
       ),
       order: finishUpData?.theOrder?.summary || 1,
@@ -593,6 +593,33 @@ export default function FinishUp({ params }) {
       canBeDrag: true, // Set to true if this section can be dragged
       canBeDisplayed: filteredExperiences !== null,
     },
+    // {
+    //   id: 'customSections',
+    //   component: (
+    //     <CustomSections
+    //       highlightAts={highlightAts}
+    //       templateType={templateSelected}
+    //       experiences={filteredExperiences}
+    //       onChangeOrder={sortedExperiences => {
+    //         for (let i = 0; i < sortedExperiences.length; i++) {
+    //           sortedExperiences[i].theOrder = i + 1;
+    //         }
+    //         console.log('Finishup data:', finishUpData);
+    //         let newFinishUpData = { ...finishUpData };
+    //         newFinishUpData.experiences = sortedExperiences;
+
+    //         setFinishUpData(newFinishUpData);
+    //         console.log('New finishup data:', newFinishUpData);
+    //       }}
+    //       handleRoleChange={handleRoleChange}
+    //       handleOrgNameChange={handleOrgNameChange}
+    //       handleDescriptionChange={handleDescriptionChange}
+    //     />
+    //   ),
+    //   order: finishUpData?.theOrder?.experiences || 2,
+    //   canBeDrag: true, // Set to true if this section can be dragged
+    //   canBeDisplayed: filteredExperiences !== null,
+    // },
     {
       id: 'educations',
       component: (
@@ -662,6 +689,78 @@ export default function FinishUp({ params }) {
     },
   ];
 
+  //I want custom sections to be added to the sections array
+  //I want to be able to add custom sections to the sections array
+
+  const customSections = finishUpData?.customSections || [];
+
+  //Iterate over custom sections and add them to the sections array
+  customSections.forEach((customSection, index) => {
+    const filteredCustomSection = customSection?.sectionData?.filter(section => {
+      // Check if section is displayable (isDisplay is true)
+      if (section.isDisplay !== true) {
+        return false;
+      }
+
+      // Check if title is not null, undefined, or an empty string
+      if (section.title === null || section.title === undefined || section.title === '') {
+        return false;
+      }
+
+      // If both conditions are met, keep the section in the filtered list
+      return true;
+    });
+    sections.push({
+      id: `customSection${index + 1}`,
+      component: (
+        <CustomSections
+          highlightAts={highlightAts}
+          templateType={templateSelected}
+          experiences={filteredCustomSection}
+          onChangeOrder={sortedExperiences => {
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+            console.log("sortedCustoms: ", sortedExperiences)
+            let newFinishUpData = { ...finishUpData };
+            // newFinishUpData.experiences = sortedExperiences;
+            // setFinishUpData(newFinishUpData);
+          }}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
+        />
+      ),
+      order: customSection?.theOrder || 99,
+      canBeDrag: true,
+      canBeDisplayed:  true,
+    });
+  });
+
+  // sections.push({
+  //   id: `customSection`,
+  //   component: (
+  //     <CustomSections
+  //       highlightAts={highlightAts}
+  //       templateType={templateSelected}
+  //       experiences={filteredExperiences}
+  //       onChangeOrder={sortedExperiences => {
+  //         for (let i = 0; i < sortedExperiences.length; i++) {
+  //           sortedExperiences[i].theOrder = i + 1;
+  //         }
+  //         let newFinishUpData = { ...finishUpData };
+  //         newFinishUpData.experiences = sortedExperiences;
+  //         setFinishUpData(newFinishUpData);
+  //       }}
+  //       handleRoleChange={handleRoleChange}
+  //       handleOrgNameChange={handleOrgNameChange}
+  //       handleDescriptionChange={handleDescriptionChange}
+  //     />
+  //   ),
+  //   order: 99,
+  //   canBeDrag: true,
+  //   canBeDisplayed: true,
+  // });
   sections.sort((a, b) => a.order - b.order);
 
   const filteredSections = sections.filter(section => {
@@ -691,7 +790,6 @@ export default function FinishUp({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const data = await getFinishUp(params.id);
         console.log('FinishUp data: ', data);
 
@@ -702,7 +800,7 @@ export default function FinishUp({ params }) {
         setSummary(data.summary);
         setShowFinishupCV(true);
 
-        console.log('data.theOrder: ', data.theOrder)
+        console.log('data.theOrder: ', data.theOrder);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
       }
@@ -914,6 +1012,16 @@ export default function FinishUp({ params }) {
                   <AiFeedback cvId={params.id} />
 
                   <Ats
+                    cvId={params.id}
+                    dataAts={dataAts}
+                    isCreatedAts={isCreatedAts}
+                    setIsCreatedAts={setIsCreatedAts}
+                    setDataAts={setDataAts}
+                    onGen={handleSetHighlight}
+                    onDisableHightlight={handleUnSetHighlight}
+                  />
+                  
+                  <Custom
                     cvId={params.id}
                     dataAts={dataAts}
                     isCreatedAts={isCreatedAts}

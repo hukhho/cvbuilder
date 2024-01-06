@@ -129,11 +129,24 @@ const getCoverLetters = async () => {
     throw error;
   }
 };
+const getCoverLettersByCvId = async cvId => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.get(
+      `/chat-gpt/user/${userId}/cv/cover-letters?cvId=${cvId}`,
+    );
 
+    return response.data;
+    // return mockCoverLetter;
+  } catch (error) {
+    throw error;
+  }
+};
 export {
   getResumes,
   getResume,
   getCoverLetters,
+  getCoverLettersByCvId,
   deleteResume,
   duplicateResume,
   getCookieToken,

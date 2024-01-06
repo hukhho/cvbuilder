@@ -15,11 +15,11 @@ import SuccessJob from './SuccessJob';
 import Link from 'next/link';
 import createCoverLetterService from './createCoverLetterService';
 import { useRouter } from 'next/navigation';
+import { getCoverLetters, getCoverLettersByCvId } from '@/app/utils/indexService';
 
 export default function ApplyJobModal({
   onCreated,
   resumeOptions,
-  coverOptions,
   jobId,
   jobTitle,
   handleSuccess,
@@ -111,12 +111,43 @@ export default function ApplyJobModal({
     }
   };
 
+  const [coverLetters, setCoverLetters] = useState([]);
+  const [isLoadingCoverLetter, setIsLoadingCoverLetter] = useState(false);
+
+  const fetchCoverletters = async cvId => {
+    setIsLoadingCoverLetter(true);
+    setCoverLetters([]);
+    setSelectedCover(null);
+    try {
+      // Simulate fetching resumes (replace with your actual fetch logic)
+      const fetchedCoverLetters = await getCoverLettersByCvId(cvId);
+      console.log('fetchedCoverLetters: ', fetchedCoverLetters);
+      setCoverLetters(fetchedCoverLetters);
+    } catch (error) {
+      console.error('There was an error fetching coverletters', error);
+    } finally {
+      setIsLoadingCoverLetter(false);
+    }
+  };
+  const coverOptions = coverLetters.map(cover => ({
+    value: cover.id,
+    label: cover.title,
+    metadata: cover,
+  }));
+
   const onChangeResume = value => {
     console.log('onChangeResume: ', value);
     console.log('coverOptions: ', coverOptions);
 
     setSelectedResume(value);
+
+    try {
+      fetchCoverletters(value);
+    } catch (error) {
+      console.log('Error: ', error);
+    }
   };
+
   const nameOfSelectedResume = resumeOptions?.find(
     resume => resume.value === selectedResume,
   )?.label;
@@ -140,8 +171,8 @@ export default function ApplyJobModal({
       });
       console.log('result: ', result);
 
-        // router.push(`/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`);
-        // Open the new tab using window.open
+      // router.push(`/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`);
+      // Open the new tab using window.open
       const newTab = window.open(
         `/cover-letter/${result.id}/contact?jobId=${jobId}&isApplyProcess=true`,
         '_blank',
@@ -202,7 +233,7 @@ export default function ApplyJobModal({
                   leaveTo="opacity-0 scale-95"
                 >
                   <Dialog.Panel
-                    style={{ width: 550 }}
+                    style={{ width: 1000 }}
                     className="z-99 relative transform rounded-lg  text-left align-middle shadow-sm transition-all opacity-100 scale-100"
                   >
                     <div className="container px-4 py-6">
@@ -241,14 +272,14 @@ export default function ApplyJobModal({
                                     options={resumeOptions}
                                   />
                                 </Form.Item>
-                                {selectedResume && (
+                                {selectedResume && !isLoadingCoverLetter && (
                                   <>
                                     {' '}
                                     <div className="flex mt-10 mb-5">
                                       <Switch className="mr-2" onClick={toggle} value={disabled} />
 
                                       <span className="" style={{ fontSize: 13 }}>
-                                        Choose from existed cover letter
+                                        Choose from existed cover letter or create new one
                                       </span>
                                     </div>
                                     {disabled && (
@@ -262,18 +293,20 @@ export default function ApplyJobModal({
                                         {nameOfSelectedResume}
                                       </button>
                                     )}
+                                    {coverOptions.length === 0 && !disabled && (<div className='text-red-500 mb-10'>You not have any cover letters for this resume, you can create new one</div>)}
                                     <Form.Item
                                       className="custom-label-normal"
                                       name="coverletter"
-                                      hidden={disabled}
-                                      value={selectedCover}
-                                      onChange={onChangeCover}
-                                      disabled={coverOptions.length === 0}
+                                      hidden={disabled || coverOptions.length === 0}
                                       label="select Cover Letter "
                                     >
+                                      {}
                                       <Select
                                         style={{ width: '100%', height: 50 }}
                                         options={coverOptions}
+                                        value={selectedCover}
+                                        onChange={onChangeCover}
+                                        disabled={coverOptions.length === 0}
                                       />
                                     </Form.Item>
                                   </>
