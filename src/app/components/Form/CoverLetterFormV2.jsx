@@ -114,6 +114,11 @@ const CoverLetterFormV2 = ({
       values.temperature = slider;
       values.dear = values.company;
       values.date = '2023-12-14';
+      values.jobPostingId = null;
+      if (jobIdParam) {
+        jobIdParamInt = parseInt(jobIdParam, 10);
+        values.jobPostingId = jobIdParamInt;
+      }
       console.log('handleSubmit, values: ', values);
 
       setLoading(true);

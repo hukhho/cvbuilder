@@ -81,7 +81,7 @@ const ApiKey = () => {
       notification.success({
         message: "Save changes",
       });
-      openNotification('bottomRight', `Save changes`);
+      // openNotification('bottomRight', `Save changes`);
     } catch (error) {
       if (error?.response?.data?.error) {
         openNotification('bottomRight', `Error`);

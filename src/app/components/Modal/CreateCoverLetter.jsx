@@ -65,11 +65,16 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
     try {
       const submitData = { title: inputValue };
       const result = await createCoverLetterService(cvId, submitData);
-      openNotification('bottomRight', `Create: ${result.id}`);
+      // openNotification('bottomRight', `Create: ${result.id}`);
+      notification.success({
+        message: 'Create'
+      })
       onCreated();
       closeModal();
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
+      notification.error({
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`
+      })
     }
   };
   return (

@@ -61,11 +61,17 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
     const result = await (formData)
     try {
       const result = await updateCoverLetterName(resume.id, formData);
-      openNotification('bottomRight', `Update: ${result}`);
+      // openNotification('bottomRight', `Update: ${result}`);
+      notification.success({
+        message: 'Update cover letter name successfully'
+      })
       onCreated();
       closeModal();
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
+      notification.error({
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`
+      })
+      // openNotification('bottomRight', `Error: ${error}`);
     }
   };
   return (
