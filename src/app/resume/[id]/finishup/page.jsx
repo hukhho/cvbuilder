@@ -850,6 +850,36 @@ export default function FinishUp({ params }) {
       // Handle errors or display an error message.
     }
   };
+const handleSubmitCustomSections = async (customSections) => {
+  console.log("handleSubmitCustomSections", customSections)
+  try {
+    const cvId123 = params.id;
+    setShowFinishupCV(false);
+    console.log("handleSubmitCustomSectionsfinishUpData", finishUpData)
+    finishUpData.customSections = customSections.customSections;
+    console.log("handleSubmitCustomSectionsfinishUpDatacustomSections", finishUpData)
+
+    await saveCv(cvId123, finishUpData);
+    console.log('Save completed.');
+    const fetchData = async () => {
+      try {
+        const data = await getFinishUp(cvId123);
+        console.log('FinishUp data: ', data);
+        setFinishUpData(data);
+        setShowFinishupCV(true);
+        setTemplateSelected(data.templateType);
+        setToolbarState(data.cvStyle);
+        setSummary(data.summary);
+      } catch (error) {
+        console.error('Error fetching FinishUp data:', error);
+      }
+    };
+    fetchData();
+  } catch (error) {
+    console.error('Error during synchronization:', error);
+    // Handle errors or display an error message.
+  }
+}
 
   const handleSyncUp = async () => {
     try {
@@ -1027,7 +1057,9 @@ export default function FinishUp({ params }) {
                     isCreatedAts={isCreatedAts}
                     setIsCreatedAts={setIsCreatedAts}
                     setDataAts={setDataAts}
+                    finishUpData={finishUpData}
                     onGen={handleSetHighlight}
+                    onSubmitCustomSections={handleSubmitCustomSections}
                     onDisableHightlight={handleUnSetHighlight}
                   />
                 </div>

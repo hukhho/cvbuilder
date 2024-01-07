@@ -24,8 +24,93 @@ const Custom = ({
   onDisableHightlight,
   isCreatedAts,
   setIsCreatedAts,
+  finishUpData,
+  onSubmitCustomSections
 }) => {
   const [form] = Form.useForm();
+  console.log('finishUpData customSections', finishUpData)
+  const initData = finishUpData;
+  // const initData = {
+  //   customSections: [
+  //     {
+  //       sectionName: 'Custom Section',
+  //       sectionData: [
+  //         {
+  //           id: 1,
+  //           theOrder: 1,
+  //           isDisplay: false,
+  //           duration: 'July 2022 - April 2023',
+  //           location: null,
+  //           subTitle: 'sub title',
+  //           title: 'Custom Title',
+  //           description: 'Custom',
+  //         },
+  //         {
+  //           id: 2,
+  //           theOrder: 2,
+  //           isDisplay: true,
+  //           duration: 'July 2022 - April 2023',
+  //           location: 'Thu Duc',
+  //           subTitle: 'sub title 2',
+  //           title: 'Custom Title 2',
+  //           description: 'Custom 2',
+  //         },
+  //         {
+  //           id: 3,
+  //           theOrder: 3,
+  //           isDisplay: true,
+  //           duration: 'July 2022 - April 2023',
+  //           location: 'Thu Duc',
+  //           subTitle: 'sub title 5',
+  //           title: 'Custom Title 5',
+  //           description: 'Custom 5',
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       sectionName: 'Custom Section 2',
+  //       sectionData: [
+  //         {
+  //           id: 1,
+  //           theOrder: 1,
+  //           isDisplay: false,
+  //           duration: 'July 2022 - April 2023',
+  //           location: null,
+  //           subTitle: 'sub title 3',
+  //           title: 'Custom Title 3',
+  //           description: 'Custom 3',
+  //         },
+  //         {
+  //           id: 2,
+  //           theOrder: 2,
+  //           isDisplay: true,
+  //           duration: 'July 2022 - April 2023',
+  //           location: 'Thu Duc',
+  //           subTitle: 'sub title 4',
+  //           title: 'Custom Title 4',
+  //           description: 'Custom 4',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
+  const [data, setData] = useState(initData);
+  const [isSetData, setIsSetData] = useState(false);
+
+  useEffect(() => {
+    if (!isSetData) {
+      form.setFieldsValue(data);
+    }
+    setIsSetData(true);
+  }, [isSetData]);
+
+  const onFinish = (values) => {
+   
+    onSubmitCustomSections(values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
   return (
     <div style={{ color: 'black', textAlign: 'left' }}>
@@ -54,11 +139,13 @@ const Custom = ({
                 maxWidth: 600,
               }}
               autoComplete="off"
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
               initialValues={{
-                items: [{}],
+                customSections: [{}],
               }}
             >
-              <Form.List name="items">
+              <Form.List name="customSections">
                 {(fields, { add, remove }) => (
                   <div
                     style={{
@@ -70,7 +157,7 @@ const Custom = ({
                     {fields.map(field => (
                       <Card
                         size="small"
-                        title={`Item ${field.name + 1}`}
+                        title={`Custom Section ${field.name + 1}`}
                         key={field.key}
                         extra={
                           <CloseOutlined
@@ -96,7 +183,7 @@ const Custom = ({
                                 }}
                               >
                                 {subFields.map(subField => (
-                                  <Space className='flex flex-col' key={subField.key}>
+                                  <Space className="flex flex-col" key={subField.key}>
                                     <Form.Item noStyle name={[subField.name, 'title']}>
                                       <Input placeholder="title" />
                                     </Form.Item>
@@ -135,7 +222,11 @@ const Custom = ({
                   </div>
                 )}
               </Form.List>
-
+              <Form.Item noStyle>
+                <button type="submit" className='button'>
+                  Submit
+                </button>
+              </Form.Item>
               <Form.Item noStyle shouldUpdate>
                 {() => (
                   <Typography>

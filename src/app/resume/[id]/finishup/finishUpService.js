@@ -163,7 +163,6 @@ export const getFinishUp = async cvId => {
     //     },
     //   ],
     // };
-    // return mockData.data.resume;
   } catch (error) {
     throw error;
   }
