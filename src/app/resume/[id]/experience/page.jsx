@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Space, notification } from 'antd';
+import { Alert, Button, Card, ConfigProvider, Skeleton, Space, notification } from 'antd';
 import dynamic from 'next/dynamic';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -33,6 +33,7 @@ const Experience = ({ params }) => {
   const [experiences, setExperiences] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
   const dataService = new DataService('experiences', params.id);
 
   const { avatar, email, userRole } = useStore();
@@ -49,7 +50,7 @@ const Experience = ({ params }) => {
   };
   const fetchExperiences = async () => {
     try {
-      setIsDnd(false)
+      setIsDnd(false);
 
       const data = await getAllExperiences(cvId);
       console.log('data getAllExperiences ', data);
@@ -66,16 +67,15 @@ const Experience = ({ params }) => {
       setExperiences(data);
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
+      setErrorMessage('There was an error fetching the experiences');
     } finally {
       setIsLoadingPage(false);
-      setIsDnd(true)
-
+      setIsDnd(true);
     }
   };
   const onUpdateExperience = async () => {
     console.log('onUpdateExperience');
     fetchExperiences();
-
   };
 
   useEffect(() => {
@@ -85,12 +85,12 @@ const Experience = ({ params }) => {
   const handleEditExperience = experience => {
     handleRemoveSearchParam();
     setSelectedExperience(experience);
-    setIsDnd(false)
+    setIsDnd(false);
   };
   const handleDeleteExperience = async experienceId => {
     try {
       console.log('deleteExperience id ', experienceId);
-      setIsDnd(false)
+      setIsDnd(false);
 
       await deleteExperience(cvId, experienceId);
 
@@ -101,7 +101,7 @@ const Experience = ({ params }) => {
     } catch (error) {
       console.error('There was an error deleting the experience', error);
     } finally {
-      setIsDnd(true)
+      setIsDnd(true);
     }
   };
   const [sortByDate, setSortByDate] = useState(true);
@@ -135,7 +135,7 @@ const Experience = ({ params }) => {
       theOrder: index + 1,
     }));
     console.log('updatedOrder', updatedOrder);
-    setIsDnd(false)
+    setIsDnd(false);
     setExperiences(updatedOrder);
     try {
       await dataService.sortOrder(updatedOrder);
@@ -148,7 +148,7 @@ const Experience = ({ params }) => {
       });
       console.error('There was an error updating the data', error);
     } finally {
-      setIsDnd(true)
+      setIsDnd(true);
     }
   };
   return (
@@ -173,6 +173,7 @@ const Experience = ({ params }) => {
                     <VideoComponent />
                   </div>
                 </div>
+
                 <Card
                   style={{
                     width: '320px',
@@ -201,7 +202,16 @@ const Experience = ({ params }) => {
                   </div>
 
                   <div style={{ paddingTop: '0px' }}>
-                    {isShow && !isDnd &&
+                    {isLoadingPage && <Skeleton className="mt-10" active />}
+                    {!isLoadingPage && !errorMessage && experiences?.length === 0 && (
+                      <div className='mt-10'>Add your first experiences</div>
+                    )}
+                    {!isLoadingPage && errorMessage && (
+                      <Alert className='mt-10' message="Error" description={errorMessage} type="error" />
+                    )}
+
+                    {isShow &&
+                      !isDnd &&
                       !isLoadingPage &&
                       experiences?.length > 0 &&
                       experiences?.map(experience => (
