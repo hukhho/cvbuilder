@@ -399,7 +399,7 @@ const FinishupToolbar = props => {
                   </button>
                 </Popover>
               </div>
-              <div className="flex items-center ml-2">
+              {/* <div className="flex items-center ml-2">
                 <Popover content="Sync up your data to this resume" title="Sync up">
                   <button className="" onClick={onClickSyncUp}>
                     <i
@@ -410,7 +410,7 @@ const FinishupToolbar = props => {
                     <span className="toolbar-button-adjustement">SYNC UP</span>
                   </button>
                 </Popover>
-              </div>
+              </div> */}
               <div className="flex items-center ml-2">
                 <button
                   className="toolbar-button-adjustement"

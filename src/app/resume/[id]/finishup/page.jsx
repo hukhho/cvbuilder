@@ -14,7 +14,15 @@ import ExperiencesSection from '@/app/components/Templates/SectionComponents/Exp
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
-import { getAudit, getFinishUp, getVersionsList, saveCv, syncUp } from './finishUpService';
+import {
+  getAudit,
+  getFinishUp,
+  getVersion,
+  getVersionsList,
+  restoreVersion,
+  saveCv,
+  syncUp,
+} from './finishUpService';
 import ScoreFinishUp from './Score';
 import VideoComponent from '@/app/components/VideoComponent';
 import './expert.css';
@@ -234,7 +242,7 @@ export default function FinishUp({ params }) {
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
-
+  experiences?.sort((a, b) => a.theOrder - b.theOrder);
   const theOrders = {
     summary: 99,
     experiences: 99,
@@ -572,11 +580,59 @@ export default function FinishUp({ params }) {
         <ExperiencesSection
           highlightAts={highlightAts}
           templateType={templateSelected}
-          experiences={filteredExperiences}
+          experiences={experiences}
           onChangeOrder={sortedExperiences => {
+            //Sort by theOrder but keep the original order if isDisplay is false
+            //I mean if item 1 order 1, item 2 order 2, item3 order 3, item 4 order 4
+            //item 1 isDisplay = true, item 2 isDisplay = false, item 3 isDisplay = true, item 4 isDisplay = true
+
+            //after sort item 1 item 4 item 3, the order item 1 will 1 item 4 will 3, item 3 will 4
+            //but item 2 will still 2
+
+            //So I will sort by theOrder first, then sort by isDisplay
+            // sortedExperiences.sort((a, b) => {
+            //   if (a.isDisplay === false && b.isDisplay === false) {
+            //     return 0;
+            //   } else if (a.isDisplay === false) {
+            //     return 1;
+            //   }
+            //   else if (b.isDisplay === false) {
+            //     return -1;
+            //   }
+            //   else {
+            //     return a.theOrder - b.theOrder;
+            //   }
+            // });
+
+            console.log('sortedExperiences', sortedExperiences);
             for (let i = 0; i < sortedExperiences.length; i++) {
               sortedExperiences[i].theOrder = i + 1;
             }
+            //set new theOrder to the sortedExperiences, lol,
+
+            //after sort item 1 item 4 item 3, theOrder item 1 will 1 item 4 will 3, item 3 will 4
+            //but item 2 will still 2
+
+            // for (let i = 0; i < sortedExperiences.length; i++) {
+            //   sortedExperiences[i].theOrder = sortedExperiences
+            // }
+
+            // sortedExperiences.sort((a, b) => {
+            //   if (a.isDisplay === false && b.isDisplay === false) {
+            //     return 0;
+            //   } else if (a.isDisplay === false) {
+            //     return 1;
+            //   } else if (b.isDisplay === false) {
+            //     return -1;
+            //   } else {
+            //     return a.theOrder - b.theOrder;
+            //   }
+            // });
+            //set new theOrder to the sortedExperiences
+
+            // for (let i = 0; i < sortedExperiences.length; i++) {
+            //   sortedExperiences[i].theOrder = i + 1;
+            // }
             console.log('Finishup data:', finishUpData);
             let newFinishUpData = { ...finishUpData };
             newFinishUpData.experiences = sortedExperiences;
@@ -713,7 +769,7 @@ export default function FinishUp({ params }) {
     // customSections.forEach((customSection, index) => {
     //   const customSectionObject = customSection;
     // });
-    const customSectionTitle = customSection?.sectionName
+    const customSectionTitle = customSection?.sectionName;
     sections.push({
       id: `customSection${index + 1}`,
       component: (
@@ -933,6 +989,7 @@ export default function FinishUp({ params }) {
 
   const [isShowVersion, setIsShowVersion] = useState(false);
   const [versions, setVersions] = useState();
+  const [selectedVersion, setSelectedVersion] = useState();
   const handleShowVersion = async () => {
     setIsShowVersion(true);
     const result = await getVersionsList(params.id);
@@ -941,9 +998,63 @@ export default function FinishUp({ params }) {
   };
   const handleHideVersion = () => {
     setIsShowVersion(false);
+
+
+    setVersions(null);
+    setSelectedVersion(null);
+
+    const fetchData = async () => {
+      try {
+        setShowFinishupCV(false);
+
+        const data = await getFinishUp(params.id);
+        console.log('FinishUp data: ', data);
+
+        setTheOrder(data.theOrder);
+        setFinishUpData(data);
+        setTemplateSelected(data.templateType);
+        setToolbarState(data.cvStyle);
+        setSummary(data.summary);
+        setShowFinishupCV(true);
+
+        console.log('data.theOrder: ', data.theOrder);
+      } catch (error) {
+        console.error('Error fetching FinishUp data:', error);
+      } finally
+      {
+        setShowFinishupCV(true);
+      }
+    };
+    const fetchAudit = async () => {
+      try {
+        const data1 = await getAudit(params.id);
+        setAuditData(data1);
+      } catch (error) {
+        console.error('Error fetching getAudit data:', error);
+      }
+    };
+    fetchData();
+    fetchAudit();
   };
-  const handleChooseVersion = versionId => {
+  const handleRestoreVersion = async () => {
+    console.log('handleRestoreVersion: ', selectedVersion);
+    const result = await restoreVersion(params.id, selectedVersion);
+    console.log('handleRestoreVersion::result: ', result);
+  };
+  const handleChooseVersion = async versionId => {
     console.log('versionId: ', versionId);
+    setSelectedVersion(versionId);
+    setShowFinishupCV(false);
+    const result = await getVersion(versionId);
+    setFinishUpData(result?.cvBody);
+
+    setShowFinishupCV(true);
+
+    setTemplateSelected(result?.cvBody?.templateType);
+    setToolbarState(result?.cvBody?.cvStyle);
+
+    setSummary(result?.cvBody?.summary);
+    console.log('handleChooseVersion ', result);
   };
 
   const handleGen = () => {
@@ -1067,6 +1178,73 @@ export default function FinishUp({ params }) {
                     onSubmitCustomSections={handleSubmitCustomSections}
                     onDisableHightlight={handleUnSetHighlight}
                   />
+                </div>
+              )}
+
+              <button
+                onClick={handleShowVersion}
+                className="fixed z-50 right-0 bg-white pl-2 pr-1 py-2 border-l border-y border-gray-200 rounded-tl rounded-bl"
+              >
+                <FontAwesomeIcon icon={faHistory} />
+              </button>
+              {isShowVersion && (
+                <div className="templateSelector" data-dock="true">
+                  <div className="drop-shadow selector">
+                    <div className="header">
+                      <div className="flex">
+                        <h3>
+                          <i className="fas fa-history mr-1" aria-hidden="true" /> Version History
+                          <sup className="ml-1 text-gray-400">beta</sup>
+                        </h3>
+                        <button onClick={handleHideVersion}>
+                          {' '}
+                          <FontAwesomeIcon className="close" icon={faTimes} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="selector-list">
+                      <nav className="flex flex-col pt-4 space-y-6" aria-label="Progress">
+                        <div className="flex flex-col space-y-3">
+                          <ol role="list">
+                            {selectedVersion && (
+                              <button className="button" onClick={handleRestoreVersion}>
+                                Restore the old Content
+                              </button>
+                            )}
+                            {versions?.map(version => (
+                              <li key={version.id} className="pb-10 relative">
+                                <div
+                                  className="absolute left-2.5 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
+                                  aria-hidden="true"
+                                />
+                                <a
+                                  onClick={() => handleChooseVersion(version.id)}
+                                  className="group relative flex items-center"
+                                >
+                                  <span className="flex h-7 items-center">
+                                    <span className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 bg-white border-rezi-blue">
+                                      <span
+                                        className={`h-2.5 w-2.5 rounded-full ${
+                                          version.id === selectedVersion ? 'bg-blue-500' : ''
+                                        }`}
+                                      />
+                                    </span>
+                                  </span>
+                                  <span className="ml-4 flex min-w-0 flex-col">
+                                    <span className="flex flex text-sm font-medium">
+                                      <span>{version.timestamp}</span>
+                                      <span className='ml-2 text-gray-500'>{version?.jobPosting?.name}</span>
+
+                                    </span>
+                                  </span>
+                                </a>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+                      </nav>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

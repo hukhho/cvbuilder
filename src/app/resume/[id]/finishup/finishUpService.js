@@ -2,6 +2,7 @@
 import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../../utils/axiosInstance';
 import { mockData } from './mockData';
+import { notification } from 'antd';
 
 export const getFinishUp = async cvId => {
   try {
@@ -55,7 +56,7 @@ export const getFinishUp = async cvId => {
     //     {
     //       id: 11,
     //       theOrder: 1,
-    //       isDisplay: false,
+    //       isDisplay: true,
     //       duration: 'June 2023 - Present',
     //       location: null,
     //       companyName: 'FPT Software',
@@ -66,7 +67,7 @@ export const getFinishUp = async cvId => {
     //     {
     //       id: 12,
     //       theOrder: 2,
-    //       isDisplay: true,
+    //       isDisplay: false,
     //       duration: 'July 2022 - April 2023',
     //       location: null,
     //       companyName: 'NashTech',
@@ -264,6 +265,31 @@ export const getVersionsList = async cvId => {
     // return mockData.data.resume;
     return response.data;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const getVersion = async versionId => {
+  try {
+    const response = await axiosInstance.get(`/user/cv/history/${versionId}`);
+    // return mockData.data.resume;
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const restoreVersion = async (cvId, versionId) => {
+  try {
+    const response = await axiosInstance.post(`/cv/${cvId}/parse/${versionId}`);
+    // return mockData.data.resume;
+    notification.success({
+      message: 'Restore version successfully',
+    });
+    return response.data;
+  } catch (error) {
+    notification.error({
+      message: 'Restore version failed',
+    });
     throw error;
   }
 };

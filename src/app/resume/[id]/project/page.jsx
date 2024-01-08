@@ -44,6 +44,9 @@ const Project = ({ params }) => {
       const fetchedProjectData = await dataService.getAll(); // Renamed 'projectData' to 'fetchedProjectData'
       console.log('fetchData ', fetchedProjectData);
       setSelectedData(null);
+      fetchedProjectData.sort((a, b) => {
+        a.theOrder - b.theOrder;
+      });
       setProjectData(fetchedProjectData);
     } catch (error) {
       console.error('There was an error fetching the data', error);

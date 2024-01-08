@@ -31,7 +31,7 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
   const experienceItems = (
     <>
       {experiences.map(exp => {
-        const { duration, description, companyName, role, location } = exp;
+        const { duration, description, companyName, role, location, isDisplay } = exp;
         // Decode HTML entities
         const decodedString = he.encode(description).trim();
 
@@ -40,6 +40,7 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
           <StandardItem
             highlightAts={highlightAts}
             type="experience"
+            isDisplay={isDisplay}
             typeId={exp.id}
             key={exp.id}
             templateType={templateType}

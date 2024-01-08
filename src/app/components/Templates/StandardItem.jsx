@@ -23,6 +23,7 @@ const StandardItem = props => {
     fourItem,
     fiveItem,
     highlightAts,
+    isDisplay = true,
   } = props;
 
   let searchWords = [];
@@ -30,7 +31,9 @@ const StandardItem = props => {
     searchWords = highlightAts.map(at => at?.ats);
   }
   console.log('hStandardItem:highlightAts::: ', highlightAts);
-
+  if (!isDisplay) {
+    return null;
+  }
   const renderTitle = () => {
     if (titleProps) {
       return (

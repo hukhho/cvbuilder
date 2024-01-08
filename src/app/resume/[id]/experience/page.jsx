@@ -64,7 +64,9 @@ const Experience = ({ params }) => {
         setSelectedExperience(null);
       }
       console.log('setExperiences ', data);
+      data.sort((a, b) => a.theOrder - b.theOrder);
       setExperiences(data);
+      
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
       setErrorMessage('There was an error fetching the experiences');
