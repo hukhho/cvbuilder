@@ -1037,10 +1037,7 @@ export default function FinishUp({ params }) {
     fetchAudit();
   };
   const handleRestoreVersion = async () => {
-    console.log('handleRestoreVersion: ', selectedVersion);
     try {
-   
-    console.log('handleRestoreVersion::result: ', result);
       const result = await restoreVersion(params.id, selectedVersion);
       console.log('handleRestoreVersion::result: ', result);
       notification.success({
@@ -1077,11 +1074,10 @@ export default function FinishUp({ params }) {
       };
       fetchData();
       fetchAudit();
-    } catch {
+    } catch (error) {
       notification.error({
         message: 'Restore version failed',
       });
-      console.log('handleRestoreVersion::error: ', error);
       
     }
     
@@ -1103,7 +1099,7 @@ export default function FinishUp({ params }) {
       setSummary(result?.cvBody?.summary);
       console.log('handleChooseVersion ', result);
     } catch (error) {
-      console.log('handleChooseVersion::error: ', error);
+        console.log('handleChooseVersion::error: ', error);
     }
 
     
