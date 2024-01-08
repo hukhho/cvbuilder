@@ -4,7 +4,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Button, Card, ConfigProvider, Divider, Modal } from 'antd';
+import { Button, Card, ConfigProvider, Divider, Modal, notification } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import CVLayout from '@/app/components/Templates/CVLayout';
@@ -1037,23 +1037,75 @@ export default function FinishUp({ params }) {
   };
   const handleRestoreVersion = async () => {
     console.log('handleRestoreVersion: ', selectedVersion);
-    const result = await restoreVersion(params.id, selectedVersion);
+    try {
+   
     console.log('handleRestoreVersion::result: ', result);
+      const result = await restoreVersion(params.id, selectedVersion);
+      console.log('handleRestoreVersion::result: ', result);
+      notification.success({
+        message: 'Restore version successfully',
+      });
+      const fetchData = async () => {
+        try {
+          setShowFinishupCV(false);
+
+          const data = await getFinishUp(params.id);
+          console.log('FinishUp data: ', data);
+
+          setTheOrder(data.theOrder);
+          setFinishUpData(data);
+          setTemplateSelected(data.templateType);
+          setToolbarState(data.cvStyle);
+          setSummary(data.summary);
+          setShowFinishupCV(true);
+
+          console.log('data.theOrder: ', data.theOrder);
+        } catch (error) {
+          console.error('Error fetching FinishUp data:', error);
+        } finally {
+          setShowFinishupCV(true);
+        }
+      };
+      const fetchAudit = async () => {
+        try {
+          const data1 = await getAudit(params.id);
+          setAuditData(data1);
+        } catch (error) {
+          console.error('Error fetching getAudit data:', error);
+        }
+      };
+      fetchData();
+      fetchAudit();
+    } catch {
+      notification.error({
+        message: 'Restore version failed',
+      });
+      console.log('handleRestoreVersion::error: ', error);
+      
+    }
+    
   };
   const handleChooseVersion = async versionId => {
     console.log('versionId: ', versionId);
     setSelectedVersion(versionId);
     setShowFinishupCV(false);
-    const result = await getVersion(versionId);
-    setFinishUpData(result?.cvBody);
+    try {
+      const result = await getVersion(versionId);
+      
+      setFinishUpData(result?.cvBody);
+  
+      setShowFinishupCV(true);
+  
+      setTemplateSelected(result?.cvBody?.templateType);
+      setToolbarState(result?.cvBody?.cvStyle);
+  
+      setSummary(result?.cvBody?.summary);
+      console.log('handleChooseVersion ', result);
+    } catch (error) {
+      console.log('handleChooseVersion::error: ', error);
+    }
 
-    setShowFinishupCV(true);
-
-    setTemplateSelected(result?.cvBody?.templateType);
-    setToolbarState(result?.cvBody?.cvStyle);
-
-    setSummary(result?.cvBody?.summary);
-    console.log('handleChooseVersion ', result);
+    
   };
 
   const handleGen = () => {

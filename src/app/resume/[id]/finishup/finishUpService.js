@@ -282,14 +282,11 @@ export const restoreVersion = async (cvId, versionId) => {
   try {
     const response = await axiosInstance.post(`/cv/${cvId}/parse/${versionId}`);
     // return mockData.data.resume;
-    notification.success({
-      message: 'Restore version successfully',
-    });
+    // notification.success({
+    //   message: 'Restore version successfully',
+    // });
     return response.data;
   } catch (error) {
-    notification.error({
-      message: 'Restore version failed',
-    });
     throw error;
   }
 };
