@@ -178,14 +178,19 @@ const InformationSection = ({ userInfo, templateType, layoutStyles }) => {
                     fontSize: '0.75em',
                   }}
                 >
-                  <span className="inline-block mr-1">
-                    <FontAwesomeIcon className="mr-1" icon={faEnvelope} />
-                    {email}
-                  </span>
-                  <span className="inline-block mr-1">
-                    <FontAwesomeIcon className="mr-1" icon={faMobile} />
-                    {phone}
-                  </span>
+                  {email && (
+                    <span className="inline-block mr-1">
+                      <FontAwesomeIcon className="mr-1" icon={faEnvelope} />
+                      {email}
+                    </span>
+                  )}
+                  {phone && (
+                    <span className="inline-block mr-1">
+                      <FontAwesomeIcon className="mr-1" icon={faMobile} />
+                      {phone}
+                    </span>
+                  )}
+
                   {linkin && (
                     <span className="inline-block mr-1">
                       <FontAwesomeIcon className="mr-1" icon={faLinkedin} />

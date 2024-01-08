@@ -25,10 +25,10 @@ const Custom = ({
   isCreatedAts,
   setIsCreatedAts,
   finishUpData,
-  onSubmitCustomSections
+  onSubmitCustomSections,
 }) => {
   const [form] = Form.useForm();
-  console.log('finishUpData customSections', finishUpData)
+  console.log('finishUpData customSections', finishUpData);
   const initData = finishUpData;
   // const initData = {
   //   customSections: [
@@ -104,11 +104,22 @@ const Custom = ({
     setIsSetData(true);
   }, [isSetData]);
 
-  const onFinish = (values) => {
-   
+  const onFinish = values => {
+    console.log("values", values?.customSections);
+    //i want add the id by index
+
+    values.customSections.forEach((section, index) => {
+      section.id = index + 1;
+      section.sectionData.forEach((item, index2) => {
+        item.id = index2 + 1;
+        item.isDisplay = true;
+        item.theOrder = index2 + 1;
+      });
+    });
+
     onSubmitCustomSections(values);
   };
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
 
@@ -223,7 +234,7 @@ const Custom = ({
                 )}
               </Form.List>
               <Form.Item noStyle>
-                <button type="submit" className='button'>
+                <button type="submit" className="button">
                   Submit
                 </button>
               </Form.Item>

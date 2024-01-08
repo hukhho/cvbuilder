@@ -83,13 +83,16 @@ const ApiKey = () => {
       });
       // openNotification('bottomRight', `Save changes`);
     } catch (error) {
-      if (error?.response?.data?.error) {
-        openNotification('bottomRight', `Error`);
-      } else if (error?.response?.data) {
-        openNotification('bottomRight', `Error ${error?.response?.data}`);
-      } else {
-        openNotification('bottomRight', `Error ${error}`);
-      }
+      // if (error?.response?.data?.error) {
+      //   openNotification('bottomRight', `Error`);
+      // } else if (error?.response?.data) {
+      //   openNotification('bottomRight', `Error ${error?.response?.data}`);
+      // } else {
+      //   openNotification('bottomRight', `Error ${error}`);
+      // }
+      notification.error({
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`
+      })
     } finally {
       setLoading(false)
     }

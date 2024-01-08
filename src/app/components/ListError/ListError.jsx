@@ -128,7 +128,7 @@ const   ListError = ({ errors }) => {
                             __html: `${error?.description?.replace(
                               /\n/g,
                               '<br />',
-                            )} ${error?.result?.replace(/\n/g, '<br />')}`,
+                            )}`,
                           }}
                         ></p>{' '}
                       </div>
