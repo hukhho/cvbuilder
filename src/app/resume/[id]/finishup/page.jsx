@@ -46,6 +46,7 @@ import useStore from '@/store/store';
 import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
 import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 import Custom from './Custom';
+import { ExportOutlined } from '@ant-design/icons';
 
 const mockData = {
   data: {
@@ -999,7 +1000,6 @@ export default function FinishUp({ params }) {
   const handleHideVersion = () => {
     setIsShowVersion(false);
 
-
     setVersions(null);
     setSelectedVersion(null);
 
@@ -1020,8 +1020,7 @@ export default function FinishUp({ params }) {
         console.log('data.theOrder: ', data.theOrder);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
-      } finally
-      {
+      } finally {
         setShowFinishupCV(true);
       }
     };
@@ -1077,7 +1076,11 @@ export default function FinishUp({ params }) {
   };
 
   const [matchedJobs, setMatchedJobs] = useState([]);
-
+  const handleLinkClick = (e, link) => {
+    // Handle the link click to open the link
+    e.stopPropagation(); // Prevents the click from reaching the outer div
+    window.open(link, '_blank');
+  };
   return (
     <main>
       <ConfigProvider>
@@ -1233,8 +1236,16 @@ export default function FinishUp({ params }) {
                                   <span className="ml-4 flex min-w-0 flex-col">
                                     <span className="flex flex text-sm font-medium">
                                       <span>{version.timestamp}</span>
-                                      <span className='ml-2 text-gray-500'>{version?.jobPosting?.name}</span>
-
+                                      <span className="ml-2 text-gray-500">
+                                        {version?.jobPosting?.name}
+                                      </span>
+                                      {version?.jobPosting?.name && ( <a
+                                        className="absolute"
+                                        style={{ right: '8px' }}
+                                        onClick={e => handleLinkClick(e, `/job/${version?.jobPosting?.id}`)}
+                                      >
+                                        <ExportOutlined />
+                                      </a>)}                                
                                     </span>
                                   </span>
                                 </a>
