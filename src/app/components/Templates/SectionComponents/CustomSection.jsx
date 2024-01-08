@@ -22,8 +22,14 @@ import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 import he from 'he';
 
-const CustomSections = ({ experiences, onChangeOrder, templateType, highlightAts }) => {
-  console.log('ExperiencesSection::: ', highlightAts);
+const CustomSections = ({
+  experiences,
+  customSectionTitle,
+  onChangeOrder,
+  templateType,
+  highlightAts,
+}) => {
+  console.log('CustomSections:customSectionTitle::: ', customSectionTitle);
 
   const mockDes = 'This is some text with encoded parentheses: (Hello) ';
   const mockDes2 =
@@ -113,7 +119,7 @@ const CustomSections = ({ experiences, onChangeOrder, templateType, highlightAts
             display: 'block',
           }}
         >
-          Custom Sections
+          {customSectionTitle || 'Custom Sections'}
         </span>
         <hr className="border-0 border-b-[1px] border-black mt-[1px]" />
 

@@ -710,18 +710,23 @@ export default function FinishUp({ params }) {
       // If both conditions are met, keep the section in the filtered list
       return true;
     });
+    // customSections.forEach((customSection, index) => {
+    //   const customSectionObject = customSection;
+    // });
+    const customSectionTitle = customSection?.sectionName
     sections.push({
       id: `customSection${index + 1}`,
       component: (
         <CustomSections
           highlightAts={highlightAts}
           templateType={templateSelected}
+          customSectionTitle={customSectionTitle}
           experiences={filteredCustomSection}
           onChangeOrder={sortedExperiences => {
             for (let i = 0; i < sortedExperiences.length; i++) {
               sortedExperiences[i].theOrder = i + 1;
             }
-            console.log("sortedCustoms: ", sortedExperiences)
+            console.log('sortedCustoms: ', sortedExperiences);
             let newFinishUpData = { ...finishUpData };
             // newFinishUpData.experiences = sortedExperiences;
             // setFinishUpData(newFinishUpData);
@@ -733,7 +738,7 @@ export default function FinishUp({ params }) {
       ),
       order: customSection?.theOrder || 99,
       canBeDrag: true,
-      canBeDisplayed:  true,
+      canBeDisplayed: true,
     });
   });
 
@@ -850,36 +855,36 @@ export default function FinishUp({ params }) {
       // Handle errors or display an error message.
     }
   };
-const handleSubmitCustomSections = async (customSections) => {
-  console.log("handleSubmitCustomSections", customSections)
-  try {
-    const cvId123 = params.id;
-    setShowFinishupCV(false);
-    console.log("handleSubmitCustomSectionsfinishUpData", finishUpData)
-    finishUpData.customSections = customSections.customSections;
-    console.log("handleSubmitCustomSectionsfinishUpDatacustomSections", finishUpData)
+  const handleSubmitCustomSections = async customSections => {
+    console.log('handleSubmitCustomSections', customSections);
+    try {
+      const cvId123 = params.id;
+      setShowFinishupCV(false);
+      console.log('handleSubmitCustomSectionsfinishUpData', finishUpData);
+      finishUpData.customSections = customSections.customSections;
+      console.log('handleSubmitCustomSectionsfinishUpDatacustomSections', finishUpData);
 
-    await saveCv(cvId123, finishUpData);
-    console.log('Save completed.');
-    const fetchData = async () => {
-      try {
-        const data = await getFinishUp(cvId123);
-        console.log('FinishUp data: ', data);
-        setFinishUpData(data);
-        setShowFinishupCV(true);
-        setTemplateSelected(data.templateType);
-        setToolbarState(data.cvStyle);
-        setSummary(data.summary);
-      } catch (error) {
-        console.error('Error fetching FinishUp data:', error);
-      }
-    };
-    fetchData();
-  } catch (error) {
-    console.error('Error during synchronization:', error);
-    // Handle errors or display an error message.
-  }
-}
+      await saveCv(cvId123, finishUpData);
+      console.log('Save completed.');
+      const fetchData = async () => {
+        try {
+          const data = await getFinishUp(cvId123);
+          console.log('FinishUp data: ', data);
+          setFinishUpData(data);
+          setShowFinishupCV(true);
+          setTemplateSelected(data.templateType);
+          setToolbarState(data.cvStyle);
+          setSummary(data.summary);
+        } catch (error) {
+          console.error('Error fetching FinishUp data:', error);
+        }
+      };
+      fetchData();
+    } catch (error) {
+      console.error('Error during synchronization:', error);
+      // Handle errors or display an error message.
+    }
+  };
 
   const handleSyncUp = async () => {
     try {
@@ -1050,7 +1055,7 @@ const handleSubmitCustomSections = async (customSections) => {
                     onGen={handleSetHighlight}
                     onDisableHightlight={handleUnSetHighlight}
                   />
-                  
+
                   <Custom
                     cvId={params.id}
                     dataAts={dataAts}
