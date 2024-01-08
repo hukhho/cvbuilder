@@ -582,7 +582,6 @@ export default function FinishUp({ params }) {
       id: `customSection${index + 1}`,
       component: (
         <CustomSections
-          highlightAts={highlightAts}
           templateType={templateSelected}
           customSectionTitle={customSectionTitle}
           experiences={filteredCustomSection}

@@ -22,7 +22,7 @@ const StandardItem = props => {
     threeItem,
     fourItem,
     fiveItem,
-    highlightAts,
+    highlightAts = [],
     isDisplay = true,
   } = props;
 

@@ -27,7 +27,7 @@ const CustomSections = ({
   customSectionTitle,
   onChangeOrder,
   templateType,
-  highlightAts,
+  highlightAts = [],
 }) => {
   console.log('CustomSections:customSectionTitle::: ', customSectionTitle);
 
