@@ -563,6 +563,56 @@ export default function FinishUpPreviewV2({ cvId }) {
       canBeDisplayed: filteredSkills !== null,
     },
   ];
+  const customSections = finishUpData?.customSections || [];
+
+  //Iterate over custom sections and add them to the sections array
+  customSections.forEach((customSection, index) => {
+    const filteredCustomSection = customSection?.sectionData?.filter(section => {
+      // Check if section is displayable (isDisplay is true)
+      if (section.isDisplay !== true) {
+        return false;
+      }
+
+      // Check if title is not null, undefined, or an empty string
+      if (section.title === null || section.title === undefined || section.title === '') {
+        return false;
+      }
+
+      // If both conditions are met, keep the section in the filtered list
+      return true;
+    });
+    // customSections.forEach((customSection, index) => {
+    //   const customSectionObject = customSection;
+    // });
+    const customSectionTitle = customSection?.sectionName;
+    sections.push({
+      id: `customSection${index + 1}`,
+      component: (
+        <CustomSections
+          highlightAts={highlightAts}
+          templateType={templateSelected}
+          customSectionTitle={customSectionTitle}
+          experiences={filteredCustomSection}
+          onChangeOrder={sortedExperiences => {
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+            console.log('sortedCustoms: ', sortedExperiences);
+            let newFinishUpData = { ...finishUpData };
+            // newFinishUpData.experiences = sortedExperiences;
+            // setFinishUpData(newFinishUpData);
+          }}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
+        />
+      ),
+      order: customSection?.theOrder || 99,
+      canBeDrag: true,
+      canBeDisplayed: true,
+    });
+  });
+
   sections.sort((a, b) => a.order - b.order);
 
   const filteredSections = sections.filter(section => {

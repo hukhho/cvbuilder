@@ -823,6 +823,7 @@ export default function FinishUp({ params }) {
   //   canBeDrag: true,
   //   canBeDisplayed: true,
   // });
+  
   sections.sort((a, b) => a.order - b.order);
 
   const filteredSections = sections.filter(section => {
