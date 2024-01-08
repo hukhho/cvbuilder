@@ -57,6 +57,7 @@ import useStore from '@/store/store';
 import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 const { confirm } = Modal;
 
 // import CVLayoutReviewerView from '@/app/components/Templates/CVLayoutReviewerView';

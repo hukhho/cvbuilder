@@ -252,6 +252,9 @@ export default function FinishUp({ params }) {
     projects: 99,
     certifications: 99,
     skills: 99,
+    customSections1: 99,
+    customSections2: 99,
+    customSections3: 99,
   };
   // const theOrders =  {
   //   summary: 2,
@@ -415,13 +418,24 @@ export default function FinishUp({ params }) {
   };
 
   const handleSectionsOrderChange = newOrder => {
-    const updatedOrder = { ...theOrder }; // Copy the existing order
+    console.log('handleSectionsOrderChange: ', newOrder);
 
+    const updatedOrder = { ...theOrder }; // Copy the existing order
     newOrder.forEach((item, index) => {
       if (item && item.type) {
         const componentName = item.type.name;
         const stateKey = componentToStateKey[componentName];
-
+        if (componentName === 'CustomSections') {
+          console.log('handleSectionsOrderChangeitemCustomSections: ', item?.props?.index);
+          if (item?.props?.index === 1) {
+            updatedOrder.customSections1 = index;
+          } else if (item?.props?.index === 2) {
+            updatedOrder.customSections2 = index;
+          } else if (item?.props?.index === 3) {
+            updatedOrder.customSections3 = index;
+          }
+          console.log("updatedOrder: ", updatedOrder);
+        }
         if (stateKey !== undefined) {
           updatedOrder[stateKey] = index;
         }
@@ -430,7 +444,8 @@ export default function FinishUp({ params }) {
 
     setTheOrder(updatedOrder);
     console.log('updatedOrder: ', updatedOrder);
-    setSectionsOrder(newOrder);
+
+    setSectionsOrder(updatedOrder);
 
     let newFinishUpData = { ...finishUpData };
     newFinishUpData.theOrder = updatedOrder;
@@ -775,6 +790,7 @@ export default function FinishUp({ params }) {
       id: `customSection${index + 1}`,
       component: (
         <CustomSections
+          index={index + 1}
           highlightAts={highlightAts}
           templateType={templateSelected}
           customSectionTitle={customSectionTitle}
@@ -793,7 +809,20 @@ export default function FinishUp({ params }) {
           handleDescriptionChange={handleDescriptionChange}
         />
       ),
-      order: customSection?.theOrder || 99,
+      //customSection?.theOrder?.customSections1  if index is 0 then customSections1, if index is 1 then customSections2
+      //do it how you want
+      // order: customSection?.theOrder?.customSections1 || 99,
+      order:
+        index === 0
+          ? customSection?.theOrder?.customSections1 || 95
+          : index === 1
+          ? customSection?.theOrder?.customSections2 || 96
+          : index === 2
+          ? customSection?.theOrder?.customSections3 || 97
+          : index === 3
+          ? customSection?.theOrder?.customSections4 || 98
+          : 99,
+      // order: customSection?.theOrder?.customSections1  || 99,
       canBeDrag: true,
       canBeDisplayed: true,
     });
@@ -823,7 +852,7 @@ export default function FinishUp({ params }) {
   //   canBeDrag: true,
   //   canBeDisplayed: true,
   // });
-  
+
   sections.sort((a, b) => a.order - b.order);
 
   const filteredSections = sections.filter(section => {
@@ -1078,9 +1107,7 @@ export default function FinishUp({ params }) {
       notification.error({
         message: 'Restore version failed',
       });
-      
     }
-    
   };
   const handleChooseVersion = async versionId => {
     console.log('versionId: ', versionId);
@@ -1088,21 +1115,19 @@ export default function FinishUp({ params }) {
     setShowFinishupCV(false);
     try {
       const result = await getVersion(versionId);
-      
+
       setFinishUpData(result?.cvBody);
-  
+
       setShowFinishupCV(true);
-  
+
       setTemplateSelected(result?.cvBody?.templateType);
       setToolbarState(result?.cvBody?.cvStyle);
-  
+
       setSummary(result?.cvBody?.summary);
       console.log('handleChooseVersion ', result);
     } catch (error) {
-        console.log('handleChooseVersion::error: ', error);
+      console.log('handleChooseVersion::error: ', error);
     }
-
-    
   };
 
   const handleGen = () => {
@@ -1288,13 +1313,17 @@ export default function FinishUp({ params }) {
                                       <span className="ml-2 text-gray-500">
                                         {version?.jobPosting?.name}
                                       </span>
-                                      {version?.jobPosting?.name && ( <a
-                                        className="absolute"
-                                        style={{ right: '8px' }}
-                                        onClick={e => handleLinkClick(e, `/job/${version?.jobPosting?.id}`)}
-                                      >
-                                        <ExportOutlined />
-                                      </a>)}                                
+                                      {version?.jobPosting?.name && (
+                                        <a
+                                          className="absolute"
+                                          style={{ right: '8px' }}
+                                          onClick={e =>
+                                            handleLinkClick(e, `/job/${version?.jobPosting?.id}`)
+                                          }
+                                        >
+                                          <ExportOutlined />
+                                        </a>
+                                      )}
                                     </span>
                                   </span>
                                 </a>

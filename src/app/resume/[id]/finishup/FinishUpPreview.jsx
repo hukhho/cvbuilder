@@ -23,6 +23,7 @@ import CVLayoutCard from '@/app/components/Templates/CVLayoutCard';
 import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
 import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 
 const DEFAULT_TOOLBAR = {
   fontSize: '9pt',

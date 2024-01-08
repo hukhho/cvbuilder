@@ -25,6 +25,7 @@ import { getFinishUp } from '@/app/expert/view-cv/[id]/finishUpService';
 import { getHistoryFinishUp } from '@/app/utils/indexService';
 import useStore from '@/store/store';
 import UserLayout from '@/app/components/Layout/UserLayout';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 
 const mockData = {
   data: {

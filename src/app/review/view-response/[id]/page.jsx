@@ -53,6 +53,7 @@ import UserHeaderReview from '@/app/components/UserHeaderReview';
 import RatingForm from '@/app/components/Form/RatingForm';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 // import { getRequestList } from '../../reviewServices';
 
 export default function FinishUp({ params }) {

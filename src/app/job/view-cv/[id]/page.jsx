@@ -26,6 +26,7 @@ import { getHistoryFinishUp } from '@/app/utils/indexService';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeaderJob from '@/app/components/UserHeaderJob';
 import useStore from '@/store/store';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 
 const mockData = {
   data: {

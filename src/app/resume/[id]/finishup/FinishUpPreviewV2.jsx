@@ -31,6 +31,7 @@ import ProjectSection from '@/app/components/Templates/SectionComponents/Project
 import Certification from '../certification/page';
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 import Link from 'next/link';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 
 const mockData = {
   data: {
