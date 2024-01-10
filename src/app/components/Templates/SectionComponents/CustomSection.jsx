@@ -28,6 +28,12 @@ const CustomSections = ({
   onChangeOrder,
   templateType,
   highlightAts = [],
+  type = 'customSection',
+  isEnableAts = false,
+  isEditable = false,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
 }) => {
   console.log('CustomSections:customSectionTitle::: ', customSectionTitle);
 
@@ -45,7 +51,7 @@ const CustomSections = ({
         return (
           <StandardItem
             highlightAts={highlightAts}
-            type="customSection"
+            type={type}
             typeId={exp.id}
             key={exp.id}
             templateType={templateType}
@@ -55,6 +61,11 @@ const CustomSections = ({
             orgName={subTitle}
             renderRightSubtitle
             description={decodedString}
+            isEditable={isEditable}
+            isEnableAts={isEnableAts}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
           />
         );
       })}

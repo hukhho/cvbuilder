@@ -521,7 +521,7 @@ export default function FinishUp({ params }) {
   };
   // const handleDescriptionChange = (type, typeId, newData) => {
   //   console.log('handleOrgNameChange newData', newData, type, typeId);
-  
+
   //   switch (type) {
   //     case 'experience':
   //       console.log('handleOrgNameChange newData experience', newData, type, typeId);
@@ -535,18 +535,18 @@ export default function FinishUp({ params }) {
   //           return experience;
   //         }
   //       });
-  
+
   //       console.log('updatedExperiences experience', updatedExperiences);
-  
+
   //       // Use a more descriptive variable name for clarity
   //       let newFinishUpDataExperience = { ...finishUpData };
   //       newFinishUpDataExperience.experiences = updatedExperiences;
-  
+
   //       setFinishUpData(newFinishUpDataExperience);
-  
+
   //       console.log('New finishup data after updatedExperiences:', newFinishUpDataExperience);
   //       break;
-  
+
   //     case 'education':
   //       console.log('handle description change newData education', newData, type, typeId);
   //       const updatedEducations = educations.map(education => {
@@ -559,14 +559,14 @@ export default function FinishUp({ params }) {
   //           return education;
   //         }
   //       });
-  
+
   //       let newFinishUpDataEducation = { ...finishUpData };
   //       newFinishUpDataEducation.educations = updatedEducations;
-  
+
   //       setFinishUpData(newFinishUpDataEducation);
   //       console.log('New finishup data after updatedEducations:', newFinishUpDataEducation);
   //       break;
-  
+
   //     default:
   //       // Handle other cases or provide an error message
   //       break;
@@ -575,6 +575,7 @@ export default function FinishUp({ params }) {
 
   const handleDescriptionChange = (type, typeId, newData) => {
     // Configuration object mapping type values to detailed properties
+    console.log('handleDescriptionChange', newData, type, typeId);
     const config = {
       experience: { type: 'experiences', des: 'description' },
       education: { type: 'educations', des: 'description' },
@@ -584,11 +585,16 @@ export default function FinishUp({ params }) {
       skill: { type: 'skills', des: 'description' },
       // Add more types as needed
     };
-  
+
     // Check if the type is defined in the configuration
     if (config[type]) {
-      console.log(`handleOrgNameChange newData ${type} ${config[type].type}`, newData, type, typeId);
-  
+      console.log(
+        `handleOrgNameChange newData ${type} ${config[type].type}`,
+        newData,
+        type,
+        typeId,
+      );
+
       const updatedItems = finishUpData[config[type].type].map(item => {
         if (item.id === typeId) {
           return {
@@ -599,22 +605,44 @@ export default function FinishUp({ params }) {
           return item;
         }
       });
-  
+
       // Use a more descriptive variable name for clarity
       let newFinishUpData = { ...finishUpData };
       newFinishUpData[config[type].type] = updatedItems;
-  
+
       setFinishUpData(newFinishUpData);
-  
-      console.log(`New finishup data after updated${type.charAt(0).toUpperCase() + type.slice(1)}:`, newFinishUpData);
+      console.log(
+        `New finishup data after updated${type.charAt(0).toUpperCase() + type.slice(1)}:`,
+        newFinishUpData,
+      );
+    } else if (type.startsWith('customSection')) {
+      const sectionIndex = parseInt(type.replace('customSection', ''), 10) - 1;
+      if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
+        const updatedCustomSections = finishUpData.customSections[sectionIndex].sectionData.map(
+          item => {
+            if (item.id === typeId) {
+              return {
+                ...item,
+                description: newData,
+              };
+            } else {
+              return item;
+            }
+          },
+        );
+        console.log('updatedCustomSections', updatedCustomSections);
+        let newFinishUpData = { ...finishUpData };
+        newFinishUpData.customSections[sectionIndex].sectionData = updatedCustomSections;
+        setFinishUpData(newFinishUpData);
+      } else {
+        console.error(`Invalid custom section index: ${sectionIndex}`);
+      }
     } else {
       // Handle other cases or provide an error message
       console.error(`Unsupported type: ${type}`);
     }
   };
-  
-  
-  
+
   const handleSummaryChange = newData => {
     console.log('handleSummaryChangenewData: ', newData);
     let newFinishUpData = { ...finishUpData };
@@ -863,6 +891,7 @@ export default function FinishUp({ params }) {
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
+          type={`customSection${index + 1}`}
         />
       ),
       //customSection?.theOrder?.customSections1  if index is 0 then customSections1, if index is 1 then customSections2
