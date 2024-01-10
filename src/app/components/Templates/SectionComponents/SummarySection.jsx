@@ -6,7 +6,26 @@ import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Highlighter from 'react-highlight-words';
 
-const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) => {
+const SummarySection = ({
+  summary,
+  templateType,
+  layoutStyles,
+  highlightAts,
+  handleDescriptionChange,
+}) => {
+  const summaryState = useRef(summary);
+
+  const handleChange = (evt, targetName) => {
+    console.log('handleChange: ', evt.target.value);
+    handleDescriptionChange(evt.target.value);
+  };
+  const handleBlur = (evt, targetName) => {
+    if (targetName === 'summary') {
+      console.log('handleBlur: ', roleState.summary);
+    }
+  };
+  const type = 'summary';
+  const dataId = 'summary';
 
   let searchWords = [];
   if (highlightAts && highlightAts.length > 0) {
@@ -37,7 +56,7 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
             padding: '0cm 1.4cm',
           }}
         >
-          {searchWords && searchWords.length > 0 ? (
+          {/* {searchWords && searchWords.length > 0 ? (
             <Highlighter
               id="summary-summary"
               highlightClassName="editableContent cursor-text  designStudio"
@@ -47,9 +66,17 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
             />
           ) : (
             <p className="editableContent cursor-text  designStudio " id="summary-summary">
-            {summary}
-          </p>
-          )}
+              {summary}
+            </p>
+          )} */}
+
+          <ContentEditable
+            className="editableContent cursor-text  designStudio "
+            id="summary-summary"
+            html={summaryState.current}
+            onBlur={e => handleBlur(e, 'summary')}
+            onChange={e => handleChange(e, 'summary')}
+          />
         </div>
       </>
     );
@@ -80,14 +107,14 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
           <p className="editableContent ghost-hightlight w-full designStudio "></p>
         </div>
 
-        {/* <ContentEditable
+        <ContentEditable
           className="editableContent cursor-text  designStudio "
           id="summary-summary"
           html={summaryState.current}
           onBlur={e => handleBlur(e, 'summary')}
           onChange={e => handleChange(e, 'summary')}
-        /> */}
-        {searchWords && searchWords.length > 0 ? (
+        />
+        {/* {searchWords && searchWords.length > 0 ? (
           <Highlighter
             id="summary-summary"
             highlightClassName="editableContent cursor-text  designStudio"
@@ -99,7 +126,7 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
           <p className="editableContent cursor-text  designStudio " id="summary-summary">
             {summary}
           </p>
-        )}
+        )} */}
       </div>
     </div>;
   }
@@ -138,7 +165,7 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
           }}
         >
           <div className="relative">
-            {searchWords && searchWords.length > 0 ? (
+            {/* {searchWords && searchWords.length > 0 ? (
               <Highlighter
                 id="summary-summary"
                 highlightClassName="editableContent cursor-text  designStudio"
@@ -150,7 +177,15 @@ const SummarySection = ({ summary, templateType, layoutStyles, highlightAts }) =
               <p className="editableContent cursor-text  designStudio " id="summary-summary">
                 {summary}
               </p>
-            )}
+            )} */}
+
+            <ContentEditable
+              className="editableContent cursor-text  designStudio "
+              id="summary-summary"
+              html={summaryState.current}
+              onBlur={e => handleBlur(e, 'summary')}
+              onChange={e => handleChange(e, 'summary')}
+            />
           </div>
         </div>
       </div>

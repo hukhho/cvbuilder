@@ -1,5 +1,6 @@
 'use client';
 
+import { Editable } from '@chakra-ui/react';
 import { Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
@@ -24,16 +25,87 @@ const StandardItem = props => {
     fiveItem,
     highlightAts = [],
     isDisplay = true,
+    isEnableAts = false,
+    isEditable = false,
+    handleRoleChange,
+    handleOrgNameChange,
+    handleDescriptionChange,
   } = props;
 
   let searchWords = [];
   if (highlightAts && highlightAts.length > 0) {
     searchWords = highlightAts.map(at => at?.ats);
   }
+
+  const roleState = useRef(role);
+  const orgNameState = useRef(orgName);
+  const descriptionState = useRef(description);
+  const titlePropsState = useRef(titleProps);
+
+  const handleChange = (evt, targetName) => {
+    console.log('handleChange: ', targetName, evt.target.value);
+
+    if (targetName === 'role') {
+      orgNameState.current = evt.target.value;
+      handleRoleChange(type, typeId, evt.target.value);
+    } else if (targetName === 'orgName') {
+      orgNameState.current = evt.target.value;
+      handleOrgNameChange(type, typeId, evt.target.value);
+    } else if (targetName === 'description') {
+      descriptionState.current = evt.target.value;
+      handleDescriptionChange(type, typeId, evt.target.value);
+    }
+  };
+
+  const handleBlur = (evt, targetName) => {
+    if (targetName === 'role') {
+      console.log('handleBlur: ', roleState.current);
+    }
+  };
+
   console.log('hStandardItem:highlightAts::: ', highlightAts);
   if (!isDisplay) {
     return null;
   }
+
+  const renderEditableDescription = () => {
+    if (isEditable) {
+      return (
+        descriptionState && (
+          <ContentEditable
+            className="designStudio"
+            style={{
+              display: 'inline',
+              verticalAlign: 'initial',
+            }}
+            html={descriptionState.current}
+            onBlur={e => handleBlur(e, 'description')}
+            onChange={e => handleChange(e, 'description')}
+          />
+        )
+      );
+    }
+
+    // Add a default return statement
+    return searchWords && searchWords.length > 0 ? (
+      <Highlighter
+        id="LfWZnVqHS-description"
+        highlightClassName="editableContent cursor-text  designStudio"
+        searchWords={searchWords} // Use dynamically generated searchWords
+        autoEscape
+        textToHighlight={description}
+      />
+    ) : (
+      <p
+        className="editableContent cursor-text  designStudio "
+        id="LfWZnVqHS-description"
+        // // contentEditable="true"
+      >
+        {description}
+      </p>
+    );
+  };
+
   const renderTitle = () => {
     if (titleProps) {
       return (
@@ -49,7 +121,7 @@ const StandardItem = props => {
             className="relative whitespace-pre-line"
             style={{ fontWeight: 700, fontSize: '0.85em' }}
           >
-            {searchWords && searchWords.length > 0 ? (
+            {/* {isEnableAts && searchWords && searchWords.length > 0 ? (
               <Highlighter
                 id="XHKKXx5eVL-skill"
                 highlightClassName="editableContent cursor-text  designStudio"
@@ -65,6 +137,20 @@ const StandardItem = props => {
               >
                 {titleProps}
               </p>
+            )} */}
+            {}
+            {/* {renderEditableDescription(titleProps)} */}
+            {titlePropsState && (
+              <ContentEditable
+                className="designStudio"
+                style={{
+                  display: 'inline',
+                  verticalAlign: 'initial',
+                }}
+                html={titlePropsState.current}
+                onBlur={e => handleBlur(e, 'description')}
+                onChange={e => handleChange(e, 'description')}
+              />
             )}
           </div>
         </div>
@@ -186,7 +272,7 @@ const StandardItem = props => {
                 }}
               >
                 {/* {description} */}
-                {searchWords && searchWords.length > 0 ? (
+                {/* {searchWords && searchWords.length > 0 ? (
                   <Highlighter
                     id="LfWZnVqHS-description"
                     highlightClassName="editableContent cursor-text  designStudio"
@@ -202,7 +288,8 @@ const StandardItem = props => {
                   >
                     {description}
                   </p>
-                )}
+                )} */}
+                {renderEditableDescription()}
               </div>
             </div>
           );
@@ -542,21 +629,16 @@ const StandardItem = props => {
                           fontWeight: 100,
                         }}
                       >
-                        {searchWords && searchWords?.length > 0 ? (
-                          <Highlighter
-                            id="LfWZnVqHS-description"
-                            highlightClassName="editableContent cursor-text designStudio"
-                            searchWords={searchWords}
-                            autoEscape
-                            textToHighlight={description}
-                          />
-                        ) : (
-                          <p
+                        {descriptionState && (
+                          <ContentEditable
                             className="designStudio"
-                            id="LfWZnVqHS-description"
-                            dangerouslySetInnerHTML={{
-                              __html: description,
+                            style={{
+                              display: 'inline',
+                              verticalAlign: 'initial',
                             }}
+                            html={descriptionState.current}
+                            onBlur={e => handleBlur(e, 'description')}
+                            onChange={e => handleChange(e, 'description')}
                           />
                         )}
                       </div>

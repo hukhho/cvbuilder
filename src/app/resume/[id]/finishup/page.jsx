@@ -47,6 +47,7 @@ import UserLayoutNoAuth from '@/app/components/Layout/UserLayoutNoAuth';
 import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 import Custom from './Custom';
 import { ExportOutlined } from '@ant-design/icons';
+import { TRUE } from 'sass';
 
 const mockData = {
   data: {
@@ -434,7 +435,7 @@ export default function FinishUp({ params }) {
           } else if (item?.props?.index === 3) {
             updatedOrder.customSections3 = index;
           }
-          console.log("updatedOrder: ", updatedOrder);
+          console.log('updatedOrder: ', updatedOrder);
         }
         if (stateKey !== undefined) {
           updatedOrder[stateKey] = index;
@@ -518,30 +519,104 @@ export default function FinishUp({ params }) {
         console.log('New finishup data after updatedExperiences:', newFinishUpData);
     }
   };
-  const handleDescriptionChange = (type, typeId, newData) => {
-    console.log('handleOrgNameChange newData', newData, type, typeId);
-    switch (type) {
-      case 'experience':
-        console.log('handleOrgNameChange newData experience', newData, type, typeId);
-        const updatedExperiences = experiences.map(experience => {
-          if (experience.id === typeId) {
-            return {
-              ...experience,
-              description: newData,
-            };
-          } else {
-            return experience;
-          }
-        });
-        console.log('updatedExperiences experience', updatedExperiences);
-        let newFinishUpData = { ...finishUpData };
-        newFinishUpData.experiences = updatedExperiences;
+  // const handleDescriptionChange = (type, typeId, newData) => {
+  //   console.log('handleOrgNameChange newData', newData, type, typeId);
+  
+  //   switch (type) {
+  //     case 'experience':
+  //       console.log('handleOrgNameChange newData experience', newData, type, typeId);
+  //       const updatedExperiences = experiences.map(experience => {
+  //         if (experience.id === typeId) {
+  //           return {
+  //             ...experience,
+  //             description: newData,
+  //           };
+  //         } else {
+  //           return experience;
+  //         }
+  //       });
+  
+  //       console.log('updatedExperiences experience', updatedExperiences);
+  
+  //       // Use a more descriptive variable name for clarity
+  //       let newFinishUpDataExperience = { ...finishUpData };
+  //       newFinishUpDataExperience.experiences = updatedExperiences;
+  
+  //       setFinishUpData(newFinishUpDataExperience);
+  
+  //       console.log('New finishup data after updatedExperiences:', newFinishUpDataExperience);
+  //       break;
+  
+  //     case 'education':
+  //       console.log('handle description change newData education', newData, type, typeId);
+  //       const updatedEducations = educations.map(education => {
+  //         if (education.id === typeId) {
+  //           return {
+  //             ...education,
+  //             description: newData,
+  //           };
+  //         } else {
+  //           return education;
+  //         }
+  //       });
+  
+  //       let newFinishUpDataEducation = { ...finishUpData };
+  //       newFinishUpDataEducation.educations = updatedEducations;
+  
+  //       setFinishUpData(newFinishUpDataEducation);
+  //       console.log('New finishup data after updatedEducations:', newFinishUpDataEducation);
+  //       break;
+  
+  //     default:
+  //       // Handle other cases or provide an error message
+  //       break;
+  //   }
+  // };
 
-        setFinishUpData(newFinishUpData);
-        console.log('New finishup data after updatedExperiences:', newFinishUpData);
+  const handleDescriptionChange = (type, typeId, newData) => {
+    // Configuration object mapping type values to detailed properties
+    const config = {
+      experience: { type: 'experiences', des: 'description' },
+      education: { type: 'educations', des: 'description' },
+      project: { type: 'projects', des: 'description' },
+      involvement: { type: 'involvements', des: 'description' },
+      certification: { type: 'certifications', des: 'certificateRelevance' },
+      skill: { type: 'skills', des: 'description' },
+      // Add more types as needed
+    };
+  
+    // Check if the type is defined in the configuration
+    if (config[type]) {
+      console.log(`handleOrgNameChange newData ${type} ${config[type].type}`, newData, type, typeId);
+  
+      const updatedItems = finishUpData[config[type].type].map(item => {
+        if (item.id === typeId) {
+          return {
+            ...item,
+            [config[type].des]: newData,
+          };
+        } else {
+          return item;
+        }
+      });
+  
+      // Use a more descriptive variable name for clarity
+      let newFinishUpData = { ...finishUpData };
+      newFinishUpData[config[type].type] = updatedItems;
+  
+      setFinishUpData(newFinishUpData);
+  
+      console.log(`New finishup data after updated${type.charAt(0).toUpperCase() + type.slice(1)}:`, newFinishUpData);
+    } else {
+      // Handle other cases or provide an error message
+      console.error(`Unsupported type: ${type}`);
     }
   };
+  
+  
+  
   const handleSummaryChange = newData => {
+    console.log('handleSummaryChangenewData: ', newData);
     let newFinishUpData = { ...finishUpData };
     newFinishUpData.summary = newData;
 
@@ -583,6 +658,7 @@ export default function FinishUp({ params }) {
         <SummarySection
           templateType={templateSelected}
           highlightAts={highlightAts}
+          handleDescriptionChange={handleSummaryChange}
           summary={summary}
         />
       ),
@@ -598,57 +674,11 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           experiences={experiences}
           onChangeOrder={sortedExperiences => {
-            //Sort by theOrder but keep the original order if isDisplay is false
-            //I mean if item 1 order 1, item 2 order 2, item3 order 3, item 4 order 4
-            //item 1 isDisplay = true, item 2 isDisplay = false, item 3 isDisplay = true, item 4 isDisplay = true
-
-            //after sort item 1 item 4 item 3, the order item 1 will 1 item 4 will 3, item 3 will 4
-            //but item 2 will still 2
-
-            //So I will sort by theOrder first, then sort by isDisplay
-            // sortedExperiences.sort((a, b) => {
-            //   if (a.isDisplay === false && b.isDisplay === false) {
-            //     return 0;
-            //   } else if (a.isDisplay === false) {
-            //     return 1;
-            //   }
-            //   else if (b.isDisplay === false) {
-            //     return -1;
-            //   }
-            //   else {
-            //     return a.theOrder - b.theOrder;
-            //   }
-            // });
-
             console.log('sortedExperiences', sortedExperiences);
             for (let i = 0; i < sortedExperiences.length; i++) {
               sortedExperiences[i].theOrder = i + 1;
             }
-            //set new theOrder to the sortedExperiences, lol,
 
-            //after sort item 1 item 4 item 3, theOrder item 1 will 1 item 4 will 3, item 3 will 4
-            //but item 2 will still 2
-
-            // for (let i = 0; i < sortedExperiences.length; i++) {
-            //   sortedExperiences[i].theOrder = sortedExperiences
-            // }
-
-            // sortedExperiences.sort((a, b) => {
-            //   if (a.isDisplay === false && b.isDisplay === false) {
-            //     return 0;
-            //   } else if (a.isDisplay === false) {
-            //     return 1;
-            //   } else if (b.isDisplay === false) {
-            //     return -1;
-            //   } else {
-            //     return a.theOrder - b.theOrder;
-            //   }
-            // });
-            //set new theOrder to the sortedExperiences
-
-            // for (let i = 0; i < sortedExperiences.length; i++) {
-            //   sortedExperiences[i].theOrder = i + 1;
-            // }
             console.log('Finishup data:', finishUpData);
             let newFinishUpData = { ...finishUpData };
             newFinishUpData.experiences = sortedExperiences;
@@ -656,6 +686,8 @@ export default function FinishUp({ params }) {
             setFinishUpData(newFinishUpData);
             console.log('New finishup data:', newFinishUpData);
           }}
+          isEnableAts={false}
+          isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -699,6 +731,11 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           educations={filteredEducations}
+          isEnableAts={false}
+          isEditable={true}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       order: finishUpData?.theOrder?.educations || 3,
@@ -712,6 +749,11 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           involvements={filteredInvolvements}
+          isEnableAts={false}
+          isEditable={true}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       order: finishUpData?.theOrder?.involvements || 4,
@@ -725,6 +767,11 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           projects={filteredProjects}
+          isEnableAts={false}
+          isEditable={true}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       order: finishUpData?.theOrder?.projects || 5,
@@ -738,6 +785,11 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           certifications={filteredCertifications}
+          isEnableAts={false}
+          isEditable={true}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       order: finishUpData?.theOrder?.certifications || 6,
@@ -753,6 +805,11 @@ export default function FinishUp({ params }) {
           skills={filteredSkills}
           onChangeOrder={handleSkillsOrderChange}
           canBeDisplayed={filteredSkills !== null}
+          isEnableAts={false}
+          isEditable={true}
+          handleRoleChange={handleRoleChange}
+          handleOrgNameChange={handleOrgNameChange}
+          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       order: finishUpData?.theOrder?.skills || 7,

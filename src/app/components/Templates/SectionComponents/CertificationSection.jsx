@@ -22,7 +22,17 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const CertificationSection = ({ certifications, onChangeOrder, templateType, highlightAts }) => {
+const CertificationSection = ({
+  certifications,
+  onChangeOrder,
+  templateType,
+  highlightAts,
+  isEnableAts = false,
+  isEditable = false,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
+}) => {
   const educationItems = (
     <>
       {certifications.map(edu => {
@@ -30,6 +40,8 @@ const CertificationSection = ({ certifications, onChangeOrder, templateType, hig
         return (
           <StandardItem
             highlightAts={highlightAts}
+            type="certification"
+            typeId={edu.id}
             key={edu.id}
             role={name}
             firstItem={certificateSource}
@@ -40,6 +52,11 @@ const CertificationSection = ({ certifications, onChangeOrder, templateType, hig
             description={certificateRelevance}
             templateType={templateType}
             isThreeLine
+            isEditable={isEditable}
+            isEnableAts={isEnableAts}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
           />
         );
       })}

@@ -22,7 +22,17 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const EducationsSection = ({ educations, onChangeOrder, templateType, highlightAts }) => {
+const EducationsSection = ({
+  educations,
+  onChangeOrder,
+  templateType,
+  highlightAts,
+  isEnableAts = false,
+  isEditable = false,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
+}) => {
   console.log('EducationSection::: ', educations);
   const educationItems = (
     <>
@@ -32,6 +42,8 @@ const EducationsSection = ({ educations, onChangeOrder, templateType, highlightA
         return (
           <StandardItem
             highlightAts={highlightAts}
+            type="education"
+            typeId={edu.id}
             key={edu.id}
             role={degree}
             firstItem={minor ? `Minor in ${minor}` : null}
@@ -42,6 +54,10 @@ const EducationsSection = ({ educations, onChangeOrder, templateType, highlightA
             description={description}
             templateType={templateType}
             isThreeLine
+            isEditable={isEditable}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
           />
         );
       })}

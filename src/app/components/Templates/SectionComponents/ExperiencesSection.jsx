@@ -22,7 +22,17 @@ import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 import he from 'he';
 
-const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highlightAts }) => {
+const ExperiencesSection = ({
+  experiences,
+  onChangeOrder,
+  templateType,
+  highlightAts,
+  isEnableAts = false,
+  isEditable = false,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
+}) => {
   console.log('ExperiencesSection::: ', highlightAts);
 
   const mockDes = 'This is some text with encoded parentheses: (Hello) ';
@@ -40,9 +50,9 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
           <StandardItem
             highlightAts={highlightAts}
             type="experience"
-            isDisplay={isDisplay}
             typeId={exp.id}
             key={exp.id}
+            isDisplay={isDisplay}
             templateType={templateType}
             role={role}
             location={location}
@@ -50,6 +60,11 @@ const ExperiencesSection = ({ experiences, onChangeOrder, templateType, highligh
             orgName={companyName}
             renderRightSubtitle
             description={decodedString}
+            isEditable={isEditable}
+            isEnableAts={isEnableAts}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
           />
         );
       })}

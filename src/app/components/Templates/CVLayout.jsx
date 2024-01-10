@@ -188,6 +188,7 @@ const CVLayout = React.forwardRef(
                 fontFamily: 'Merriweather, serif',
                 lineHeight: '20px',
                 zIndex: 99,
+                pointerEvents: 'none', // Make the element non-interactive
               }}
             >
               <div></div>

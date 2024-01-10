@@ -22,7 +22,17 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const ProjectSection = ({ projects, onChangeOrder, templateType, highlightAts }) => {
+const ProjectSection = ({
+  projects,
+  onChangeOrder,
+  templateType,
+  highlightAts,
+  isEnableAts = false,
+  isEditable = false,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
+}) => {
   const educationItems = (
     <>
       {projects.map(edu => {
@@ -31,6 +41,8 @@ const ProjectSection = ({ projects, onChangeOrder, templateType, highlightAts })
           <StandardItem
             highlightAts={highlightAts}
             key={edu.id}
+            type="project"
+            typeId={edu.id}
             role={title}
             firstItem={organization}
             secondItem={projectUrl}
@@ -40,6 +52,10 @@ const ProjectSection = ({ projects, onChangeOrder, templateType, highlightAts })
             description={description}
             templateType={templateType}
             isThreeLine
+            isEditable={isEditable}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
           />
         );
       })}

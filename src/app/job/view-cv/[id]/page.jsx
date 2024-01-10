@@ -346,7 +346,7 @@ export default function FinishUp({ params }) {
   const [educationsOrder, setEducationsOrder] = useState([]);
   const [skillsOrder, setSkillsOrder] = useState([]);
   const [summary, setSummary] = useState();
-
+  
   const handleExperiencesOrderChange = newOrder => {
     setExperiencesOrder(newOrder);
   };

@@ -24,12 +24,39 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 
-const SkillsSection = ({ skills, onChangeOrder, templateType, canBeDisplayed, highlightAts }) => {
+const SkillsSection = ({
+  skills,
+  onChangeOrder,
+  templateType,
+  canBeDisplayed,
+  highlightAts,
+  isDisplay=true,
+  isEnableAts = false,
+  isEditable = false,
+  handleRoleChange,
+  handleOrgNameChange,
+  handleDescriptionChange,
+}) => {
   const skillItems = (
     <>
       {skills.map(edu => {
         const { description } = edu;
-        return <StandardItem highlightAts={highlightAts} key={edu.id} titleProps={description} templateType={templateType} />;
+        return (
+          <StandardItem
+            highlightAts={highlightAts}
+            key={edu.id}
+            type="skill"
+            typeId={edu.id}
+            isDisplay={isDisplay}
+            titleProps={description}
+            templateType={templateType}
+            isEditable={isEditable}
+            isEnableAts={isEnableAts}
+            handleRoleChange={handleRoleChange}
+            handleOrgNameChange={handleOrgNameChange}
+            handleDescriptionChange={handleDescriptionChange}
+          />
+        );
       })}
     </>
   );
