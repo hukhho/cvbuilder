@@ -5,6 +5,9 @@ import Link from 'next/link';
 import getContact from '../resume/[id]/contact/contactService';
 import { getResumesCvs } from '../utils/indexService';
 import useStore from '@/store/store';
+import { Modal } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
 
 // Define the categories outside of the component.
 const categories = [
@@ -18,8 +21,9 @@ const categories = [
   { name: 'SUMMARY', link: 'summary' },
   { name: 'FINISH UP', link: 'finishup' },
 ];
+const { confirm } = Modal;
 
-const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
+const UserCVBuilderHeader = ({ isCatchOut = false, initialEnabledCategories, cvId }) => {
   const [enabledCategories, setEnabledCategories] = useState(initialEnabledCategories);
   // const [data, setData] = useState();
 
@@ -51,6 +55,44 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
 
   const resumeName = resumes.find(resume => resume.id == cvId)?.resumeName;
   console.log('resumeName: ', resumeName);
+  const router = useRouter();
+  const confirmFinish = async (category) => {
+    try {
+      router.push(`/resume/${cvId}/${category.link}`);
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+  const showPromiseConfirm = (category) => {
+    confirm({
+      title: 'If you leave page not save you will loss your change?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, you will loss your change',
+      async onOk() {
+        await confirmFinish(category);
+      },
+      onCancel() {},
+    });
+  };
+
+  const handleLinkClick = async (event, category) => {
+    if (isCatchOut && hasUnsavedChanges()) {
+      // Prevent the default link behavior
+      event.preventDefault();
+      // Display confirmation modal
+      await showPromiseConfirm(category);
+    }
+    // Continue with navigation if there are no unsaved changes
+  };
+
+  const hasUnsavedChanges = () => {
+    // Implement the logic to check for unsaved changes
+    // For example, compare the current state with the initial state
+    // and return true if changes are detected, false otherwise.
+    // You might need to track changes in your state or any other relevant data.
+    return true; // Placeholder, replace with actual logic
+  };
+
   return (
     <div className="w-[1255px] h-[25px] relative flex space-x-8">
       <div className="flex items-center">
@@ -81,6 +123,7 @@ const UserCVBuilderHeader = ({ initialEnabledCategories, cvId }) => {
             href={`/resume/${cvId}/${category.link}`} // Use the custom link here
           >
             <div
+              onClick={event => handleLinkClick(event, category)}
               className={`text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap ${
                 enabledCategories[category.name] ? 'bg-indigo-500 text-white' : 'text-neutral-600'
               } cursor-pointer rounded-[3.15px] p-[4.76px] pl-[6.28px] pr-[5.80px] pt-[4.76px] pb-[5.33px]'`}

@@ -13,52 +13,6 @@
   min-width: 1120px;
 }
 
-comment {
-  background-color: yellow;
-  padding: 2px; /* Adjust padding as needed */
-  border-radius: 4px; /* Optional: add rounded corners */
-}
-/** Tootip **/
- comment[content]:hover:after {
-  opacity: 1;
-  /* transition: all 0.1s ease .5s; */
-  visibility: visible;
-  /* animation: grow 3s forwards; */
-}
-
-comment[content]:after {
-  content: attr(content);
-  background-color: #00adb5;
-  color: #fff;
-  position: absolute;
-  padding: 1px 5px 2px 5px;
-  top: 100%;
-  left: 0px;
-  white-space: nowrap;
-  opacity: 0;
-  box-shadow: 3px 3px 5px #00ADB5;
-  border: 1px solid rgb(197, 195, 195);
-  border-radius: 0 5px 0 5px;
-  visibility: hidden;
-  z-index: 100;
-}
-
-comment[content] {
-  position: relative;
-}
-
-.comment-bubble {
-  height: 100px;
-  width: 200px;
-  margin-top: 10px;
-  margin: 0;
-  padding: 10px;
-  border-radius: 5px;
-  position: absolute;
-  left: 1000px;
-  top: calc(var(--comment-index) * 110px); /* Adjust the vertical separation as needed */
-}
-
 
 .resume-preview-wrapper {
   width: 100%;

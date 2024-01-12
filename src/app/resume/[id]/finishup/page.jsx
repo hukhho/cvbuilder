@@ -615,6 +615,7 @@ export default function FinishUp({ params }) {
         `New finishup data after updated${type.charAt(0).toUpperCase() + type.slice(1)}:`,
         newFinishUpData,
       );
+      setIsCatchOut(true);
     } else if (type.startsWith('customSection')) {
       const sectionIndex = parseInt(type.replace('customSection', ''), 10) - 1;
       if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
@@ -634,6 +635,7 @@ export default function FinishUp({ params }) {
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.customSections[sectionIndex].sectionData = updatedCustomSections;
         setFinishUpData(newFinishUpData);
+        setIsCatchOut(true);
       } else {
         console.error(`Invalid custom section index: ${sectionIndex}`);
       }
@@ -649,6 +651,7 @@ export default function FinishUp({ params }) {
     newFinishUpData.summary = newData;
 
     setFinishUpData(newFinishUpData);
+    setIsCatchOut(true);
     console.log('New finishup data after handleSummaryChange:', newFinishUpData);
   };
 
@@ -969,14 +972,13 @@ export default function FinishUp({ params }) {
       try {
         const data = await getFinishUp(params.id);
         console.log('FinishUp data: ', data);
-
         setTheOrder(data.theOrder);
         setFinishUpData(data);
         setTemplateSelected(data.templateType);
         setToolbarState(data.cvStyle);
         setSummary(data.summary);
         setShowFinishupCV(true);
-
+        setIsCatchOut(false);
         console.log('data.theOrder: ', data.theOrder);
       } catch (error) {
         console.error('Error fetching FinishUp data:', error);
@@ -997,12 +999,10 @@ export default function FinishUp({ params }) {
   const handleSave = async () => {
     try {
       const cvId123 = params.id;
-
       setShowFinishupCV(false);
       finishUpData.templateType = templateSelected;
       await saveCv(cvId123, finishUpData); // Call the syncUp function
       console.log('Save completed.');
-
       const fetchData = async () => {
         try {
           const data = await getFinishUp(cvId123);
@@ -1016,6 +1016,7 @@ export default function FinishUp({ params }) {
           setToolbarState(data.cvStyle);
 
           setSummary(data.summary);
+          setIsCatchOut(false);
         } catch (error) {
           console.error('Error fetching FinishUp data:', error);
         }
@@ -1035,7 +1036,6 @@ export default function FinishUp({ params }) {
       console.log('handleSubmitCustomSectionsfinishUpData', finishUpData);
       finishUpData.customSections = customSections.customSections;
       console.log('handleSubmitCustomSectionsfinishUpDatacustomSections', finishUpData);
-
       await saveCv(cvId123, finishUpData);
       console.log('Save completed.');
       const fetchData = async () => {
@@ -1047,6 +1047,7 @@ export default function FinishUp({ params }) {
           setTemplateSelected(data.templateType);
           setToolbarState(data.cvStyle);
           setSummary(data.summary);
+          setIsCatchOut(false);
         } catch (error) {
           console.error('Error fetching FinishUp data:', error);
         }
@@ -1062,10 +1063,8 @@ export default function FinishUp({ params }) {
     try {
       const cvId123 = params.id;
       setShowFinishupCV(false);
-
       await syncUp(cvId123); // Call the syncUp function
       console.log('Synchronization completed.');
-
       const fetchData = async () => {
         try {
           const data = await getFinishUp(cvId123);
@@ -1131,6 +1130,7 @@ export default function FinishUp({ params }) {
         setToolbarState(data.cvStyle);
         setSummary(data.summary);
         setShowFinishupCV(true);
+        setIsCatchOut(false);
 
         console.log('data.theOrder: ', data.theOrder);
       } catch (error) {
@@ -1170,6 +1170,7 @@ export default function FinishUp({ params }) {
           setToolbarState(data.cvStyle);
           setSummary(data.summary);
           setShowFinishupCV(true);
+          setIsCatchOut(false);
 
           console.log('data.theOrder: ', data.theOrder);
         } catch (error) {
@@ -1209,6 +1210,8 @@ export default function FinishUp({ params }) {
       setToolbarState(result?.cvBody?.cvStyle);
 
       setSummary(result?.cvBody?.summary);
+      setIsCatchOut(false);
+
       console.log('handleChooseVersion ', result);
     } catch (error) {
       console.log('handleChooseVersion::error: ', error);
@@ -1240,6 +1243,8 @@ export default function FinishUp({ params }) {
     e.stopPropagation(); // Prevents the click from reaching the outer div
     window.open(link, '_blank');
   };
+
+  const [isCatchOut, setIsCatchOut] = useState(false);
   return (
     <main>
       <ConfigProvider>
@@ -1248,8 +1253,9 @@ export default function FinishUp({ params }) {
           avatar={avatar}
           email={email}
           userRole={userRole}
+          isCatchOut={isCatchOut}
           userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} cvId={params.id} />
+            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} isCatchOut={isCatchOut} cvId={params.id} />
           }
           content={
             <div className="flex">
