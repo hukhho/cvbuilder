@@ -641,6 +641,11 @@ const StandardItem = props => {
                             onChange={e => handleChange(e, 'description')}
                           />
                         )}
+                        {/* <p
+                          dangerouslySetInnerHTML={{
+                            __html: description,
+                          }}
+                        /> */}
                       </div>
                     )}
                   </li>

@@ -39,6 +39,29 @@ export const updateReviewResponse = async (responseId, data) => {
     throw error;
   }
 };
+
+export const overwriteResume = async (cvId, data) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.post(`/user/cv/${cvId}/parse/old`, data);
+    // return mockData.data.resume;
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const newResume = async (cvId, data) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+    const response = await axiosInstance.post(`/user/cv/${cvId}/parse/new`, data);
+    // return mockData.data.resume;
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateReviewResponsePublic = async (responseId, data) => {
   try {
     const userId = getUserIdFromLocalStorage();

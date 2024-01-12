@@ -45,6 +45,7 @@ const CVLayoutReviewerView = ({
   layoutStyles,
   stars,
   isDnd = false,
+  isEditable = false,
 }) => {
   const { zoom, paperSize, hasIndent, hasDivider, ...restLayoutStyles } = layoutStyles;
 
@@ -258,29 +259,6 @@ const CVLayoutReviewerView = ({
                 {/* Break */}
               </div>
               <div id="sortable-area" className="relative z-50 mb-[10px] transition-all">
-                {/* {components.map((child, index) => (
-                      <div key={child.key || index}>
-                        {child.props.canBeDrag === false ? ( // Check if the section can be dragged
-                          <div key={child.key || index}>
-                            {child}
-                            {layoutStyles.hasDivider && (
-                              <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
-                                <hr />
-                              </div>
-                            )}
-                          </div> // Render without drag if canBeDrag is false
-                        ) : (
-                          <div key={child.key || index}>
-                            <SortableItem key={child.key || index}>{child}</SortableItem>
-                            {index < components.length - 1 && layoutStyles.hasDivider && (
-                              <div style={{ padding: '0cm 1.4cm', margin: '10px 0px' }}>
-                                <hr />
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ))} */}
                 {components.map((child, index) => (
                   <div key={child.key || index}>
                     {

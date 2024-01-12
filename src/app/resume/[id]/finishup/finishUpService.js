@@ -3,12 +3,12 @@ import { getUserIdFromLocalStorage } from '@/app/utils/indexService';
 import axiosInstance from '../../../utils/axiosInstance';
 import { mockData } from './mockData';
 import { notification } from 'antd';
+import './gen.css';
 
 export const getFinishUp = async cvId => {
   try {
     const response = await axiosInstance.get(`/user/cv/${cvId}/finish-up`);
     return response.data;
-
     // return {
     //   sharable: false,
     //   searchable: false,
@@ -84,7 +84,7 @@ export const getFinishUp = async cvId => {
     //       companyName: 'MoMo',
     //       role: 'Data Analyst Intern',
     //       description:
-    //         "• Increase the performance of the firm's technology risk dashboard by 80% by integrating a new infrastructure data source into the pipeline (Java, T-SQL).\n• Reduce 45% of the overhead costs of the analytics team by implementing an excel exporting integration into the risk report engine (Java, Python).",
+    //         '• 123 Led the <comment id="comment_type_experience_id_1_desId_type-experience-dataId-1_1704186313759" class="select-none comment-marker" content="oke">development</comment> of a service that provides automated pen-testing to internal front-office facing teams while managing and mentoring 3 pen-testers (Python, Java Spring Boot, Angular JS, OracleDB).\n• Developed a web application that orchestrates vendor vulnerability scanners to scan over 100,000 cloud and hardware infrastructure within the firm, while also providing metrics via an API and  UI (Java, Spring Boot, Angular JS, OracleDB).\n• Led the analyst peer mentoring committee for Jersey City by conducting event planning, budget analysis, mentor and mentee pairing, and mentor training for over 200 analysts.',
     //     },
     //     {
     //       id: 14,

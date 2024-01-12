@@ -9,7 +9,7 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
 import { notification } from 'antd';
 
-export default function MyModal({ onCreated }) {
+export default function CreateResumeReviewConCac({ isOpen, setIsOpen, onCreated }) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -18,7 +18,7 @@ export default function MyModal({ onCreated }) {
       placement,
     });
   };
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(isOpenInit);
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [formData, setFormData] = useState({
@@ -67,13 +67,14 @@ export default function MyModal({ onCreated }) {
 
     try {
       const result = await createResumeService(formData);
+      // openNotification('bottomRight', `Create: ${result.id}`);
       notification.success({
         message: 'Created',
       });
-      onCreated();
-
+      onCreated(result);
       closeModal();
     } catch (error) {
+      console.log(error);
       notification.error({
         message: error?.response?.data || 'Something went wrong',
       });
@@ -83,7 +84,7 @@ export default function MyModal({ onCreated }) {
     <>
       {contextHolder}
       <div className="inset-0 flex items-center justify-center">
-        <button
+        {/* <button
           style={{ width: '208px' }}
           href=""
           data-size="default"
@@ -94,8 +95,8 @@ export default function MyModal({ onCreated }) {
           onClick={openModal}
         >
           <i className="fad fa-file-plus" aria-hidden="true" />
-          <span>Create new resume</span>
-        </button>
+          <span>Create new resume from exist data</span>
+        </button> */}
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
@@ -128,7 +129,7 @@ export default function MyModal({ onCreated }) {
                     as="h2"
                     className="w-full flex leading-7 text-xl font-semibold bg-slate-50 rounded-t-lg text-gray-900 items-center px-6 py-5 border-b border-slate-200"
                   >
-                    <div className="grow font-semibold">Create a resume</div>
+                    <div className="grow font-semibold">Create a resume from review process</div>
                     <i className="fal fa-times cursor-pointer" aria-hidden="true" />
                   </Dialog.Title>
                   <div className="p-6">

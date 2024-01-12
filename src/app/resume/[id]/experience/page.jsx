@@ -25,36 +25,42 @@ import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
 import ExperienceSort from './ExperienceSort';
 import DataService from '../../../utils/dataService';
+import { fieldConfig } from '../sectionConfig';
+import StandarListV2 from '@/app/components/List/StandarListV2';
+import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
+import SectionForm from '../SectionForm';
 
 const { Meta } = Card;
 
 const Experience = ({ params }) => {
+  const sectionTypeName = 'experiences';
+
   const router = useRouter();
   const [experiences, setExperiences] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const dataService = new DataService('experiences', params.id);
+  const dataService = new DataService(sectionTypeName, params.id);
+  const field = fieldConfig.experiences;
 
   const { avatar, email, userRole } = useStore();
   const enabledCategories = { EXPERIENCE: true };
-  console.log('Experiences: ', params);
 
   const cvId = params.id;
-
   const searchParams = useSearchParams();
   const typeId = searchParams.get('typeId');
   const handleRemoveSearchParam = () => {
     console.log('handleRemoveSearchParam');
-    router.replace(`/resume/${cvId}/experience`, undefined, { shallow: true });
+    if (sectionTypeName === 'experiences') {
+      router.replace(`/resume/${cvId}/experience`, undefined, { shallow: true });
+    }
   };
   const fetchExperiences = async () => {
     try {
       setIsDnd(false);
-
-      const data = await getAllExperiences(cvId);
+      // const data = await getAllExperiences(cvId);
+      const data = await dataService.getAll();
       console.log('data getAllExperiences ', data);
-
       if (typeId > 0) {
         console.log('typeId: ', typeId);
         let experience = data.find(item => item.id == typeId);
@@ -66,7 +72,6 @@ const Experience = ({ params }) => {
       console.log('setExperiences ', data);
       data.sort((a, b) => a.theOrder - b.theOrder);
       setExperiences(data);
-      
     } catch (error) {
       console.error('There was an error fetching the experiences', error);
       setErrorMessage('There was an error fetching the experiences');
@@ -94,10 +99,12 @@ const Experience = ({ params }) => {
       console.log('deleteExperience id ', experienceId);
       setIsDnd(false);
 
-      await deleteExperience(cvId, experienceId);
+      await dataService.delete(experienceId);
+      // await deleteExperience(cvId, experienceId);
 
       // Refresh the experiences list after deletion
-      const updatedExperiences = await getAllExperiences(cvId);
+      // const updatedExperiences = await getAllExperiences(cvId);
+      const updatedExperiences = await dataService.getAll();
 
       setExperiences(updatedExperiences);
     } catch (error) {
@@ -206,10 +213,15 @@ const Experience = ({ params }) => {
                   <div style={{ paddingTop: '0px' }}>
                     {isLoadingPage && <Skeleton className="mt-10" active />}
                     {!isLoadingPage && !errorMessage && experiences?.length === 0 && (
-                      <div className='mt-10'>Add your first experiences</div>
+                      <div className="mt-10">Add your first experiences</div>
                     )}
                     {!isLoadingPage && errorMessage && (
-                      <Alert className='mt-10' message="Error" description={errorMessage} type="error" />
+                      <Alert
+                        className="mt-10"
+                        message="Error"
+                        description={errorMessage}
+                        type="error"
+                      />
                     )}
 
                     {isShow &&
@@ -217,19 +229,19 @@ const Experience = ({ params }) => {
                       !isLoadingPage &&
                       experiences?.length > 0 &&
                       experiences?.map(experience => (
-                        <StandarList
+                        <StandarListV2
                           key={experience.id}
                           data={experience}
                           selectedExperience={selectedExperience}
                           cvId={cvId}
                           onDelete={handleDeleteExperience}
                           onEdit={handleEditExperience}
-                          title={experience.role}
-                          subtitle={experience.companyName}
+                          // title={experience.role}
+                          // subtitle={experience.companyName}
                           updateExperience={updateExperience}
+                          config={field} // Pass the configuration object
                         />
                       ))}
-
                     {isShow && isDnd && !isLoadingPage && experiences?.length > 0 && (
                       <ExperienceSort
                         cvId={cvId}
@@ -240,13 +252,14 @@ const Experience = ({ params }) => {
                         handleEditData={handleEditExperience}
                         skills={experiences}
                         onChangeOrder={handleOrderChange}
+                        config={field} // Pass the configuration object
                       />
                     )}
                   </div>
                 </Card>
               </div>
               <div className="flex flex-col px-4 w-full">
-                {!isLoadingPage ? (
+                {/* {!isLoadingPage ? (
                   <ExperienceForm
                     cvId={cvId}
                     onExperienceCreated={onUpdateExperience}
@@ -257,6 +270,22 @@ const Experience = ({ params }) => {
                     cvId={cvId}
                     onExperienceCreated={onUpdateExperience}
                     experience={null}
+                  />
+                )} */}
+
+                {!isLoadingPage ? (
+                  <SectionForm
+                    cvId={cvId}
+                    onExperienceCreated={onUpdateExperience}
+                    experience={selectedExperience}
+                    sectionType={'experiences'}
+                  />
+                ) : (
+                  <SectionForm
+                    cvId={cvId}
+                    onExperienceCreated={onUpdateExperience}
+                    experience={null}
+                    sectionType={'experiences'}
                   />
                 )}
               </div>

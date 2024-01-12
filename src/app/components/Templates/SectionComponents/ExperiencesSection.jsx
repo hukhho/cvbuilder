@@ -43,9 +43,8 @@ const ExperiencesSection = ({
       {experiences.map(exp => {
         const { duration, description, companyName, role, location, isDisplay } = exp;
         // Decode HTML entities
-        const decodedString = he.encode(description).trim();
-
-        console.log('decodedString: ', decodedString);
+        // const decodedString = he.encode(description).trim();
+        // console.log('decodedString: ', decodedString);
         return (
           <StandardItem
             highlightAts={highlightAts}
@@ -59,7 +58,7 @@ const ExperiencesSection = ({
             duration={duration}
             orgName={companyName}
             renderRightSubtitle
-            description={decodedString}
+            description={description}
             isEditable={isEditable}
             isEnableAts={isEnableAts}
             handleRoleChange={handleRoleChange}
