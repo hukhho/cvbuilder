@@ -1265,7 +1265,7 @@ export default function FinishUp({ params }) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (isCatchOut) {
+      if (isCatchOut && !isShowVersion && showFinishupCV) {
         saveData();
       }
     }, 5000);
