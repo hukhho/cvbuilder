@@ -1245,6 +1245,34 @@ export default function FinishUp({ params }) {
   };
 
   const [isCatchOut, setIsCatchOut] = useState(false);
+
+  const saveData = async () => {
+    // Implement the logic to save data
+    console.log('Data saved!');
+    try {
+      const cvId123 = params.id;
+      await saveCv(cvId123, finishUpData); // Call the syncUp function
+      
+      notification.success({
+        message: 'Auto save successfully',
+      });
+      setIsCatchOut(false);
+
+    } catch (error) {
+      console.error('Error during synchronization:', error);
+    }
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (isCatchOut) {
+        saveData();
+      }
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [isCatchOut]);
+
   return (
     <main>
       <ConfigProvider>
@@ -1255,7 +1283,11 @@ export default function FinishUp({ params }) {
           userRole={userRole}
           isCatchOut={isCatchOut}
           userHeader={
-            <UserCVBuilderHeader initialEnabledCategories={enabledCategories} isCatchOut={isCatchOut} cvId={params.id} />
+            <UserCVBuilderHeader
+              initialEnabledCategories={enabledCategories}
+              isCatchOut={isCatchOut}
+              cvId={params.id}
+            />
           }
           content={
             <div className="flex">
