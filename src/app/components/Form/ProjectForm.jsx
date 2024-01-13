@@ -195,6 +195,15 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
         autoComplete="off"
         requiredMark={false}
       >
+        <Form.Item style={{ display: 'none' }} name="theOrder">
+          <Input hidden />
+        </Form.Item>
+        <Form.Item style={{ display: 'none' }} name="isDisplay">
+          <Input hidden />
+        </Form.Item>
+        <Form.Item style={{ display: 'none' }} name="status">
+          <Input hidden />
+        </Form.Item>
         <Form.Item
           name="title"
           rules={[{ required: true }]}

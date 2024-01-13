@@ -83,13 +83,16 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
         <Form.Item style={{ display: 'none' }} name="isDisplay">
           <Input hidden />
         </Form.Item>
+        <Form.Item style={{ display: 'none' }} name="status">
+          <Input hidden />
+        </Form.Item>
         <Form.Item
           name="name"
           rules={[{ required: true }]}
           label={
             <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
               <div className="flex gap-2 items-center text-xs">
-                WHAT WAS THE CERTIFICATE <strong>NAME</strong>?
+                WHAT WAS THE CERTIFICATE <strong>NAME</strong>? *
               </div>
             </label>
           }

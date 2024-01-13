@@ -67,6 +67,37 @@ const StandardItem = props => {
   if (!isDisplay) {
     return null;
   }
+  const handleKeyPress = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+
+      const { current } = descriptionState;
+      const cursorPosition = event.target.selectionStart;
+
+      // Find the start of the line
+      let lineStart = cursorPosition;
+      while (lineStart > 0 && current[lineStart - 1] !== '\n') {
+        // eslint-disable-next-line no-plusplus
+        lineStart--;
+      }
+
+      // Check if the line already starts with a bullet point
+      const lineText = current.slice(lineStart, cursorPosition).trim();
+      const newLine = lineText === '•' ? '\n' : '\n • ';
+
+      // Use insertHTML to add a new line with a bullet point
+      document.execCommand('insertHTML', false, newLine);
+
+      // Ensure the caret is at the correct position
+      const newCursorPosition = cursorPosition + newLine.length;
+      event.target.setSelectionRange(newCursorPosition, newCursorPosition);
+
+      // Handle any additional changes if needed
+      descriptionState.current = event.target.value;
+      handleDescriptionChange(type, typeId, event.target.value);
+    }
+  };
+
   console.log('isEnableAts', isEnableAts);
   const renderEditableDescription = () => {
     if (isEditable && !isEnableAts) {
@@ -81,6 +112,7 @@ const StandardItem = props => {
             html={descriptionState.current}
             onBlur={e => handleBlur(e, 'description')}
             onChange={e => handleChange(e, 'description')}
+            onKeyPress={handleKeyPress} // Add onKeyPress prop
           />
         )
       );

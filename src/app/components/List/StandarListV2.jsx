@@ -59,14 +59,16 @@ const StandarListV2 = ({
   const handleHideClick = async () => {
     setIsHiding(true);
     try {
+      console.log('handleHideClick');
       if (data.isDisplay === null || data.isDisplay === undefined) {
         data.isDisplay = true;
-        await updateExperience(cvId, id, data);
-        setIsDisplay(data.isDisplay);
+        console.log('updateExperience id data: ', id, data);
+        await updateExperience(id, data);
+        // setIsDisplay(data.isDisplay);
       } else {
         data.isDisplay = !data.isDisplay;
-        await updateExperience(cvId, id, data);
-        setIsDisplay(data.isDisplay);
+        await updateExperience(id, data);
+        // setIsDisplay(data.isDisplay);
       }
     } catch (error) {
       console.error('Error hide:', error);

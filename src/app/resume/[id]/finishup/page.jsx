@@ -420,10 +420,10 @@ export default function FinishUp({ params }) {
     setEducationsOrder(newOrder);
   }, []);
 
-  const handleSkillsOrderChange = useCallback(newOrder => {
-    console.log('handleSkillsOrderChange: ', newOrder);
-    setSkillsOrder(newOrder);
-  }, []);
+  // const handleSkillsOrderChange = useCallback(newOrder => {
+  //   console.log('handleSkillsOrderChange: ', newOrder);
+  //   setSkillsOrder(newOrder);
+  // }, []);
 
   // to store order of template
 
@@ -703,6 +703,25 @@ export default function FinishUp({ params }) {
   console.log('Experiences Order:', experiencesOrderSection);
   console.log('Skills Order:', skillsOrderSection);
 
+  const updateSectionOrder = (sectionId, newOrder) => {
+    if (sectionId.startsWith('customSection')) {
+      console.log('');
+      const sectionIndex = parseInt(sectionId.replace('customSection', ''), 10) - 1;
+      if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
+        console.log('Custom section index::newOrder', sectionIndex, newOrder);
+
+        const newFinishUpData = { ...finishUpData };
+      }
+    } else {
+      // Assuming `finishUpData` is your state variable containing section orders
+      const newFinishUpData = { ...finishUpData };
+      newFinishUpData[sectionId] = newOrder;
+
+      setFinishUpData(newFinishUpData);
+      console.log(`New order for ${sectionId}:`, newFinishUpData);
+    }
+  };
+
   const sections = [
     {
       id: 'information',
@@ -741,18 +760,27 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           experiences={experiences}
+          // onChangeOrder={sortedExperiences => {
+          //   console.log('sortedExperiences', sortedExperiences);
+          //   for (let i = 0; i < sortedExperiences.length; i++) {
+          //     sortedExperiences[i].theOrder = i + 1;
+          //   }
+
+          //   console.log('Finishup data:', finishUpData);
+          //   let newFinishUpData = { ...finishUpData };
+          //   newFinishUpData.experiences = sortedExperiences;
+
+          //   setFinishUpData(newFinishUpData);
+          //   console.log('New finishup data:', newFinishUpData);
+          // }}
+
           onChangeOrder={sortedExperiences => {
             console.log('sortedExperiences', sortedExperiences);
             for (let i = 0; i < sortedExperiences.length; i++) {
               sortedExperiences[i].theOrder = i + 1;
             }
 
-            console.log('Finishup data:', finishUpData);
-            let newFinishUpData = { ...finishUpData };
-            newFinishUpData.experiences = sortedExperiences;
-
-            setFinishUpData(newFinishUpData);
-            console.log('New finishup data:', newFinishUpData);
+            updateSectionOrder('experiences', sortedExperiences);
           }}
           isEnableAts={isAtsEnabled}
           isEditable={true}
@@ -801,6 +829,14 @@ export default function FinishUp({ params }) {
           educations={filteredEducations}
           isEnableAts={isAtsEnabled}
           isEditable={true}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('educations', sortedExperiences);
+          }}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -822,6 +858,14 @@ export default function FinishUp({ params }) {
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('involvements', sortedExperiences);
+          }}
         />
       ),
       order: finishUpData?.theOrder?.involvements || 4,
@@ -840,6 +884,14 @@ export default function FinishUp({ params }) {
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('projects', sortedExperiences);
+          }}
         />
       ),
       order: finishUpData?.theOrder?.projects || 5,
@@ -858,6 +910,14 @@ export default function FinishUp({ params }) {
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('certifications', sortedExperiences);
+          }}
         />
       ),
       order: finishUpData?.theOrder?.certifications || 6,
@@ -871,13 +931,21 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           skills={filteredSkills}
-          onChangeOrder={handleSkillsOrderChange}
+          // onChangeOrder={handleSkillsOrderChange}
           canBeDisplayed={filteredSkills !== null}
           isEnableAts={isAtsEnabled}
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('skills', sortedExperiences);
+          }}
         />
       ),
       order: finishUpData?.theOrder?.skills || 7,
@@ -920,13 +988,12 @@ export default function FinishUp({ params }) {
           customSectionTitle={customSectionTitle}
           experiences={filteredCustomSection}
           onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
             for (let i = 0; i < sortedExperiences.length; i++) {
               sortedExperiences[i].theOrder = i + 1;
             }
-            console.log('sortedCustoms: ', sortedExperiences);
-            let newFinishUpData = { ...finishUpData };
-            // newFinishUpData.experiences = sortedExperiences;
-            // setFinishUpData(newFinishUpData);
+
+            updateSectionOrder(`customSection${index + 1}`, sortedExperiences);
           }}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -1345,6 +1412,7 @@ export default function FinishUp({ params }) {
   };
   // Add debounce to the saveData function
   const debouncedSaveData = _debounce(saveData, 5000);
+  let intervalId;
 
   // Function to reset the interval
   const resetInterval = () => {
@@ -1357,7 +1425,7 @@ export default function FinishUp({ params }) {
   };
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    intervalId = setInterval(() => {
       console.log(
         'isCatchOut && !isShowVersion && showFinishupCV',
         isCatchOut,
@@ -1508,7 +1576,7 @@ export default function FinishUp({ params }) {
                       <nav className="flex flex-col pt-4 space-y-6" aria-label="Progress">
                         <div className="flex flex-col space-y-3">
                           <ol role="list">
-                            {(selectedVersion !== 0 && selectedVersion > 0) && (
+                            {selectedVersion !== 0 && selectedVersion > 0 && (
                               <button className="button mb-4" onClick={handleRestoreVersion}>
                                 Restore the old Content
                               </button>

@@ -9,7 +9,7 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
-const   ListError = ({ errors }) => {
+const ListError = ({ errors }) => {
   console.log('ListError errors: ', errors);
 
   const [isShow, setIsShow] = useState(true);
@@ -17,7 +17,7 @@ const   ListError = ({ errors }) => {
     setIsShow(!isShow);
   };
 
-  const countPass = errors.filter(error => error.status === 'Pass').length;
+  const countPass = errors?.filter(error => error.status === 'Pass').length;
 
   return (
     <section
@@ -28,7 +28,7 @@ const   ListError = ({ errors }) => {
       <div className="mt-4">
         <div>
           {errors
-            .filter(error => error.status === 'Error')
+            ?.filter(error => error.status === 'Error')
             .map((error, index) => (
               <div
                 key={index}
@@ -87,20 +87,23 @@ const   ListError = ({ errors }) => {
             ))}
 
           <div>
-            <span
-              className="text-teal-400 block font-bold mt-2.5"
-              style={{ fontSize: '16px', textAlign: 'left' }}
-            >
-              {countPass} best practices applied
-              <button>
-                <FontAwesomeIcon
-                  icon={faCaretDown}
-                  className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
-                  style={{ color: '#2DD4BF', marginLeft: '10px' }}
-                  onClick={handleDownButton}
-                />
-              </button>
-            </span>
+            {countPass > 0 && (
+              <span
+                className="text-teal-400 block font-bold mt-2.5"
+                style={{ fontSize: '16px', textAlign: 'left' }}
+              >
+                {countPass} best practices applied
+                <button>
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                    style={{ color: '#2DD4BF', marginLeft: '10px' }}
+                    onClick={handleDownButton}
+                  />
+                </button>
+              </span>
+            )}
+
             {isShow && (
               <div
                 id="react-collapsed-panel-:r1:"
@@ -125,10 +128,7 @@ const   ListError = ({ errors }) => {
                         <p
                           className="text-gray-600 text-xs leading-4 m-0"
                           dangerouslySetInnerHTML={{
-                            __html: `${error?.description?.replace(
-                              /\n/g,
-                              '<br />',
-                            )}`,
+                            __html: `${error?.description?.replace(/\n/g, '<br />')}`,
                           }}
                         ></p>{' '}
                       </div>

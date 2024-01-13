@@ -3,12 +3,24 @@ export const fieldConfig = {
     titleField: 'role',
     subtitleField: 'companyName',
   },
-  project: {
-    titleField: 'projectName',
-    subtitleField: 'projectDescription',
+  projects: {
+    titleField: 'title',
+    subtitleField: 'organization',
   },
-  education: {
+  educations: {
     titleField: 'degree',
-    subtitleField: 'institution',
+    subtitleField: '',
+  },
+  certifications: {
+    titleField: 'name',
+    subtitleField: '',
+  },
+  involvements: {
+    titleField: 'organizationName',
+    subtitleField: 'organizationRole',
+  },
+  skills: {
+    titleField: 'description',
+    subtitleField: '',
   },
 };
