@@ -54,6 +54,7 @@ const EducationsSection = ({
             description={description}
             templateType={templateType}
             isThreeLine
+            isEnableAts={isEnableAts}
             isEditable={isEditable}
             handleRoleChange={handleRoleChange}
             handleOrgNameChange={handleOrgNameChange}

@@ -136,7 +136,10 @@ const Home = ({ params }) => {
         content={
           <div className="container">
             <div className="!p-0 ">
-              <div className="pl-20 relative" style={{ paddingLeft: '', width: 1400, maxWidth: 1400, background: 'white' }}>
+              <div
+                className="pl-20 relative"
+                style={{ paddingLeft: '', width: 1400, maxWidth: 1400, background: 'white' }}
+              >
                 <div className="absolute top-4 left-5">
                   <Link href="/review/list/expert" passHref>
                     <button>
@@ -184,9 +187,11 @@ const Home = ({ params }) => {
                     <div style={{ textAlign: 'left', width: '900px' }}>
                       <div style={{ textAlign: 'left', width: '650px', minHeight: '200px' }}>
                         {' '}
-                        
                         {expert?.description ? (
-                          <p className='text-justify' dangerouslySetInnerHTML={{ __html: expert?.description }} />
+                          <p
+                            className="text-justify"
+                            dangerouslySetInnerHTML={{ __html: expert?.description }}
+                          />
                         ) : (
                           <Empty />
                         )}

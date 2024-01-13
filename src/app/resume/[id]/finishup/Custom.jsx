@@ -16,17 +16,7 @@ import Link from 'next/link';
 import JobModalUpdate from '@/app/components/Modal/JobModalUpdate';
 import { Button, Card, Form, Input, Space, Typography } from 'antd';
 
-const Custom = ({
-  cvId,
-  dataAts,
-  setDataAts,
-  onGen,
-  onDisableHightlight,
-  isCreatedAts,
-  setIsCreatedAts,
-  finishUpData,
-  onSubmitCustomSections,
-}) => {
+const Custom = ({ finishUpData, onSubmitCustomSections }) => {
   const [form] = Form.useForm();
   console.log('finishUpData customSections', finishUpData);
   const initData = finishUpData;
@@ -105,7 +95,7 @@ const Custom = ({
   }, [isSetData]);
 
   const onFinish = values => {
-    console.log("values", values?.customSections);
+    console.log('values', values?.customSections);
     //i want add the id by index
 
     values.customSections.forEach((section, index) => {

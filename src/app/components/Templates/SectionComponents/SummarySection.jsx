@@ -10,6 +10,7 @@ const SummarySection = ({
   summary,
   templateType,
   layoutStyles,
+  isEnableAts = false,
   highlightAts,
   handleDescriptionChange,
 }) => {
@@ -32,6 +33,33 @@ const SummarySection = ({
     // Extract 'ats' values from the highlightAts array
     searchWords = highlightAts.map(at => at?.ats);
   }
+  const renderSummary = () => {
+    if (summaryState && !isEnableAts) {
+      return (
+        <ContentEditable
+          className="editableContent cursor-text  designStudio "
+          id="summary-summary"
+          html={summaryState.current}
+          onBlur={e => handleBlur(e, 'summary')}
+          onChange={e => handleChange(e, 'summary')}
+        />
+      );
+    }
+
+    return searchWords && searchWords.length > 0 ? (
+      <Highlighter
+        id="summary-summary"
+        highlightClassName="editableContent cursor-text  designStudio"
+        searchWords={searchWords} // Use dynamically generated searchWords
+        autoEscape={true}
+        textToHighlight={summary}
+      />
+    ) : (
+      <p className="editableContent cursor-text  designStudio " id="summary-summary">
+        {summary}
+      </p>
+    );
+  };
 
   if (templateType === 'modern') {
     return (
@@ -69,14 +97,7 @@ const SummarySection = ({
               {summary}
             </p>
           )} */}
-
-          <ContentEditable
-            className="editableContent cursor-text  designStudio "
-            id="summary-summary"
-            html={summaryState.current}
-            onBlur={e => handleBlur(e, 'summary')}
-            onChange={e => handleChange(e, 'summary')}
-          />
+          {renderSummary()}
         </div>
       </>
     );
@@ -127,6 +148,7 @@ const SummarySection = ({
             {summary}
           </p>
         )} */}
+        {renderSummary()}
       </div>
     </div>;
   }
@@ -179,13 +201,14 @@ const SummarySection = ({
               </p>
             )} */}
 
-            <ContentEditable
+            {/* <ContentEditable
               className="editableContent cursor-text  designStudio "
               id="summary-summary"
               html={summaryState.current}
               onBlur={e => handleBlur(e, 'summary')}
               onChange={e => handleChange(e, 'summary')}
-            />
+            /> */}
+            {renderSummary()}
           </div>
         </div>
       </div>

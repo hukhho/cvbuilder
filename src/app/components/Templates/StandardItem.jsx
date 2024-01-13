@@ -67,9 +67,9 @@ const StandardItem = props => {
   if (!isDisplay) {
     return null;
   }
-
+  console.log('isEnableAts', isEnableAts);
   const renderEditableDescription = () => {
-    if (isEditable) {
+    if (isEditable && !isEnableAts) {
       return (
         descriptionState && (
           <ContentEditable
@@ -85,9 +85,7 @@ const StandardItem = props => {
         )
       );
     }
-
-    // Add a default return statement
-    return searchWords && searchWords.length > 0 ? (
+    return searchWords && searchWords.length && isEnableAts > 0 ? (
       <Highlighter
         id="LfWZnVqHS-description"
         highlightClassName="editableContent cursor-text  designStudio"
@@ -101,7 +99,7 @@ const StandardItem = props => {
         id="LfWZnVqHS-description"
         // // contentEditable="true"
       >
-        {description}
+        cc
       </p>
     );
   };
@@ -140,7 +138,7 @@ const StandardItem = props => {
             )} */}
             {}
             {/* {renderEditableDescription(titleProps)} */}
-            {titlePropsState && (
+            {/* {titlePropsState && !isEnableAts && (
               <ContentEditable
                 className="designStudio"
                 style={{
@@ -148,6 +146,26 @@ const StandardItem = props => {
                   verticalAlign: 'initial',
                 }}
                 html={titlePropsState.current}
+                onBlur={e => handleBlur(e, 'description')}
+                onChange={e => handleChange(e, 'description')}
+              />
+            )} */}
+            {isEnableAts && searchWords && searchWords.length > 0 ? (
+              <Highlighter
+                id="XHKKXx5eVL-skill"
+                highlightClassName="editableContent cursor-text  designStudio"
+                searchWords={searchWords} // Use dynamically generated searchWords
+                autoEscape
+                textToHighlight={titleProps}
+              />
+            ) : (
+              <ContentEditable
+                className="designStudio"
+                style={{
+                  display: 'inline',
+                  verticalAlign: 'initial',
+                }}
+                html={titlePropsState?.current}
                 onBlur={e => handleBlur(e, 'description')}
                 onChange={e => handleChange(e, 'description')}
               />
@@ -629,7 +647,7 @@ const StandardItem = props => {
                           fontWeight: 100,
                         }}
                       >
-                        {descriptionState && (
+                        {/* {descriptionState && (
                           <ContentEditable
                             className="designStudio"
                             style={{
@@ -640,7 +658,9 @@ const StandardItem = props => {
                             onBlur={e => handleBlur(e, 'description')}
                             onChange={e => handleChange(e, 'description')}
                           />
-                        )}
+                        )} */}
+
+                        {renderEditableDescription()}
                         {/* <p
                           dangerouslySetInnerHTML={{
                             __html: description,

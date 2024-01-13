@@ -388,7 +388,7 @@ const FinishupToolbar = props => {
           </div> */}
             <div className="flex ml-auto ">
               <div className="flex items-center ml-2">
-                <Popover content="Sync up your data to this resume" title="Sync up">
+                <Popover content="Save your resume" title="Save resume">
                   <button className="" onClick={onClickSave}>
                     <i
                       className="fas fa-magic src-components-GeneratorCompiler---kjja11t6fo="

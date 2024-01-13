@@ -172,6 +172,7 @@ export const getAts = async cvId => {
   try {
     const response = await axiosInstance.get(`/users/cv/${cvId}/job-description/ats`);
     return response.data;
+
     // return {
     //   title: 'Associate Product Manager',
     //   description:
@@ -243,7 +244,6 @@ export const getAts = async cvId => {
     //     },
     //   ],
     // };
-    // return mockData.data.resume;
   } catch (error) {
     throw error;
   }
@@ -316,6 +316,17 @@ export const saveCv = async (cvId, resumeData) => {
     const userId = getUserIdFromLocalStorage();
 
     const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/cv-body`, resumeData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const saveCvHistory = async (cvId, resumeData) => {
+  try {
+    const userId = getUserIdFromLocalStorage();
+
+    const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/cv-history`, resumeData);
     return response.data;
   } catch (error) {
     throw error;

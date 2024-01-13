@@ -15,12 +15,14 @@ import EducationsSection from '@/app/components/Templates/SectionComponents/Educ
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import {
+  getAts,
   getAudit,
   getFinishUp,
   getVersion,
   getVersionsList,
   restoreVersion,
   saveCv,
+  saveCvHistory,
   syncUp,
 } from './finishUpService';
 import ScoreFinishUp from './Score';
@@ -48,6 +50,8 @@ import CustomSections from '@/app/components/Templates/SectionComponents/CustomS
 import Custom from './Custom';
 import { ExportOutlined } from '@ant-design/icons';
 import { TRUE } from 'sass';
+import _debounce from 'lodash/debounce';
+import moment from 'moment';
 
 const mockData = {
   data: {
@@ -217,7 +221,7 @@ export default function FinishUp({ params }) {
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
 
-  const { avatar, email, userRole, ats, setAts } = useStore();
+  const { avatar, email, userRole, ats, setAts, isAtsEnabled, setIsAtsEnabled } = useStore();
   const enabledCategories = { 'FINISH UP': true };
 
   // useEffect(() => {
@@ -230,6 +234,32 @@ export default function FinishUp({ params }) {
 
   const [dataAts, setDataAts] = useState();
   const [isCreatedAts, setIsCreatedAts] = useState(false);
+  // const [isAtsEnabled, setIsAtsEnabled] = useState(false);
+
+  function filterPass(filterData) {
+    return filterData?.filter(content => content?.status === 'Pass');
+  }
+
+  const fetchDataAts = async () => {
+    try {
+      const result = await getAts(params.id);
+      setDataAts(result);
+      console.log('Ats:data: ', result);
+      if (result?.title && result?.description) {
+        setIsCreatedAts(true);
+      }
+      const passedData = filterPass(result?.ats);
+
+      setHighlightAts(passedData);
+    } catch (error) {
+      console.error('Error fetch ats:', error);
+    }
+  };
+
+  const onCreatedAts = () => {
+    fetchDataAts();
+    setIsCreatedAts(true);
+  };
 
   useEffect(() => {
     console.log('Toolbar state changed:', toolbarState);
@@ -238,9 +268,10 @@ export default function FinishUp({ params }) {
     setFinishUpData(newFinishUpData);
   }, [toolbarState]);
 
-  useEffect(() => {
-    console.log('ats:', ats);
-  }, [ats]);
+  // useEffect(() => {
+  //   console.log('ats:', ats);
+  //   fetchDataAts();
+  // }, [ats]);
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
@@ -615,7 +646,8 @@ export default function FinishUp({ params }) {
         `New finishup data after updated${type.charAt(0).toUpperCase() + type.slice(1)}:`,
         newFinishUpData,
       );
-      setIsCatchOut(true);
+      // setIsCatchOut(true);
+      handleUserChange();
     } else if (type.startsWith('customSection')) {
       const sectionIndex = parseInt(type.replace('customSection', ''), 10) - 1;
       if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
@@ -635,7 +667,8 @@ export default function FinishUp({ params }) {
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.customSections[sectionIndex].sectionData = updatedCustomSections;
         setFinishUpData(newFinishUpData);
-        setIsCatchOut(true);
+        // setIsCatchOut(true);
+        handleUserChange();
       } else {
         console.error(`Invalid custom section index: ${sectionIndex}`);
       }
@@ -651,7 +684,9 @@ export default function FinishUp({ params }) {
     newFinishUpData.summary = newData;
 
     setFinishUpData(newFinishUpData);
-    setIsCatchOut(true);
+    // setIsCatchOut(true);
+    handleUserChange();
+
     console.log('New finishup data after handleSummaryChange:', newFinishUpData);
   };
 
@@ -688,6 +723,8 @@ export default function FinishUp({ params }) {
       component: (
         <SummarySection
           templateType={templateSelected}
+          isEnableAts={isAtsEnabled}
+          isEditable={true}
           highlightAts={highlightAts}
           handleDescriptionChange={handleSummaryChange}
           summary={summary}
@@ -717,7 +754,7 @@ export default function FinishUp({ params }) {
             setFinishUpData(newFinishUpData);
             console.log('New finishup data:', newFinishUpData);
           }}
-          isEnableAts={false}
+          isEnableAts={isAtsEnabled}
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -762,7 +799,7 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           educations={filteredEducations}
-          isEnableAts={false}
+          isEnableAts={isAtsEnabled}
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -780,7 +817,7 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           involvements={filteredInvolvements}
-          isEnableAts={false}
+          isEnableAts={isAtsEnabled}
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -798,7 +835,7 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           projects={filteredProjects}
-          isEnableAts={false}
+          isEnableAts={isAtsEnabled}
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -816,7 +853,7 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           certifications={filteredCertifications}
-          isEnableAts={false}
+          isEnableAts={isAtsEnabled}
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -836,7 +873,7 @@ export default function FinishUp({ params }) {
           skills={filteredSkills}
           onChangeOrder={handleSkillsOrderChange}
           canBeDisplayed={filteredSkills !== null}
-          isEnableAts={false}
+          isEnableAts={isAtsEnabled}
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -962,6 +999,17 @@ export default function FinishUp({ params }) {
     return true; // Include other sections by default
   });
 
+  const handleChangeAtsEnabled = async checked => {
+    console.log('handleChangeAtsEnabled: ', checked);
+    setShowFinishupCV(false);
+    //Simulator delay 1 second
+
+    setIsAtsEnabled(checked);
+    await new Promise(resolve => setTimeout(resolve, 10));
+
+    setShowFinishupCV(true);
+  };
+
   // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
 
   // 'filteredSections' now contains only sections where 'educations' is not null, undefined, and has a length greater than 0, and 'projects' has a length greater than 0
@@ -994,6 +1042,7 @@ export default function FinishUp({ params }) {
     };
     fetchData();
     fetchAudit();
+    fetchDataAts();
   }, []);
 
   const handleSave = async () => {
@@ -1001,7 +1050,7 @@ export default function FinishUp({ params }) {
       const cvId123 = params.id;
       setShowFinishupCV(false);
       finishUpData.templateType = templateSelected;
-      await saveCv(cvId123, finishUpData); // Call the syncUp function
+      await saveCvHistory(cvId123, finishUpData); // Call the syncUp function
       console.log('Save completed.');
       const fetchData = async () => {
         try {
@@ -1104,18 +1153,27 @@ export default function FinishUp({ params }) {
 
   const [isShowVersion, setIsShowVersion] = useState(false);
   const [versions, setVersions] = useState();
-  const [selectedVersion, setSelectedVersion] = useState();
+  const [selectedVersion, setSelectedVersion] = useState(0);
   const handleShowVersion = async () => {
     setIsShowVersion(true);
     const result = await getVersionsList(params.id);
+    result.push({
+      id: 0,
+      timestamp: moment().format(), // or format it according to your needs
+      name: 'Current version',
+      jobPosting: null,
+    });
+    result.sort((b, a) => moment(a?.timestamp) - moment(b?.timestamp));
+    // result.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)
     setVersions(result);
+
     console.log('version::result: ', result);
   };
   const handleHideVersion = () => {
     setIsShowVersion(false);
 
     setVersions(null);
-    setSelectedVersion(null);
+    setSelectedVersion(0);
 
     const fetchData = async () => {
       try {
@@ -1199,6 +1257,31 @@ export default function FinishUp({ params }) {
     console.log('versionId: ', versionId);
     setSelectedVersion(versionId);
     setShowFinishupCV(false);
+    if (versionId === 0) {
+      const fetchData = async () => {
+        try {
+          setShowFinishupCV(false);
+
+          const data = await getFinishUp(params.id);
+          console.log('FinishUp data: ', data);
+
+          setTheOrder(data.theOrder);
+          setFinishUpData(data);
+          setTemplateSelected(data.templateType);
+          setToolbarState(data.cvStyle);
+          setSummary(data.summary);
+          setShowFinishupCV(true);
+          setIsCatchOut(false);
+
+          console.log('data.theOrder: ', data.theOrder);
+        } catch (error) {
+          console.error('Error fetching FinishUp data:', error);
+        } finally {
+          setShowFinishupCV(true);
+        }
+      };
+      fetchData();
+    }
     try {
       const result = await getVersion(versionId);
 
@@ -1245,33 +1328,69 @@ export default function FinishUp({ params }) {
   };
 
   const [isCatchOut, setIsCatchOut] = useState(false);
-
   const saveData = async () => {
     // Implement the logic to save data
-    console.log('cc');
+    console.log('saveData');
     try {
       const cvId123 = params.id;
       await saveCv(cvId123, finishUpData); // Call the syncUp function
-      
+
       notification.success({
         message: 'Auto save successfully',
       });
       setIsCatchOut(false);
-
     } catch (error) {
       console.error('Error during synchronization:', error);
     }
   };
+  // Add debounce to the saveData function
+  const debouncedSaveData = _debounce(saveData, 5000);
+
+  // Function to reset the interval
+  const resetInterval = () => {
+    clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      if (isCatchOut && !isShowVersion && showFinishupCV) {
+        debouncedSaveData();
+      }
+    }, 2000);
+  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      console.log(
+        'isCatchOut && !isShowVersion && showFinishupCV',
+        isCatchOut,
+        !isShowVersion,
+        showFinishupCV,
+      );
       if (isCatchOut && !isShowVersion && showFinishupCV) {
+        console.log('debouncedSaveData');
+        debouncedSaveData();
         saveData();
       }
-    }, 5000);
+    }, 2000);
 
-    return () => clearInterval(intervalId);
-  }, [isCatchOut]);
+    return () => {
+      clearInterval(intervalId);
+      // Clear any pending debounced calls when the component unmounts
+      debouncedSaveData.cancel();
+    };
+  }, [isCatchOut, isShowVersion, showFinishupCV, debouncedSaveData]);
+  const handleUserChange = () => {
+    setIsCatchOut(true);
+    resetInterval();
+  };
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (isCatchOut && !isShowVersion && showFinishupCV) {
+  //       saveData();
+  //     }
+  //   }, 5000);
+
+  //   return () => clearInterval(intervalId);
+  // }, [isCatchOut]);
 
   return (
     <main>
@@ -1353,22 +1472,14 @@ export default function FinishUp({ params }) {
                   <Ats
                     cvId={params.id}
                     dataAts={dataAts}
+                    isAtsEnabled={isAtsEnabled}
+                    handleChangeAtsEnabled={handleChangeAtsEnabled}
                     isCreatedAts={isCreatedAts}
-                    setIsCreatedAts={setIsCreatedAts}
-                    setDataAts={setDataAts}
-                    onGen={handleSetHighlight}
-                    onDisableHightlight={handleUnSetHighlight}
+                    onCreatedAts={onCreatedAts}
                   />
                   <Custom
-                    cvId={params.id}
-                    dataAts={dataAts}
-                    isCreatedAts={isCreatedAts}
-                    setIsCreatedAts={setIsCreatedAts}
-                    setDataAts={setDataAts}
                     finishUpData={finishUpData}
-                    onGen={handleSetHighlight}
                     onSubmitCustomSections={handleSubmitCustomSections}
-                    onDisableHightlight={handleUnSetHighlight}
                   />
                 </div>
               )}
@@ -1397,33 +1508,42 @@ export default function FinishUp({ params }) {
                       <nav className="flex flex-col pt-4 space-y-6" aria-label="Progress">
                         <div className="flex flex-col space-y-3">
                           <ol role="list">
-                            {selectedVersion && (
-                              <button className="button" onClick={handleRestoreVersion}>
+                            {(selectedVersion !== 0 && selectedVersion > 0) && (
+                              <button className="button mb-4" onClick={handleRestoreVersion}>
                                 Restore the old Content
                               </button>
                             )}
                             {versions?.map(version => (
-                              <li key={version.id} className="pb-10 relative">
+                              <li key={version?.id} className="pb-10 relative">
                                 <div
                                   className="absolute left-2.5 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
                                   aria-hidden="true"
                                 />
                                 <a
-                                  onClick={() => handleChooseVersion(version.id)}
+                                  onClick={() => handleChooseVersion(version?.id)}
                                   className="group relative flex items-center"
                                 >
                                   <span className="flex h-7 items-center">
                                     <span className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full border-2 bg-white border-rezi-blue">
                                       <span
                                         className={`h-2.5 w-2.5 rounded-full ${
-                                          version.id === selectedVersion ? 'bg-blue-500' : ''
+                                          version?.id === selectedVersion ? 'bg-blue-500' : ''
                                         }`}
                                       />
                                     </span>
                                   </span>
                                   <span className="ml-4 flex min-w-0 flex-col">
                                     <span className="flex flex text-sm font-medium">
-                                      <span>{version.timestamp}</span>
+                                      {/* <span>{version.timestamp}</span> */}
+                                      <span className="flex flex-col">
+                                        {version?.id === 0
+                                          ? 'Current version'
+                                          : moment(version?.timestamp)?.fromNow()}
+
+                                        {/* <div style={{ color: 'gray', fontSize: '11px' }}>
+                                          {moment(record.createDate).format('HH:mm:ss DD/MM/YYYY')}
+                                        </div>{' '} */}
+                                      </span>
                                       <span className="ml-2 text-gray-500">
                                         {version?.jobPosting?.name}
                                       </span>

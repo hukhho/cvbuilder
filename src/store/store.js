@@ -22,6 +22,8 @@ const useStore = create(set => {
     balance1: 0,
     ats: [],
     resumes: [], // Initialize as an empty array
+    isAtsEnabled: false,
+    setIsAtsEnabled: isAtsEnabled => set({ isAtsEnabled }),
     setResumes: resumes => set({ resumes }),
     refreshResumes: async () => {
       if (typeof window !== 'undefined') {
