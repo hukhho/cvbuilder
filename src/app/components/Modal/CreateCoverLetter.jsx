@@ -160,7 +160,7 @@ export default function CreateCoverLetter({ onCreated, listResumes }) {
                             name="resumeName"
                             className="inputEl new-resume-form"
                             id="resumeName" // Add id attribute here
-                            required=""
+                            required="true"
                             onChange={handleInputChange}
                             aria-label="Resume name"
                             defaultValue=""

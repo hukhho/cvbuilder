@@ -37,7 +37,7 @@ export default function ApplyJobModal({
   const [inputValue, setInputValue] = useState('');
   const [resumeId, setResumeId] = useState();
 
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const toggle = () => {
     setDisabled(!disabled);
@@ -276,10 +276,15 @@ export default function ApplyJobModal({
                                   <>
                                     {' '}
                                     <div className="flex mt-10 mb-5">
-                                      <Switch className="mr-2" onClick={toggle} value={disabled} />
+                                      <Switch
+                                        className="mr-2"
+                                        onClick={toggle}
+                                        defaultChecked={disabled}
+                                        value={disabled}
+                                      />
 
                                       <span className="" style={{ fontSize: 13 }}>
-                                        Choose from existed cover letter or create new one
+                                        Create a new one cover letter?
                                       </span>
                                     </div>
                                     {disabled && (
@@ -293,7 +298,20 @@ export default function ApplyJobModal({
                                         {nameOfSelectedResume}
                                       </button>
                                     )}
-                                    {coverOptions.length === 0 && !disabled && (<div className='text-red-500 mb-10'>You not have any cover letters for this resume, you can create new one</div>)}
+                                    {coverOptions.length === 0 && !disabled && (
+                                      <div className="text-red-500 mb-10">
+                                        You not have any cover letters for this resume, you can {' '}
+                                        <button
+                                          type="button"
+                                          style={{ color: 'blue' }}
+                                          onClick={handleCreateNewCoverLetter}
+                                          class="mb-5"
+                                        >
+                                          create new one for this job with resume{' '}
+                                        {nameOfSelectedResume}
+                                        </button>
+                                      </div>
+                                    )}
                                     <Form.Item
                                       className="custom-label-normal"
                                       name="coverletter"

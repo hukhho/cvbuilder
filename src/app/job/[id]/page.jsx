@@ -315,11 +315,11 @@ const Home = ({ params }) => {
                 </div>
               </div>
               <div style={{ marginTop: '20px', width: '314px' }}>
-                <ApplyJobModal
+                {/* <ApplyJobModal
                   resumeOptions={resumeOptions}
                   handleSuccess={handleSuccess}
                   jobId={params.id}
-                />
+                /> */}
                 <SuccessJob isSuccess={isSuccess} />
               </div>
             </div>

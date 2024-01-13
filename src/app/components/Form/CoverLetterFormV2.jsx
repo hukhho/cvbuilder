@@ -288,6 +288,7 @@ const CoverLetterFormV2 = ({
             onChange={handleResumeChange}
             value={cvId}
             options={resumeOptions}
+            disabled={isApplyProcess}
           />
         </Form.Item>
 
@@ -320,6 +321,7 @@ const CoverLetterFormV2 = ({
                 value={selectedOption}
                 onChange={handleChange}
                 options={options}
+                disabled={isApplyProcess}
               />
             )}
           </Form.Item>

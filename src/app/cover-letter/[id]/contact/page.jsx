@@ -112,6 +112,7 @@ const Contact = ({ params }) => {
   //   description: item?.description,
   //   company: item?.companyName,
   // }));
+  
   useEffect(() => {
     fetchData();
     fetchResumes();

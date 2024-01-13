@@ -19,9 +19,18 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
       placement,
     });
   };
+  const [isSetData, setIsSetData] = useState(false);
   useEffect(() => {
     // Handle the modal state from the parent component
     // You can perform additional actions when the modal is opened or closed
+    if (!isSetData) {
+      setFormData(prevData => ({
+        ...prevData,
+        title: resume?.title,
+      }));
+      console.log('set data to form');
+    }
+    setIsSetData(true);
 
     console.log('Modal state:', isOpen);
   }, [isOpen]);
@@ -29,8 +38,10 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  const [formData, setFormData] = useState();
-  
+  const [formData, setFormData] = useState({
+    title: resume?.title, // Set the initial value based on resume.title
+    // Add other form fields as needed
+  });
   function closeModal() {
     onClose();
   }
@@ -56,21 +67,46 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
 
   const handleFormSubmit = async event => {
     event.preventDefault();
-    // Here you can perform any actions with the form data, such as sending it to the server
+
+    if (!formData.title) {
+      console.log('Form data submitted:', formData);
+      const formSubmit = {
+        title:
+          resume?.title |
+          ('COVER LETTER ' +
+            new Date().toLocaleDateString() +
+            ' ' +
+            new Date().toLocaleTimeString()),
+      };
+      try {
+        const result = await updateCoverLetterName(resume.id, formSubmit);
+        // openNotification('bottomRight', `Update: ${result}`);
+        notification.success({
+          message: 'Update cover letter name successfully',
+        });
+        onCreated();
+        closeModal();
+      } catch (error) {
+        notification.error({
+          message: `Error ${error?.response?.data?.error || error?.response?.data || error}`,
+        });
+        // openNotification('bottomRight', `Error: ${error}`);
+      }
+      return;
+    }
     console.log('Form data submitted:', formData);
-    const result = await (formData)
     try {
       const result = await updateCoverLetterName(resume.id, formData);
       // openNotification('bottomRight', `Update: ${result}`);
       notification.success({
-        message: 'Update cover letter name successfully'
-      })
+        message: 'Update cover letter name successfully',
+      });
       onCreated();
       closeModal();
     } catch (error) {
       notification.error({
-        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`
-      })
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`,
+      });
       // openNotification('bottomRight', `Error: ${error}`);
     }
   };
@@ -129,7 +165,7 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
                             name="title"
                             className="inputEl new-resume-form"
                             id="title" // Add id attribute here
-                            required=""
+                            required="true"
                             onChange={handleInputChange}
                             aria-label="Cover letter name"
                             defaultValue={resume?.title}

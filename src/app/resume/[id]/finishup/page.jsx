@@ -711,6 +711,8 @@ export default function FinishUp({ params }) {
         console.log('Custom section index::newOrder', sectionIndex, newOrder);
 
         const newFinishUpData = { ...finishUpData };
+        newFinishUpData.customSections[sectionIndex].sectionData = newOrder;
+        setFinishUpData(newFinishUpData);
       }
     } else {
       // Assuming `finishUpData` is your state variable containing section orders
@@ -720,6 +722,7 @@ export default function FinishUp({ params }) {
       setFinishUpData(newFinishUpData);
       console.log(`New order for ${sectionId}:`, newFinishUpData);
     }
+    setIsCatchOut(true);
   };
 
   const sections = [
