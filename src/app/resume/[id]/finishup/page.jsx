@@ -1248,7 +1248,7 @@ export default function FinishUp({ params }) {
 
   const saveData = async () => {
     // Implement the logic to save data
-    console.log('Data saved!');
+    console.log('cc');
     try {
       const cvId123 = params.id;
       await saveCv(cvId123, finishUpData); // Call the syncUp function

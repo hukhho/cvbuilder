@@ -99,7 +99,6 @@ const Home = ({ params }) => {
       // Simulate fetching resumes (replace with your actual fetch logic)
       const fetchedResumes = await getResumes();
 
-      setExpert(fetchedResumes);
       console.log('fetched ', fetchedResumes);
 
       setResumes(fetchedResumes);
