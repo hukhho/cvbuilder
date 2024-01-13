@@ -52,7 +52,7 @@ const columns = [
   },
 
   {
-    title: 'Date',
+    title: 'Create Date',
     dataIndex: 'createdDate',
     sorter: {
       compare: (a, b) => moment(a.createdDate) - moment(b.createdDate),
@@ -62,6 +62,21 @@ const columns = [
         <div> {moment(record.createdDate).fromNow()}</div>{' '}
         <div style={{ color: 'gray', fontSize: '11px' }}>
           {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
+        </div>{' '}
+      </div>
+    ),
+  },
+  {
+    title: 'Last Update',
+    dataIndex: 'updateDate',
+    sorter: {
+      compare: (a, b) => moment(a.updateDate) - moment(b.updateDate),
+    },
+    render: (text, record) => (
+      <div className="flex flex-col">
+        <div> {moment(record.updateDate).fromNow()}</div>{' '}
+        <div style={{ color: 'gray', fontSize: '11px' }}>
+          {moment(record.updateDate).format('HH:mm:ss DD/MM/YYYY')}
         </div>{' '}
       </div>
     ),
@@ -84,7 +99,7 @@ const Home = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getCandidatePurchases();
-      fetchedDataFromAPI.sort((b, a) => moment(a.createdDate) - moment(b.createdDate));
+      fetchedDataFromAPI.sort((b, a) => moment(a.updateDate) - moment(b.updateDate));
 
       setData(fetchedDataFromAPI);
     } catch (error) {

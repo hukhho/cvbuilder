@@ -87,6 +87,21 @@ const columns = [
     ),
   },
   {
+    title: 'Last Update',
+    dataIndex: 'updateDate',
+    sorter: {
+      compare: (a, b) => moment(a.updateDate) - moment(b.updateDate),
+    },
+    render: (text, record) => (
+      <div className="flex flex-col">
+        <div> {moment(record.updateDate).fromNow()}</div>{' '}
+        <div style={{ color: 'gray', fontSize: '11px' }}>
+          {moment(record.updateDate).format('HH:mm:ss DD/MM/YYYY')}
+        </div>{' '}
+      </div>
+    ),
+  },
+  {
     title: 'Status',
     dataIndex: 'status',
     filters: [
@@ -160,7 +175,7 @@ const Home = () => {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getExpertWithdraw();
 
-      fetchedDataFromAPI.sort((b, a) => moment(a.createdDate) - moment(b.createdDate));
+      fetchedDataFromAPI.sort((b, a) => moment(a.updateDate) - moment(b.updateDate));
 
       setData(fetchedDataFromAPI);
     } catch (error) {
