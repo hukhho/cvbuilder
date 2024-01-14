@@ -74,7 +74,6 @@ const CustomSections = ({
             />
           );
         }
-        console.log('decodedString: ', decodedString);
         return (
           <StandardItem
             highlightAts={highlightAts}
