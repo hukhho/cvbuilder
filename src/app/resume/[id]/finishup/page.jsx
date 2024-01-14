@@ -483,6 +483,8 @@ export default function FinishUp({ params }) {
     newFinishUpData.theOrder = updatedOrder;
 
     setFinishUpData(newFinishUpData);
+    handleUserChange();
+
     console.log('New finishup data after:', newFinishUpData);
   };
 
@@ -998,6 +1000,8 @@ export default function FinishUp({ params }) {
 
             updateSectionOrder(`customSection${index + 1}`, sortedExperiences);
           }}
+          isEnableAts={isAtsEnabled}
+          isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -1120,32 +1124,38 @@ export default function FinishUp({ params }) {
       const cvId123 = params.id;
       setShowFinishupCV(false);
       finishUpData.templateType = templateSelected;
-      await saveCvHistory(cvId123, finishUpData); // Call the syncUp function
+
+      const result = await saveCvHistory(cvId123, finishUpData); // Call the syncUp function
       console.log('Save completed.');
-      const fetchData = async () => {
-        try {
-          const data = await getFinishUp(cvId123);
-          console.log('FinishUp data: ', data);
-
-          setFinishUpData(data);
-
-          setShowFinishupCV(true);
-
-          setTemplateSelected(data.templateType);
-          setToolbarState(data.cvStyle);
-
-          setSummary(data.summary);
-          setIsCatchOut(false);
-        } catch (error) {
-          console.error('Error fetching FinishUp data:', error);
-        }
-      };
-
-      fetchData();
     } catch (error) {
+      notification.error({
+        message: error?.response?.data || error?.response?.data?.message || 'Something went wrong!',
+      });
+
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.
     }
+
+    const fetchData = async () => {
+      try {
+        const data = await getFinishUp(params.id);
+        console.log('FinishUp data: ', data);
+
+        setFinishUpData(data);
+
+        setShowFinishupCV(true);
+
+        setTemplateSelected(data.templateType);
+        setToolbarState(data.cvStyle);
+
+        setSummary(data.summary);
+        setIsCatchOut(false);
+      } catch (error) {
+        console.error('Error fetching FinishUp data:', error);
+      }
+    };
+
+    fetchData();
   };
   const handleSubmitCustomSections = async customSections => {
     console.log('handleSubmitCustomSections', customSections);

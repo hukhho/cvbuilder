@@ -21,6 +21,7 @@ import {
 import SortableItem from '../../SortableList/SortableItem';
 import { sortItemsOrderBasedOnKeys } from '../sortItemsOrder';
 import he from 'he';
+import StandardItemV2 from '../StandardItemV2';
 
 const CustomSections = ({
   experiences,
@@ -31,6 +32,10 @@ const CustomSections = ({
   type = 'customSection',
   isEnableAts = false,
   isEditable = false,
+  isReviewComment = false,
+  isShowCommentBox = false,
+  onComment,
+  onDeleteComment,
   handleRoleChange,
   handleOrgNameChange,
   handleDescriptionChange,
@@ -45,8 +50,30 @@ const CustomSections = ({
       {experiences.map(exp => {
         const { duration, description, subTitle, title, location } = exp;
         // Decode HTML entities
-        const decodedString = he.encode(description).trim();
-
+        // const decodedString = he.encode(description).trim();
+        if (isReviewComment) {
+          return (
+            <StandardItemV2
+              isDnd={false}
+              isShowCommentBox={isShowCommentBox}
+              onComment={onComment}
+              onDeleteComment={onDeleteComment}
+              key={exp.id}
+              dataId={exp.id}
+              type={type}
+              templateType={templateType}
+              role={title}
+              handleRoleChange={handleRoleChange}
+              handleOrgNameChange={handleOrgNameChange}
+              handleDescriptionChange={handleDescriptionChange}
+              location={location}
+              duration={duration}
+              orgName={subTitle}
+              renderRightSubtitle
+              description={description}
+            />
+          );
+        }
         console.log('decodedString: ', decodedString);
         return (
           <StandardItem
@@ -60,7 +87,7 @@ const CustomSections = ({
             duration={duration}
             orgName={subTitle}
             renderRightSubtitle
-            description={decodedString}
+            description={description}
             isEditable={isEditable}
             isEnableAts={isEnableAts}
             handleRoleChange={handleRoleChange}

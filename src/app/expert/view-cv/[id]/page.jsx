@@ -416,7 +416,7 @@ export default function FinishUp({ params }) {
           if (certification.id === currentDataId) {
             return {
               ...certification,
-              description: content,
+              certificateRelevance: content,
             };
           } else {
             return certification;
@@ -448,8 +448,30 @@ export default function FinishUp({ params }) {
         newFinishUpData.summary = content;
         setFinishUpData(newFinishUpData);
         fetchDataComment(newFinishUpData);
+      } else if (currentDataType.startsWith('customSection')) {
+        const sectionIndex = parseInt(currentDataType.replace('customSection', ''), 10) - 1;
+        if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
+          const updatedCustomSections = finishUpData.customSections[sectionIndex].sectionData.map(
+            item => {
+              if (item.id === currentDataId) {
+                return {
+                  ...item,
+                  description: content,
+                };
+              } else {
+                return item;
+              }
+            },
+          );
+          console.log('updatedCustomSections', updatedCustomSections);
+          let newFinishUpData = { ...finishUpData };
+          newFinishUpData.customSections[sectionIndex].sectionData = updatedCustomSections;
+          setFinishUpData(newFinishUpData);
+          fetchDataComment(newFinishUpData);
+        }
       }
     } else {
+      // console.log("currentDataType: ", currentDataType)
       console.log('Element with id', currentId, 'not found');
     }
   }
@@ -557,7 +579,7 @@ export default function FinishUp({ params }) {
           if (certification.id === dataId) {
             return {
               ...certification,
-              description: content,
+              certificateRelevance: content,
             };
           } else {
             return certification;
@@ -592,6 +614,27 @@ export default function FinishUp({ params }) {
         newFinishUpData.summary = content;
         setFinishUpData(newFinishUpData);
         fetchDataComment(newFinishUpData);
+      } else if (type.startsWith('customSection')) {
+        const sectionIndex = parseInt(type.replace('customSection', ''), 10) - 1;
+        if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
+          const updatedCustomSections = finishUpData.customSections[sectionIndex].sectionData.map(
+            item => {
+              if (item.id === dataId) {
+                return {
+                  ...item,
+                  description: content,
+                };
+              } else {
+                return item;
+              }
+            },
+          );
+          console.log('updatedCustomSections', updatedCustomSections);
+          let newFinishUpData = { ...finishUpData };
+          newFinishUpData.customSections[sectionIndex].sectionData = updatedCustomSections;
+          setFinishUpData(newFinishUpData);
+          fetchDataComment(newFinishUpData);
+        }
       }
     } else {
       console.log('Element with id not found');
@@ -835,10 +878,14 @@ export default function FinishUp({ params }) {
       id: `customSection${index + 1}`,
       component: (
         <CustomSections
-          highlightAts={highlightAts}
           templateType={templateSelected}
           customSectionTitle={customSectionTitle}
           experiences={filteredCustomSection}
+          type={`customSection${index + 1}`}
+          isShowCommentBox={true}
+          isReviewComment={true}
+          onComment={handleMouseUp}
+          onDeleteComment={onDeleteComment}
           onChangeOrder={sortedExperiences => {
             for (let i = 0; i < sortedExperiences.length; i++) {
               sortedExperiences[i].theOrder = i + 1;
@@ -848,9 +895,6 @@ export default function FinishUp({ params }) {
             // newFinishUpData.experiences = sortedExperiences;
             // setFinishUpData(newFinishUpData);
           }}
-          handleRoleChange={handleRoleChange}
-          handleOrgNameChange={handleOrgNameChange}
-          handleDescriptionChange={handleDescriptionChange}
         />
       ),
       order: customSection?.theOrder || 99,
