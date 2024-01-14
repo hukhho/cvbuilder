@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, InputNumber, Typography } from 'antd';
 import { createEducation, updateEducation } from '@/app/resume/[id]/education/educationService';
 import './customtext.css';
+import DatePicker, { CalendarContainer } from 'react-datepicker';
+import { format, parse, startOfMonth } from 'date-fns';
 
 const EducationForm = ({ cvId, onEducationCreated, education }) => {
   const [form] = Form.useForm();
@@ -20,6 +22,22 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
 
   const handleSubmit = async values => {
     try {
+      if (values.gpa) {
+        const floatValue = parseFloat(values.gpa);
+
+        // Check for a valid number and within the specified range
+        // eslint-disable-next-line no-restricted-globals
+        if (isNaN(floatValue) || floatValue < 0 || floatValue > 4) {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          values.gpa = floatValue;
+        }
+      } else {
+        values.gpa = null;
+      }
+    } catch (err) {
+      console.log('error');
+    }
+    try {
       if (isEditMode) {
         await updateEducation(cvId, education.id, values);
         setIsEditMode(false); // Set to create mode after updating
@@ -34,18 +52,61 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
     }
   };
 
-  const [inputValue, setInputValue] = useState(''); // State to track input value
+  // const [inputValue, setInputValue] = useState(''); // State to track input value
+  // const handleInputChange = event => {
+  //   const newValue = event.target.value;
+
+  //   // Check if the newValue starts with a bullet point
+  //   if (!newValue.startsWith('• ')) {
+  //     setInputValue(`• ${newValue}`);
+  //     form.setFieldValue('description', `• ${newValue}`);
+  //   } else {
+  //     setInputValue(newValue);
+  //     form.setFieldValue('description', newValue);
+  //   }
+  // };
+
+  const [inputValue, setInputValue] = useState('');
+
   const handleInputChange = event => {
     const newValue = event.target.value;
 
     // Check if the newValue starts with a bullet point
-    if (!newValue.startsWith('• ')) {
-      setInputValue(`• ${newValue}`);
-      form.setFieldValue('description', `• ${newValue}`);
-    } else {
-      setInputValue(newValue);
-      form.setFieldValue('description', newValue);
+    const formattedValue = newValue.startsWith('• ') ? newValue : `• ${newValue}`;
+
+    // Check if the formattedValue is different from the current inputValue
+    if (formattedValue !== inputValue) {
+      setInputValue(formattedValue);
     }
+  };
+
+  useEffect(() => {
+    form.setFieldValue('description', inputValue);
+  }, [inputValue, form]);
+
+  const endYearFromForm = form?.getFieldValue('endYear');
+  const selectedDate = Number.isInteger(endYearFromForm) ? new Date(endYearFromForm, 0, 1) : null;
+  const currentYear = new Date().getFullYear();
+  const minDate = new Date(currentYear - 100, 0, 1);
+  const maxDate = new Date(currentYear, 11, 31); // Assuming you want the maximum date to be the end of the current year
+
+  // Custom function to validate the GPA range
+  const validateGPA = (rule, value) => {
+    // Skip validation if the value is empty or undefined
+    if (!value) {
+      return Promise.resolve();
+    }
+
+    const floatValue = parseFloat(value);
+
+    // Check for a valid number and within the specified range
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(floatValue) || floatValue < 0 || floatValue > 4) {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return Promise.reject('GPA must be a number between 0 and 4');
+    }
+
+    return Promise.resolve();
   };
 
   return (
@@ -116,6 +177,7 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
             placeholder="Thu Duc, HCM"
           />
         </Form.Item>
+
         <Form.Item
           name="endYear"
           label={
@@ -126,11 +188,33 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
             </label>
           }
         >
-          <Input
+          {/* <DatePicker
+            dateFormat="yyyy"
+            showYearPicker
+            selected={format(2024, 'yyyy')}
+            onChange={date => form.setFieldValue('endYear', format(date, 'yyyy'))}
+          /> */}
+          {/* <DatePicker
+            dateFormat="yyyy"
+            showYearPicker
+            selected={new Date(2024, 0, 1)} // Month is zero-based, so 0 corresponds to January
+            onChange={date => form.setFieldValue('endYear', format(date, 'yyyy'))}
+          /> */}
+          <DatePicker
+            dateFormat="yyyy"
+            showYearPicker
+            placeholderText={format(new Date(), 'yyyy')}
+            selected={selectedDate}
+            onChange={date => form.setFieldValue('endYear', format(date, 'yyyy'))}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+
+          {/* <Input
             style={{ marginTop: '-10px' }}
             className="inputEl education-section inputEl st-current"
             placeholder="2023"
-          />
+          /> */}
         </Form.Item>
         <Form.Item
           name="minor"
@@ -157,11 +241,16 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
               </div>
             </label>
           }
+          rules={[
+            {
+              validator: validateGPA,
+            },
+          ]}
         >
           <Input
             style={{ marginTop: '-10px' }}
             className="inputEl education-section inputEl st-current"
-            placeholder="2023"
+            placeholder="3.2"
           />
         </Form.Item>
 

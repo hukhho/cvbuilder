@@ -7,6 +7,8 @@ import {
   createCertification,
   updateCertification,
 } from '@/app/resume/[id]/certification/certificationService';
+import DatePicker, { CalendarContainer } from 'react-datepicker';
+import { format, parse, startOfMonth } from 'date-fns';
 
 const CertificationForm = ({ cvId, onEducationCreated, education }) => {
   const [form] = Form.useForm();
@@ -54,19 +56,44 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
     }
   };
 
-  const [inputValue, setInputValue] = useState(''); // State to track input value
+  // const [inputValue, setInputValue] = useState(''); // State to track input value
+  // const handleInputChange = event => {
+  //   const newValue = event.target.value;
+
+  //   // Check if the newValue starts with a bullet point
+  //   if (!newValue.startsWith('• ')) {
+  //     setInputValue(`• ${newValue}`);
+  //     form.setFieldValue('certificateRelevance', `• ${newValue}`);
+  //   } else {
+  //     setInputValue(newValue);
+  //     form.setFieldValue('certificateRelevance', newValue);
+  //   }
+  // };
+  const [inputValue, setInputValue] = useState('');
+
   const handleInputChange = event => {
     const newValue = event.target.value;
 
-    // Check if the newValue starts with a bullet point
-    if (!newValue.startsWith('• ')) {
-      setInputValue(`• ${newValue}`);
-      form.setFieldValue('certificateRelevance', `• ${newValue}`);
+    // Check if the newValue is not empty or contains only spaces
+    if (newValue.trim() !== '') {
+      // Add bullet point only if the newValue is not starting with a bullet point
+      setInputValue(newValue.startsWith('• ') ? newValue : `• ${newValue}`);
+      form.setFieldValue(
+        'certificateRelevance',
+        newValue.startsWith('• ') ? newValue : `• ${newValue}`,
+      );
     } else {
-      setInputValue(newValue);
-      form.setFieldValue('certificateRelevance', newValue);
+      // If input is empty or contains only spaces, set • as the value
+      setInputValue('');
+      form.setFieldValue('certificateRelevance', '');
     }
   };
+
+  const endYearFromForm = form?.getFieldValue('endYear');
+  const selectedDate = Number.isInteger(endYearFromForm) ? new Date(endYearFromForm, 0, 1) : null;
+  const currentYear = new Date().getFullYear();
+  const minDate = new Date(currentYear - 100, 0, 1);
+  const maxDate = new Date(currentYear, 11, 31); // Assuming you want the maximum date to be the end of the current year
 
   return (
     <div className="" style={{ width: '100%' }}>
@@ -129,10 +156,19 @@ const CertificationForm = ({ cvId, onEducationCreated, education }) => {
             </label>
           }
         >
-          <Input
+          {/* <Input
             style={{ marginTop: '-10px' }}
             className="inputEl education-section inputEl st-current"
             placeholder="2023"
+          /> */}
+          <DatePicker
+            dateFormat="yyyy"
+            showYearPicker
+            placeholderText={format(new Date(), 'yyyy')}
+            selected={selectedDate}
+            onChange={date => form.setFieldValue('endYear', format(date, 'yyyy'))}
+            minDate={minDate}
+            maxDate={maxDate}
           />
         </Form.Item>
 

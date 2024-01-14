@@ -325,7 +325,7 @@ const ProjectForm = ({ cvId, onCreated, data }) => {
             id="experience-section-form-4"
             aria-label="**What did you do** at the company?"
             rows={5}
-            placeholder="• Organised and implemented Google Analytics data tracking campaigns to maximize the effectiveness of email remarketing initiatives that were deployed using Salesforce's marketing cloud software."
+            placeholder="• Volunteered to help renovate a house and managed a team of 6."
             name="description"
             style={{
               fontWeight: '400',
