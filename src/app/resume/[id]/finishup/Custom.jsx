@@ -14,7 +14,8 @@ import { getJobLists } from '@/app/utils/indexService';
 import { CloseOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import JobModalUpdate from '@/app/components/Modal/JobModalUpdate';
-import { Button, Card, Form, Input, Space, Typography } from 'antd';
+import { DatePicker, Button, Card, Form, Input, Space, Typography } from 'antd';
+const { MonthPicker } = DatePicker;
 
 const Custom = ({ finishUpData, onSubmitCustomSections }) => {
   const [form] = Form.useForm();
@@ -197,6 +198,14 @@ const Custom = ({ finishUpData, onSubmitCustomSections }) => {
                                     <Form.Item noStyle name={[subField.name, 'duration']}>
                                       <Input placeholder="duration" />
                                     </Form.Item>
+                                    {/* <Form.Item label="Duration" name={[subField.name, 'duration']}>
+                                      <MonthPicker
+                                        picker="month"
+                                        placeholder="Select Month"
+                                        style={{ width: '100%' }}
+                                      />
+                                    </Form.Item> */}
+
                                     <Form.Item noStyle name={[subField.name, 'description']}>
                                       <Input placeholder="description" />
                                     </Form.Item>

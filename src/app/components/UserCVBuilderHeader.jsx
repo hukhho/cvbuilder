@@ -8,6 +8,7 @@ import useStore from '@/store/store';
 import { Modal } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import { set } from 'lodash';
 
 // Define the categories outside of the component.
 const categories = [
@@ -20,11 +21,19 @@ const categories = [
   { name: 'SKILLS', link: 'skill' },
   { name: 'SUMMARY', link: 'summary' },
   { name: 'FINISH UP', link: 'finishup' },
+  // { name: 'CUSTOM SECTION 1', link: 'customSection1' },
 ];
 const { confirm } = Modal;
 
-const UserCVBuilderHeader = ({ isCatchOut = false, initialEnabledCategories, cvId }) => {
+const UserCVBuilderHeader = ({
+  isCatchOut = false,
+  initialEnabledCategories,
+  cvId,
+  sectionTypeName = null,
+}) => {
   const [enabledCategories, setEnabledCategories] = useState(initialEnabledCategories);
+  const [enabledCategoriesForSection, setEnabledCategoriesForSection] = useState();
+
   // const [data, setData] = useState();
 
   // const fetchData = async () => {
@@ -37,33 +46,68 @@ const UserCVBuilderHeader = ({ isCatchOut = false, initialEnabledCategories, cvI
   //   }
   // };
 
-  const { resumes, refreshResumes } = useStore();
+  const { resumes, refreshResumes, finishUpData, refreshFinishUpData } = useStore();
   let isMounted = true;
   useEffect(() => {
     isMounted = true;
     if (!isMounted) {
       return;
     }
+    const findResumeId = finishUpData.find(resume => resume.id == parseInt(cvId, 10));
+    console.log('findResumeId: ', findResumeId);
     if (resumes.length === 0) {
       refreshResumes();
+
+      // for (let i = 0; i < resumes.length; i++) {
+      //   if (resumes[i].id == cvId) {
+      //     refreshFinishUpData(cvId);
+      //   }
+      // }
+
+      refreshFinishUpData(cvId);
     }
     return () => {
       isMounted = false;
     };
   }, []); // Dependency array should include cvId.
   console.log('resumes: ', resumes);
-
+  // console.log('finishUpDataOfHeader', finishUpData);
+  // console.log('finishUpDataOfHeader', finishUpData)
   const resumeName = resumes.find(resume => resume.id == cvId)?.resumeName;
+  // console.log('finishUpDataOfHeader', finishUpData)
+
+  finishUpData.forEach(resume => {
+    if (resume.id == cvId) {
+      console.log('finishUpDataHead: ', resume);
+
+      resume?.customSections?.map((section, index) => {
+        console.log('sectionindex: ', index);
+        const link = `customSection${index + 1}`;
+        //only push if not exist
+        if (!categories.find(category => category.link === link)) {
+          categories.push({ name: section?.sectionName, link: link });
+        }
+      });
+    }
+  });
+  if (sectionTypeName) {
+    const find = categories.find(category => category.link === sectionTypeName);
+    console.log('find: ', find);
+    if (!enabledCategoriesForSection) {
+      setEnabledCategoriesForSection({ [find?.name]: true });
+    }
+  }
+
   console.log('resumeName: ', resumeName);
   const router = useRouter();
-  const confirmFinish = async (category) => {
+  const confirmFinish = async category => {
     try {
       router.push(`/resume/${cvId}/${category.link}`);
     } catch (error) {
       console.log('error: ', error);
     }
   };
-  const showPromiseConfirm = (category) => {
+  const showPromiseConfirm = category => {
     confirm({
       title: 'If you leave page not save you will loss your change?',
       icon: <ExclamationCircleFilled />,
@@ -115,30 +159,57 @@ const UserCVBuilderHeader = ({ isCatchOut = false, initialEnabledCategories, cvI
           </div>
         </div>
       </div>
-
-      <div className="flex items-center space-x-4">
-        {categories.map(category => (
-          <Link
-            key={category.name}
-            href={`/resume/${cvId}/${category.link}`} // Use the custom link here
-          >
-            <div
-              onClick={event => handleLinkClick(event, category)}
-              className={`text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap ${
-                enabledCategories[category.name] ? 'bg-indigo-500 text-white' : 'text-neutral-600'
-              } cursor-pointer rounded-[3.15px] p-[4.76px] pl-[6.28px] pr-[5.80px] pt-[4.76px] pb-[5.33px]'`}
-              style={{
-                fontSize: '11.2px',
-                lineHeight: '11.2px',
-                textAlign: 'left',
-                letterSpacing: 'normal',
-              }}
+      {!sectionTypeName && (
+        <div className="flex items-center space-x-4">
+          {categories?.map(category => (
+            <Link
+              key={category?.name}
+              href={`/resume/${cvId}/${category?.link}`} // Use the custom link here
             >
-              {category.name}
-            </div>
-          </Link>
-        ))}
-      </div>
+              <div
+                onClick={event => handleLinkClick(event, category)}
+                className={`text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap ${
+                  enabledCategories[category?.name]
+                    ? 'bg-indigo-500 text-white'
+                    : 'text-neutral-600'
+                } cursor-pointer rounded-[3.15px] p-[4.76px] pl-[6.28px] pr-[5.80px] pt-[4.76px] pb-[5.33px]'`}
+                style={{
+                  fontSize: '11.2px',
+                  lineHeight: '11.2px',
+                  textAlign: 'left',
+                  letterSpacing: 'normal',
+                }}
+              >
+                {category?.name}
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+      {sectionTypeName && (
+        <div className="flex items-center space-x-4">
+          {categories?.map(category => (
+            <Link key={category?.name} href={`/resume/${cvId}/${category?.link}`}>
+              <div
+                onClick={event => handleLinkClick(event, category)}
+                className={`text-xs font-bold font-['Source Sans Pro'] uppercase leading-3 whitespace-nowrap ${
+                  enabledCategoriesForSection?.[category?.name]
+                    ? 'bg-indigo-500 text-white'
+                    : 'text-neutral-600'
+                } cursor-pointer rounded-[3.15px] p-[4.76px] pl-[6.28px] pr-[5.80px] pt-[4.76px] pb-[5.33px]'`}
+                style={{
+                  fontSize: '11.2px',
+                  lineHeight: '11.2px',
+                  textAlign: 'left',
+                  letterSpacing: 'normal',
+                }}
+              >
+                {category?.name}
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

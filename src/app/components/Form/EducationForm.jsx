@@ -209,7 +209,6 @@ const EducationForm = ({ cvId, onEducationCreated, education }) => {
             minDate={minDate}
             maxDate={maxDate}
           />
-
           {/* <Input
             style={{ marginTop: '-10px' }}
             className="inputEl education-section inputEl st-current"

@@ -1,3 +1,4 @@
+import { getFinishUp } from '@/app/resume/[id]/finishup/finishUpService';
 import { getBalance, getResumesCvs } from '@/app/utils/indexService';
 import { create } from 'zustand';
 
@@ -22,6 +23,21 @@ const useStore = create(set => {
     balance1: 0,
     ats: [],
     resumes: [], // Initialize as an empty array
+    finishUpData: [],
+    setFinishUpData: newFinishUpData => set({ finishUpData: [newFinishUpData] }),
+    refreshFinishUpData: async resumeId => {
+      if (typeof window !== 'undefined') {
+        try {
+          const newFinishUpData = await getFinishUp(resumeId);
+          newFinishUpData.id = parseInt(resumeId, 10);
+          console.log('Fetched new finishup:', newFinishUpData); // Log fetched balance
+          set({ finishUpData: [newFinishUpData] }); // Store the object inside an array
+        } catch (error) {
+          console.error('Error finishup:', error); // Error logging
+        }
+      }
+    },
+
     isAtsEnabled: false,
     setIsAtsEnabled: isAtsEnabled => set({ isAtsEnabled }),
     setResumes: resumes => set({ resumes }),

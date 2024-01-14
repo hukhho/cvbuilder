@@ -23,4 +23,8 @@ export const fieldConfig = {
     titleField: 'description',
     subtitleField: '',
   },
+  customSections1: {
+    titleField: 'title',
+    subtitleField: 'subTitle',
+  },
 };
