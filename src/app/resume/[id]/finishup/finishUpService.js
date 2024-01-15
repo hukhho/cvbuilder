@@ -311,16 +311,48 @@ export const syncUp = async cvId => {
   }
 };
 
+// export const saveCv = async (cvId, resumeData) => {
+//   try {
+//     const userId = getUserIdFromLocalStorage();
+
+//     const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/cv-body`, resumeData);
+//     console.log('response', response);
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
 export const saveCv = async (cvId, resumeData) => {
   try {
     const userId = getUserIdFromLocalStorage();
 
-    const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/cv-body`, resumeData);
+    const response = await axiosInstance.put(`/user/${userId}/cv/${cvId}/cv-body`, resumeData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('response', response);
+    // Extract JSESSIONID from the response
+    const jsessionIdFromResponse = response.headers['set-cookie']; // Adjust this based on your backend response
+    console.log('response', response.headers);
+    console.log('jsessionIdFromResponse', jsessionIdFromResponse);
+    // Set the JSESSIONID in the cookie
+    if (jsessionIdFromResponse) {
+      setCookie('JSESSIONID', jsessionIdFromResponse);
+    }
+
+    console.log('response', response);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+
+// Function to set a cookie
+function setCookie(cookieName, cookieValue) {
+  document.cookie = `${cookieName}=${cookieValue}; path=/`;
+}
 
 export const saveCvHistory = async (cvId, resumeData) => {
   try {

@@ -4,9 +4,9 @@ import axios from 'axios';
 
 const instance = axios.create({
   // baseURL: 'http://localhost:8080/api/v1', // This is the base URL for your Next.js API routes
-
   baseURL: 'https://api-cvbuilder.monoinfinity.net/api/v1', // This is the base URL for your Next.js API routes
   timeout: 60000, // Set a timeout for requests
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
