@@ -110,6 +110,56 @@ const StandardItemV2 = props => {
       );
     });
   };
+
+
+  const renderCommentsTitle = () => {
+    console.log('renderComments: ', titleProps);
+
+    // Extracting comments from the description using a regular expression
+    const commentRegex = /<comment[^>]*>([\s\S]*?)<\/comment>/g;
+    const comments = [];
+    let match;
+
+    while ((match = commentRegex.exec(titleProps))) {
+      const commentContent = match[0].trim();
+      if (commentContent) {
+        comments.push(commentContent);
+      }
+    }
+
+    console.log('comments: ', comments);
+
+    if (comments.length === 0) {
+      return null;
+    }
+
+    // Extracting comments from the description using a regular expression
+
+    // const comments = description.match(/<comment(.*?)<\/comment>/s);
+    if (!comments || isShowCommentBox === false) {
+      return null;
+    }
+
+    return comments.map((comment, index) => {
+      const commentId = comment.match(/id="(.*?)"/)[1];
+      console.log('commentId:', commentId);
+      // Parse comment content using regular expression
+      const contentMatch = comment.match(/content="(.*?)"/);
+      const content = contentMatch ? contentMatch[1] : '';
+
+      return (
+        <Card key={commentId} className="comment-bubble" style={{ '--comment-index': index }}>
+          {content}
+          <button
+            className="ml-4"
+            onClick={() => onDeleteComment(commentId, type, randomId, dataId)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </Card>
+      );
+    });
+  };
   const renderTitle = () => {
     if (titleProps) {
       return (
@@ -132,13 +182,21 @@ const StandardItemV2 = props => {
               </span>
             </p> */}
             </div>
-            <p
+            {/* <p
               className="editableContent cursor-text  designStudio  "
               id="XHKKXx5eVL-skill"
               // // contentEditable="true"
             >
               {titleProps}
-            </p>
+            </p> */}
+
+            <p
+              className="editableContent cursor-text designStudio"
+              id={randomId}
+              onMouseUp={event => onComment(event, type, randomId, dataId)}
+              dangerouslySetInnerHTML={{ __html: titleProps }}
+            />
+            {renderCommentsTitle()}
           </div>
         </div>
       );

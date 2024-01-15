@@ -838,7 +838,15 @@ export default function FinishUp({ params }) {
     {
       id: 'skills',
       component: (
+          //     <ProjectSection
+    //       templateType={templateSelected}
+    //       projects={filteredProjects}
+    //       isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+    //       onComment={handleMouseUp}
+    //       onDeleteComment={onDeleteComment}
+    //     />
         <SkillsSection
+          canBeDisplayed={true}
           isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
           onComment={handleMouseUp}
           onDeleteComment={onDeleteComment}
@@ -904,7 +912,7 @@ export default function FinishUp({ params }) {
   });
 
   sections.sort((a, b) => a.order - b.order);
-
+  console.log("sections.sort: ", sections)
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
       return filteredEducations && filteredEducations.length > 0;
@@ -923,7 +931,7 @@ export default function FinishUp({ params }) {
     }
     return true; // Include other sections by default
   });
-
+  console.log("filteredSections: ", filteredSections)
   const [overall, setOverall] = useState(fetchedData?.overall ? fetchedData.overall : '');
 
   const handleChangeOverall = event => {

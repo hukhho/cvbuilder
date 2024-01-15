@@ -48,7 +48,9 @@ import { CommentOutlined, ExclamationCircleFilled, StarFilled } from '@ant-desig
 import Link from 'next/link';
 import SummarySection from '@/app/components/Templates/SectionComponents/SummarySection';
 import EducationsSection from '@/app/components/Templates/SectionComponents/EducationsSection';
+// import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
 import SkillsSection from '@/app/components/Templates/SectionComponents/SkillsSection';
+
 import ProjectSection from '@/app/components/Templates/SectionComponents/ProjectSection';
 import CertificationSection from '@/app/components/Templates/SectionComponents/CertificationSection';
 import InvolvementSection from '@/app/components/Templates/SectionComponents/InvolvementsSection';
