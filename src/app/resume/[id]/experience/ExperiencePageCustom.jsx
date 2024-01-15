@@ -117,7 +117,7 @@ const ExperiencePageCustom = ({
     try {
       setIsDnd(false);
       console.log('updateExperience123');
-      const type = 'sectionTypeName';
+      const type = sectionTypeName;
       const sectionIndex = parseInt(type.replace('customSection', ''), 10) - 1;
       if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
         const updatedCustomSections = finishUpData.customSections[sectionIndex].sectionData.map(
