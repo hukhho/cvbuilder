@@ -331,6 +331,7 @@ export const saveCv = async (cvId, resumeData) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true, // Include this line
     });
     console.log('response', response);
     // Extract JSESSIONID from the response
@@ -348,6 +349,43 @@ export const saveCv = async (cvId, resumeData) => {
     throw error;
   }
 };
+// export const saveCv = async (cvId, resumeData) => {
+//   try {
+//     const userId = getUserIdFromLocalStorage();
+
+//     const response = await fetch(
+//       `https://api-cvbuilder.monoinfinity.net/api/v1/user/${userId}/cv/${cvId}/cv-body`,
+//       {
+//         method: 'PUT',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${localStorage.getItem('accessToken')}`, // Include accessToken in the Authorization header
+//           // You can add other headers as needed
+//         },
+//         credentials: 'include', // Move withCredentials outside of headers
+//         body: JSON.stringify(resumeData),
+//       },
+//     );
+
+//     console.log('response', response);
+
+//     // Extract and log the Set-Cookie header
+//     const setCookieHeader = response.headers.get('set-cookie');
+//     console.log('Set-Cookie Header:', setCookieHeader);
+
+//     // Set the JSESSIONID in the cookie if present in the response
+//     if (setCookieHeader) {
+//       const jsessionIdFromResponse = setCookieHeader.split(';')[0];
+//       setCookie('JSESSIONID', jsessionIdFromResponse);
+//     }
+
+//     // Continue with other processing or return the data
+//     return response.json();
+//     // return responseData;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 // Function to set a cookie
 function setCookie(cookieName, cookieValue) {
