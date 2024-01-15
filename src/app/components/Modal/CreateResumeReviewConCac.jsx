@@ -151,6 +151,28 @@ export default function CreateResumeReviewConCac({
     }
   };
 
+  // const confirmFinish = async () => {
+  //   try {
+  //     setIsOpen(true);
+  //   } catch (error) {
+  //     notification.error({
+  //       message: `Finish create new resume. Error: ${error?.response?.data}`,
+  //     });
+  //     console.log('error: ', error);
+  //   }
+  // };
+  // const showPromiseConfirm = () => {
+  //   confirm({
+  //     title: 'Do you want to create a new or overwrite to old resume with this data?',
+  //     icon: <ExclamationCircleFilled />,
+  //     content: 'When clicked the OK button, this will process with this data.',
+  //     async onOk() {
+  //       await confirmFinishNew();
+  //     },
+  //     onCancel() {},
+  //   });
+  // };
+
   return (
     <>
       {contextHolder}
@@ -264,7 +286,7 @@ export default function CreateResumeReviewConCac({
                       id="create-resume-form-submitted"
                       type="submit"
                     >
-                      Save123
+                      Save
                     </button>
                   </div>
                 </Dialog.Panel>
