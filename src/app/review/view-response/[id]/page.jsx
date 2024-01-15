@@ -858,12 +858,20 @@ export default function FinishUp({ params }) {
   const onCreatedResume = async result => {
     console.log('onCreatedResume', result?.id);
 
-
     const newFinishUpData = { ...finishUpData };
     // Clean up HTML tags from the "description" field for each experience
     // Fields to process based on configuration
-    
-    const fieldsToProcess = ['experiences', 'certifications', 'projects', 'skills', 'educations', 'summary', 'involvements', 'customSections'];
+
+    const fieldsToProcess = [
+      'experiences',
+      'certifications',
+      'projects',
+      'skills',
+      'educations',
+      'summary',
+      'involvements',
+      'customSections',
+    ];
     // Iterate over the specified fields in the configuration
     fieldsToProcess.forEach(field => {
       if (Array.isArray(newFinishUpData[field])) {
@@ -879,7 +887,7 @@ export default function FinishUp({ params }) {
             // Remove HTML tags for the 'revaluteDes' field
             item.revaluteDes = removeHtmlTags(item.revaluteDes);
           }
-    
+
           // If there is a 'description' field in customSections, and it is a string
           if (item && item.sectionData && Array.isArray(item.sectionData)) {
             item.sectionData.forEach(section => {
@@ -895,7 +903,7 @@ export default function FinishUp({ params }) {
         newFinishUpData[field] = removeHtmlTags(newFinishUpData[field]);
       }
     });
-    
+
     // Now, the specified fields in the newFinishUpData object do not contain HTML tags
     console.log('newFinishUpData: ', newFinishUpData);
     try {
@@ -914,13 +922,22 @@ export default function FinishUp({ params }) {
   const confirmFinishOveride = async () => {
     try {
       console.log('confirmFinish: ', fetchedData?.cvId);
-            // console.log('confirmFinishNew: ', finishUpData);
+      // console.log('confirmFinishNew: ', finishUpData);
       //Delete all comment tag from finishUpData
       const newFinishUpData = { ...finishUpData };
       // Clean up HTML tags from the "description" field for each experience
       // Fields to process based on configuration
-      
-      const fieldsToProcess = ['experiences', 'certifications', 'projects', 'skills', 'educations', 'summary', 'involvements', 'customSections'];
+
+      const fieldsToProcess = [
+        'experiences',
+        'certifications',
+        'projects',
+        'skills',
+        'educations',
+        'summary',
+        'involvements',
+        'customSections',
+      ];
       // Iterate over the specified fields in the configuration
       fieldsToProcess.forEach(field => {
         if (Array.isArray(newFinishUpData[field])) {
@@ -936,7 +953,7 @@ export default function FinishUp({ params }) {
               // Remove HTML tags for the 'revaluteDes' field
               item.revaluteDes = removeHtmlTags(item.revaluteDes);
             }
-      
+
             // If there is a 'description' field in customSections, and it is a string
             if (item && item.sectionData && Array.isArray(item.sectionData)) {
               item.sectionData.forEach(section => {
@@ -952,7 +969,7 @@ export default function FinishUp({ params }) {
           newFinishUpData[field] = removeHtmlTags(newFinishUpData[field]);
         }
       });
-      
+
       // Now, the specified fields in the newFinishUpData object do not contain HTML tags
       console.log('newFinishUpData: ', newFinishUpData);
       const result = await overwriteResume(fetchedData?.cvId, newFinishUpData);
@@ -1126,17 +1143,20 @@ export default function FinishUp({ params }) {
                           </CVLayout>
                         </div>
                       ) : (
-                        <CVLayoutReviewerView
-                          key={[templateSelected, toolbarState]}
-                          layoutStyles={toolbarState}
-                          sectionsOrder={sectionsOrder}
-                          isDnd={isDnd}
-                          onSectionsOrderChange={handleSectionsOrderChange}
-                        >
-                          {filteredSections.map(
-                            section => section.canBeDisplayed && section.component,
-                          )}
-                        </CVLayoutReviewerView>
+                        <div style={{ pointerEvents: 'none' }}>
+                          <CVLayoutReviewerView
+                            isShowBreak={false}
+                            key={[templateSelected, toolbarState]}
+                            layoutStyles={toolbarState}
+                            sectionsOrder={sectionsOrder}
+                            isDnd={false}
+                            onSectionsOrderChange={handleSectionsOrderChange}
+                          >
+                            {filteredSections.map(
+                              section => section.canBeDisplayed && section.component,
+                            )}
+                          </CVLayoutReviewerView>
+                        </div>
                       )}
                       <div className="mb-16">
                         {request?.status === 'Done' && (

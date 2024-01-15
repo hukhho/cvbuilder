@@ -1013,13 +1013,13 @@ export default function FinishUp({ params }) {
       // order: customSection?.theOrder?.customSections1 || 99,
       order:
         index === 0
-          ? customSection?.theOrder?.customSections1 || 95
+          ? finishUpData?.theOrder?.customSections1 || 95
           : index === 1
-          ? customSection?.theOrder?.customSections2 || 96
+          ? finishUpData?.theOrder?.customSections2 || 96
           : index === 2
-          ? customSection?.theOrder?.customSections3 || 97
+          ? finishUpData?.theOrder?.customSections3 || 97
           : index === 3
-          ? customSection?.theOrder?.customSections4 || 98
+          ? finishUpData?.theOrder?.customSections4 || 98
           : 99,
       // order: customSection?.theOrder?.customSections1  || 99,
       canBeDrag: true,
@@ -1053,6 +1053,7 @@ export default function FinishUp({ params }) {
   // });
 
   sections.sort((a, b) => a.order - b.order);
+  console.log('sections.sort: ', sections)
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {

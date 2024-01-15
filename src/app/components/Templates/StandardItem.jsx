@@ -131,7 +131,7 @@ const StandardItem = props => {
         id="LfWZnVqHS-description"
         // // contentEditable="true"
       >
-        cc
+        {description}
       </p>
     );
   };

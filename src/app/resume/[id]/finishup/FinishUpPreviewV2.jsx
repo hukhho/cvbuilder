@@ -607,7 +607,17 @@ export default function FinishUpPreviewV2({ cvId }) {
           handleDescriptionChange={handleDescriptionChange}
         />
       ),
-      order: customSection?.theOrder || 99,
+      order:
+        index === 0
+          ? finishUpData?.theOrder?.customSections1 || 95
+          : index === 1
+          ? finishUpData?.theOrder?.customSections2 || 96
+          : index === 2
+          ? finishUpData?.theOrder?.customSections3 || 97
+          : index === 3
+          ? finishUpData?.theOrder?.customSections4 || 98
+          : 99,
+      // order: customSection?.theOrder?.customSections1  || 99,
       canBeDrag: true,
       canBeDisplayed: true,
     });
