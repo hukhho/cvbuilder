@@ -240,6 +240,13 @@ export default function FinishUpPreviewV2({ cvId }) {
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
 
+    experiences?.sort((a, b) => a.theOrder - b.theOrder);
+    projects?.sort((a, b) => a.theOrder - b.theOrder);
+    involvements?.sort((a, b) => a.theOrder - b.theOrder);
+    certifications?.sort((a, b) => a.theOrder - b.theOrder);
+    skills?.sort((a, b) => a.theOrder - b.theOrder);
+    educations?.sort((a, b) => a.theOrder - b.theOrder);
+
   const filteredEducations = educations?.filter(education => {
     // Check if education is displayable (isDisplay is true)
     if (education.isDisplay !== true) {
@@ -586,6 +593,8 @@ export default function FinishUpPreviewV2({ cvId }) {
     //   const customSectionObject = customSection;
     // });
     const customSectionTitle = customSection?.sectionName;
+    filteredCustomSection?.sort((a, b) => a.theOrder - b.theOrder);
+
     sections.push({
       id: `customSection${index + 1}`,
       component: (

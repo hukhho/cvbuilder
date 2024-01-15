@@ -763,6 +763,7 @@ export default function FinishUp({ params }) {
       console.error('Error fetching FinishUp data:', error);
     }
   };
+
   useEffect(() => {
     const selection = window.getSelection();
     const selectedText = selection.toString();
@@ -921,6 +922,10 @@ export default function FinishUp({ params }) {
     }
   };
 
+  const onConfirm = async () => {
+    console.log('onConfirm');
+    await confirmFinishOveride();
+  };
   const confirmFinishOveride = async () => {
     try {
       console.log('confirmFinish: ', fetchedData?.cvId);
@@ -985,6 +990,7 @@ export default function FinishUp({ params }) {
       console.log('error: ', error);
     }
   };
+
   const showPromiseConfirmOveride = () => {
     confirm({
       title: 'Do you want to overwrite this resume to your old resume?',
@@ -1009,9 +1015,9 @@ export default function FinishUp({ params }) {
   };
   const showPromiseConfirmNew = () => {
     confirm({
-      title: 'Do you want to create new resume with this data?',
+      title: 'Do you want to create a new or overwrite to old resume with this data?',
       icon: <ExclamationCircleFilled />,
-      content: 'When clicked the OK button, this will create a new resume with this data.',
+      content: 'When clicked the OK button, this will process with this data.',
       async onOk() {
         await confirmFinishNew();
       },
@@ -1101,8 +1107,10 @@ export default function FinishUp({ params }) {
                           <div className="flex">
                             <CreateResumeReviewConCac
                               isOpen={isOpen}
+                              cvId={fetchedData?.cvId}
                               setIsOpen={setIsOpen}
                               onCreated={onCreatedResume}
+                              onConfirm={onConfirm}
                             />
                             <Alert
                               className="mt-4 mb-4"
@@ -1111,21 +1119,13 @@ export default function FinishUp({ params }) {
                               type="info"
                               action={
                                 <Space direction="vertical ml-2">
-                                  <Button
+                                  {/* <Button
                                     size="small"
                                     type="primary"
                                     onClick={showPromiseConfirmOveride}
                                   >
                                     Overwrite this to your old resume
-                                  </Button>
-                                  <Button
-                                    size="small"
-                                    type="primary"
-                                    ghost
-                                    onClick={showPromiseConfirmNew}
-                                  >
-                                    Save this to a new resume
-                                  </Button>
+                                  </Button> */}
                                 </Space>
                               }
                               closable
@@ -1143,6 +1143,14 @@ export default function FinishUp({ params }) {
                               section => section.canBeDisplayed && section.component,
                             )}
                           </CVLayout>
+                          {
+                            <div>
+                              {' '}
+                              <Button className='mt-10 mb-10' type="primary" onClick={showPromiseConfirmNew}>
+                                SAVE
+                              </Button>
+                            </div>
+                          }
                         </div>
                       ) : (
                         <div style={{ pointerEvents: 'none' }}>

@@ -1,15 +1,23 @@
 /* eslint-disable */
 
 import { Dialog, Switch, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, use, useEffect, useState } from 'react';
 import './setting.css';
 import './input.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import createResumeService from './createResumeService';
-import { notification } from 'antd';
+import { Input, Radio, Space, notification } from 'antd';
+import { getFinishUp } from '@/app/resume/[id]/finishup/finishUpService';
+import useStore from '@/store/store';
 
-export default function CreateResumeReviewConCac({ isOpen, setIsOpen, onCreated }) {
+export default function CreateResumeReviewConCac({
+  isOpen,
+  setIsOpen,
+  onCreated,
+  onConfirm,
+  cvId = null,
+}) {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement, message) => {
     api.info({
@@ -38,6 +46,7 @@ export default function CreateResumeReviewConCac({ isOpen, setIsOpen, onCreated 
 
   const handleInputChange = event => {
     const { name, value } = event.target;
+    setInputValue(value);
     setFormData({
       ...formData,
       [name]: value,
@@ -60,26 +69,88 @@ export default function CreateResumeReviewConCac({ isOpen, setIsOpen, onCreated 
     textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
   };
 
-  const handleFormSubmit = async event => {
-    event.preventDefault();
-    // Here you can perform any actions with the form data, such as sending it to the server
-    console.log('Form data submitted:', formData);
+  // const handleFormSubmit = async event => {
+  //   event.preventDefault();
+  //   // Here you can perform any actions with the form data, such as sending it to the server
+  //   console.log('Form data submitted:', formData);
 
-    try {
-      const result = await createResumeService(formData);
-      // openNotification('bottomRight', `Create: ${result.id}`);
-      notification.success({
-        message: 'Created',
-      });
-      onCreated(result);
-      closeModal();
-    } catch (error) {
-      console.log(error);
-      notification.error({
-        message: error?.response?.data || 'Something went wrong',
-      });
+  //   try {
+  //     const result = await createResumeService(formData);
+  //     // openNotification('bottomRight', `Create: ${result.id}`);
+  //     notification.success({
+  //       message: 'Created',
+  //     });
+  //     onCreated(result);
+  //     closeModal();
+  //   } catch (error) {
+  //     console.log(error);
+  //     notification.error({
+  //       message: error?.response?.data || 'Something went wrong',
+  //     });
+  //   }
+  // };
+
+  const [value, setValue] = useState(1);
+  const onChange = e => {
+    setValue(e.target.value);
+  };
+  
+
+  const { resumes, refreshResumes, finishUpData, refreshFinishUpData } = useStore();
+  let isMounted = true;
+  useEffect(() => {
+    isMounted = true;
+    if (!isMounted) {
+      return;
+    }
+    const findResumeId = finishUpData.find(resume => resume.id == parseInt(cvId, 10));
+    console.log('findResumeId: ', findResumeId);
+    if (resumes.length === 0) {
+      refreshResumes();
+
+      // for (let i = 0; i < resumes.length; i++) {
+      //   if (resumes[i].id == cvId) {
+      //     refreshFinishUpData(cvId);
+      //   }
+      // }
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Dependency array should include cvId.
+  const resumeName = resumes?.find(resume => resume?.id == cvId)?.resumeName;
+
+  const handleFormSubmit = async () => {
+    if (value === 2) {
+      try {
+        const result = await createResumeService(formData);
+        // openNotification('bottomRight', `Create: ${result.id}`);
+        notification.success({
+          message: 'Created',
+        });
+        onCreated(result);
+        closeModal();
+      } catch (error) {
+        console.log(error);
+        notification.error({
+          message: error?.response?.data || 'Something went wrong',
+        });
+
+        console.log('radio checked: ', value, cvId, inputValue);
+      }
+    } else if (value === 1) {
+      try {
+        onConfirm();
+        closeModal();
+      } catch (error) {
+        console.log(error);
+        notification.error({
+          message: error?.response?.data || 'Something went wrong',
+        });
+      }
     }
   };
+
   return (
     <>
       {contextHolder}
@@ -129,163 +200,72 @@ export default function CreateResumeReviewConCac({ isOpen, setIsOpen, onCreated 
                     as="h2"
                     className="w-full flex leading-7 text-xl font-semibold bg-slate-50 rounded-t-lg text-gray-900 items-center px-6 py-5 border-b border-slate-200"
                   >
-                    <div className="grow font-semibold">Create a resume from review process</div>
+                    <div className="grow font-semibold">Save CV</div>
                     <i className="fal fa-times cursor-pointer" aria-hidden="true" />
+
                   </Dialog.Title>
+                  <span className='mt-6 ml-6 mb-10 text-sm text-gray-500'>Save the expert response to the cv</span>
+
                   <div className="p-6">
-                    <form onSubmit={handleFormSubmit}>
-                      <div className="input">
-                        <label
-                          className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                          htmlFor="resumeName" // Add htmlFor with the correct id
-                        >
-                          <div className="flex gap-2 items-center">
-                            <span>Resume name</span> *
-                          </div>
-                          <div id="null-portal-root" />
-                        </label>
-                        <div className="relative">
+
+                    <Radio.Group onChange={onChange} value={value}>
+                      <div direction="vertical">
+                        <Radio value={1}>
+                          Save to old Resume
                           <input
                             name="resumeName"
                             className="inputEl new-resume-form"
                             id="resumeName"
                             required="true"
-                            onChange={handleInputChange}
+                            disabled
                             aria-label="Resume name"
-                            defaultValue=""
+                            defaultValue={resumeName}
                           />
-                        </div>
+                        </Radio>
+
+                        <Radio className="mt-10" value={2}>
+                          Save as a new resume
+                          <form>
+                            <div className="input">
+                              <label
+                                className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
+                                htmlFor="resumeName" // Add htmlFor with the correct id
+                              >
+                                <div className="flex gap-2 items-center">
+                                  <span>Resume name</span> *
+                                </div>
+                                <div id="null-portal-root" />
+                              </label>
+                              <div className="relative">
+                                <input
+                                  name="resumeName"
+                                  className="inputEl new-resume-form"
+                                  id="resumeName"
+                                  required="true"
+                                  placeholder='Ex: "Resume for Software Engineer"'
+                                  onChange={handleInputChange}
+                                  aria-label="Resume name"
+                                  defaultValue=""
+                                />
+                              </div>
+                            </div>
+                          </form>
+                        </Radio>
                       </div>
-                      <br />
+                    </Radio.Group>
 
-                      <br />
-                      {/* 
-                      <div style={{ position: 'relative' }}>
-                        <div className="flex justify-between">
-                          <h3 className="info-supp">Target your resume</h3>
-
-                          <Switch
-                            checked={enabled}
-                            onChange={setEnabled}
-                            className={`${
-                              enabled ? 'bg-blue-600' : 'bg-gray-200'
-                            } relative inline-flex h-6 w-11 items-center rounded-full mt-10`}
-                          >
-                            <span className="sr-only">Enable notifications</span>
-                            <span
-                              className={`${
-                                enabled ? 'translate-x-6' : 'translate-x-1'
-                              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                            />
-                          </Switch>
-                        </div>
-                      </div> */}
-                      {/* {!enabled && (
-                        <div className="warning-target">
-                          <i className="fas fa-check-circle" aria-hidden="true" />
-                          <FontAwesomeIcon
-                            style={{ color: '#48c9b0', marginRight: '10px' }}
-                            icon={faCircleCheck}
-                          />
-                          <p>
-                            A targeted resume is a resume tailored to a specific job opening. You
-                            have a significantly higher chance of getting an interview when you make
-                            it clear you have the experience required for the job.
-                          </p>
-                        </div>
-                      )}
-
-                      {enabled && (
-                        <div>
-                          <div className="input">
-                            <label
-                              className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                              htmlFor="jobTitle"
-                            >
-                              <div className="flex gap-2 items-center">
-                                <span>Job Title </span>
-                              </div>
-                              <div id="null-portal-root" />
-                            </label>
-                            <div className="relative">
-                              <input
-                                className="inputEl new-resume-form"
-                                name="jobTitle"
-                                id="jobTitle"
-                                onChange={handleInputChange}
-                                aria-label="Job Title "
-                                defaultValue=""
-                              />
-                            </div>
-                          </div>
-                          <div className="input">
-                            <label
-                              className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                              htmlFor="companyName"
-                            >
-                              <div className="flex gap-2 items-center">
-                                <span>Company name</span>
-                              </div>
-                              <div id="null-portal-root" />
-                            </label>
-                            <div className="relative">
-                              <input
-                                className="inputEl new-resume-form "
-                                id="companyName"
-                                name="companyName"
-                                onChange={handleInputChange}
-                                aria-label="Company name"
-                                defaultValue=""
-                              />
-                            </div>
-                          </div>
-                          <div className="input ">
-                            <label
-                              className="!leading-[15px] !mb-3 label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600"
-                              htmlFor="jobDescription"
-                            >
-                              <div className="flex gap-2 items-center">
-                                <span>Job Description </span>
-                              </div>
-                              <div id="jobDescription-portal-root" />
-                            </label>
-                            <div className="relative">
-                              <textarea
-                                className="inputEl new-resume-form"
-                                id="jobDescription"
-                                name="jobDescription"
-                                aria-label="Job Description "
-                                rows={3}
-                                onChange={handleTextAreaChange}
-                                onInput={handleTextareaInput}
-                                value={inputValue}
-                                style={{
-                                  height: 'auto',
-                                  overflow: 'hidden',
-                                  resize: 'none',
-                                  maxHeight: 200,
-                                  overflowY: 'auto',
-                                  background: 'white',
-                                  height: 120,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )} */}
-
-                      <button
-                        href=""
-                        data-size="default"
-                        data-theme="default"
-                        data-busy="false"
-                        className="form-submission button cta "
-                        id="create-resume-form-submitted"
-                        type="submit"
-                      >
-                        Save
-                      </button>
-                    </form>
+                    <button
+                      href=""
+                      onClick={handleFormSubmit}
+                      data-size="default"
+                      data-theme="default"
+                      data-busy="false"
+                      className="form-submission button cta "
+                      id="create-resume-form-submitted"
+                      type="submit"
+                    >
+                      Save123
+                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

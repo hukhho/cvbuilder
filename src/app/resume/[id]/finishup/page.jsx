@@ -221,7 +221,16 @@ export default function FinishUp({ params }) {
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
 
-  const { avatar, email, userRole, ats, setAts, isAtsEnabled, setIsAtsEnabled, refreshFinishUpData } = useStore();
+  const {
+    avatar,
+    email,
+    userRole,
+    ats,
+    setAts,
+    isAtsEnabled,
+    setIsAtsEnabled,
+    refreshFinishUpData,
+  } = useStore();
   const enabledCategories = { 'FINISH UP': true };
 
   // useEffect(() => {
@@ -275,7 +284,14 @@ export default function FinishUp({ params }) {
   // const { resumeInfo } = finishUpData;
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
+
   experiences?.sort((a, b) => a.theOrder - b.theOrder);
+  projects?.sort((a, b) => a.theOrder - b.theOrder);
+  involvements?.sort((a, b) => a.theOrder - b.theOrder);
+  certifications?.sort((a, b) => a.theOrder - b.theOrder);
+  skills?.sort((a, b) => a.theOrder - b.theOrder);
+  educations?.sort((a, b) => a.theOrder - b.theOrder);
+
   const theOrders = {
     summary: 99,
     experiences: 99,
@@ -983,6 +999,8 @@ export default function FinishUp({ params }) {
     // customSections.forEach((customSection, index) => {
     //   const customSectionObject = customSection;
     // });
+
+    filteredCustomSection?.sort((a, b) => a.theOrder - b.theOrder);
     const customSectionTitle = customSection?.sectionName;
     sections.push({
       id: `customSection${index + 1}`,
@@ -1053,7 +1071,7 @@ export default function FinishUp({ params }) {
   // });
 
   sections.sort((a, b) => a.order - b.order);
-  console.log('sections.sort: ', sections)
+  console.log('sections.sort: ', sections);
 
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
@@ -1619,9 +1637,19 @@ export default function FinishUp({ params }) {
                                     <span className="flex flex text-sm font-medium">
                                       {/* <span>{version.timestamp}</span> */}
                                       <span className="flex flex-col">
-                                        {version?.id === 0
-                                          ? 'Current version'
-                                          : moment(version?.timestamp)?.fromNow()}
+                                        {version?.id === 0 ? (
+                                          'Current version'
+                                        ) : (
+                                          <div className="flex flex-col">
+                                            {' '}
+                                            <div>{moment(version?.timestamp)?.fromNow()}</div>
+                                            <div>
+                                              {moment(version?.timestamp).format(
+                                                'HH:mm:ss DD/MM/YYYY',
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
 
                                         {/* <div style={{ color: 'gray', fontSize: '11px' }}>
                                           {moment(record.createDate).format('HH:mm:ss DD/MM/YYYY')}
