@@ -23,106 +23,7 @@ import useStore from '@/store/store';
 import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
-const columns = [
-  // {
-  //   title: 'Job posting',
-  //   dataIndex: 'title',
-  //   render: text => <a>{text}</a>,
-  // },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    render: text => {
-      if (text === 'Published') {
-        return <Badge status="success" text={text} />;
-      }
-      if (text === 'Draft') {
-        return <Badge status="warning" text={text} />;
-      }
-      if (text === 'Overdue') {
-        return <Badge status="error" text={text} />;
-      }
-      if (text === 'Unpiblish') {
-        return <Badge status="warning" text={text} />;
-      }
-      if (text === 'Disable') {
-        return <Badge status="warning" text={text} />;
-      }
-      return <Badge status="warning" text={text} />;
-    },
-  },
-  {
-    title: 'Job Posting',
-    dataIndex: 'jobPosting',
-    render: jobPosting => {
-      return <div>{jobPosting?.name}</div>;
-    },
-  },
-  {
-    title: 'Candidate',
-    dataIndex: 'candidateName',
-  },
-  {
-    title: 'Cv',
-    dataIndex: 'cvs',
-    render: cvs => (
-      <a>
-        <Link href={`/hr/view-cv/${cvs?.id}`}>{cvs?.resumeName}</Link>{' '}
-      </a>
-    ),
-  },
-  {
-    title: 'Cover Letter',
-    dataIndex: 'coverLetters',
-    render: cvs => (
-      <a>
-        <Link href={`/hr/view-cover-letter/${cvs?.historyCoverLetterId}`}>{cvs?.title}</Link>{' '}
-      </a>
-    ),
-  },
-  {
-    title: 'Date Application',
-    dataIndex: 'applyDate',
-    // sorter: {
-    //   compare: (a, b) => a.revicedDay - b.revicedDay,
-    //   multiple: 2,
-    // },
-  },
-  {
-    title: 'note',
-    dataIndex: 'note',
-    render: text => <div>{text !== "undefined" ? text : null}</div>,
-  },
-  {
-    title: 'email',
-    dataIndex: 'email',
-  },
-  // {
-  //   title: 'Action',
-  //   dataIndex: 'id',
-  //   render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
 
-  // },
-];
-// const statuses = ['Waiting', 'Overdue', 'Done'];
-// const dateRandome = ['3 days ago', 'Next Tuesday'];
-
-// for (let i = 0; i < 100; i++) {
-//   const price = Math.floor(Math.random() * 10) + 1;
-//   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
-//   const status = statuses[Math.floor(Math.random() * statuses.length)];
-
-//   data.push({
-//     key: i,
-//     resumeName: 'Pham Viet Thuan Thien',
-//     name: '<User Name>',
-//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price,
-//     status,
-//     receiveDate: due,
-//     deadline: due,
-//   });
-// }
 
 const HRApplicationPage = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -169,6 +70,121 @@ const HRApplicationPage = () => {
       setFilteredData(data);
     }
   };
+
+
+  // const [cvFilter, setCvFilter] = useState('');
+
+  // const handleCvFilterChange = (value) => {
+  //   setCvFilter(value);
+  // };
+
+  // const filteredData = data.filter((item) => {
+  //   return item.cvs?.resumeName.toLowerCase().includes(cvFilter.toLowerCase());
+  // });
+
+  const uniqueCvOptions = [...new Set(data.map((item) => item.cvs?.resumeName))];
+  const columns = [
+    // {
+    //   title: 'Job posting',
+    //   dataIndex: 'title',
+    //   render: text => <a>{text}</a>,
+    // },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: text => {
+        if (text === 'Published') {
+          return <Badge status="success" text={text} />;
+        }
+        if (text === 'Draft') {
+          return <Badge status="warning" text={text} />;
+        }
+        if (text === 'Overdue') {
+          return <Badge status="error" text={text} />;
+        }
+        if (text === 'Unpiblish') {
+          return <Badge status="warning" text={text} />;
+        }
+        if (text === 'Disable') {
+          return <Badge status="warning" text={text} />;
+        }
+        return <Badge status="warning" text={text} />;
+      },
+    },
+    {
+      title: 'Job Posting',
+      dataIndex: 'jobPosting',
+      render: jobPosting => {
+        return <div>{jobPosting?.name}</div>;
+      },
+    },
+    {
+      title: 'Candidate',
+      dataIndex: 'candidateName',
+    },
+    {
+      title: 'Cv',
+      dataIndex: 'cvs',
+      filters: uniqueCvOptions.map((option) => ({ text: option, value: option })),
+      onFilter: (value, record) => record.cvs?.resumeName.toLowerCase().includes(value.toLowerCase()),
+      render: cvs => (
+        <a>
+          <Link href={`/hr/view-cv/${cvs?.id}`}>{cvs?.resumeName}</Link>{' '}
+        </a>
+      ),
+    },
+    {
+      title: 'Cover Letter',
+      dataIndex: 'coverLetters',
+      render: cvs => (
+        <a>
+          <Link href={`/hr/view-cover-letter/${cvs?.historyCoverLetterId}`}>{cvs?.title}</Link>{' '}
+        </a>
+      ),
+    },
+    {
+      title: 'Date Application',
+      dataIndex: 'applyDate',
+      // sorter: {
+      //   compare: (a, b) => a.revicedDay - b.revicedDay,
+      //   multiple: 2,
+      // },
+    },
+    {
+      title: 'note',
+      dataIndex: 'note',
+      render: text => <div>{text !== "undefined" ? text : null}</div>,
+    },
+    {
+      title: 'email',
+      dataIndex: 'email',
+    },
+    // {
+    //   title: 'Action',
+    //   dataIndex: 'id',
+    //   render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
+  
+    // },
+  ];
+  // const statuses = ['Waiting', 'Overdue', 'Done'];
+  // const dateRandome = ['3 days ago', 'Next Tuesday'];
+  
+  // for (let i = 0; i < 100; i++) {
+  //   const price = Math.floor(Math.random() * 10) + 1;
+  //   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
+  //   const status = statuses[Math.floor(Math.random() * statuses.length)];
+  
+  //   data.push({
+  //     key: i,
+  //     resumeName: 'Pham Viet Thuan Thien',
+  //     name: '<User Name>',
+  //     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
+  //     price,
+  //     status,
+  //     receiveDate: due,
+  //     deadline: due,
+  //   });
+  // }
 
   return (
     <ConfigProvider>
