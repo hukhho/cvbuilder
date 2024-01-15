@@ -221,7 +221,7 @@ export default function FinishUp({ params }) {
   const [templateData, setTemplateData] = useState(null);
   const [showFinishupCV, setShowFinishupCV] = useState(false);
 
-  const { avatar, email, userRole, ats, setAts, isAtsEnabled, setIsAtsEnabled } = useStore();
+  const { avatar, email, userRole, ats, setAts, isAtsEnabled, setIsAtsEnabled, refreshFinishUpData } = useStore();
   const enabledCategories = { 'FINISH UP': true };
 
   // useEffect(() => {
@@ -1182,6 +1182,7 @@ export default function FinishUp({ params }) {
         }
       };
       fetchData();
+      refreshFinishUpData(params.id);
     } catch (error) {
       console.error('Error during synchronization:', error);
       // Handle errors or display an error message.

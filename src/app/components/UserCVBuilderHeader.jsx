@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { set } from 'lodash';
 
 // Define the categories outside of the component.
-const categories = [
+const initCategories = [
   { name: 'CONTACT', link: 'contact' },
   { name: 'EXPERIENCE', link: 'experience' },
   { name: 'PROJECT', link: 'project' },
@@ -23,6 +23,20 @@ const categories = [
   { name: 'FINISH UP', link: 'finishup' },
   // { name: 'CUSTOM SECTION 1', link: 'customSection1' },
 ];
+
+let categories = [
+  { name: 'CONTACT', link: 'contact' },
+  { name: 'EXPERIENCE', link: 'experience' },
+  { name: 'PROJECT', link: 'project' },
+  { name: 'EDUCATION', link: 'education' },
+  { name: 'CERTIFICATIONS', link: 'certification' },
+  { name: 'INVOLVEMENT', link: 'involvement' },
+  { name: 'SKILLS', link: 'skill' },
+  { name: 'SUMMARY', link: 'summary' },
+  { name: 'FINISH UP', link: 'finishup' },
+  // { name: 'CUSTOM SECTION 1', link: 'customSection1' },
+];
+
 const { confirm } = Modal;
 
 const UserCVBuilderHeader = ({
@@ -63,29 +77,56 @@ const UserCVBuilderHeader = ({
       //     refreshFinishUpData(cvId);
       //   }
       // }
-
-      refreshFinishUpData(cvId);
     }
     return () => {
       isMounted = false;
     };
   }, []); // Dependency array should include cvId.
+
+  useEffect(() => {
+    const find = finishUpData.find(resume => resume.id == parseInt(cvId, 10));
+    console.log('find: ', find);
+    if (!find) {
+      refreshFinishUpData(cvId);
+      categories = [...initCategories]
+    }
+  }, [finishUpData]);
+
   console.log('resumes: ', resumes);
   // console.log('finishUpDataOfHeader', finishUpData);
   // console.log('finishUpDataOfHeader', finishUpData)
   const resumeName = resumes.find(resume => resume.id == cvId)?.resumeName;
   // console.log('finishUpDataOfHeader', finishUpData)
 
+  categories = [...initCategories]
+
   finishUpData.forEach(resume => {
     if (resume.id == cvId) {
       console.log('finishUpDataHead: ', resume);
-
       resume?.customSections?.map((section, index) => {
         console.log('sectionindex: ', index);
         const link = `customSection${index + 1}`;
         //only push if not exist
+
         if (!categories.find(category => category.link === link)) {
           categories.push({ name: section?.sectionName, link: link });
+        } else {
+          //overwrite if exist
+          console.log('overwrite if exist');
+          // const find = categories.find(category => category.link === link);
+          const index = categories.findIndex(category => category.link === link);
+
+          if (index !== -1) {
+            // The element was found, and its index is stored in the 'index' variable
+            console.log(`Index of element with link '${link}': ${index}`);
+
+            categories[index] = { name: section?.sectionName, link: link };
+          } else {
+            // The element was not found
+            
+            console.log(`Element with link '${link}' not found in the array.`);
+          }
+
         }
       });
     }
@@ -93,6 +134,7 @@ const UserCVBuilderHeader = ({
   if (sectionTypeName) {
     const find = categories.find(category => category.link === sectionTypeName);
     console.log('find: ', find);
+
     if (!enabledCategoriesForSection) {
       setEnabledCategoriesForSection({ [find?.name]: true });
     }

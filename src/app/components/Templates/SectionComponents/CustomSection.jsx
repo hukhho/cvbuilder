@@ -46,55 +46,57 @@ const CustomSections = ({
   const mockDes2 =
     'Increased the firms technology risk oversight by 60 with the development and integration of new infrastructure scanners into the risk reporting engine C  TSQL. \n Automated 75 of the manual QA testing by developing a new UI test tool for the risk dashboard Python, Selenium. Improved satisfaction rating by 50 by building documentation and training for the risk dashboard.';
   const experienceItems = (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {experiences.map(exp => {
-        const { duration, description, subTitle, title, location } = exp;
-        // Decode HTML entities
-        // const decodedString = he.encode(description).trim();
-        if (isReviewComment) {
+      {experiences &&
+        experiences.map(exp => {
+          const { duration, description, subTitle, title, location } = exp;
+          // Decode HTML entities
+          // const decodedString = he.encode(description).trim();
+          if (isReviewComment) {
+            return (
+              <StandardItemV2
+                isDnd={false}
+                isShowCommentBox={isShowCommentBox}
+                onComment={onComment}
+                onDeleteComment={onDeleteComment}
+                key={exp.id}
+                dataId={exp.id}
+                type={type}
+                templateType={templateType}
+                role={title}
+                handleRoleChange={handleRoleChange}
+                handleOrgNameChange={handleOrgNameChange}
+                handleDescriptionChange={handleDescriptionChange}
+                location={location}
+                duration={duration}
+                orgName={subTitle}
+                renderRightSubtitle
+                description={description}
+              />
+            );
+          }
           return (
-            <StandardItemV2
-              isDnd={false}
-              isShowCommentBox={isShowCommentBox}
-              onComment={onComment}
-              onDeleteComment={onDeleteComment}
-              key={exp.id}
-              dataId={exp.id}
+            <StandardItem
+              highlightAts={highlightAts}
               type={type}
+              typeId={exp.id}
+              key={exp.id}
               templateType={templateType}
               role={title}
-              handleRoleChange={handleRoleChange}
-              handleOrgNameChange={handleOrgNameChange}
-              handleDescriptionChange={handleDescriptionChange}
               location={location}
               duration={duration}
               orgName={subTitle}
               renderRightSubtitle
               description={description}
+              isEditable={isEditable}
+              isEnableAts={isEnableAts}
+              handleRoleChange={handleRoleChange}
+              handleOrgNameChange={handleOrgNameChange}
+              handleDescriptionChange={handleDescriptionChange}
             />
           );
-        }
-        return (
-          <StandardItem
-            highlightAts={highlightAts}
-            type={type}
-            typeId={exp.id}
-            key={exp.id}
-            templateType={templateType}
-            role={title}
-            location={location}
-            duration={duration}
-            orgName={subTitle}
-            renderRightSubtitle
-            description={description}
-            isEditable={isEditable}
-            isEnableAts={isEnableAts}
-            handleRoleChange={handleRoleChange}
-            handleOrgNameChange={handleOrgNameChange}
-            handleDescriptionChange={handleDescriptionChange}
-          />
-        );
-      })}
+        })}
     </>
   );
   const { children } = experienceItems.props;
@@ -166,22 +168,25 @@ const CustomSections = ({
 
       {/* <Divider className="section-header" /> */}
       <div>
-        <DndContext
-          sensors={sensors}
-          onDragCancel={handleDragCancel}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={components}>
-            {components.map((child, index) => (
-              <div key={index}>
-                <SortableItem className="hello" key={index}>
-                  {child}
-                </SortableItem>
-              </div>
-            ))}
-          </SortableContext>
-        </DndContext>
+        {components && (
+          <DndContext
+            sensors={sensors}
+            onDragCancel={handleDragCancel}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={components}>
+              {components &&
+                components.map((child, index) => (
+                  <div key={index}>
+                    <SortableItem className="hello" key={index}>
+                      {child}
+                    </SortableItem>
+                  </div>
+                ))}
+            </SortableContext>
+          </DndContext>
+        )}
       </div>
     </div>
   );
