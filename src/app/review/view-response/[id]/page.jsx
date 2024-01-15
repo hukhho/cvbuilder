@@ -851,11 +851,55 @@ export default function FinishUp({ params }) {
   const [isDnd, setIsDnd] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
-
+  // Function to remove HTML tags from a string
+  function removeHtmlTags(inputString) {
+    return inputString.replace(/<\/?[^>]+(>|$)/g, '');
+  }
   const onCreatedResume = async result => {
     console.log('onCreatedResume', result?.id);
+
+
+    const newFinishUpData = { ...finishUpData };
+    // Clean up HTML tags from the "description" field for each experience
+    // Fields to process based on configuration
+    
+    const fieldsToProcess = ['experiences', 'certifications', 'projects', 'skills', 'educations', 'summary', 'involvements', 'customSections'];
+    // Iterate over the specified fields in the configuration
+    fieldsToProcess.forEach(field => {
+      if (Array.isArray(newFinishUpData[field])) {
+        // For arrays, iterate over each object in the array
+        newFinishUpData[field].forEach(item => {
+          // Check if the specified fields exist and are strings
+          if (item && typeof item.description === 'string') {
+            // Remove HTML tags for the specified field
+            item.description = removeHtmlTags(item.description);
+          }
+          // If there is an additional field 'revaluteDes', and it is a string
+          if (item && typeof item.certificateRelevance === 'string') {
+            // Remove HTML tags for the 'revaluteDes' field
+            item.revaluteDes = removeHtmlTags(item.revaluteDes);
+          }
+    
+          // If there is a 'description' field in customSections, and it is a string
+          if (item && item.sectionData && Array.isArray(item.sectionData)) {
+            item.sectionData.forEach(section => {
+              if (section && typeof section.description === 'string') {
+                // Remove HTML tags for the 'description' field in customSections
+                section.description = removeHtmlTags(section.description);
+              }
+            });
+          }
+        });
+      } else if (typeof newFinishUpData[field] === 'string') {
+        // For single strings, remove HTML tags directly
+        newFinishUpData[field] = removeHtmlTags(newFinishUpData[field]);
+      }
+    });
+    
+    // Now, the specified fields in the newFinishUpData object do not contain HTML tags
+    console.log('newFinishUpData: ', newFinishUpData);
     try {
-      await newResume(result?.id, finishUpData);
+      await newResume(result?.id, newFinishUpData);
       notification.success({
         message: 'Finish create new resume success',
       });
@@ -870,7 +914,48 @@ export default function FinishUp({ params }) {
   const confirmFinishOveride = async () => {
     try {
       console.log('confirmFinish: ', fetchedData?.cvId);
-      const result = await overwriteResume(fetchedData?.cvId, finishUpData);
+            // console.log('confirmFinishNew: ', finishUpData);
+      //Delete all comment tag from finishUpData
+      const newFinishUpData = { ...finishUpData };
+      // Clean up HTML tags from the "description" field for each experience
+      // Fields to process based on configuration
+      
+      const fieldsToProcess = ['experiences', 'certifications', 'projects', 'skills', 'educations', 'summary', 'involvements', 'customSections'];
+      // Iterate over the specified fields in the configuration
+      fieldsToProcess.forEach(field => {
+        if (Array.isArray(newFinishUpData[field])) {
+          // For arrays, iterate over each object in the array
+          newFinishUpData[field].forEach(item => {
+            // Check if the specified fields exist and are strings
+            if (item && typeof item.description === 'string') {
+              // Remove HTML tags for the specified field
+              item.description = removeHtmlTags(item.description);
+            }
+            // If there is an additional field 'revaluteDes', and it is a string
+            if (item && typeof item.certificateRelevance === 'string') {
+              // Remove HTML tags for the 'revaluteDes' field
+              item.revaluteDes = removeHtmlTags(item.revaluteDes);
+            }
+      
+            // If there is a 'description' field in customSections, and it is a string
+            if (item && item.sectionData && Array.isArray(item.sectionData)) {
+              item.sectionData.forEach(section => {
+                if (section && typeof section.description === 'string') {
+                  // Remove HTML tags for the 'description' field in customSections
+                  section.description = removeHtmlTags(section.description);
+                }
+              });
+            }
+          });
+        } else if (typeof newFinishUpData[field] === 'string') {
+          // For single strings, remove HTML tags directly
+          newFinishUpData[field] = removeHtmlTags(newFinishUpData[field]);
+        }
+      });
+      
+      // Now, the specified fields in the newFinishUpData object do not contain HTML tags
+      console.log('newFinishUpData: ', newFinishUpData);
+      const result = await overwriteResume(fetchedData?.cvId, newFinishUpData);
       notification.success({
         message: 'Finish overwrite success',
       });
@@ -895,7 +980,6 @@ export default function FinishUp({ params }) {
 
   const confirmFinishNew = async () => {
     try {
-      console.log('confirmFinishNew: ', finishUpData);
       setIsOpen(true);
     } catch (error) {
       notification.error({
