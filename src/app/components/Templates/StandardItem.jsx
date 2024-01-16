@@ -59,7 +59,7 @@ const StandardItem = props => {
 
   const handleBlur = (evt, targetName) => {
     if (targetName === 'role') {
-      console.log('handleBlur: ', roleState.current);
+      console.log('handleBlur: ', roleState?.current);
     }
   };
 

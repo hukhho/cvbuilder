@@ -32,11 +32,7 @@ const SummarySection = ({
   //   }
   // };
 
-  const handleBlur = (evt, targetName) => {
-    if (targetName === 'role') {
-      console.log('handleBlur: ', roleState.current);
-    }
-  };
+ 
   const type = 'summary';
   const dataId = 'summary';
   function generateRandomId() {

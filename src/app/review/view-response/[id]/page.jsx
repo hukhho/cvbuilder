@@ -440,6 +440,7 @@ export default function FinishUp({ params }) {
     newFinishUpData.summary = newData;
 
     setFinishUpData(newFinishUpData);
+    console.log("setFinishUpData: ", newFinishUpData)
     console.log('New finishup data after handleSummaryChange:', newFinishUpData);
   };
 
@@ -862,6 +863,7 @@ export default function FinishUp({ params }) {
     console.log('onCreatedResume', result?.id);
 
     const newFinishUpData = { ...finishUpData };
+    
     // Clean up HTML tags from the "description" field for each experience
     // Fields to process based on configuration
 
@@ -932,6 +934,7 @@ export default function FinishUp({ params }) {
       // console.log('confirmFinishNew: ', finishUpData);
       //Delete all comment tag from finishUpData
       const newFinishUpData = { ...finishUpData };
+      console.log("newFinishUpData", newFinishUpData);
       // Clean up HTML tags from the "description" field for each experience
       // Fields to process based on configuration
 
