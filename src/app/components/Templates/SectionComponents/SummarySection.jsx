@@ -10,6 +10,7 @@ const SummarySection = ({
   summary,
   templateType,
   layoutStyles,
+  onBlur = (type, id) => {},
   isEnableAts = false,
   highlightAts,
   handleDescriptionChange,
@@ -20,10 +21,14 @@ const SummarySection = ({
     console.log('handleChange: ', evt.target.value);
     handleDescriptionChange(evt.target.value);
   };
+  // const handleInputSummary = (evt, targetName) => {
+  //   console.log('handleInputSummary: ', evt.target.value);
+  // }
   const handleBlur = (evt, targetName) => {
-    // if (targetName === 'summary') {
-    //   console.log('handleBlur: ', roleState.summary);
-    // }
+    console.log('handleBlur: ', evt.target.value);
+    if (targetName === 'summary') {
+      onBlur('summary', null)
+    }
   };
   const type = 'summary';
   const dataId = 'summary';
@@ -40,6 +45,7 @@ const SummarySection = ({
           className="editableContent cursor-text  designStudio "
           id="summary-summary"
           html={summaryState.current}
+          onInput={e => handleInputSummary(e, 'summary')}
           onBlur={e => handleBlur(e, 'summary')}
           onChange={e => handleChange(e, 'summary')}
         />

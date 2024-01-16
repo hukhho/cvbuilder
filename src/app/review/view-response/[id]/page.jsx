@@ -61,6 +61,9 @@ import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
 import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 import CreateResumeReviewConCac from '@/app/components/Modal/CreateResumeReviewConCac';
+import _debounce from 'lodash/debounce';
+import { set } from 'lodash';
+
 // import { getRequestList } from '../../reviewServices';
 const { confirm } = Modal;
 
@@ -76,6 +79,9 @@ export default function FinishUp({ params }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const [finishUpData, setFinishUpData] = useState(null);
+
+  const [finishUpDataTemp, setFinishUpDataTemp] = useState(null);
+
   const [auditData, setAuditData] = useState(null);
   const [fetchedData, setFetchedData] = useState(null);
 
@@ -363,8 +369,9 @@ export default function FinishUp({ params }) {
         console.log('New finishup data after updatedExperiences:', newFinishUpData);
     }
   };
+  const [currentEdit, setCurrentEdit] = useState(null);
 
-  const handleDescriptionChange = (type, typeId, newData) => {
+  const handleDescriptionChange = async (type, typeId, newData) => {
     // Configuration object mapping type values to detailed properties
     console.log('handleDescriptionChange', newData, type, typeId);
     const config = {
@@ -380,7 +387,7 @@ export default function FinishUp({ params }) {
     // Check if the type is defined in the configuration
     if (config[type]) {
       console.log(
-        `handleOrgNameChange newData ${type} ${config[type].type}`,
+        `handleDescriptionChange newData ${type} ${config[type].type}`,
         newData,
         type,
         typeId,
@@ -402,6 +409,12 @@ export default function FinishUp({ params }) {
       newFinishUpData[config[type].type] = updatedItems;
 
       setFinishUpData(newFinishUpData);
+      handleUserChange();
+      // setShowFinishupCV(false);
+      // setFinishUpData(newFinishUpData);
+      // await new Promise(resolve => setTimeout(resolve, 10));
+      // setShowFinishupCV(true);
+
       console.log(
         `New finishup data after updated${type.charAt(0).toUpperCase() + type.slice(1)}:`,
         newFinishUpData,
@@ -424,7 +437,21 @@ export default function FinishUp({ params }) {
         console.log('updatedCustomSections', updatedCustomSections);
         let newFinishUpData = { ...finishUpData };
         newFinishUpData.customSections[sectionIndex].sectionData = updatedCustomSections;
+        // setFinishUpData(newFinishUpData);
+        // setShowFinishupCV(false);
+        // setFinishUpData(newFinishUpData);
+        // await new Promise(resolve => setTimeout(resolve, 10));
+        // setShowFinishupCV(true);
+        // if (type !== currentEdit) {
         setFinishUpData(newFinishUpData);
+        handleUserChange();
+        //   setShowFinishupCV(false);
+        //   setFinishUpData(newFinishUpData);
+        //   await new Promise(resolve => setTimeout(resolve, 10));
+        //   setShowFinishupCV(true);
+        // } else {
+        //   setFinishUpData(newFinishUpData);
+        // }
       } else {
         console.error(`Invalid custom section index: ${sectionIndex}`);
       }
@@ -434,14 +461,102 @@ export default function FinishUp({ params }) {
     }
   };
 
-  const handleSummaryChange = newData => {
+  const handleSummaryChange = async newData => {
     console.log('handleSummaryChangenewData: ', newData);
     let newFinishUpData = { ...finishUpData };
     newFinishUpData.summary = newData;
 
+    // setFinishUpData(newFinishUpData);
+
+    // setShowFinishupCV(false);
+    // setFinishUpData(newFinishUpData);
+    // setShowFinishupCV(true);
+    // setCurrentEdit('summary');
+    // if (currentEdit !== 'summary') {
+    //   setShowFinishupCV(false);
+    //   setFinishUpData(newFinishUpData);
+    //   await new Promise(resolve => setTimeout(resolve, 10));
+    //   setShowFinishupCV(true);
+    // } else {
+    //   setFinishUpData(newFinishUpData);
+    // }
+
     setFinishUpData(newFinishUpData);
-    console.log("setFinishUpData: ", newFinishUpData)
+
+    setSummary(newFinishUpData?.summary);
+
+    setFinishUpDataTemp(newFinishUpData);
+
+    console.log('setFinishUpData: ', newFinishUpData);
+
+    handleUserChange();
     console.log('New finishup data after handleSummaryChange:', newFinishUpData);
+    console.log('finishupdata after handleSummaryChange:', finishUpData);
+
+  };
+  const [isCatchOut, setIsCatchOut] = useState(false);
+
+  const saveCv = async () => {
+    console.log('saveCv');
+    setIsCatchOut(false);
+    let newFinishUpData = { ...finishUpData };
+    console.log('saveCvfinishUpDatanewFinishUpData: ', newFinishUpData);
+    setShowFinishupCV(false);
+    setFinishUpData(newFinishUpData);
+    await new Promise(resolve => setTimeout(resolve, 10));
+    setShowFinishupCV(true);
+  };
+  // Add debounce to the saveData function
+  const debouncedSaveData = _debounce(saveCv, 1000);
+  let intervalId;
+
+  // Function to reset the interval
+  const resetInterval = () => {
+    clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      if (isCatchOut && showFinishupCV) {
+        debouncedSaveData();
+      }
+    }, 1000);
+  };
+
+  useEffect(() => {
+    intervalId = setInterval(() => {
+      console.log('isCatchOut && !isShowVersion && showFinishupCV', isCatchOut, showFinishupCV);
+      if (isCatchOut && showFinishupCV) {
+        console.log('debouncedSaveData');
+        debouncedSaveData();
+        saveCv();
+      }
+    }, 2000);
+
+    return () => {
+      clearInterval(intervalId);
+      // Clear any pending debounced calls when the component unmounts
+      debouncedSaveData.cancel();
+    };
+  }, [isCatchOut, showFinishupCV, debouncedSaveData]);
+
+  const handleUserChange = () => {
+    setIsCatchOut(true);
+    resetInterval();
+  };
+  const onBlur = async (type, id) => {
+    console.log('onBlur: ', type, id);
+    // setShowFinishupCV(false);
+    // setFinishUpData(null);
+
+    // await new Promise(resolve => setTimeout(resolve, 10000));
+
+    // let newFinishUpData = { ...finishUpData };
+    console.log('newFinishUpDataBlue: ', finishUpData);
+    console.log('newFinishUpDataBlueTemp: ', finishUpDataTemp);
+
+    // setShowFinishupCV(false);
+    // // await new Promise(resolve => setTimeout(resolve, 10));
+    // setFinishUpData(newFinishUpData);
+    // setFinishUpDataTemp(newFinishUpData);
+    // setShowFinishupCV(true);
   };
 
   // Accessing data from the `theOrders` object
@@ -476,6 +591,7 @@ export default function FinishUp({ params }) {
       id: 'summary',
       component: (
         <SummarySection
+          onBlur={onBlur}
           templateType={templateSelected}
           highlightAts={highlightAts}
           handleDescriptionChange={handleSummaryChange}
@@ -742,6 +858,7 @@ export default function FinishUp({ params }) {
       }
       const cvId = data.cvId;
       setFinishUpData(data);
+      setFinishUpDataTemp(data);
 
       setShowFinishupCV(true);
 
@@ -863,7 +980,7 @@ export default function FinishUp({ params }) {
     console.log('onCreatedResume', result?.id);
 
     const newFinishUpData = { ...finishUpData };
-    
+
     // Clean up HTML tags from the "description" field for each experience
     // Fields to process based on configuration
 
@@ -934,7 +1051,7 @@ export default function FinishUp({ params }) {
       // console.log('confirmFinishNew: ', finishUpData);
       //Delete all comment tag from finishUpData
       const newFinishUpData = { ...finishUpData };
-      console.log("newFinishUpData", newFinishUpData);
+      console.log('newFinishUpData', newFinishUpData);
       // Clean up HTML tags from the "description" field for each experience
       // Fields to process based on configuration
 
@@ -1149,7 +1266,11 @@ export default function FinishUp({ params }) {
                           {
                             <div>
                               {' '}
-                              <Button className='mt-10 mb-10' type="primary" onClick={showPromiseConfirmNew}>
+                              <Button
+                                className="mt-10 mb-10"
+                                type="primary"
+                                onClick={showPromiseConfirmNew}
+                              >
                                 SAVE
                               </Button>
                             </div>
