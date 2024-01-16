@@ -1,18 +1,35 @@
-import { HeartOutlined } from '@ant-design/icons';
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { Card, Typography } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { likeJob } from '../jobServices';
 
 const { Title } = Typography;
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, onLikeJob = () => {} }) => {
   console.log('JobCard: ', job);
+  const likeJobHanlde = async () => {
+    try {
+      // Simulate fetching resumes (replace with your actual fetch logic)
+      const like = await likeJob(params.id);
+      onLikeJob();
+    } catch (error) {
+      console.error('There was an error fetching resumes', error);
+    }
+  };
   return (
     <Link href={`/job/${job?.id}`}>
       <Card style={{ width: '95%', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 10, right: 10 }}>
-          <HeartOutlined />
+          {/* {
+            job?.liked ? (
+          }
+          <HeartOutlined /> */}
+          <button className="mt-4" onClick={likeJobHanlde}>
+            {job?.liked === true && <HeartFilled style={{ color: '#4D70EB' }} />}
+            {job?.liked === false && <HeartOutlined style={{ color: '#4D70EB' }} />}
+          </button>
         </div>
         <div className="flex">
           <div>
