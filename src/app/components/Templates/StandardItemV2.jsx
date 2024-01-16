@@ -39,7 +39,7 @@ const StandardItemV2 = props => {
   const handleChange = (evt, targetName) => {
     console.log('handleChange: ', evt.target.value);
     if (targetName === 'role') {
-      orgNameState.current = evt.target.value;
+      roleState.current = evt.target.value;
       handleRoleChange(type, typeId, evt.target.value);
     } else if (targetName === 'orgName') {
       orgNameState.current = evt.target.value;
@@ -51,9 +51,9 @@ const StandardItemV2 = props => {
   };
 
   const handleBlur = (evt, targetName) => {
-    if (targetName === 'role') {
-      console.log('handleBlur: ', roleState.current);
-    }
+    // if (targetName === 'role') {
+    //   console.log('handleBlur: ', roleState.current);
+    // }
   };
 
   function generateRandomId() {

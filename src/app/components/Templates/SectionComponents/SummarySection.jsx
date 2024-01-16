@@ -21,9 +21,9 @@ const SummarySection = ({
     handleDescriptionChange(evt.target.value);
   };
   const handleBlur = (evt, targetName) => {
-    if (targetName === 'summary') {
-      console.log('handleBlur: ', roleState.summary);
-    }
+    // if (targetName === 'summary') {
+    //   console.log('handleBlur: ', roleState.summary);
+    // }
   };
   const type = 'summary';
   const dataId = 'summary';

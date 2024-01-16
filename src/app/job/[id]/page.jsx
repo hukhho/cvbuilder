@@ -140,7 +140,6 @@ const Home = ({ params }) => {
           <div className="container">
             <div className="!p-0 mb-5 mt-0 ">
               <div style={{ textAlign: 'left' }} />
-
               <div>
                 <div className="flex relative mt-16">
                   <div style={{ width: '70%' }}>
@@ -191,12 +190,12 @@ const Home = ({ params }) => {
                           <span className="ml-2">{data?.salary}</span>
                         </div>
                       </div>
-                      <div className="flex mt-4 space-x-4 items-center" style={{ minWidth: 120 }}>
+                      <div className="flex mt-4 space-x-4 items-center" style={{ width: 100 }}>
                         {data?.skill?.map((skill, index) => {
                           return (
                             <div
                               style={{ textAlign: 'center' }}
-                              className="px-3 py-1 border-gray-500 border rounded-full p-1"
+                              className="px-3 py-1 border-gray-500 border rounded-full p-1 "
                             >
                               {skill}
                             </div>
@@ -205,7 +204,6 @@ const Home = ({ params }) => {
                       </div>
                     </div>
                   </div>
-
                   <div style={{ width: '30%', position: 'relative' }}>
                     <div
                       style={{
