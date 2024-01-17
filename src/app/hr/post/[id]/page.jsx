@@ -43,6 +43,7 @@ import { getJobPosting, updateHrPublic, updateHrShare, updateHrUnshare } from '.
 import useStore from '@/store/store';
 import '../../../components/Form/customtext.css';
 import { Dialog, Transition } from '@headlessui/react';
+import dayjs from 'dayjs';
 
 const { Title } = Typography;
 
@@ -68,6 +69,11 @@ const mockData = {
   status: 'ACTIVE',
   share: 'Published',
 };
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
+const dateFormat = 'YYYY-MM-DD';
+
 const HRUpdatePost = ({ params }) => {
   const [enabledCategories, setEnabledCategories] = useState({
     'POST A JOB': true,
@@ -99,15 +105,20 @@ const HRUpdatePost = ({ params }) => {
       const fetchedJobPosting = await getJobPosting(params.id);
       console.log('fetchedJobPosting: ', fetchedJobPosting);
       setData(fetchedJobPosting);
-      
+
       // fetchedJobPosting.deadline = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
-              // Convert the deadline to a moment object
-      const deadlineMoment = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
-      setDeadlineString(deadlineMoment.format('YYYY-MM-DD'));
+      // Convert the deadline to a moment object
+      // const deadlineMoment = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
+      if (fetchedJobPosting?.deadline) {
+        //try parse deadline to valid yyyy-mm-dd then set
+        try {
+          // const deadlineMoment = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
+          setDeadlineString(fetchedJobPosting.deadline);
+        } catch (err) {}
+      }
 
       form.setFieldsValue({
         ...fetchedJobPosting,
-        deadline: deadlineMoment, // Set the deadline field as a moment object
       });
 
       // form.setFieldsValue(fetchedJobPosting);
@@ -138,7 +149,6 @@ const HRUpdatePost = ({ params }) => {
   const [salaryName, setSalaryName] = useState('');
   const [salaryFrom, setSalaryFrom] = useState('');
   const [salaryTo, setSalaryTo] = useState('');
-  const [isLimited, setIsLimited] = useState(false);
 
   const handleChangeSalaryName = value => {
     setSalaryName(value);
@@ -212,6 +222,8 @@ const HRUpdatePost = ({ params }) => {
     setDeadlineString(dateString);
   };
 
+  const [isLimited, setIsLimited] = useState(false);
+
   const onChangeSwitch = checked => {
     console.log(`switch to ${checked}`);
     setIsLimited(checked);
@@ -225,6 +237,14 @@ const HRUpdatePost = ({ params }) => {
     if (!isLimited) {
       values.applyAgain = 99;
     }
+    if (values?.status !== 'Draft') {
+      if (deadlineString === '') {
+        notification.error({
+          message: 'Please choose deadline',
+        });
+        return;
+      }
+    }
     console.log('Form data:', values);
     try {
       const result = await updateHrPublic(params.id, values);
@@ -235,7 +255,6 @@ const HRUpdatePost = ({ params }) => {
       setOpenSuccess(true);
       setIsOpen(true);
       fetchJobPosting();
-
     } catch (error) {
       notification.error({
         message: 'Save error',
@@ -258,7 +277,6 @@ const HRUpdatePost = ({ params }) => {
         message: 'Save success',
       });
       fetchJobPosting();
-
     } catch (error) {
       notification.eror({
         message: 'Error',
@@ -268,12 +286,17 @@ const HRUpdatePost = ({ params }) => {
   const handleClickShare = async e => {
     e.preventDefault();
     try {
+      if (deadlineString === '') {
+        notification.error({
+          message: 'Please choose deadline',
+        });
+        return;
+      }
       const result = await updateHrShare(params.id);
       notification.success({
         message: 'Save success',
       });
       fetchJobPosting();
-
     } catch (error) {
       console.log('error: ', error);
       notification.error({
@@ -515,44 +538,52 @@ const HRUpdatePost = ({ params }) => {
                   >
                     <Form.Item
                       className="custom-item custom-label"
-                      name="deadline"
+                      name=""
                       // rules={[{ required: true }]}
                       label="Deadline *"
                     >
-                      <DatePicker
+                      {/* <DatePicker
                         style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
                         className="inputEl"
                         format="YYYY-MM-DD"
-                        value={moment(deadlineString, 'YYYY-MM-DD')}
+                        value={'2024-01-18'}
                         disabledDate={disabledDate}
                         onChange={onChangeDate}
-                      />
+                      /> */}
+                      {deadlineString && (
+                        <DatePicker
+                          style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
+                          className="inputEl"
+                          format="YYYY-MM-DD"
+                          defaultValue={dayjs(deadlineString, dateFormat)}
+                          disabledDate={disabledDate}
+                          onChange={onChangeDate}
+                        />
+                      )}
                     </Form.Item>
+
+                    {/* <input value={deadlineString} /> */}
 
                     <div className="custom-item custom-label">
                       <div className="">
-                        <Switch
-                          value={isLimited}
-                          defaultChecked={isLimited}
-                          onChange={onChangeSwitch}
-                        />
-                        <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                        <Form.Item name="isLimited" style={{ marginTop: -10, marginBottom: 0 }}>
+                          <Switch
+                            value={isLimited}
+                            defaultChecked={isLimited}
+                            onChange={onChangeSwitch}
+                          />
+                          <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                        </Form.Item>
                       </div>
-                      <Form.Item className="mb-4" name="applyAgain">
+
+                      <Form.Item className="" styles={{ marginTop: -10 }} name="applyAgain">
                         {isLimited && (
                           <InputNumber className="inputEl" defaultValue={1} min={1} type="number" />
                         )}
                       </Form.Item>
 
-                      <Form.Item
-                        className="custom-label"
-                        name="share"
-                        label="Status"
-                      >
-                        <Input
-                          className="inputEl"
-                          disabled
-                        />
+                      <Form.Item className="custom-label" name="share" label="Status">
+                        <Input className="inputEl" disabled />
                       </Form.Item>
                     </div>
                   </div>
