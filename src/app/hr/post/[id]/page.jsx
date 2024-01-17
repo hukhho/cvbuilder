@@ -91,7 +91,7 @@ const HRUpdatePost = ({ params }) => {
   const [form] = Form.useForm();
   const { confirm } = Modal;
 
-  const [deadlineString, setDeadlineString] = useState('s');
+  const [deadlineString, setDeadlineString] = useState('');
 
   const [experts, setExperts] = useState([]);
   const [resumes, setResumes] = useState([]);
@@ -561,7 +561,7 @@ const HRUpdatePost = ({ params }) => {
                         />
                       )}
                     </Form.Item>
-
+                        {deadlineString}
                     {/* <input value={deadlineString} /> */}
 
                     <div className="custom-item custom-label">

@@ -107,9 +107,15 @@ const Home = () => {
     try {
       const result = await banUser(customerId);
       fetchData();
-      openNotification('bottomRight', `Save changed ${result}`, 'success');
+      notification.success({
+        message: 'Success',
+      });
+      // openNotification('bottomRight', `Save changed ${result}`, 'success');
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`, 'error');
+      notification.error({
+        message: 'Error',
+      });
+      // openNotification('bottomRight', `Error: ${error}`, 'error');
     }
   };
 
@@ -117,9 +123,15 @@ const Home = () => {
     try {
       const result = await unbanUser(customerId);
       fetchData();
+      notification.success({
+        message: 'Success',
+      });
       openNotification('bottomRight', `Save changed ${result}`, 'success');
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`, 'error');
+      notification.error({
+        message: 'Error',
+      });
+      // openNotification('bottomRight', `Error: ${error}`, 'error');
     }
   };
   const columns = [
