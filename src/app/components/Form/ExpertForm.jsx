@@ -245,6 +245,10 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
               style={{
                 marginTop: '-10px',
               }}
+              autoSize={{
+                minRows: 2,
+                maxRows: 10,
+              }}
               className="inputEl contact-section inputEl st-current"
               id="contact-section-form-0"
               placeholder="About"
@@ -331,12 +335,26 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
           >
             <Form.List
               name={['price']}
-              initialValue={[{ day: 1, price: 100 }]} // Initialize with one item
+              initialValue={[{ day: 1, price: 10000 }]} // Initialize with one item
+              // rules={[
+              //   {
+              //     validator: async (_, prices) => {
+              //       if (!prices || prices.length < 1) {
+              //         return Promise.reject(new Error('At least one price item is required'));
+              //       }
+              //     },
+              //   },
+              // ]}
               rules={[
                 {
                   validator: async (_, prices) => {
                     if (!prices || prices.length < 1) {
                       return Promise.reject(new Error('At least one price item is required'));
+                    }
+            
+                    const days = prices.map(item => item.day);
+                    if (new Set(days).size !== days.length) {
+                      return Promise.reject(new Error('Days must not be duplicated'));
                     }
                   },
                 },
@@ -350,16 +368,24 @@ const ExpertForm = ({ onCreated, data, resumeOptions }) => {
                         <Form.Item
                           noStyle
                           name={[subField.name, 'day']}
-                          rules={[{ required: true, message: 'Day is required' }]}
+                          // rules={[{ required: true, message: 'Day is required' }]}
+                          rules={[
+                            { required: true, message: 'Day is required' },
+                            { type: 'number', min: 1, max: 7, message: 'Days must be between 1 and 7' },
+                          ]}
                         >
-                          <Input addonAfter={<div>days</div>} placeholder="day" />
+                          <InputNumber addonAfter={<div>days</div>} placeholder="day" />
                         </Form.Item>
                         <Form.Item
                           noStyle
                           name={[subField.name, 'price']}
-                          rules={[{ required: true, message: 'Price is required' }]}
+                          // rules={[{ required: true, message: 'Price is required' }]}
+                          rules={[
+                            { required: true, message: 'Price is required' },
+                            { type: 'number', min: 10000, max: 50000000, message: 'Price must be between 10,000 and 50,000,000' },
+                          ]}
                         >
-                          <Input addonAfter={<div> vnđ</div>} placeholder="price" />
+                          <InputNumber addonAfter={<div> vnđ</div>} placeholder="price" />
                         </Form.Item>
 
                         {subFields.length > 1 && (

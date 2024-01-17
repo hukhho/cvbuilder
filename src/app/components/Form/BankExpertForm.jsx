@@ -125,7 +125,7 @@ const BankExpertForm = ({ onCreated, data }) => {
               }}
               className="inputEl contact-section inputEl st-current"
               id="contact-section-form-0"
-              placeholder="Charles Bloomberg"
+              placeholder="MBBANK"
             />
           </Form.Item>
 
@@ -147,7 +147,7 @@ const BankExpertForm = ({ onCreated, data }) => {
               }}
               className="inputEl contact-section inputEl st-current"
               id="contact-section-form-0"
-              placeholder="Charles Bloomberg"
+              placeholder="123456789"
             />
           </Form.Item>
 
@@ -169,7 +169,7 @@ const BankExpertForm = ({ onCreated, data }) => {
               }}
               className="inputEl contact-section inputEl st-current"
               id="contact-section-form-0"
-              placeholder="Charles Bloomberg"
+              placeholder="Nguyen Van A"
             />
           </Form.Item>
 

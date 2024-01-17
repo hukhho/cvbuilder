@@ -12,13 +12,11 @@ import { depositMoney, withdrawMoney } from '@/app/candidate/candidateServices';
 import useStore from '@/store/store';
 
 export default function Withdraw({ onCreated }) {
- 
   const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const { balance, refreshBalance } = useStore();
 
-   
   const [formData, setFormData] = useState({
     sentId: 'string',
     expenditure: 10000,
@@ -66,13 +64,14 @@ export default function Withdraw({ onCreated }) {
       notification.success({
         message: 'Success',
       });
-      console.log("result: ", result)
+      console.log('result: ', result);
 
-      refreshBalance()
+      refreshBalance();
     } catch (error) {
-      notification.success({
-        message: 'Error',
-      });    }
+      notification.error({
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`
+      })
+    }
   };
   return (
     <>
@@ -155,7 +154,6 @@ export default function Withdraw({ onCreated }) {
                               : ''}
                           </span>
                         </div>
-
                       </div>
 
                       <button

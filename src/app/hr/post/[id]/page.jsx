@@ -341,6 +341,21 @@ const HRUpdatePost = ({ params }) => {
     );
   };
 
+
+  const validateSalary = (rule, value) => {
+    if (!value) {
+      return Promise.reject('Please enter a salary');
+    }
+  
+    const pattern = /^(You'll love it|Up to \d+\$|Exact \d+\$|From \d+\$ to \d+\$)$/;
+  
+    if (!pattern.test(value)) {
+      return Promise.reject('Invalid salary format');
+    }
+  
+    return Promise.resolve();
+  };
+  
   return (
     <ConfigProvider>
       <UserLayout
@@ -518,6 +533,7 @@ const HRUpdatePost = ({ params }) => {
                     <Form.Item className="custom-label" name="salary" label="SALARY">
                       <Input className="inputEl" placeholder="Salary" />
                     </Form.Item>
+
                     <Form.Item className="custom-label" name="benefit" label="Benefit">
                       <Input.TextArea
                         className="inputEl"
