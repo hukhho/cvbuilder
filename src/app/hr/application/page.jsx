@@ -138,7 +138,7 @@ const HRApplicationPage = () => {
       dataIndex: 'coverLetters',
       render: cvs => (
         <a>
-          <Link href={`/hr/view-cover-letter/${cvs?.historyCoverLetterId}`}>{cvs?.title}</Link>{' '}
+          <Link href={`/hr/view-cover-letter/${cvs?.id}`}>{cvs?.title}</Link>{' '}
         </a>
       ),
     },
