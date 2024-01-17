@@ -404,6 +404,10 @@ const HRPost = () => {
                           label: 'Part Time',
                         },
                         {
+                          value: 'Remote',
+                          label: 'Remote',
+                        },
+                        {
                           value: 'Others',
                           label: 'Others',
                         },
@@ -524,6 +528,20 @@ const HRPost = () => {
                   <Form.Item className="custom-label" name="salary" label="SALARY">
                     <Input className="inputEl" placeholder="Salary" />
                   </Form.Item>
+
+                  {/* <Form.Item className="custom-label" name="salary" label="SALARY">
+                    <Select
+                      className="inputEl"
+                      placeholder="Select or Enter Salary"
+                      mode="multiple" // Set mode to "multiple" for custom input
+                      allowClear // Allow clearing the selection
+                    >
+                      <Option key="You'll love it">You'll love it</Option>
+                      <Option key="Up to 1,000$">Up to 1,000$</Option>
+                      <Option key="Exact 1,000$">Exact 1,000$</Option>
+                      <Option key="From 1,000$ to 2,000$">From 1,000$ to 2,000$</Option>
+                    </Select>
+                  </Form.Item> */}
 
                   <Form.Item className="custom-label" name="benefit" label="Benefit">
                     <Input.TextArea
