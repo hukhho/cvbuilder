@@ -190,7 +190,10 @@ const Home = ({ params }) => {
                           <span className="ml-2">{data?.salary}</span>
                         </div>
                       </div>
-                      <div className="flex mt-4 space-x-4 items-center" style={{ width: 100 }}>
+                      <div
+                        className="flex mt-4 space-x-4 items-center "
+                        style={{ minWidth: 150, whiteSpace: 'nowrap' }}
+                      >
                         {data?.skill?.map((skill, index) => {
                           return (
                             <div
@@ -233,7 +236,6 @@ const Home = ({ params }) => {
 
               <div className="flex mt-8">
                 <div className="p-8 bg-white" style={{ textAlign: 'left', width: '70%' }}>
-
                   <div>{data?.avatar && <Image src={data?.avatar} width={100} height={100} />}</div>
                   <div className="mt-8">
                     <Title style={{ width: 800 }} level={4}>
@@ -268,19 +270,15 @@ const Home = ({ params }) => {
                   >
                     <div>
                       <div className="flex">
-
                         <ScheduleFilled style={{ alignItems: 'start', paddingTop: 3 }} />
                         <div className="flex flex-col ml-2">
-
                           <span style={{ fontWeight: 'bold' }}>Posted date</span>
                           <p>{data?.createDate}</p>
                         </div>
                       </div>
                       <div className="flex">
-
                         <CalendarOutlined style={{ alignItems: 'start', paddingTop: 3 }} />
                         <div className="flex flex-col ml-2">
-
                           <span style={{ fontWeight: 'bold' }}>Deadline</span>
                           <p>{data?.deadline}</p>
                         </div>
@@ -296,7 +294,6 @@ const Home = ({ params }) => {
                       <div className="flex">
                         <SnippetsOutlined style={{ alignItems: 'start', paddingTop: 3 }} />
                         <div className="flex flex-col ml-2">
-
                           <span style={{ fontWeight: 'bold' }}>Job Type</span>
                           <p>{data?.workingType}</p>
                         </div>
@@ -307,7 +304,7 @@ const Home = ({ params }) => {
                           <span style={{ fontWeight: 'bold' }}>Preferred Languages</span>
                           <p>English</p>
                         </div>
-                      </div> 
+                      </div>
                     </div>
                   </Card>
                 </div>
