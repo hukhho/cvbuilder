@@ -27,7 +27,7 @@ const ViewCoverLetter = ({ params }) => {
       userRole={userRole}
       userHeader={<UserHeaderJob initialEnabledCategories={enabledCategories} />}
       content={
-        <div className="select-none" >
+        <div className="select-none">
           <Link href={'/job/application'} passHref>
             <button className="mt-16 ml-2">
               <FontAwesomeIcon icon={faChevronLeft} />
@@ -36,8 +36,7 @@ const ViewCoverLetter = ({ params }) => {
           </Link>
           <div className="mt-16"></div>
           <div style={{ pointerEvents: 'none' }}>
-          <CoverLetterCardV2 coverLetterId={params.id} />
-
+            <CoverLetterCardV2 coverLetterId={params.id} />
           </div>
         </div>
       }

@@ -24,7 +24,6 @@ import Search from 'antd/es/input/Search';
 
 const { Title } = Typography;
 
-
 const HRApplicationPage = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     'APPLICATION LIST': true,
@@ -71,7 +70,6 @@ const HRApplicationPage = () => {
     }
   };
 
-
   // const [cvFilter, setCvFilter] = useState('');
 
   // const handleCvFilterChange = (value) => {
@@ -82,7 +80,8 @@ const HRApplicationPage = () => {
   //   return item.cvs?.resumeName.toLowerCase().includes(cvFilter.toLowerCase());
   // });
 
-  const uniqueCvOptions = [...new Set(data.map((item) => item.cvs?.resumeName))];
+  const uniqueCvOptions = [...new Set(data.map(item => item.cvs?.resumeName))];
+  const uniqueCoverLetterOptions = [...new Set(data.map(item => item.coverLetters?.title))];
   const columns = [
     // {
     //   title: 'Job posting',
@@ -125,8 +124,9 @@ const HRApplicationPage = () => {
     {
       title: 'Cv',
       dataIndex: 'cvs',
-      filters: uniqueCvOptions.map((option) => ({ text: option, value: option })),
-      onFilter: (value, record) => record.cvs?.resumeName.toLowerCase().includes(value.toLowerCase()),
+      filters: uniqueCvOptions.map(option => ({ text: option, value: option })),
+      onFilter: (value, record) =>
+        record.cvs?.resumeName.toLowerCase().includes(value.toLowerCase()),
       render: cvs => (
         <a>
           <Link href={`/hr/view-cv/${cvs?.id}`}>{cvs?.resumeName}</Link>{' '}
@@ -136,9 +136,12 @@ const HRApplicationPage = () => {
     {
       title: 'Cover Letter',
       dataIndex: 'coverLetters',
-      render: cvs => (
+      filters: uniqueCoverLetterOptions.map(option => ({ text: option, value: option })),
+      onFilter: (value, record) =>
+        record.coverLetters?.title.toLowerCase().includes(value.toLowerCase()),
+      render: coverLetters => (
         <a>
-          <Link href={`/hr/view-cover-letter/${cvs?.id}`}>{cvs?.title}</Link>{' '}
+          <Link href={`/hr/view-coverletter/${coverLetters?.id}`}>{coverLetters?.title}</Link>{' '}
         </a>
       ),
     },
@@ -153,7 +156,7 @@ const HRApplicationPage = () => {
     {
       title: 'note',
       dataIndex: 'note',
-      render: text => <div>{text !== "undefined" ? text : null}</div>,
+      render: text => <div>{text !== 'undefined' ? text : null}</div>,
     },
     {
       title: 'email',
@@ -163,17 +166,17 @@ const HRApplicationPage = () => {
     //   title: 'Action',
     //   dataIndex: 'id',
     //   render: text => <div><Link href={`/hr/post/${text}`}><FontAwesomeIcon icon={faEdit} />Edit</Link> </div>,
-  
+
     // },
   ];
   // const statuses = ['Waiting', 'Overdue', 'Done'];
   // const dateRandome = ['3 days ago', 'Next Tuesday'];
-  
+
   // for (let i = 0; i < 100; i++) {
   //   const price = Math.floor(Math.random() * 10) + 1;
   //   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
   //   const status = statuses[Math.floor(Math.random() * statuses.length)];
-  
+
   //   data.push({
   //     key: i,
   //     resumeName: 'Pham Viet Thuan Thien',
