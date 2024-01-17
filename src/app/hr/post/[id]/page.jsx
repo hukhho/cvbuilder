@@ -91,7 +91,7 @@ const HRUpdatePost = ({ params }) => {
   const [form] = Form.useForm();
   const { confirm } = Modal;
 
-  const [deadlineString, setDeadlineString] = useState();
+  const [deadlineString, setDeadlineString] = useState('s');
 
   const [experts, setExperts] = useState([]);
   const [resumes, setResumes] = useState([]);

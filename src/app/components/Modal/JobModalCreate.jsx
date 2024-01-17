@@ -118,8 +118,10 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
     textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
   };
 
+  const [isSubmiting, setIsSumiting] = useState(false);
   const handleSubmit = async values => {
     try {
+      setIsSumiting(true);
       console.log('summary page: submit: ', values);
       const result = await createJobDescription(cvId, values);
       notification.success({
@@ -132,6 +134,8 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
         message: `Submit. Error: ${error}`,
       });
       console.log('Submit. Error:', error);
+    } finally {
+      setIsSumiting(false);
     }
   };
   const handleFormSubmit = async event => {
@@ -233,7 +237,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                           />
                         </Switch>{' '}
                         <div className="ml-10 flex">
-                          <span className="text-gray-300" style={{ fontSize: 13 }}>
+                          <span className="text-gray-600" style={{ fontSize: 13 }}>
                             Choose from job list
                           </span>
                         </div>
@@ -290,6 +294,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                                 height: 50,
                                 width: '100%',
                               }}
+                              disabled={enabled && selectedOption}
                               className="inputEl st-current"
                               placeholder="Java Developer"
                             />
@@ -314,6 +319,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                                 height: 50,
                                 width: '100%',
                               }}
+                              disabled={enabled && selectedOption}
                               className="inputEl st-current"
                               placeholder="Google"
                             />
@@ -339,6 +345,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                                 minRows: 3,
                                 maxRows: 5,
                               }}
+                              disabled={enabled && selectedOption}
                               className="inputEl st-current"
                               placeholder="Description"
                             />
@@ -354,6 +361,7 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
                         className="summary-section button"
                         id="summary-section-save-to-list"
                         type="submit"
+                        disabled={isSubmiting}
                       >
                         SAVE
                       </button>

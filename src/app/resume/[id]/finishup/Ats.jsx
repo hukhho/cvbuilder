@@ -16,7 +16,14 @@ import Link from 'next/link';
 import JobModalUpdate from '@/app/components/Modal/JobModalUpdate';
 import { Switch } from 'antd';
 
-const Ats = ({ cvId, dataAts, onCreatedAts, isAtsEnabled, handleChangeAtsEnabled }) => {
+const Ats = ({
+  cvId,
+  dataAts,
+  isCreatedAts,
+  onCreatedAts,
+  isAtsEnabled,
+  handleChangeAtsEnabled,
+}) => {
   console.log('dataAts:', dataAts);
   const [title, setTitle] = useState(dataAts?.title);
   const [description, setDescription] = useState(dataAts?.description);
@@ -176,7 +183,10 @@ const Ats = ({ cvId, dataAts, onCreatedAts, isAtsEnabled, handleChangeAtsEnabled
             </div>
           </div>
           <div>
-            {isFetched && (title === undefined || title === null) && (
+            {/* {!isCreatedAts && 'Create'}
+            {isCreatedAts && 'Update'} */}
+            
+            {(!isCreatedAts) && (
               <JobModalCreate
                 cvId={cvId}
                 onCreated={onCreatedAts}
@@ -186,13 +196,13 @@ const Ats = ({ cvId, dataAts, onCreatedAts, isAtsEnabled, handleChangeAtsEnabled
               />
             )}
           </div>
-          {!(isFetched && (title === undefined || title === null)) && (
+          {( isCreatedAts) && (
             <JobModalUpdate
               cvId={cvId}
               options={options}
               onCreated={onCreatedAts}
-              title={title}
-              description={description}
+              title={dataAts?.title}
+              description={dataAts?.description}
             />
           )}
           {/* <button className="keyword-button button" onClick={handleCLick}>

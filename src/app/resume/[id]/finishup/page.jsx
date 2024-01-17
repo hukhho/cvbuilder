@@ -254,11 +254,31 @@ export default function FinishUp({ params }) {
       const result = await getAts(params.id);
       setDataAts(result);
       console.log('Ats:data: ', result);
-      if (result?.title && result?.description) {
-        setIsCreatedAts(true);
-      }
-      const passedData = filterPass(result?.ats);
 
+      if (
+        (result?.title !== '' && result?.title !== null) &&
+        (result?.description !== '' && result?.description !== null)
+      ) {
+        setIsCreatedAts(true);
+        console.log('create');
+      } else {
+        setIsCreatedAts(false);
+        console.log('not create')
+      }
+
+      let passedData = filterPass(result?.ats);
+
+      // Trim all data
+      passedData = passedData?.map(passed => {
+        // Fix the typo 'assed' and use trim() correctly
+        return {
+          ...passed,
+          ats: passed?.ats?.trim()
+        };
+      });
+      
+      console.log("passedData: ", passedData);
+      
       setHighlightAts(passedData);
     } catch (error) {
       console.error('Error fetch ats:', error);
@@ -1098,8 +1118,25 @@ export default function FinishUp({ params }) {
     //Simulator delay 1 second
 
     setIsAtsEnabled(checked);
-    await new Promise(resolve => setTimeout(resolve, 10));
 
+    const fetchData = async () => {
+      try {
+        const data = await getFinishUp(params.id);
+        console.log('FinishUp data: ', data);
+        setTheOrder(data.theOrder);
+        setFinishUpData(data);
+        setTemplateSelected(data.templateType);
+        setToolbarState(data.cvStyle);
+        setSummary(data.summary);
+        setShowFinishupCV(true);
+        setIsCatchOut(false);
+        console.log('data.theOrder: ', data.theOrder);
+      } catch (error) {
+        console.error('Error fetching FinishUp data:', error);
+      }
+    };
+    fetchData();
+    await new Promise(resolve => setTimeout(resolve, 10));
     setShowFinishupCV(true);
   };
 

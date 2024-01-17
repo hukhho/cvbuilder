@@ -342,7 +342,11 @@ const CoverLetterFormV2 = ({
             </label>
           }
         >
-          <Input className="inputEl" placeholder="Software Engineer" />
+          <Input
+            className="inputEl"
+            disabled={!disabled && selectedOption}
+            placeholder="Software Engineer"
+          />
         </Form.Item>
 
         <Form.Item
@@ -355,7 +359,7 @@ const CoverLetterFormV2 = ({
             </label>
           }
         >
-          <Input placeholder="Google" />
+          <Input disabled={!disabled && selectedOption} placeholder="Google" />
         </Form.Item>
 
         <Form.Item
@@ -370,7 +374,8 @@ const CoverLetterFormV2 = ({
         >
           <TextArea
             style={{
-              fontWeight: '400',
+              fontWeight: !disabled && selectedOption ? '700' : '400',
+              color: !disabled && selectedOption ? 'black' : 'black',
               background: 'white',
               height: 'auto',
               resize: 'none',
@@ -379,6 +384,7 @@ const CoverLetterFormV2 = ({
               minRows: 2,
               maxRows: 10,
             }}
+            disabled={!disabled && selectedOption}
             className="inputEl"
             rows={6}
             placeholder="Copy and paste the job description"

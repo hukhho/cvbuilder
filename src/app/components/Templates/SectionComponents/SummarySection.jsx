@@ -15,6 +15,20 @@ const SummarySection = ({
   highlightAts,
   handleDescriptionChange,
 }) => {
+  //Decode html to string like &nbsp; to ' '
+
+  
+  // const decodeHtml = (html) => {
+  //   const doc = new DOMParser().parseFromString(html, 'text/html');
+  //   return doc.body.textContent || "";
+  // };
+
+  // const decodedSummary = decodeHtml(summary);
+
+  // // Rest of the component logic...
+
+  // const summaryState = useRef(decodedSummary);
+
   const summaryState = useRef(summary);
 
   const handleChange = (evt, targetName) => {
@@ -58,11 +72,11 @@ const SummarySection = ({
         highlightClassName="editableContent cursor-text  designStudio"
         searchWords={searchWords} // Use dynamically generated searchWords
         autoEscape={true}
-        textToHighlight={summary}
+        textToHighlight={summaryState.current}
       />
     ) : (
       <p className="editableContent cursor-text  designStudio " id="summary-summary">
-        {summary}
+        {summaryState.current}
       </p>
     );
   };

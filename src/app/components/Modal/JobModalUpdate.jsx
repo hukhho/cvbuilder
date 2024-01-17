@@ -118,8 +118,10 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
     textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
   };
 
+  const [isSubmiting, setIsSubmiting] = useState(false);
   const handleSubmit = async values => {
     try {
+      setIsSubmiting(true);
       console.log('summary page: submit: ', values);
       const result = await updateJobDescription(cvId, values);
       notification.success({
@@ -129,9 +131,11 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
       closeModal();
     } catch (error) {
       notification.error({
-        message: `Submit. Error: ${error}`,
+        message: `${error?.response?.data || error}`,
       });
       console.log('Submit. Error:', error);
+    } finally {
+      setIsSubmiting(false);
     }
   };
   const handleFormSubmit = async event => {
@@ -233,7 +237,7 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
                           />
                         </Switch>{' '}
                         <div className="ml-10 flex">
-                          <span className="text-gray-300" style={{ fontSize: 13 }}>
+                          <span className="text-gray-600" style={{ fontSize: 13 }}>
                             Choose from job list
                           </span>
                         </div>
@@ -292,6 +296,7 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
                               }}
                               className="inputEl st-current"
                               placeholder="Java Developer"
+                              disabled={enabled && selectedOption}
                             />
                           </Form.Item>
                           <Form.Item
@@ -316,6 +321,7 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
                               }}
                               className="inputEl st-current"
                               placeholder="Google"
+                              disabled={enabled && selectedOption}
                             />
                           </Form.Item>
                           <Form.Item
@@ -339,6 +345,7 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
                                 minRows: 3,
                                 maxRows: 5,
                               }}
+                              disabled={enabled && selectedOption}
                               className="inputEl st-current"
                               placeholder="Description"
                             />
@@ -354,6 +361,7 @@ const JobModalUpdate = ({ onCreated, cvId, title, description, options }) => {
                         className="summary-section button"
                         id="summary-section-save-to-list"
                         type="submit"
+                        disabled={isSubmiting}
                       >
                         SAVE
                       </button>

@@ -116,6 +116,7 @@ export default function FinishUp({ params }) {
       // Simulate fetching resumes (replace with your actual fetch logic)
       const fetchedCoverLetter = await getCoverLetter(params?.id);
       setCoverLetter(fetchedCoverLetter);
+      console.log('fetchedCoverLetter: ', fetchedCoverLetter);
     } catch (error) {
       console.error('There was an error fetching coverletters', error);
     }
@@ -151,15 +152,18 @@ export default function FinishUp({ params }) {
     if (jobIdParam && isApplyProcess) {
       fetchDataJob();
       fetchResumes();
-      fetchCoverletters();
-      fetchCoverletter();
     }
+    fetchCoverletters();
+
+    fetchCoverletter();
   }, []);
   const cvIdReal = coverLetter?.cvId;
   const jobLink = `/job/${jobIdParam}`;
   const handleApplyJob = () => {
     console.log('Apply this job now');
   };
+  console.log('Cover123: ', coverLetter);
+
   return (
     <main>
       <ConfigProvider>
