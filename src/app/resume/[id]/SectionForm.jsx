@@ -7,7 +7,13 @@ import CertificationForm from '@/app/components/Form/CertificationForm';
 import InvolvementForm from '@/app/components/Form/InvolvementForm';
 import SkillsForm from '@/app/components/Form/SkillForm';
 
-const SectionForm = ({ cvId, onExperienceCreated, experience, sectionType }) => {
+const SectionForm = ({
+  cvId,
+  onExperienceCreated,
+  experience,
+  sectionType,
+  onUserChange = () => {},
+}) => {
   // Customize the form based on the section type, add other logic as needed]
   if (sectionType === 'experiences') {
     return (
@@ -15,6 +21,7 @@ const SectionForm = ({ cvId, onExperienceCreated, experience, sectionType }) => 
         cvId={cvId}
         onExperienceCreated={onExperienceCreated}
         experience={experience}
+        onUserChange={onUserChange}
       />
     );
   }

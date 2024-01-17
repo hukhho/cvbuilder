@@ -256,14 +256,16 @@ export default function FinishUp({ params }) {
       console.log('Ats:data: ', result);
 
       if (
-        (result?.title !== '' && result?.title !== null) &&
-        (result?.description !== '' && result?.description !== null)
+        result?.title !== '' &&
+        result?.title !== null &&
+        result?.description !== '' &&
+        result?.description !== null
       ) {
         setIsCreatedAts(true);
         console.log('create');
       } else {
         setIsCreatedAts(false);
-        console.log('not create')
+        console.log('not create');
       }
 
       let passedData = filterPass(result?.ats);
@@ -273,12 +275,12 @@ export default function FinishUp({ params }) {
         // Fix the typo 'assed' and use trim() correctly
         return {
           ...passed,
-          ats: passed?.ats?.trim()
+          ats: passed?.ats?.trim(),
         };
       });
-      
-      console.log("passedData: ", passedData);
-      
+
+      console.log('passedData: ', passedData);
+
       setHighlightAts(passedData);
     } catch (error) {
       console.error('Error fetch ats:', error);
@@ -1674,23 +1676,21 @@ export default function FinishUp({ params }) {
                                     <span className="flex flex text-sm font-medium">
                                       {/* <span>{version.timestamp}</span> */}
                                       <span className="flex flex-col">
-                                        {version?.id === 0 ? (
-                                          'Current version'
-                                        ) : (
-                                          <div className="flex flex-col">
-                                            {' '}
-                                            <div>{moment(version?.timestamp)?.fromNow()}</div>
-                                            <div>
-                                              {moment(version?.timestamp).format(
-                                                'HH:mm:ss DD/MM/YYYY',
-                                              )}
+                                        <div className=''style={{ width: 100}}>
+                                          {version?.id === 0 ? (
+                                            'Current version'
+                                          ) : (
+                                            <div className="flex flex-col">
+                                              {' '}
+                                              <div>{moment(version?.timestamp)?.fromNow()}</div>
+                                              <span style={{ color: 'gray', fontSize: '11px' }}>
+                                                {moment(version?.timestamp).format(
+                                                  'HH:mm:ss DD/MM/YYYY',
+                                                )}
+                                              </span>
                                             </div>
-                                          </div>
-                                        )}
-
-                                        {/* <div style={{ color: 'gray', fontSize: '11px' }}>
-                                          {moment(record.createDate).format('HH:mm:ss DD/MM/YYYY')}
-                                        </div>{' '} */}
+                                          )}
+                                        </div>
                                       </span>
                                       <span className="ml-2 text-gray-500">
                                         {version?.jobPosting?.name}

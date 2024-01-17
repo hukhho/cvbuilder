@@ -47,7 +47,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt, faCopy } from '@fortawesome/free-solid-svg-icons';
 import useStore from '@/store/store';
 
-const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
+const ExperienceForm = ({ cvId, onExperienceCreated, experience, onUserChange }) => {
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
   const inputRef = useRef(null);
@@ -66,7 +66,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
     inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
   };
   useEffect(resizeTextArea, [inputValue]);
-
+      
   useEffect(() => {
     if (experience) {
       setIsEditMode(true); // Set to edit mode if experience prop is provided
@@ -99,6 +99,7 @@ const ExperienceForm = ({ cvId, onExperienceCreated, experience }) => {
       setIsEditMode(false);
     }
   }, [experience, form]);
+  
 
   const handleSubmit = async values => {
     setIsSubmiting(true);

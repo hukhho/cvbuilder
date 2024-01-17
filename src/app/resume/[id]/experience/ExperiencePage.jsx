@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Alert, Button, Card, ConfigProvider, Skeleton, Space, notification } from 'antd';
+import { Alert, Button, Card, ConfigProvider, Modal, Skeleton, Space, notification } from 'antd';
 import dynamic from 'next/dynamic';
 
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -28,8 +28,11 @@ import { fieldConfig } from '../sectionConfig';
 import StandarListV2 from '@/app/components/List/StandarListV2';
 import CustomSections from '@/app/components/Templates/SectionComponents/CustomSection';
 import SectionForm from '../SectionForm';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const { Meta } = Card;
+const { confirm } = Modal;
+
 
 const ExperiencePage = ({ params, sectionTypeName, titleHeader, enabledCategories, videoUrl }) => {
   // const sectionTypeName = 'experiences';
@@ -176,6 +179,30 @@ const ExperiencePage = ({ params, sectionTypeName, titleHeader, enabledCategorie
       setIsDnd(true);
     }
   };
+
+  const confirmFinish = async () => {
+    try {
+      setSelectedExperience(null);
+
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+  const showPromiseConfirm = () => {
+    confirm({
+      title: 'If you continue without saving, you will lose your changes. Are you sure you want to continue?',
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, you will loss your change',
+      async onOk() {
+        await confirmFinish();
+      },
+      onCancel() {},
+    });
+  };
+
+  const onClickCreateNew = () => {
+    showPromiseConfirm()
+  }
   return (
     <main>
       <ConfigProvider>
@@ -262,6 +289,11 @@ const ExperiencePage = ({ params, sectionTypeName, titleHeader, enabledCategorie
                           config={field} // Pass the configuration object
                         />
                       ))}
+
+                    {isShow && !isDnd && !isLoadingPage && selectedExperience && (
+                      <button className="button cta" onClick={onClickCreateNew}>Create new one</button>
+                    )}
+
                     {isShow && isDnd && !isLoadingPage && experiences?.length > 0 && (
                       <ExperienceSort
                         cvId={cvId}

@@ -104,7 +104,7 @@ const CoverLetterFormV2 = ({
       job_description: option?.description,
     });
   };
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const toggle = () => {
     setDisabled(!disabled);
@@ -293,7 +293,7 @@ const CoverLetterFormV2 = ({
         </Form.Item>
 
         <div className="flex mt-10 mb-10">
-          <Switch className="mr-2" onClick={toggle} defaultChecked />
+          <Switch className="mr-2" onClick={toggle} defaultChecked={!disabled} />
 
           <span className="" style={{ fontSize: 13 }}>
             Choose from job list
