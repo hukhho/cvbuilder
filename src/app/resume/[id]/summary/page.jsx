@@ -117,17 +117,30 @@ const Summary = ({ params }) => {
   //   { id: 1, version: 'This is content 1' },
   //   { id: 2, version: 'This is content 2' },
   // ];
+  const [isSubmiting, setIsSubmiting] = useState(false);
   const handleSubmit = async values => {
     try {
+      setIsSubmiting(true);
+      notification.info({
+        message: 'Generating Summary...',
+      });
       console.log('summary page: submit: ', values);
       const result = await postSummaryAi(cvId, values);
       // console.log(summary, result);
-      openNotification('bottomRight', 'Generated summary successfully');
+      notification.success({
+        message: 'Generated summary successfully',
+      });
+      // openNotification('bottomRight', 'Generated summary successfully');
       fetchSummaryHistory();
     } catch (error) {
       console.log('Submit. Error:', error);
-      openNotification('bottomRight', `Error: ${error}`);
+      // openNotification('bottomRight', `Error: ${error}`);
+      notification.error({
+        message: error?.response?.data || error?.response?.data?.message || 'Something went wrong!',
+      });
       fetchSummaryHistory();
+    } finally {
+      setIsSubmiting(false);
     }
   };
   const handleApplyAi = async content => {
@@ -157,7 +170,7 @@ const Summary = ({ params }) => {
     const data = await getSummary(cvId);
     console.log('fetchData ', data);
     console.log('Summary: ', data.summary);
-    message.success('Hello World');
+    // message.success('Hello World');
 
     setSummaryData(data); // Updated to setSummaryData
     setIsAiWrite(false);
@@ -294,7 +307,7 @@ const Summary = ({ params }) => {
                           />
                         </Form.Item>
                         <button
-                          disabled={!isReady}
+                          disabled={!isReady || isSubmiting}
                           href=""
                           data-size="large"
                           data-theme="default"
@@ -302,6 +315,7 @@ const Summary = ({ params }) => {
                           className="summary-section button"
                           id="summary-section-save-to-list"
                           type="submit"
+                          hidden={isAiWrite}
                         >
                           {isReady ? 'AI WRITER READY' : 'AI WRITER NOT READY'}
                         </button>

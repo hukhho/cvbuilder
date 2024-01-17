@@ -135,6 +135,7 @@ const SummaryForm = ({ cvId, onCreated, data, isAiWrite, aiContent, onSubmit }) 
             className="summary-section button"
             id="summary-section-save-to-list"
             type="submit"
+            hidden={isAiWrite}
           >
             Save summary info
           </button>
