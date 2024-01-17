@@ -41,6 +41,7 @@ import { useRouter } from 'next/navigation';
 import HeaderHR from '@/app/components/HeaderHR';
 import useStore from '@/store/store';
 import { Dialog, Transition } from '@headlessui/react';
+import dayjs from 'dayjs';
 
 const { Title } = Typography;
 const generateMockExperts = () => {
@@ -67,7 +68,7 @@ const HRPost = () => {
 
   const [form] = Form.useForm();
 
-  const [deadlineString, setDeadlineString] = useState('2023-11-29');
+  const [deadlineString, setDeadlineString] = useState('');
   const [options, setOptions] = useState([]);
 
   const [data, setData] = useState();
@@ -207,6 +208,12 @@ const HRPost = () => {
 
   const onFinish = async values => {
     // values.salary = salaryName;
+    if (deadlineString === '') {
+      notification.error({
+        message: 'Please select a deadline',
+      });
+      return;
+    }
 
     values.deadline = deadlineString;
     values.isLimited = isLimited;
@@ -235,7 +242,7 @@ const HRPost = () => {
       const result = await postHrDraft(values); // You should implement this function
       // Handle the result, e.g., show a success message
       console.log('Draft saved:', result);
-      setIsOpen(true);
+      // setIsOpen(true);
       notification.success({
         message: 'Save changed',
       });
@@ -251,7 +258,6 @@ const HRPost = () => {
     router.push('/hr/list');
   };
 
-
   const validateDate = (_, date) => {
     // Convert the selected date to a moment object
     const selectedDate = moment(date);
@@ -265,6 +271,19 @@ const HRPost = () => {
     } else {
       return Promise.reject('The date must be greater than or equal to today');
     }
+  };
+
+  // eslint-disable-next-line arrow-body-style
+  // const disabledDate = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current < dayjs().endOf('day');
+  // };
+  const disabledDate = current => {
+    // Disable dates before today and more than 60 days in the future
+    return (
+      current &&
+      (current < moment().endOf('day') || current > moment().add(60, 'days').endOf('day'))
+    );
   };
 
   return (
@@ -352,7 +371,8 @@ const HRPost = () => {
                     size: 'large',
                     workingType: 'Full Time', // Set the default value here
                     applyAgain: 1,
-                    salary: "From 1,000$ to 2,000$",
+                    salary: 'From 1,000$ to 2,000$',
+                    isLimited: isLimited,
                   }}
                   requiredMark={false}
                   form={form}
@@ -546,34 +566,36 @@ const HRPost = () => {
                     <Form.Item
                       className="custom-item custom-label"
                       name="deadline"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please select a deadline',
-                        },
-                 
-                      ]}
+                      // rules={[
+                      //   {
+                      //     required: true,
+                      //     message: 'Please select a deadline',
+                      //   },
+                      // ]}
                       label="Deadline *"
                     >
                       <DatePicker
                         style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
                         className="inputEl"
                         format="YYYY-MM-DD"
+                        disabledDate={disabledDate}
                         onChange={onChangeDate}
                       />
-                
                     </Form.Item>
 
                     <div className="custom-item custom-label">
                       <div className="">
-                        <Switch
-                          value={isLimited}
-                          defaultChecked={isLimited}
-                          onChange={onChangeSwitch}
-                        />
-                        <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                        <Form.Item name="isLimited" style={{ marginTop: -10, marginBottom: 0 }}>
+                          <Switch
+                            value={isLimited}
+                            defaultChecked={isLimited}
+                            onChange={onChangeSwitch}
+                          />
+                          <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                        </Form.Item>
                       </div>
-                      <Form.Item className="mb-4" name="applyAgain">
+
+                      <Form.Item className="" styles={{ marginTop: -10 }} name="applyAgain">
                         {isLimited && (
                           <InputNumber className="inputEl" defaultValue={1} min={1} type="number" />
                         )}

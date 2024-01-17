@@ -50,19 +50,33 @@ const columns = [
       }
       return <Badge status="warning" text={text} />;
     },
+    filters: [
+      { text: 'Published', value: 'Published' },
+      { text: 'Draft', value: 'Draft' },
+      { text: 'Overdue', value: 'Overdue' },
+      { text: 'Unpublish', value: 'Unpublish' },
+      { text: 'Disable', value: 'Disable' },
+    ],
+    onFilter: (value, record) => record.status === value,
   },
-  
+
   {
     title: 'View',
     dataIndex: 'view',
+    sorter: (a, b) => a.view - b.view, // Add sorter function for sorting by 'view'
+    // You can add any custom rendering logic for the 'View' column here
   },
   {
     title: 'Application',
     dataIndex: 'application',
+    sorter: {
+      compare: (a, b) => a.application - b.application,
+      multiple: 2,
+    },
   },
 
   {
-    title: 'Date Application',
+    title: 'Create Date',
     dataIndex: 'timestamp',
     // sorter: {
     //   compare: (a, b) => a.revicedDay - b.revicedDay,
@@ -122,7 +136,6 @@ const Home = () => {
       const fetchedDataFromAPI = await getHrPostList();
       setData(fetchedDataFromAPI);
       setFilteredData(fetchedDataFromAPI);
-
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
     }
@@ -135,7 +148,7 @@ const Home = () => {
   }, []);
   const [searchValue, setSearchValue] = useState();
 
-  const onSearch = (value) => {
+  const onSearch = value => {
     if (value) {
       setSearchValue(value);
       const filtered = data.filter(item => item?.title.toLowerCase().includes(value.toLowerCase()));
@@ -145,7 +158,6 @@ const Home = () => {
       setFilteredData(data);
     }
   };
-
 
   return (
     <ConfigProvider>

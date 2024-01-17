@@ -79,6 +79,9 @@ const CoverLetterPreviewV2 = React.forwardRef(({ coverLetterId }, ref) => {
   //   addressto: 'Dear Google',
   //   content: content2.description,
   // };
+
+  const [isFetched, setIsFetched] = useState(false);
+
   async function fetchData() {
     try {
       const content2 = await getCoverLetterHistory(coverLetterId);
@@ -93,10 +96,12 @@ const CoverLetterPreviewV2 = React.forwardRef(({ coverLetterId }, ref) => {
     } catch (error) {
       // Handle any errors that occur during the data fetch
       console.error('Error fetching data:', error);
+    } finally {
+      setIsFetched(true);
     }
   }
   useEffect(() => {
-    if (!content.content) {
+    if (!isFetched) {
       fetchData();
     }
   }, [content]);

@@ -99,8 +99,18 @@ const HRUpdatePost = ({ params }) => {
       const fetchedJobPosting = await getJobPosting(params.id);
       console.log('fetchedJobPosting: ', fetchedJobPosting);
       setData(fetchedJobPosting);
-      fetchedJobPosting.deadline = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
-      form.setFieldsValue(fetchedJobPosting);
+      
+      // fetchedJobPosting.deadline = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
+              // Convert the deadline to a moment object
+      const deadlineMoment = moment(fetchedJobPosting.deadline, 'YYYY-MM-DD');
+      setDeadlineString(deadlineMoment.format('YYYY-MM-DD'));
+
+      form.setFieldsValue({
+        ...fetchedJobPosting,
+        deadline: deadlineMoment, // Set the deadline field as a moment object
+      });
+
+      // form.setFieldsValue(fetchedJobPosting);
       //   const fetchedResumes = await getResumes();
       //   console.log('fetchedExperts: ', fetchedExperts);
       // const similatorFetch =
@@ -293,6 +303,14 @@ const HRUpdatePost = ({ params }) => {
       },
       onCancel() {},
     });
+  };
+
+  const disabledDate = current => {
+    // Disable dates before today and more than 60 days in the future
+    return (
+      current &&
+      (current < moment().endOf('day') || current > moment().add(60, 'days').endOf('day'))
+    );
   };
 
   return (
@@ -498,13 +516,15 @@ const HRUpdatePost = ({ params }) => {
                     <Form.Item
                       className="custom-item custom-label"
                       name="deadline"
-                      rules={[{ required: true }]}
+                      // rules={[{ required: true }]}
                       label="Deadline *"
                     >
                       <DatePicker
                         style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
                         className="inputEl"
                         format="YYYY-MM-DD"
+                        value={moment(deadlineString, 'YYYY-MM-DD')}
+                        disabledDate={disabledDate}
                         onChange={onChangeDate}
                       />
                     </Form.Item>

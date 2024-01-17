@@ -74,7 +74,7 @@ const columns = [
     dataIndex: 'cvs',
     render: cvs => (
       <a>
-        <Link href={`/job/view-cv/${cvs?.historyId}`}>{cvs?.resumeName}</Link>{' '}
+        <Link href={`/job/view-cv/${cvs?.id}`}>{cvs?.resumeName}</Link>{' '}
       </a>
     ),
   },
@@ -83,7 +83,7 @@ const columns = [
     dataIndex: 'coverLetters',
     render: cvs => (
       <a>
-        <Link href={`/job/view-cover-letter/${cvs?.historyCoverLetterId}`}>{cvs?.title}</Link>
+        <Link href={`/job/view-cover-letter/${cvs?.id}`}>{cvs?.title}</Link>
       </a>
     ),
   },
