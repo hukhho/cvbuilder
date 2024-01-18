@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
   Alert,
@@ -63,6 +63,8 @@ import CustomSections from '@/app/components/Templates/SectionComponents/CustomS
 import CreateResumeReviewConCac from '@/app/components/Modal/CreateResumeReviewConCac';
 import _debounce from 'lodash/debounce';
 import { set } from 'lodash';
+import { useRouter } from 'next/navigation';
+import { Dialog, Transition } from '@headlessui/react';
 
 // import { getRequestList } from '../../reviewServices';
 const { confirm } = Modal;
@@ -494,7 +496,6 @@ export default function FinishUp({ params }) {
     handleUserChange();
     console.log('New finishup data after handleSummaryChange:', newFinishUpData);
     console.log('finishupdata after handleSummaryChange:', finishUpData);
-
   };
   const [isCatchOut, setIsCatchOut] = useState(false);
 
@@ -597,7 +598,6 @@ export default function FinishUp({ params }) {
     }
     setIsCatchOut(true);
   };
-
 
   const sections = [
     {
@@ -838,7 +838,6 @@ export default function FinishUp({ params }) {
 
             updateSectionOrder(`customSection${index + 1}`, sortedExperiences);
           }}
-
           isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
@@ -1029,6 +1028,18 @@ export default function FinishUp({ params }) {
   };
 
   const [open, setOpen] = useState(false);
+  const [isOpenSuccess, setIsOpenSuccess] = useState(false);
+  const [resumeToOpen, setResumeToOpen] = useState(null);
+
+  const handleSuccess = resumeId => {
+    console.log('handleSuccess');
+    // setIsSuccess(true);
+    setResumeToOpen(resumeId);
+    setIsOpenSuccess(true);
+  };
+  function closeModal() {
+    setIsOpenSuccess(false);
+  }
 
   const [inputValue, setInputValue] = useState('');
 
@@ -1104,6 +1115,7 @@ export default function FinishUp({ params }) {
       notification.success({
         message: 'Finish create new resume success',
       });
+      handleSuccess(result?.id);
     } catch (error) {
       notification.error({
         message: `Finish create new resume. Error: ${error?.response?.data}`,
@@ -1174,6 +1186,8 @@ export default function FinishUp({ params }) {
       notification.success({
         message: 'Finish overwrite success',
       });
+      handleSuccess(fetchedData?.cvId);
+
     } catch (error) {
       notification.error({
         message: `Finish overwrite. Error: ${error?.response?.data}`,
@@ -1214,6 +1228,16 @@ export default function FinishUp({ params }) {
       },
       onCancel() {},
     });
+  };
+
+  const router = useRouter();
+  const handleViewApply = () => {
+    console.log('View you resume');
+    if (resumeToOpen) {
+      router.push(`/resume/${resumeToOpen}/finishup`);
+    } else {
+      return;
+    }
   };
 
   return (
@@ -1277,8 +1301,60 @@ export default function FinishUp({ params }) {
                         </button>
                       </Link>
 
+                      <Transition appear show={isOpenSuccess} as={Fragment}>
+                        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                          <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                          >
+                            <div className="fixed inset-0 bg-black/25" />
+                          </Transition.Child>
+
+                          <div className="fixed inset-0 overflow-y-auto">
+                            <div className="flex min-h-full items-center justify-center p-4 text-center">
+                              <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
+                              >
+                                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                  <Dialog.Title
+                                    as="h3"
+                                    className="text-lg font-medium leading-6 text-gray-900"
+                                  >
+                                    Successful
+                                  </Dialog.Title>
+                                  <div className="mt-2">
+                                    <p className="text-sm text-gray-500">
+                                      Your resume has been save successfully.
+                                    </p>
+                                  </div>
+                                  <div className="mt-4">
+                                    <button
+                                      type="button"
+                                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                      onClick={handleViewApply}
+                                    >
+                                      View you resume
+                                    </button>
+                                  </div>
+                                </Dialog.Panel>
+                              </Transition.Child>
+                            </div>
+                          </div>
+                        </Dialog>
+                      </Transition>
                       <Card>
-                        <div className="flex justify-start">
+                        <div className="flex justify-start mt-10 mb-10">
                           <div style={{ textAlign: 'left' }}>
                             {/* <textarea
                               className="inputEl"
@@ -1304,7 +1380,7 @@ export default function FinishUp({ params }) {
                               onConfirm={onConfirm}
                             />
                             <Alert
-                              className="mt-4 mb-4"
+                              className="mt-10 mb-10"
                               message="This is your resume after review"
                               description="You can edit in this and apply to your old resume or save this to a new resume"
                               type="info"
