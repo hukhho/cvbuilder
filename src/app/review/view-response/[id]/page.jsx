@@ -302,6 +302,8 @@ export default function FinishUp({ params }) {
     newFinishUpData.theOrder = updatedOrder;
 
     setFinishUpData(newFinishUpData);
+    handleUserChange();
+
     console.log('New finishup data after:', newFinishUpData);
   };
 
@@ -572,6 +574,31 @@ export default function FinishUp({ params }) {
   console.log('Experiences Order:', experiencesOrderSection);
   console.log('Skills Order:', skillsOrderSection);
 
+  const updateSectionOrder = (sectionId, newOrder) => {
+    if (sectionId.startsWith('customSection')) {
+      console.log('');
+      const sectionIndex = parseInt(sectionId.replace('customSection', ''), 10) - 1;
+      if (!isNaN(sectionIndex) && finishUpData?.customSections[sectionIndex]?.sectionData) {
+        console.log('Custom section index::newOrder', sectionIndex, newOrder);
+
+        const newFinishUpData = { ...finishUpData };
+        newFinishUpData.customSections[sectionIndex].sectionData = newOrder;
+        setFinishUpData(newFinishUpData);
+      }
+    } else {
+      // Assuming `finishUpData` is your state variable containing section orders
+      const newFinishUpData = { ...finishUpData };
+      newFinishUpData[sectionId] = newOrder;
+
+      setFinishUpData(newFinishUpData);
+      handleUserChange();
+
+      console.log(`New order for ${sectionId}:`, newFinishUpData);
+    }
+    setIsCatchOut(true);
+  };
+
+
   const sections = [
     {
       id: 'information',
@@ -615,12 +642,7 @@ export default function FinishUp({ params }) {
               sortedExperiences[i].theOrder = i + 1;
             }
 
-            console.log('Finishup data:', finishUpData);
-            let newFinishUpData = { ...finishUpData };
-            newFinishUpData.experiences = sortedExperiences;
-
-            setFinishUpData(newFinishUpData);
-            console.log('New finishup data:', newFinishUpData);
+            updateSectionOrder('experiences', sortedExperiences);
           }}
           isEnableAts={false}
           isEditable={true}
@@ -642,6 +664,14 @@ export default function FinishUp({ params }) {
           educations={filteredEducations}
           isEnableAts={false}
           isEditable={true}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('educations', sortedExperiences);
+          }}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -660,6 +690,14 @@ export default function FinishUp({ params }) {
           involvements={filteredInvolvements}
           isEnableAts={false}
           isEditable={true}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('involvements', sortedExperiences);
+          }}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -678,6 +716,14 @@ export default function FinishUp({ params }) {
           projects={filteredProjects}
           isEnableAts={false}
           isEditable={true}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('projects', sortedExperiences);
+          }}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -696,6 +742,14 @@ export default function FinishUp({ params }) {
           certifications={filteredCertifications}
           isEnableAts={false}
           isEditable={true}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('certifications', sortedExperiences);
+          }}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -712,10 +766,17 @@ export default function FinishUp({ params }) {
           highlightAts={highlightAts}
           templateType={templateSelected}
           skills={filteredSkills}
-          onChangeOrder={handleSkillsOrderChange}
           canBeDisplayed={filteredSkills !== null}
           isEnableAts={false}
           isEditable={true}
+          onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
+            for (let i = 0; i < sortedExperiences.length; i++) {
+              sortedExperiences[i].theOrder = i + 1;
+            }
+
+            updateSectionOrder('skills', sortedExperiences);
+          }}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -760,15 +821,25 @@ export default function FinishUp({ params }) {
           templateType={templateSelected}
           customSectionTitle={customSectionTitle}
           experiences={filteredCustomSection}
+          // onChangeOrder={sortedExperiences => {
+          //   for (let i = 0; i < sortedExperiences.length; i++) {
+          //     sortedExperiences[i].theOrder = i + 1;
+          //   }
+          //   console.log('sortedCustoms: ', sortedExperiences);
+          //   let newFinishUpData = { ...finishUpData };
+          //   // newFinishUpData.experiences = sortedExperiences;
+          //   // setFinishUpData(newFinishUpData);
+          // }}
           onChangeOrder={sortedExperiences => {
+            console.log('sortedExperiences', sortedExperiences);
             for (let i = 0; i < sortedExperiences.length; i++) {
               sortedExperiences[i].theOrder = i + 1;
             }
-            console.log('sortedCustoms: ', sortedExperiences);
-            let newFinishUpData = { ...finishUpData };
-            // newFinishUpData.experiences = sortedExperiences;
-            // setFinishUpData(newFinishUpData);
+
+            updateSectionOrder(`customSection${index + 1}`, sortedExperiences);
           }}
+
+          isEditable={true}
           handleRoleChange={handleRoleChange}
           handleOrgNameChange={handleOrgNameChange}
           handleDescriptionChange={handleDescriptionChange}
@@ -780,13 +851,13 @@ export default function FinishUp({ params }) {
       // order: customSection?.theOrder?.customSections1 || 99,
       order:
         index === 0
-          ? customSection?.theOrder?.customSections1 || 95
+          ? finishUpData?.theOrder?.customSections1 || 95
           : index === 1
-          ? customSection?.theOrder?.customSections2 || 96
+          ? finishUpData?.theOrder?.customSections2 || 96
           : index === 2
-          ? customSection?.theOrder?.customSections3 || 97
+          ? finishUpData?.theOrder?.customSections3 || 97
           : index === 3
-          ? customSection?.theOrder?.customSections4 || 98
+          ? finishUpData?.theOrder?.customSections4 || 98
           : 99,
       // order: customSection?.theOrder?.customSections1  || 99,
       canBeDrag: true,

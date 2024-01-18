@@ -68,7 +68,7 @@ const Statitics = ({ expert }) => {
           </div>
           <div className="">
             <p style={{ fontWeight: 'bold' }}>{expert?.star} stars</p>
-            <span>{expert?.numberReview} reviews from candidate</span>
+            <span>{expert?.numberComment} reviews from candidate</span>
           </div>
         </div>{' '}
         <div className="flex" style={{ width: 200 }}>

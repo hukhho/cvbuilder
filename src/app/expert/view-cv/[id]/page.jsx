@@ -838,13 +838,13 @@ export default function FinishUp({ params }) {
     {
       id: 'skills',
       component: (
-          //     <ProjectSection
-    //       templateType={templateSelected}
-    //       projects={filteredProjects}
-    //       isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
-    //       onComment={handleMouseUp}
-    //       onDeleteComment={onDeleteComment}
-    //     />
+        //     <ProjectSection
+        //       templateType={templateSelected}
+        //       projects={filteredProjects}
+        //       isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
+        //       onComment={handleMouseUp}
+        //       onDeleteComment={onDeleteComment}
+        //     />
         <SkillsSection
           canBeDisplayed={true}
           isShowCommentBox={fetchedData?.request?.status === 'Done' ? false : true}
@@ -905,14 +905,23 @@ export default function FinishUp({ params }) {
           }}
         />
       ),
-      order: customSection?.theOrder || 99,
+      order:
+        index === 0
+          ? finishUpData?.theOrder?.customSections1 || 95
+          : index === 1
+          ? finishUpData?.theOrder?.customSections2 || 96
+          : index === 2
+          ? finishUpData?.theOrder?.customSections3 || 97
+          : index === 3
+          ? finishUpData?.theOrder?.customSections4 || 98
+          : 99,
       canBeDrag: true,
       canBeDisplayed: true,
     });
   });
 
   sections.sort((a, b) => a.order - b.order);
-  console.log("sections.sort: ", sections)
+  console.log('sections.sort: ', sections);
   const filteredSections = sections.filter(section => {
     if (section.id === 'educations') {
       return filteredEducations && filteredEducations.length > 0;
@@ -931,7 +940,7 @@ export default function FinishUp({ params }) {
     }
     return true; // Include other sections by default
   });
-  console.log("filteredSections: ", filteredSections)
+  console.log('filteredSections: ', filteredSections);
   const [overall, setOverall] = useState(fetchedData?.overall ? fetchedData.overall : '');
 
   const handleChangeOverall = event => {
@@ -1378,16 +1387,18 @@ export default function FinishUp({ params }) {
                     </>
                   ) : null}
                   <Suspense fallback={<div>Loading...</div>}>
-                    <CVLayoutReviewerView
-                      key={[templateSelected, toolbarState]}
-                      layoutStyles={toolbarState}
-                      sectionsOrder={sectionsOrder}
-                      onSectionsOrderChange={handleSectionsOrderChange}
-                    >
-                      {filteredSections?.map(
-                        section => section.canBeDisplayed && section.component,
-                      )}
-                    </CVLayoutReviewerView>
+                    {fetchedData?.request?.status && (
+                      <CVLayoutReviewerView
+                        key={[templateSelected, toolbarState]}
+                        layoutStyles={toolbarState}
+                        sectionsOrder={sectionsOrder}
+                        onSectionsOrderChange={handleSectionsOrderChange}
+                      >
+                        {filteredSections?.map(
+                          section => section.canBeDisplayed && section.component,
+                        )}
+                      </CVLayoutReviewerView>
+                    )}
                   </Suspense>
 
                   {fetchedData?.request?.status === 'Waiting' && (

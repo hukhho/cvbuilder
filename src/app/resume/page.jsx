@@ -49,6 +49,7 @@ const ResumeIndex = () => {
 
     if (!resumes.length) {
       fetchResumes();
+      refreshResumes();
     }
   }, []);
 
