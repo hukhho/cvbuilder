@@ -30,7 +30,8 @@ const ResumeIndex = () => {
   const [enabledCategories, setEnabledCategories] = useState({
     RESUMES: true,
   });
-  const { avatar, email, userRole } = useStore();
+  const { avatar, email, userRole, refreshResumes } = useStore();
+  // const { resumes, , finishUpData, refreshFinishUpData } = useStore();
 
   const fetchResumes = async () => {
     try {
@@ -54,6 +55,7 @@ const ResumeIndex = () => {
   const onCreated = () => {
     console.log('onCreated hihi');
     fetchResumes();
+    refreshResumes();
   };
 
   return (

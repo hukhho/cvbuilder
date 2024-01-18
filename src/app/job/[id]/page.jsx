@@ -235,27 +235,27 @@ const Home = ({ params }) => {
               </div>
 
               <div className="flex mt-8">
-                <div className="p-8 bg-white" style={{ textAlign: 'left', width: '70%' }}>
+                <Card className="p-8 bg-white" style={{ textAlign: 'left', width: '70%' }}>
                   <div>{data?.avatar && <Image src={data?.avatar} width={100} height={100} />}</div>
                   <div className="mt-8">
                     <Title style={{ width: 800 }} level={4}>
                       What can we offer?
                     </Title>
-                    <div>{data?.benefit}</div>
+                    <p className='text-justify'>{data?.benefit}</p>
                   </div>
                   <div className="mt-4">
                     <Title style={{ width: 800 }} level={4}>
                       Job descriptions
                     </Title>
-                    <div>{data?.description}</div>
+                    <p className='text-justify'>{data?.description}</p>
                   </div>
                   <div className="mt-4">
                     <Title style={{ width: 800 }} level={4}>
                       Requirements
                     </Title>
-                    <div>{data?.requirement}</div>
+                    <p className='text-justify'>{data?.requirement}</p>
                   </div>
-                </div>
+                </Card>
                 <div style={{ width: '30%', position: 'relative' }}>
                   <Card
                     style={{

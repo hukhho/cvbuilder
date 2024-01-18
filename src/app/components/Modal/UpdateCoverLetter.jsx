@@ -19,29 +19,29 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
       placement,
     });
   };
+  const [inputValue, setInputValue] = useState();
   const [isSetData, setIsSetData] = useState(false);
   useEffect(() => {
     // Handle the modal state from the parent component
     // You can perform additional actions when the modal is opened or closed
-    if (!isSetData) {
-      setFormData(prevData => ({
-        ...prevData,
-        title: resume?.title,
-      }));
-      console.log('set data to form');
+    console.log('set data to form: ', resume);
+
+    if (!inputValue) {
+      setInputValue(resume?.title);
+      console.log('set data to form: ', resume?.title);
     }
-    setIsSetData(true);
+    // setIsSetData(true);
 
     console.log('Modal state:', isOpen);
-  }, [isOpen]);
+  }, [isOpen, resume]);
+  
   // const [isOpen, setIsOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const [inputValue, setInputValue] = useState('');
 
-  const [formData, setFormData] = useState({
-    title: resume?.title, // Set the initial value based on resume.title
-    // Add other form fields as needed
-  });
+  // const [formData, setFormData] = useState({
+  //   title: resume?.title, // Set the initial value based on resume.title
+  //   // Add other form fields as needed
+  // });
   function closeModal() {
     onClose();
   }
@@ -52,24 +52,24 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
 
   const handleInputChange = event => {
     setInputValue(event.target.value);
-    const { id, value } = event.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: value,
-    }));
+    // const { id, value } = event.target;
+    // setFormData(prevData => ({
+    //   ...prevData,
+    //   [id]: value,
+    // }));
   };
 
-  const handleTextareaInput = event => {
-    const textarea = event.target;
-    textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
-  };
+  // const handleTextareaInput = event => {
+  //   const textarea = event.target;
+  //   textarea.style.height = 'auto'; // Reset the height to auto to recalculate the scroll height
+  //   textarea.style.height = `${textarea.scrollHeight}px`; // Set the height to the scroll height
+  // };
 
-  const handleFormSubmit = async event => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    if (!formData.title) {
-      console.log('Form data submitted:', formData);
+    if (!inputValue) {
+      // console.log('Form data submitted:', inputValue);
       const formSubmit = {
         title:
           resume?.title |
@@ -94,7 +94,10 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
       }
       return;
     }
-    console.log('Form data submitted:', formData);
+    // console.log('Form data submitted:', formData);
+    const formData = {
+      title: inputValue,
+    };
     try {
       const result = await updateCoverLetterName(resume.id, formData);
       // openNotification('bottomRight', `Update: ${result}`);
@@ -168,7 +171,8 @@ export default function UpdateCoverLetter({ isOpen, onOpenModal, onClose, onCrea
                             required="true"
                             onChange={handleInputChange}
                             aria-label="Cover letter name"
-                            defaultValue={resume?.title}
+                            value={inputValue}
+                            // defaultValue={resume?.title}
                           />
                         </div>
                       </div>

@@ -23,9 +23,9 @@ export default function MyModal({ onCreated }) {
   const [inputValue, setInputValue] = useState('');
   const [formData, setFormData] = useState({
     resumeName: '',
-    jobTitle: '',
-    companyName: '',
-    jobDescription: '',
+    // jobTitle: '',
+    // companyName: '',
+    // jobDescription: '',
   });
 
   function closeModal() {

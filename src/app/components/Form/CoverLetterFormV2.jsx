@@ -104,7 +104,8 @@ const CoverLetterFormV2 = ({
       job_description: option?.description,
     });
   };
-  const [disabled, setDisabled] = useState(true);
+
+  const [disabled, setDisabled] = useState(!isApplyProcess);
 
   const toggle = () => {
     setDisabled(!disabled);
@@ -123,14 +124,20 @@ const CoverLetterFormV2 = ({
 
       setLoading(true);
 
-      openNotification('bottomRight', 'Submiting...');
+      // openNotification('bottomRight', 'Submiting...');
+      notification.info({
+        message: 'Submiting...',
+      });
 
       const contentResponse = await createCoverLetter(values.cvId, coverLetterId, values);
       console.log('content state: ', content);
       console.log('content.data.reply: ', contentResponse.reply);
 
       if (contentResponse.reply) {
-        openNotification('bottomRight', 'Done, redirecting!!!');
+        // openNotification('bottomRight', 'Done, redirecting!!!');
+        notification.success({
+          message: 'Done, redirecting!!!',
+        });
         if (jobIdParam && isApplyProcess) {
           router.push(
             `/cover-letter/${coverLetterId}/content?jobId=${jobIdParam}&isApplyProcess=true`,
@@ -144,8 +151,10 @@ const CoverLetterFormV2 = ({
       // onCreated();
     } catch (error) {
       console.log('Submit. Error:', error);
-      openNotification('bottomRight', `Submit. Error: ${error}`);
-
+      // openNotification('bottomRight', `Submit. Error: ${error}`);
+      notification.error({
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`,
+      });
       setLoading(false);
 
       // router.push(`/cover-letter/${coverLetterId}/content?jobId=${jobIdParam}&isApplyProcess=true`);
@@ -190,6 +199,7 @@ const CoverLetterFormV2 = ({
   useEffect(() => {
     console.log('form.setFieldsValue(formData): ', formData);
     if (isApplyProcess) {
+      setDisabled(false);
       form.setFieldsValue(formDataApplyProcess);
       handleChange(jobIdParam);
       setSelectedOption(jobIdParam);
@@ -224,6 +234,12 @@ const CoverLetterFormV2 = ({
     setIsUpdateResumeOpen(false);
   };
 
+  const [isAtsEnabled, setIsAtsEnabled] = useState(true);
+  const onChangeSwitch = checked => {
+    console.log(`switch to ${checked}`);
+    // handleChangeAtsEnabled(checked);
+    setIsAtsEnabled(checked);
+  };
   return (
     <div className="w-full">
       {contextHolder}
@@ -293,7 +309,7 @@ const CoverLetterFormV2 = ({
         </Form.Item>
 
         <div className="flex mt-10 mb-10">
-          <Switch className="mr-2" onClick={toggle} defaultChecked={!disabled} />
+          <Switch className="mr-2" onClick={toggle} defaultChecked={!disabled} value={!disabled} />
 
           <span className="" style={{ fontSize: 13 }}>
             Choose from job list
@@ -374,19 +390,19 @@ const CoverLetterFormV2 = ({
         >
           <TextArea
             style={{
-              fontWeight: !disabled && selectedOption ? '700' : '400',
-              color: !disabled && selectedOption ? 'black' : 'black',
-              background: 'white',
-              height: 'auto',
+              // fontWeight: !disabled && selectedOption ? '700' : '400',
+              // color: !disabled && selectedOption ? 'black' : 'black',
+              // background: !disabled && selectedOption ? 'none' : 'white',
+              // height: 'auto',
               resize: 'none',
             }}
             autoSize={{
-              minRows: 2,
+              minRows: 6,
               maxRows: 10,
             }}
             disabled={!disabled && selectedOption}
             className="inputEl"
-            rows={6}
+            rows={10}
             placeholder="Copy and paste the job description"
           />
         </Form.Item>

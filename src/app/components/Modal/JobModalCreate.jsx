@@ -131,8 +131,8 @@ const JobModalCreate = ({ onCreated, cvId, title, description, options }) => {
       closeModal();
     } catch (error) {
       notification.error({
-        message: `Submit. Error: ${error}`,
-      });
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`
+      })
       console.log('Submit. Error:', error);
     } finally {
       setIsSumiting(false);

@@ -207,7 +207,7 @@ export default function ApplyJobModal({
         </button>
       </div>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className=" relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-99" style={{ zIndex: 99 }} onClose={closeModal}>
           <div className="bg-red-500" style={{ width: 5000 }}>
             <Transition.Child
               as={Fragment}

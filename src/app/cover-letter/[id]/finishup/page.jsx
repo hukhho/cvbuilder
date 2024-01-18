@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable import/no-unresolved */
 
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Alert, Button, Card, ConfigProvider, Divider, Space } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
@@ -20,7 +21,7 @@ import FinishupToolbar from '@/app/components/Toolbar/FinishupToolbar';
 import CoverLetterPreview from './CoverLetterPreview';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import useStore from '@/store/store';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { getJobById } from '@/app/job/jobServices';
 import Link from 'next/link';
 import ApplyJobModal from '@/app/components/Modal/ApplyJobModal';
@@ -28,6 +29,7 @@ import { getCoverLetters, getResumes } from '@/app/utils/indexService';
 import ApplyJobModalV2 from '@/app/components/Modal/ApplyJobModalV2';
 import getCoverLetter from './getCoverLetter';
 import SuccessJob from '@/app/components/Modal/SuccessJob';
+import { Dialog, Transition } from '@headlessui/react';
 
 export default function FinishUp({ params }) {
   const [lineHeight, setLineHeight] = useState(1.55);
@@ -75,11 +77,16 @@ export default function FinishUp({ params }) {
   const [coverLetter, setCoverLetter] = useState();
 
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSuccess = () => {
     console.log('handleSuccess');
-    setIsSuccess(true);
+    // setIsSuccess(true);
+    setIsOpen(true);
   };
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const fetchDataJob = async () => {
     try {
@@ -164,6 +171,11 @@ export default function FinishUp({ params }) {
   };
   console.log('Cover123: ', coverLetter);
 
+  const router = useRouter();
+  const handleViewApply = () => {
+    console.log('View you resume');
+    router.push('/job/application');
+  };
   return (
     <main>
       <ConfigProvider>
@@ -186,12 +198,13 @@ export default function FinishUp({ params }) {
               <div className="mr-2 flex flex-col" style={{}}>
                 {isApplyProcess && (
                   <Alert
-                    className="mb-10 ml-5"
+                    className="mb-10"
+                    style={{ marginLeft: 0 }}
                     message="Informational Notes"
                     description={`You are in processing of creating a new cover letter for a specific job. ${data?.title} at ${data?.companyName}`}
                     type="info"
                     action={
-                      <Space direction="vertical">
+                      <Space direction="vertical" className="ml-2">
                         {/* <Button size="small" type="primary" onClick={handleApplyJob}>
                           Apply this job now
                         </Button> */}
@@ -204,15 +217,69 @@ export default function FinishUp({ params }) {
                           jobTitle={data?.title}
                           handleSuccess={handleSuccess}
                         />
-                        <SuccessJob isSuccess={isSuccess} />
                       </Space>
                     }
                     showIcon
                   />
                 )}
+
                 <div className="">
                   <CoverLetterPreview ref={cvLayoutRef} coverLetterId={params.id} />
                 </div>
+                <Transition appear show={isOpen} as={Fragment}>
+                  <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0"
+                      enterTo="opacity-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <div className="fixed inset-0 bg-black/25" />
+                    </Transition.Child>
+
+                    <div className="fixed inset-0 overflow-y-auto">
+                      <div className="flex min-h-full items-center justify-center p-4 text-center">
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-out duration-300"
+                          enterFrom="opacity-0 scale-95"
+                          enterTo="opacity-100 scale-100"
+                          leave="ease-in duration-200"
+                          leaveFrom="opacity-100 scale-100"
+                          leaveTo="opacity-0 scale-95"
+                        >
+                          <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Title
+                              as="h3"
+                              className="text-lg font-medium leading-6 text-gray-900"
+                            >
+                              Successful
+                            </Dialog.Title>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                Your apply has been save successfully.
+                              </p>
+                            </div>
+
+                            <div className="mt-4">
+                              <button
+                                type="button"
+                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                onClick={handleViewApply}
+                              >
+                                View you apply
+                              </button>
+                            </div>
+                          </Dialog.Panel>
+                        </Transition.Child>
+                      </div>
+                    </div>
+                  </Dialog>
+                </Transition>
+                {/* <SuccessJob isSuccess={isSuccess} /> */}
               </div>
             </div>
           }

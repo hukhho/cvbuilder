@@ -28,25 +28,17 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
   const [inputValue, setInputValue] = useState('');
   const [formData, setFormData] = useState({
     resumeName: '',
-    jobTitle: '',
-    companyName: '',
-    jobDescription: '',
   });
 
   useEffect(() => {
     setFormData({
       resumeName: resume?.resumeName || '',
-      jobTitle: resume?.jobTitle || '',
-      companyName: resume?.companyName || '',
-      jobDescription: resume?.jobDescription || '',
     });
   }, [resume]);
 
   function closeModal() {
     onClose();
-
   }
-
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -88,7 +80,8 @@ export default function UpdateResume({ isOpen, onOpenModal, onClose, onCreated, 
     } catch (error) {
       notification.error({
         message: 'Error',
-      });    }
+      });
+    }
   };
   return (
     <>

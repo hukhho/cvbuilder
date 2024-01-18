@@ -113,11 +113,11 @@ const Home = () => {
               <div style={{ textAlign: 'left' }}></div>
               <div></div>
               <div>
-                <div>
+                <div className='mb-10'>
                   <CandidateForm data={data} resumes={resumes} onCreated={onCreated} />
                 </div>
                 <div>
-                  <Card className="mt-16" style={{ width: '700px' }}>
+                  <Card className="mt-10" style={{ width: '700px' }}>
                     Your Balance: <b>{formatBalance(balance)}</b>
                     <Deposit />
                   </Card>

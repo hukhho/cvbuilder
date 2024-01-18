@@ -285,9 +285,10 @@ const UserLayoutNoAuth = React.memo(
               bottom: 0,
               paddingLeft: 0,
               paddingRight: 0,
-              zIndex: 99,
+              zIndex: 1,
             }}
           >
+            
             {/* <div style={{ ...styles.compareBox }}>
            <CanvasGradient
              animated

@@ -52,6 +52,8 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
     transformOrigin: 'top left',
     transform: `scale(${zoom / 100})`,
     marginLeft: '-13px',
+    width: 210,
+    height: 297,
   };
 
   // Define the content for editable elements using dangerouslySetInnerHTML
@@ -93,11 +95,14 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
       console.error('Error fetching data:', error);
     }
   }
+
+  const [isFetched, setIsFetched] = useState(false);
   useEffect(() => {
-    if (!content.content) {
+    if (!isFetched) {
       fetchData();
+      setIsFetched(true);
     }
-  }, [content]);
+  }, [content, isFetched]);
 
   const captureRef = useRef();
   const CaptureScreenshot = () => {
@@ -125,10 +130,9 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   };
 
   return (
-    <>
+    <div style={{ marginLeft: -13 }}>
       <div className="sample-generator-wrapper">
-        <div className="toolbar flex" style={{ width: '100%' }}>
-          
+        <div className="toolbar flex" style={{ width: 890}}>
           <div className="flex flex-col items-start">
             <label>Line height</label>
             <Row>
@@ -233,7 +237,6 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
           </div>
         </div>
 
-        
         <div>
           <button
             style={{
@@ -248,9 +251,6 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
           >
             Download
           </button>
-        
-
-
         </div>
         <div className="config" data-active="" />
         {/* <div className="break-page">
@@ -258,7 +258,7 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
           <div />
         </div> */}
         <div></div>
-        <div className="wrapper-cover-letter"  style={divStyle} ref={captureRef}>
+        <div className="wrapper-cover-letter mb-10" style={divStyle} ref={captureRef}>
           <div className="cover-preview-wrapper">
             <div className="preview">
               <div className="inner">
@@ -342,10 +342,13 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
               </div>
             </div>
           </div>
-          <div className="compiler-aside" />
+          <div className="compiler-aside mt-10" />
+          <div className="mt-10 bg-white">
+            <br />
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 });
 

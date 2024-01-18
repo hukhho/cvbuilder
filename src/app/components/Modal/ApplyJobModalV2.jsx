@@ -29,7 +29,7 @@ export default function ApplyJobModalV2({
   const [form] = Form.useForm();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-
+  const coverLetterIdInt = parseInt(coverLetterId, 10);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [selectedResume, setSelectedResume] = useState();
@@ -55,9 +55,9 @@ export default function ApplyJobModalV2({
   }
 
   function openModal() {
-    setIsOpen(true);
     setSelectedResume(cvId);
-    setSelectedCover(coverLetterId);
+    setSelectedCover(coverLetterIdInt);
+    setIsOpen(true);
   }
 
   const handleInputChange = event => {
@@ -72,6 +72,7 @@ export default function ApplyJobModalV2({
 
   const [options, setOptions] = useState([]);
   useEffect(() => {
+    // console.log("coverLetterId: ", coverLetterId)
     // Get the current date
     const today = new Date();
 
@@ -219,40 +220,40 @@ export default function ApplyJobModalV2({
                             <h2>Apply job for {jobTitle}</h2>
                             <p>Apply for the job.</p>
                             <div>
-                              <Form
-                                form={form}
-                                name="control-hooks"
-                                onFinish={onFinish}
-                                layout="vertical"
-                                style={{
-                                  marginTop: 20,
-                                  maxWidth: 900,
-                                }}
-                                requiredMark={false}
-                                initialValues={{ resume: cvId, coverletter: coverLetterId }}
-
-                              >
-                                <Form.Item
-                                  className="custom-label-normal"
-                                  name="resume"
-                                  label="Select Resume *"
-                                  rules={[
-                                    {
-                                      required: true,
-                                    },
-                                  ]}
+                              {coverLetterIdInt && cvId && (
+                                <Form
+                                  form={form}
+                                  name="control-hooks"
+                                  onFinish={onFinish}
+                                  layout="vertical"
+                                  style={{
+                                    marginTop: 20,
+                                    maxWidth: 900,
+                                  }}
+                                  requiredMark={false}
+                                  initialValues={{ resume: cvId, coverletter: coverLetterIdInt }}
                                 >
-                                  <Select
-                                    className=""
-                                    style={{ width: '100%', height: 50 }}
-                                    value={selectedResume}
-                                    defaultValue={cvId}
-                                    disabled={true}
-                                    onChange={onChangeResume}
-                                    options={resumeOptions}
-                                  />
-                                </Form.Item>
-                                {selectedResume && (
+                                  <Form.Item
+                                    className="custom-label-normal"
+                                    name="resume"
+                                    label="Select Resume *"
+                                    rules={[
+                                      {
+                                        required: true,
+                                      },
+                                    ]}
+                                  >
+                                    <Select
+                                      className=""
+                                      style={{ width: '100%', height: 50 }}
+                                      value={selectedResume}
+                                      defaultValue={cvId}
+                                      disabled={true}
+                                      onChange={onChangeResume}
+                                      options={resumeOptions}
+                                    />
+                                  </Form.Item>
+
                                   <>
                                     {' '}
                                     <div className="flex mt-10 mb-5">
@@ -283,13 +284,14 @@ export default function ApplyJobModalV2({
                                         options={coverOptions}
                                         disabled={true}
                                         value={selectedCover}
-                                        defaultValue={coverLetterId}
+                                        defaultValue={coverLetterIdInt}
                                       />
                                     </Form.Item>
                                   </>
-                                )}
 
-                                {/* <Form.Item
+                                  {/* {coverLetterId ? coverLetterId : 'null'} */}
+
+                                  {/* <Form.Item
                                   name="deadline"
                                   label="Deadline"
                                   rules={[
@@ -301,42 +303,44 @@ export default function ApplyJobModalV2({
                                   <Select style={{ width: 200 }} options={options} />
                                 </Form.Item> */}
 
-                                <Form.Item
-                                  className="custom-label-normal"
-                                  name="note"
-                                  label="Notes for Hiring Manager"
-                                >
-                                  <Input
-                                    className="custom-search"
-                                    placeholder="Anything you'd like us to express for the hiring manager"
-                                  />
-                                </Form.Item>
-
-                                <Form.Item>
-                                  {isSubmitting && (
-                                    <Spin
-                                      indicator={
-                                        <LoadingOutlined
-                                          style={{
-                                            fontSize: 24,
-                                            marginRight: 10,
-                                          }}
-                                          spin
-                                        />
-                                      }
-                                    />
-                                  )}
-                                  <Button
-                                    className="button cta width-fit"
-                                    style={{ height: 35 }}
-                                    disabled={isSubmitting}
-                                    type="primary"
-                                    htmlType="submit"
+                                  <Form.Item
+                                    className="custom-label-normal"
+                                    name="note"
+                                    label="Notes for Hiring Manager"
                                   >
-                                    Submit
-                                  </Button>
-                                </Form.Item>
-                              </Form>
+                                    <Input
+                                      className="custom-search"
+                                      placeholder="Anything you'd like us to express for the hiring manager"
+                                    />
+                                  </Form.Item>
+
+                                  <Form.Item>
+                                    {isSubmitting && (
+                                      <Spin
+                                        indicator={
+                                          <LoadingOutlined
+                                            style={{
+                                              fontSize: 24,
+                                              marginRight: 10,
+                                            }}
+                                            spin
+                                          />
+                                        }
+                                      />
+                                    )}
+                                    <Button
+                                      className="button cta width-fit"
+                                      style={{ height: 35 }}
+                                      disabled={isSubmitting}
+                                      type="primary"
+                                      htmlType="submit"
+                                    >
+                                      Submit
+                                    </Button>
+                                  </Form.Item>
+                                </Form>
+                              )}
+
                               {/* <form>
                                 <div className="mb-4 relative w-full mt-2">
                                   <div className="flex justify-between">

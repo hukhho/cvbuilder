@@ -17,15 +17,19 @@ const createReview = async (cvId, expertId, data) => {
 const applyJob = async (jobId, cvId, coverletterId, note) => {
   try {
     const userId = getUserIdFromLocalStorage();
-    if (coverletterId) {
-      const response = await axiosInstance.post(
-        `/user/${userId}/cv/${cvId}/job-posting/${jobId}/apply?note=${note}&cover_letter_id=${coverletterId}`,
-      );
-      return response.data;
+    let apiUrl = `/user/${userId}/cv/${cvId}/job-posting/${jobId}/apply`;
+
+    // Append note and coverletterId to the API URL if they are provided
+    if (note) {
+      apiUrl += `?note=${note}`;
+      if (coverletterId) {
+        apiUrl += `&cover_letter_id=${coverletterId}`;
+      }
+    } else if (coverletterId) {
+      apiUrl += `?cover_letter_id=${coverletterId}`;
     }
-    const response = await axiosInstance.post(
-      `/user/${userId}/cv/${cvId}/job-posting/${jobId}/apply?note=${note}`,
-    );
+
+    const response = await axiosInstance.post(apiUrl);
     return response.data;
   } catch (error) {
     throw error;

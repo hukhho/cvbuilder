@@ -55,7 +55,7 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(data?.avatar);
+  const [imageUrl, setImageUrl] = useState();
   const handleChange = info => {
     if (info.file.status === 'uploading') {
       setLoading(true);
@@ -91,6 +91,7 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
         cv: cvIds, // Set the cv field with an array of ids
       };
       form.setFieldsValue(formData);
+      setImageUrl(data?.avatar);
     }
   }, [data, form]);
 
@@ -99,9 +100,15 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
       values.avatar = imageUrl;
       console.log('handleSubmit: ', values);
       const result = await updateCandidateConfig(values);
-      openNotification('bottomRight', `Save changes: ${result}`);
+      // openNotification('bottomRight', `Save changes: ${result}`);
+      notification.success({
+        message: 'Save changed',
+      });
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
+      // openNotification('bottomRight', `Error: ${error}`);
+      notification.error({
+        message: `Error ${error?.response?.data?.error || error?.response?.data || error}`,
+      });
       console.log('Submit. Error:', error);
     }
   };
@@ -147,7 +154,7 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
       <Card>
         <Title>Your infomation</Title>
         <p>Set up the information you want the candidate to see</p>
-        <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off">
+        <Form onFinish={handleSubmit} form={form} layout="vertical" autoComplete="off" requiredMark={false}>
           <Title className="mt-8" level={5}>
             Change avatar
           </Title>
@@ -162,6 +169,8 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
           >
             {imageUrl ? <Avatar src={imageUrl} alt="avatar" size={100} /> : uploadButton}
           </Upload>
+          {/* {data?.avatar ? data?.avatar : 'HELLO'} */}
+
           <Form.Item
             name="avatar"
             style={{
@@ -195,13 +204,18 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
               <label className="!leading-[15px] label flex flex-col justify-between lg:flex-row lg:items-end text-xs uppercase text-gray-600">
                 <div className="flex gap-2 items-center text-xs">
                   <span>
-                    <strong>Full name</strong>
+                    <strong>Full name *</strong>
                   </span>
                 </div>
               </label>
             }
+            rules={[
+              { required: true, message: 'Please enter your full name' },
+              { min: 3, message: 'Full name must be at least 3 characters' },
+              { max: 50, message: 'Full name cannot exceed 50 characters' },
+            ]}
           >
-            <Input
+            <input
               style={{
                 marginTop: '-10px',
               }}
@@ -223,7 +237,7 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
               </label>
             }
           >
-            <Input
+            <input
               style={{
                 marginTop: '-10px',
               }}
@@ -245,7 +259,7 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
               </label>
             }
           >
-            <Input
+            <input
               style={{
                 marginTop: '-10px',
               }}
@@ -270,6 +284,12 @@ const CandidateForm = ({ onCreated, data, resumes }) => {
             <Input.TextArea
               style={{
                 marginTop: '-10px',
+              }}
+              showCount
+              maxLength={1000}
+              autoSize={{
+                minRows: 2,
+                maxRows: 10,
               }}
               className="inputEl contact-section inputEl st-current"
               id="contact-section-form-0"

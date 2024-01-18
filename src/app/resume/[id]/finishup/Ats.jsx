@@ -139,7 +139,7 @@ const Ats = ({
                       defaultChecked={isAtsEnabled}
                       onChange={onChange}
                     />
-                    {isAtsEnabled ? <div>enable</div> : <div>disable</div>}
+                    {/* {isAtsEnabled ? <div>enable</div> : <div>disable</div>} */}
                     <span className="mt-4">Disable Highlight</span>
                   </div>
                 )}

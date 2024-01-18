@@ -15,6 +15,7 @@ import { CloseOutlined, ExportOutlined, EyeOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import JobModalUpdate from '@/app/components/Modal/JobModalUpdate';
 import { DatePicker, Button, Card, Form, Input, Space, Typography, notification } from 'antd';
+import { set } from 'lodash';
 const { MonthPicker } = DatePicker;
 
 const Custom = ({ finishUpData, onSubmitCustomSections }) => {
@@ -87,10 +88,17 @@ const Custom = ({ finishUpData, onSubmitCustomSections }) => {
   // };
   const [data, setData] = useState(initData);
   const [isSetData, setIsSetData] = useState(false);
-
+  const [isShow, setIsShow] = useState(false);
+  const handleDownButton = () => {
+    setIsShow(!isShow);
+  };
   useEffect(() => {
     if (!isSetData) {
       form.setFieldsValue(data);
+      console.log('data123: ', data);
+      if (data?.customSections?.length > 0) {
+        setIsShow(true);
+      }
     }
     setIsSetData(true);
   }, [isSetData]);
@@ -163,10 +171,6 @@ const Custom = ({ finishUpData, onSubmitCustomSections }) => {
     console.log('Failed:', errorInfo);
   };
 
-  const [isShow, setIsShow] = useState(false);
-  const handleDownButton = () => {
-    setIsShow(!isShow);
-  };
   return (
     <div style={{ color: 'black', textAlign: 'left', minWidth: 360 }}>
       <div className="keyword-card card share-card ">
@@ -177,7 +181,7 @@ const Custom = ({ finishUpData, onSubmitCustomSections }) => {
               <div className="ml-4">
                 <FontAwesomeIcon
                   icon={faCaretDown}
-                  className={isShow ? 'transform -rotate-90' : 'transform rotate-0'}
+                  className={!isShow ? 'transform -rotate-90' : 'transform rotate-0'}
                   style={{}}
                   onClick={handleDownButton}
                 />
