@@ -46,6 +46,7 @@ import { createAIWriter } from './aiwriter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt, faCopy } from '@fortawesome/free-solid-svg-icons';
 import useStore from '@/store/store';
+import he from 'he';
 
 const CustomForm = ({
   cvId,
@@ -57,9 +58,10 @@ const CustomForm = ({
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false); // Add this state
   const inputRef = useRef(null);
-  const [inputValue, setInputValue] = useState(
-    experience?.description ? experience.description : '',
-  );
+
+  const decodedContent = he.decode(experience?.description || '');
+
+  const [inputValue, setInputValue] = useState(experience?.description ? decodedContent : '');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
@@ -120,7 +122,11 @@ const CustomForm = ({
   useEffect(() => {
     if (experience) {
       setIsEditMode(true); // Set to edit mode if experience prop is provided
-      setInputValue(experience.description);
+      try {
+        setInputValue(he.decode(experience.description));
+      } catch (err) {
+        setInputValue(experience.description);
+      }
       try {
         const startDateString = experience.duration.split(' - ')[0];
         const endDateString = experience.duration.split(' - ')[1];

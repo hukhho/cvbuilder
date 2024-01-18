@@ -5,6 +5,7 @@ import { Divider, Typography } from 'antd';
 import { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Highlighter from 'react-highlight-words';
+import he from 'he';
 
 const StandardItem = props => {
   const {
@@ -52,8 +53,11 @@ const StandardItem = props => {
       orgNameState.current = evt.target.value;
       handleOrgNameChange(type, typeId, evt.target.value);
     } else if (targetName === 'description') {
-      descriptionState.current = evt.target.value;
-      handleDescriptionChange(type, typeId, evt.target.value);
+      const decodedContent = he.decode(evt.target.value);
+
+      descriptionState.current = decodedContent;
+
+      handleDescriptionChange(type, typeId, decodedContent);
     }
   };
 
@@ -436,7 +440,7 @@ const StandardItem = props => {
                       fontWeight: 400,
                     }}
                   >
-                    {searchWords && searchWords.length > 0 ? (
+                    {/* {searchWords && searchWords.length > 0 ? (
                       <Highlighter
                         id="LfWZnVqHS-description"
                         highlightClassName="editableContent cursor-text  designStudio"
@@ -452,7 +456,9 @@ const StandardItem = props => {
                       >
                         {description}
                       </p>
-                    )}
+                    )} */}
+
+                    {renderEditableDescription()}
                   </div>
                 </div>
               </div>
@@ -564,7 +570,7 @@ const StandardItem = props => {
                     </span>
                   </p> */}
                 </div>
-                {searchWords && searchWords.length > 0 ? (
+                {/* {searchWords && searchWords.length > 0 ? (
                   <Highlighter
                     id="LfWZnVqHS-description"
                     highlightClassName="editableContent cursor-text  designStudio"
@@ -580,7 +586,8 @@ const StandardItem = props => {
                   >
                     {description}
                   </p>
-                )}
+                )} */}
+                {renderEditableDescription()}
               </div>
             </div>
           );
@@ -772,7 +779,7 @@ const StandardItem = props => {
                     fontWeight: 400,
                   }}
                 >
-                  {searchWords && searchWords.length > 0 ? (
+                  {/* {searchWords && searchWords.length > 0 ? (
                     <Highlighter
                       id="LfWZnVqHS-description"
                       highlightClassName="editableContent cursor-text  designStudio"
@@ -787,7 +794,8 @@ const StandardItem = props => {
                     >
                       {description}
                     </p>
-                  )}
+                  )} */}
+                  {renderEditableDescription()}
                 </div>
               </div>
             </div>
@@ -867,7 +875,7 @@ const StandardItem = props => {
                   fontWeight: 400,
                 }}
               >
-                {searchWords && searchWords.length > 0 ? (
+                {/* {searchWords && searchWords.length > 0 ? (
                   <Highlighter
                     id="LfWZnVqHS-description"
                     highlightClassName="editableContent cursor-text  designStudio"
@@ -883,7 +891,8 @@ const StandardItem = props => {
                   >
                     {description}
                   </p>
-                )}
+                )} */}
+                {renderEditableDescription()}
               </div>
             </div>
           );

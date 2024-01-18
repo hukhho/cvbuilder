@@ -1169,6 +1169,10 @@ export default function FinishUp({ params }) {
               item.sectionData.forEach(section => {
                 if (section && typeof section.description === 'string') {
                   // Remove HTML tags for the 'description' field in customSections
+                  console.log(
+                    "Remove HTML tags for the 'description' field in customSections",
+                    section.description,
+                  );
                   section.description = removeHtmlTags(section.description);
                 }
               });
@@ -1187,7 +1191,6 @@ export default function FinishUp({ params }) {
         message: 'Finish overwrite success',
       });
       handleSuccess(fetchedData?.cvId);
-
     } catch (error) {
       notification.error({
         message: `Finish overwrite. Error: ${error?.response?.data}`,

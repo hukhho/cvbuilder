@@ -50,24 +50,23 @@ const columns = [
     },
     sorter: (a, b) => a.expenditure - b.expenditure,
   },
-
+  // {
+  //   title: 'Create Date',
+  //   dataIndex: 'createdDate',
+  //   sorter: {
+  //     compare: (a, b) => moment(a.createdDate) - moment(b.createdDate),
+  //   },
+  //   render: (text, record) => (
+  //     <div className="flex flex-col">
+  //       <div> {moment(record.createdDate).fromNow()}</div>{' '}
+  //       <div style={{ color: 'gray', fontSize: '11px' }}>
+  //         {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
+  //       </div>{' '}
+  //     </div>
+  //   ),
+  // },
   {
-    title: 'Create Date',
-    dataIndex: 'createdDate',
-    sorter: {
-      compare: (a, b) => moment(a.createdDate) - moment(b.createdDate),
-    },
-    render: (text, record) => (
-      <div className="flex flex-col">
-        <div> {moment(record.createdDate).fromNow()}</div>{' '}
-        <div style={{ color: 'gray', fontSize: '11px' }}>
-          {moment(record.createdDate).format('HH:mm:ss DD/MM/YYYY')}
-        </div>{' '}
-      </div>
-    ),
-  },
-  {
-    title: 'Last Update',
+    title: 'Date',
     dataIndex: 'updateDate',
     sorter: {
       compare: (a, b) => moment(a.updateDate) - moment(b.updateDate),

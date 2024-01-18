@@ -694,7 +694,7 @@ export default function FinishUpPreviewV2({ cvId }) {
     <>
       {showFinishupCV && (
         <div
-          style={{ pointerEvents: 'none', transform: 'scale(0.8)', transformOrigin: 'left top' }}
+          style={{ pointerEvents: 'none', transform: 'scale(1)', transformOrigin: 'left top' }}
         >
           <CVLayout
             ref={cvLayoutRef}

@@ -360,6 +360,11 @@ const CoverLetterFormV2 = ({
         >
           <Input
             className="inputEl"
+            style={{
+              opacity: !disabled && selectedOption ? 0.5 : 1, // Adjust opacity for disabled state
+              backgroundColor: !disabled && selectedOption ? '#f0f0f0' : 'white', // Change background color for disabled state
+              cursor: !disabled && selectedOption ? 'not-allowed' : 'auto', // Change cursor style for disabled state
+            }}
             disabled={!disabled && selectedOption}
             placeholder="Software Engineer"
           />
@@ -375,7 +380,15 @@ const CoverLetterFormV2 = ({
             </label>
           }
         >
-          <Input disabled={!disabled && selectedOption} placeholder="Google" />
+          <Input
+            disabled={!disabled && selectedOption}
+            style={{
+              opacity: !disabled && selectedOption ? 0.5 : 1, // Adjust opacity for disabled state
+              backgroundColor: !disabled && selectedOption ? '#f0f0f0' : 'white', // Change background color for disabled state
+              cursor: !disabled && selectedOption ? 'not-allowed' : 'auto', // Change cursor style for disabled state
+            }}
+            placeholder="Google"
+          />
         </Form.Item>
 
         <Form.Item
@@ -390,11 +403,10 @@ const CoverLetterFormV2 = ({
         >
           <TextArea
             style={{
-              // fontWeight: !disabled && selectedOption ? '700' : '400',
-              // color: !disabled && selectedOption ? 'black' : 'black',
-              // background: !disabled && selectedOption ? 'none' : 'white',
-              // height: 'auto',
               resize: 'none',
+              opacity: !disabled && selectedOption ? 0.5 : 1, // Adjust opacity for disabled state
+              backgroundColor: !disabled && selectedOption ? '#f0f0f0' : 'white', // Change background color for disabled state
+              cursor: !disabled && selectedOption ? 'not-allowed' : 'auto', // Change cursor style for disabled state
             }}
             autoSize={{
               minRows: 6,
