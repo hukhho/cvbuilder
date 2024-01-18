@@ -92,7 +92,7 @@ export default function FinishUp({ params }) {
   const [enabledCategories, setEnabledCategories] = useState({
     'MY REVIEWS': true,
   });
-  const { avatar, email, userRole } = useStore();
+  const { avatar, email, userRole, refreshResumes } = useStore();
 
   const [templateSelected, setTemplateSelected] = useState('classical');
   const [toolbarState, setToolbarState] = useState({
@@ -1232,7 +1232,8 @@ export default function FinishUp({ params }) {
 
   const router = useRouter();
   const handleViewApply = () => {
-    console.log('View you resume');
+    console.log('View you resume, ', resumeToOpens);
+    refreshResumes();
     if (resumeToOpen) {
       router.push(`/resume/${resumeToOpen}/finishup`);
     } else {
