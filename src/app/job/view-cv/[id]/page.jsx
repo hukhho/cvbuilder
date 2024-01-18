@@ -234,7 +234,14 @@ export default function FinishUp({ params }) {
   const { educations, projects, involvements, certifications, skills, experiences } =
     finishUpData || {};
 
-    const filteredEducations = educations?.filter(education => {
+  experiences?.sort((a, b) => a.theOrder - b.theOrder);
+  projects?.sort((a, b) => a.theOrder - b.theOrder);
+  involvements?.sort((a, b) => a.theOrder - b.theOrder);
+  certifications?.sort((a, b) => a.theOrder - b.theOrder);
+  skills?.sort((a, b) => a.theOrder - b.theOrder);
+  educations?.sort((a, b) => a.theOrder - b.theOrder);
+
+  const filteredEducations = educations?.filter(education => {
     // Check if education is displayable (isDisplay is true)
     if (education.isDisplay !== true) {
       return false;
@@ -346,7 +353,7 @@ export default function FinishUp({ params }) {
   const [educationsOrder, setEducationsOrder] = useState([]);
   const [skillsOrder, setSkillsOrder] = useState([]);
   const [summary, setSummary] = useState();
-  
+
   const handleExperiencesOrderChange = newOrder => {
     setExperiencesOrder(newOrder);
   };
@@ -601,7 +608,16 @@ export default function FinishUp({ params }) {
           handleDescriptionChange={handleDescriptionChange}
         />
       ),
-      order: customSection?.theOrder || 99,
+      order:
+        index === 0
+          ? finishUpData?.theOrder?.customSections1 || 95
+          : index === 1
+          ? finishUpData?.theOrder?.customSections2 || 96
+          : index === 2
+          ? finishUpData?.theOrder?.customSections3 || 97
+          : index === 3
+          ? finishUpData?.theOrder?.customSections4 || 98
+          : 99,
       canBeDrag: true,
       canBeDisplayed: true,
     });
@@ -717,16 +733,18 @@ export default function FinishUp({ params }) {
                       </div>
                     </div>
                   </div>
-                  <CVLayout
-                    ref={cvLayoutRef}
-                    key={[templateSelected, toolbarState]}
-                    templateType={templateSelected}
-                    layoutStyles={toolbarState}
-                    sectionsOrder={sectionsOrder}
-                    onSectionsOrderChange={handleSectionsOrderChange}
-                  >
-                    {filteredSections.map(section => section.canBeDisplayed && section.component)}
-                  </CVLayout>
+                  <div style={{ pointerEvents: 'none' }}>
+                    <CVLayout
+                      ref={cvLayoutRef}
+                      key={[templateSelected, toolbarState]}
+                      templateType={templateSelected}
+                      layoutStyles={toolbarState}
+                      sectionsOrder={sectionsOrder}
+                      onSectionsOrderChange={handleSectionsOrderChange}
+                    >
+                      {filteredSections.map(section => section.canBeDisplayed && section.component)}
+                    </CVLayout>
+                  </div>
                 </div>
               )}
             </div>

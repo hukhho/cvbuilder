@@ -146,14 +146,14 @@ const Home = ({ params }) => {
             )}
             {!isLoading && !errorMessage && expert && (
               <div className="!p-0 relative">
-                <div className="pl-16" style={{ width: 900, paddingLeft: '', background: 'white' }}>
+                <div className="pl-16" style={{ width: 1000, paddingLeft: '', background: 'white' }}>
                   <div className="absolute top-10 left-5">
-                    <Link href="/review/list/expert" passHref>
+                    {/* <Link href="/review/list/expert" passHref>
                       <button>
                         <FontAwesomeIcon icon={faChevronLeft} />
                       </button>
                       <span className="ml-2">Back</span>
-                    </Link>
+                    </Link> */}
                   </div>
                   <div className="flex justify-between mt-16 mr-32 p-8">
                     <div className="flex mt-8">
@@ -167,7 +167,7 @@ const Home = ({ params }) => {
                     </div>
                   </div>
 
-                  <div className="mt-8" style={{ textAlign: 'left', marginLeft: '20px' }}>
+                  <div className="mt-8 mb-8" style={{ textAlign: 'left', marginLeft: '20px' }}>
                     <div className="flex">
                       <Title style={{ color: '#4D70EB' }} level={5}>
                         <span style={{ borderBottom: '2px solid #4D70EB' }}>Overview</span>
@@ -179,7 +179,7 @@ const Home = ({ params }) => {
                     </div>
                     <div className="flex justify-between	">
                       <div style={{ textAlign: 'left', width: '900px' }}>
-                        <div style={{ textAlign: 'left', minHeight: '100px' }}>
+                        <div className='mb-16' style={{ textAlign: 'left', minHeight: '100px' }}>
                           {' '}
                           {expert?.about ? (
                             <p dangerouslySetInnerHTML={{ __html: expert?.about }} />
