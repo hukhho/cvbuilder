@@ -73,6 +73,30 @@ const Home = () => {
 
   const uniqueCvOptions = [...new Set(data.map(item => item.cvs?.resumeName))];
   const uniqueCoverLetterOptions = [...new Set(data.map(item => item.coverLetters?.title))];
+  
+  const formatDate = (date) => {
+    try {
+      const momentDate = moment(date);
+
+      if (momentDate.isValid()) {
+        return (
+          <div className="flex flex-col">
+            <div>{momentDate.fromNow()}</div>
+            <div style={{ color: 'gray', fontSize: '11px' }}>
+              {momentDate.format('HH:mm:ss DD/MM/YYYY')}
+            </div>
+          </div>
+        );
+      } else {
+        // If Moment.js cannot parse the date, display the original string
+        return <div>{date}</div>;
+      }
+    } catch (error) {
+      console.error('Error parsing date:', error);
+      // If an error occurs during parsing, display the original string
+      return <div>{date}</div>;
+    }
+  };
 
   const columns = [
     // {
@@ -144,13 +168,36 @@ const Home = () => {
       ),
     },
 
+    // {
+    //   title: 'Date Application',
+    //   dataIndex: 'applyDate',
+    //   // sorter: {
+    //   //   compare: (a, b) => a.revicedDay - b.revicedDay,
+    //   //   multiple: 2,
+    //   // },
+    // },
+    // {
+    //   title: 'Date Application',
+    //   dataIndex: 'applyDate',
+    //   sorter: {
+    //     compare: (a, b) => moment(a?.applyDate) - moment(b?.applyDate),
+    //   },
+    //   render: (text, record) => (
+    //     <div className="flex flex-col">
+    //       <div> {moment(record?.applyDate).fromNow()}</div>{' '}
+    //       <div style={{ color: 'gray', fontSize: '11px' }}>
+    //         {moment(record?.applyDate).format('HH:mm:ss DD/MM/YYYY')}
+    //       </div>{' '}
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Date Application',
       dataIndex: 'applyDate',
-      // sorter: {
-      //   compare: (a, b) => a.revicedDay - b.revicedDay,
-      //   multiple: 2,
-      // },
+      sorter: {
+        compare: (a, b) => moment(a?.applyDate) - moment(b?.applyDate),
+      },
+      render: (text, record) => formatDate(record?.applyDate),
     },
     {
       title: 'note',
