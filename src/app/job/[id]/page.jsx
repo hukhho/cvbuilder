@@ -239,6 +239,12 @@ const Home = ({ params }) => {
                   <div>{data?.avatar && <Image src={data?.avatar} width={100} height={100} />}</div>
                   <div className="mt-8">
                     <Title style={{ width: 800 }} level={4}>
+                      About us
+                    </Title>
+                    <p className='text-justify'>{data?.about}</p>
+                  </div>
+                  <div className="mt-8">
+                    <Title style={{ width: 800 }} level={4}>
                       What can we offer?
                     </Title>
                     <p className='text-justify'>{data?.benefit}</p>
