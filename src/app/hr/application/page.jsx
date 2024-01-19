@@ -21,6 +21,7 @@ import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import useStore from '@/store/store';
 import Search from 'antd/es/input/Search';
+import moment from 'moment';
 
 const { Title } = Typography;
 
@@ -42,6 +43,8 @@ const HRApplicationPage = () => {
     try {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getHrApplication();
+      fetchedDataFromAPI.sort((b, a) => moment(a?.applyDate) - moment(b?.applyDate));
+
       setData(fetchedDataFromAPI);
       setFilteredData(fetchedDataFromAPI);
     } catch (error) {
@@ -148,11 +151,26 @@ const HRApplicationPage = () => {
     {
       title: 'Date Application',
       dataIndex: 'applyDate',
-      // sorter: {
-      //   compare: (a, b) => a.revicedDay - b.revicedDay,
-      //   multiple: 2,
-      // },
+      sorter: {
+        compare: (a, b) => moment(a.applyDate) - moment(b.applyDate),
+      },
+      render: (text, record) => (
+        <div className="flex flex-col">
+          <div> {moment(record?.applyDate).fromNow()}</div>{' '}
+          <div style={{ color: 'gray', fontSize: '11px' }}>
+            {moment(record?.applyDate).format('HH:mm:ss DD/MM/YYYY')}
+          </div>{' '}
+        </div>
+      ),
     },
+    // {
+    //   title: 'Date Application',
+    //   dataIndex: 'applyDate',
+    //   // sorter: {
+    //   //   compare: (a, b) => a.revicedDay - b.revicedDay,
+    //   //   multiple: 2,
+    //   // },
+    // },
     {
       title: 'note',
       dataIndex: 'note',

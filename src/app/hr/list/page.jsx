@@ -97,6 +97,25 @@ const columns = [
     ),
   },
 ];
+// const statuses = ['Waiting', 'Overdue', 'Done'];
+// const dateRandome = ['3 days ago', 'Next Tuesday'];
+
+// for (let i = 0; i < 100; i++) {
+//   const price = Math.floor(Math.random() * 10) + 1;
+//   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
+//   const status = statuses[Math.floor(Math.random() * statuses.length)];
+
+//   data.push({
+//     key: i,
+//     resumeName: 'Pham Viet Thuan Thien',
+//     name: '<User Name>',
+//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
+//     price,
+//     status,
+//     receiveDate: due,
+//     deadline: due,
+//   });
+// }
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
