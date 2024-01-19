@@ -223,7 +223,7 @@ export default function FinishUp({ params }) {
                   />
                 )}
 
-                <div className="">
+                <div className="" style={{ minWidth: 210, minHeight: 297 }}>
                   <CoverLetterPreview ref={cvLayoutRef} coverLetterId={params.id} />
                 </div>
                 <Transition appear show={isOpen} as={Fragment}>

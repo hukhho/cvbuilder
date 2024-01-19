@@ -5,7 +5,7 @@ import './preview.css';
 import './preview1.css';
 
 import getCoverLetter from './getCoverLetter';
-import { Button, Card, Col, InputNumber, Popover, Row, Slider, Tooltip } from 'antd';
+import { Button, Card, Col, InputNumber, Popover, Row, Skeleton, Slider, Tooltip } from 'antd';
 import { Box, ChakraProvider, VStack } from '@chakra-ui/react';
 import { CommentOutlined } from '@ant-design/icons';
 import ContentEditable from 'react-contenteditable';
@@ -79,8 +79,10 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   //   addressto: 'Dear Google',
   //   content: content2.description,
   // };
+  const [isLoadingPage, setIsLoadingPage] = useState(false);
   async function fetchData() {
     try {
+      setIsLoadingPage(true);
       const content2 = await getCoverLetter(coverLetterId);
       setContent({
         name: content2.user.name,
@@ -93,6 +95,8 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
     } catch (error) {
       // Handle any errors that occur during the data fetch
       console.error('Error fetching data:', error);
+    } finally {
+      setIsLoadingPage(false);
     }
   }
 
@@ -132,7 +136,7 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   return (
     <div style={{ marginLeft: -13 }}>
       <div className="sample-generator-wrapper">
-        <div className="toolbar flex" style={{ width: 890}}>
+        <div className="toolbar flex" style={{ width: 890 }}>
           <div className="flex flex-col items-start">
             <label>Line height</label>
             <Row>
@@ -258,95 +262,98 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
           <div />
         </div> */}
         <div></div>
-        <div className="wrapper-cover-letter mb-10" style={divStyle} ref={captureRef}>
-          <div className="cover-preview-wrapper">
-            <div className="preview">
-              <div className="inner">
-                <div className="resume">
-                  <div className="" template="omega-template" id="resumeWrapper">
-                    <article
-                      className="omegacover"
-                      data-icons="true"
-                      style={{ fontSize: `${fontSize}pt`, lineHeight: `${lineHeight}em` }}
-                    >
-                      <h1 className="name">
-                        <span
-                          className="editableContent cursor-text"
-                          id="cl-name-name"
-                          contentEditable="true"
-                        >
-                          {content?.name}
-                        </span>
-                      </h1>
-                      <div className="contact">
-                        <span
-                          className="editableContent cursor-text contact-item"
-                          id="cl-address-address"
-                          contentEditable="true"
-                        >
-                          {content?.address}
-                        </span>
-                        <span
-                          className="editableContent cursor-text contact-item"
-                          id="cl-phone-phone"
-                          contentEditable="true"
-                        >
-                          {content?.phone}
-                        </span>
-                        <span
-                          className="editableContent cursor-text contact-item"
-                          id="cl-email-email"
-                          contentEditable="true"
-                        >
-                          {content?.email}
-                        </span>
-                      </div>
-                      <div className="intro">
-                        <span
-                          className="contact-item"
-                          id="cl-intro-date"
-                          contentEditable="true"
+        {isLoadingPage && <Skeleton />}
+        {!isLoadingPage && (
+          <div className="wrapper-cover-letter mb-10" style={divStyle} ref={captureRef}>
+            <div className="cover-preview-wrapper">
+              <div className="preview">
+                <div className="inner">
+                  <div className="resume">
+                    <div className="" template="omega-template" id="resumeWrapper">
+                      <article
+                        className="omegacover"
+                        data-icons="true"
+                        style={{ fontSize: `${fontSize}pt`, lineHeight: `${lineHeight}em` }}
+                      >
+                        <h1 className="name">
+                          <span
+                            className="editableContent cursor-text"
+                            id="cl-name-name"
+                            contentEditable="true"
+                          >
+                            {content?.name}
+                          </span>
+                        </h1>
+                        <div className="contact">
+                          <span
+                            className="editableContent cursor-text contact-item"
+                            id="cl-address-address"
+                            contentEditable="true"
+                          >
+                            {content?.address}
+                          </span>
+                          <span
+                            className="editableContent cursor-text contact-item"
+                            id="cl-phone-phone"
+                            contentEditable="true"
+                          >
+                            {content?.phone}
+                          </span>
+                          <span
+                            className="editableContent cursor-text contact-item"
+                            id="cl-email-email"
+                            contentEditable="true"
+                          >
+                            {content?.email}
+                          </span>
+                        </div>
+                        <div className="intro">
+                          <span
+                            className="contact-item"
+                            id="cl-intro-date"
+                            contentEditable="true"
 
-                          // defaultValue={content.introDate}
-                        >
-                          {content?.introDate}
-                        </span>
-                        <span
-                          className="editableContent cursor-text contact-item"
-                          id="cl-company-company"
-                          contentEditable="true"
-                          dangerouslySetInnerHTML={{ __html: content?.company }}
-                        />
-                      </div>
-                      <div className="item">
-                        <p>
-                          {/* <ContentEditable
+                            // defaultValue={content.introDate}
+                          >
+                            {content?.introDate}
+                          </span>
+                          <span
+                            className="editableContent cursor-text contact-item"
+                            id="cl-company-company"
+                            contentEditable="true"
+                            dangerouslySetInnerHTML={{ __html: content?.company }}
+                          />
+                        </div>
+                        <div className="item">
+                          <p>
+                            {/* <ContentEditable
                             html={content?.content} // innerHTML of the editable div
                             disabled={false} // use true to disable editing
                             tagName="article" // Use a custom HTML tag (uses a div by default)
                           /> */}
 
-                          <span
-                            style={{ overflow: 'auto' }}
-                            className=""
-                            id="cl-content-content"
-                            contentEditable="true"
-                          >
-                            {content?.content}
-                          </span>
-                        </p>
-                      </div>
-                    </article>
+                            <span
+                              style={{ overflow: 'auto' }}
+                              className=""
+                              id="cl-content-content"
+                              contentEditable="true"
+                            >
+                              {content?.content}
+                            </span>
+                          </p>
+                        </div>
+                      </article>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div className="compiler-aside mt-10" />
+            <div className="mt-10 bg-white">
+              <br />
+            </div>
           </div>
-          <div className="compiler-aside mt-10" />
-          <div className="mt-10 bg-white">
-            <br />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

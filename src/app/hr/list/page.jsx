@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, ConfigProvider, Input, Table, Typography } from 'antd';
+import { Avatar, Badge, ConfigProvider, Input, Skeleton, Table, Typography } from 'antd';
 import UserLayout from '@/app/components/Layout/UserLayout';
 import UserHeader from '@/app/components/UserHeader';
 import UserHeaderReview from '@/app/components/UserHeaderReview';
@@ -21,6 +21,7 @@ import HeaderHR from '@/app/components/HeaderHR';
 import Link from 'next/link';
 import useStore from '@/store/store';
 import Search from 'antd/es/input/Search';
+import { useRouter } from 'next/router';
 
 const { Title } = Typography;
 const columns = [
@@ -57,7 +58,7 @@ const columns = [
       { text: 'Unpublish', value: 'Unpublish' },
       { text: 'Disable', value: 'Disable' },
     ],
-    onFilter: (value, record) => record.status === value,
+    onFilter: (value, record) => record?.status === value,
   },
 
   {
@@ -70,7 +71,7 @@ const columns = [
     title: 'Application',
     dataIndex: 'application',
     sorter: {
-      compare: (a, b) => a.application - b.application,
+      compare: (a, b) => a?.application - b?.application,
       multiple: 2,
     },
   },
@@ -96,25 +97,6 @@ const columns = [
     ),
   },
 ];
-// const statuses = ['Waiting', 'Overdue', 'Done'];
-// const dateRandome = ['3 days ago', 'Next Tuesday'];
-
-// for (let i = 0; i < 100; i++) {
-//   const price = Math.floor(Math.random() * 10) + 1;
-//   const due = dateRandome[Math.floor(Math.random() * dateRandome.length)];
-//   const status = statuses[Math.floor(Math.random() * statuses.length)];
-
-//   data.push({
-//     key: i,
-//     resumeName: 'Pham Viet Thuan Thien',
-//     name: '<User Name>',
-//     note: 'Vel cras auctor at tortor imperdiet amet id sed rhoncus.',
-//     price,
-//     status,
-//     receiveDate: due,
-//     deadline: due,
-//   });
-// }
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -128,22 +110,27 @@ const Home = () => {
   const [filteredData, setFilteredData] = useState(initialData);
 
   const onChange = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
+    // console.log('params', pagination, filters, sorter, extra);
   };
+
+  // const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const fetchData = async () => {
     try {
-      console.log('fetchData getReviewRequestsByCandiate');
+      setIsLoading(true);
       const fetchedDataFromAPI = await getHrPostList();
       setData(fetchedDataFromAPI);
       setFilteredData(fetchedDataFromAPI);
     } catch (error) {
-      console.log('getReviewRequestsByCandiate:Error: ', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log('useEffect');
-
+    // console.log('useEffect');
     fetchData();
   }, []);
   const [searchValue, setSearchValue] = useState();
@@ -151,7 +138,9 @@ const Home = () => {
   const onSearch = value => {
     if (value) {
       setSearchValue(value);
-      const filtered = data.filter(item => item?.title.toLowerCase().includes(value.toLowerCase()));
+      const filtered = data?.filter(item =>
+        item?.title.toLowerCase().includes(value.toLowerCase()),
+      );
       setFilteredData(filtered);
     } else {
       setSearchValue();
@@ -188,7 +177,10 @@ const Home = () => {
             </div>
             <div className="!p-0 mb-5 mt-5 card">
               <div className="">
-                <Table columns={columns} dataSource={filteredData} onChange={onChange} />
+                {isLoading && <Skeleton />}
+                {!isLoading && (
+                  <Table columns={columns} dataSource={filteredData} onChange={onChange} />
+                )}
               </div>
             </div>
           </div>
