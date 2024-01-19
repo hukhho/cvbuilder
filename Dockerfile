@@ -1,10 +1,10 @@
-FROM node:18.17.0 AS dependency
+FROM node:20.10.0 AS dependency
 
 WORKDIR /app
 COPY package.json .
 RUN yarn install --frozen-lockfile
 
-FROM node:18.17.0 AS builder
+FROM node:20.10.0 AS builder
 WORKDIR /app
 COPY --from=dependency /app/node_modules ./node_modules
 COPY . .

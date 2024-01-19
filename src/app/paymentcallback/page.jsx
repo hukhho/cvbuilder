@@ -16,6 +16,7 @@ const PaymentCallbackPage = () => {
 
   const [payment, setPayment] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+
   const { secondsRemaining } = useRedirectAfterSomeSeconds('/candidate/purchases', 5);
 
   const fetchData = async () => {
