@@ -123,7 +123,9 @@ const ExpertRequestPage = () => {
       title: 'Price',
       dataIndex: 'price',
       render: text => {
-        const cleanedText = text.replace('.', ''); // Remove the decimal separator
+        // Check if text is a string before using replace
+        const cleanedText = typeof text === 'string' ? text.replace('.', '') : text;
+        
         const parsedNumber = Number(cleanedText);
     
         const formattedPrice = isNaN(parsedNumber)
@@ -139,7 +141,7 @@ const ExpertRequestPage = () => {
         compare: (a, b) => a.price - b.price,
         multiple: 3,
       },
-    },    
+    },
     {
       title: 'Status',
       dataIndex: 'status',

@@ -90,16 +90,18 @@ const Home = () => {
       title: 'Price',
       dataIndex: 'price',
       render: text => {
-        const cleanedText = text.replace('.', ''); // Remove the decimal separator
+        // Check if text is a string before using replace
+        const cleanedText = typeof text === 'string' ? text.replace('.', '') : text;
+        
         const parsedNumber = Number(cleanedText);
-
+    
         const formattedPrice = isNaN(parsedNumber)
           ? text // Show the original text if parsing fails
           : parsedNumber.toLocaleString('vi-VN', {
               style: 'currency',
               currency: 'VND',
             });
-
+    
         return <div>{formattedPrice}</div>;
       },
       sorter: {
