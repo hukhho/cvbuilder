@@ -45,7 +45,7 @@ const { Title } = Typography;
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
-    'BROSWER CVS': true,
+    'BROSWE CVS': true,
   });
   const { avatar, email, userRole } = useStore();
 

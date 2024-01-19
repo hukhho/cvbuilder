@@ -352,7 +352,6 @@
 .resume {
   /*width: 23.3cm;*/
   /*min-height: 30cm;*/
-  width: 100%;
   min-height: calc(28cm + 4rem);
   border-radius: var(--radius-3);
 }

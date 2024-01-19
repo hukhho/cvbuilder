@@ -258,7 +258,7 @@ const UserLayout = ({
             pointerEvents: selected === '8' ? 'none' : 'auto',
           }}
         >
-          <span style={{ color: '#ffffff', fontSize: 11 }}>BROWSER A JOB</span>
+          <span style={{ color: '#ffffff', fontSize: 11 }}>BROWSE A JOB</span>
         </Link>
       ),
       roles: ['ADMIN', 'CANDIDATE', 'HR'], // Define roles that can access this item

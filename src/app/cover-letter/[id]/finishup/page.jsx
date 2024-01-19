@@ -9,7 +9,6 @@ import { Alert, Button, Card, ConfigProvider, Divider, Space } from 'antd';
 import UserCVBuilderHeader from '@/app/components/UserCVBuilderHeader';
 import UserCVBuilderLayout from '@/app/components/Layout/UseCVBuilderLayout';
 import UserCoverLetterBuilderHeader from '@/app/components/UserCoverLetterBuilderHeader';
-
 import ExperienceForm from '@/app/components/Form/ExperienceForm';
 import CVLayout from '@/app/components/Templates/CVLayout';
 import InformationSection from '@/app/components/Templates/SectionComponents/InformationSection';
@@ -223,7 +222,7 @@ export default function FinishUp({ params }) {
                   />
                 )}
 
-                <div className="" style={{ minWidth: 210, minHeight: 297 }}>
+                <div className="" style={{ minWidth: 1000, minHeight: 297 }}>
                   <CoverLetterPreview ref={cvLayoutRef} coverLetterId={params.id} />
                 </div>
                 <Transition appear show={isOpen} as={Fragment}>

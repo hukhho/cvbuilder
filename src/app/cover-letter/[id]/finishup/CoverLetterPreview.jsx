@@ -134,7 +134,7 @@ const CoverLetterPreview = React.forwardRef(({ coverLetterId }, ref) => {
   };
 
   return (
-    <div style={{ marginLeft: -13 }}>
+    <div style={{ marginLeft: -13, minWidth: 1000 }}>
       <div className="sample-generator-wrapper">
         <div className="toolbar flex" style={{ width: 890 }}>
           <div className="flex flex-col items-start">
