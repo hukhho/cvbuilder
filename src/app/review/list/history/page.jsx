@@ -115,7 +115,7 @@ const columns = [
   //   },
   // },
   {
-    title: 'Receive day',
+    title: 'Date',
     dataIndex: 'receiveDay',
     sorter: {
       compare: (a, b) => a.revicedDay - b.revicedDay,

@@ -51,7 +51,8 @@ const HrForm = ({ onCreated, data, resumeOptions }) => {
   };
 
   const [form] = Form.useForm();
-
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(data?.companyLogo);
   useEffect(() => {
     console.log('ExpertForm data: ', data);
 
@@ -62,11 +63,9 @@ const HrForm = ({ onCreated, data, resumeOptions }) => {
       // const initialData = mockData;
       // console.log('initialData: ', initialData);
       form.setFieldsValue(data);
+      setImageUrl(data?.companyLogo);
     }
   }, [data, form]);
-
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(data?.companyLogo);
 
   const handleSubmit = async values => {
     try {

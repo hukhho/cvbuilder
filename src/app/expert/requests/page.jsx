@@ -174,7 +174,7 @@ const ExpertRequestPage = () => {
       },
     },
     {
-      title: 'Receive day',
+      title: 'Date',
       dataIndex: 'receivedDate',
       sorter: {
         compare: (a, b) => moment(a.receivedDate) - moment(b.receivedDate),
