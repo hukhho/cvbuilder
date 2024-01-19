@@ -48,7 +48,7 @@ const Home = () => {
       title: 'Resume Name',
       dataIndex: 'resumeName',
       render: (text, record) => {
-        if (record.status !== "Processing" ) {
+        if (record.status !== 'Processing') {
           return <Link href={`/review/view-response/${record.id}`}>{text}</Link>;
         } else {
           return text; // Display the text without a link if status is not "Done"
@@ -60,7 +60,7 @@ const Home = () => {
       dataIndex: 'expert',
       render: text => (
         <div>
-          <Avatar className='mr-2' icon={<UserOutlined />} /> 
+          <Avatar className="mr-2" icon={<UserOutlined />} />
           {text}
         </div>
       ),
@@ -69,18 +69,39 @@ const Home = () => {
       title: 'Note',
       dataIndex: 'note',
     },
+    // {
+    //   title: 'Price',
+    //   dataIndex: 'price',
+    //   render: text => (
+    //     <div>
+    //       {/* {Number(text).toLocaleString('vi-VN', {
+    //         style: 'currency',
+    //         currency: 'VND',
+    //       })} */}
+    //       {text}
+    //     </div>
+    //   ),
+    //   sorter: {
+    //     compare: (a, b) => a.price - b.price,
+    //     multiple: 3,
+    //   },
+    // },
     {
       title: 'Price',
       dataIndex: 'price',
-      render: text => (
-        <div>
-          {/* {Number(text).toLocaleString('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-          })} */}
-          {text}
-        </div>
-      ),
+      render: text => {
+        const cleanedText = text.replace('.', ''); // Remove the decimal separator
+        const parsedNumber = Number(cleanedText);
+
+        const formattedPrice = isNaN(parsedNumber)
+          ? text // Show the original text if parsing fails
+          : parsedNumber.toLocaleString('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
+            });
+
+        return <div>{formattedPrice}</div>;
+      },
       sorter: {
         compare: (a, b) => a.price - b.price,
         multiple: 3,

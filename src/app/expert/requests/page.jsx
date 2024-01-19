@@ -43,13 +43,11 @@ const ExpertRequestPage = () => {
       console.log('fetchData getReviewRequestsByCandiate');
       const fetchedDataFromAPI = await getRequestList();
 
-
       setData(fetchedDataFromAPI);
 
       fetchedDataFromAPI.sort((b, a) => moment(a?.receivedDate) - moment(b?.receivedDate));
 
       setSearchData(fetchedDataFromAPI);
-
     } catch (error) {}
   };
 
@@ -104,23 +102,44 @@ const ExpertRequestPage = () => {
       title: 'Note',
       dataIndex: 'note',
     },
+    // {
+    //   title: 'Price',
+    //   dataIndex: 'price',
+    //   render: text => (
+    //     <div>
+    //       {/* {Number(text).toLocaleString('vi-VN', {
+    //         style: 'currency',
+    //         currency: 'VND',
+    //       })} */}
+    //       {text}
+    //     </div>
+    //   ),
+    //   sorter: {
+    //     compare: (a, b) => a.price - b.price,
+    //     multiple: 3,
+    //   },
+    // },
     {
       title: 'Price',
       dataIndex: 'price',
-      render: text => (
-        <div>
-          {/* {Number(text).toLocaleString('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-          })} */}
-          {text}
-        </div>
-      ),
+      render: text => {
+        const cleanedText = text.replace('.', ''); // Remove the decimal separator
+        const parsedNumber = Number(cleanedText);
+    
+        const formattedPrice = isNaN(parsedNumber)
+          ? text // Show the original text if parsing fails
+          : parsedNumber.toLocaleString('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
+            });
+    
+        return <div>{formattedPrice}</div>;
+      },
       sorter: {
         compare: (a, b) => a.price - b.price,
         multiple: 3,
       },
-    },
+    },    
     {
       title: 'Status',
       dataIndex: 'status',
@@ -236,7 +255,6 @@ const ExpertRequestPage = () => {
   useEffect(() => {
     console.log('useEffect');
     fetchData();
-
   }, []);
 
   return (

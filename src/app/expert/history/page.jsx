@@ -39,22 +39,45 @@ const columns = [
       </div>
     ),
   },
+  // {
+  //   title: 'Price',
+  //   dataIndex: 'price',
+  //   render: text => <div>{text} đ</div>,
+  //   sorter: {
+  //     compare: (a, b) => a.price - b.price,
+  //     multiple: 3,
+  //   },
+  // },
   {
     title: 'Price',
     dataIndex: 'price',
-    render: text => <div>{text} đ</div>,
+    render: text => {
+      const cleanedText = text.replace('.', ''); // Remove the decimal separator
+      const parsedNumber = Number(cleanedText);
+
+      const formattedPrice = isNaN(parsedNumber)
+        ? text // Show the original text if parsing fails
+        : parsedNumber.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          });
+
+      return <div>{formattedPrice}</div>;
+    },
     sorter: {
       compare: (a, b) => a.price - b.price,
       multiple: 3,
     },
   },
+
   {
     title: 'Review Response',
     dataIndex: 'reviewResponse',
     render: (text, record) => (
       <div>
         {' '}
-        {record?.star} {record?.star ? <StarFilled className='mr-1' style={{ color: 'orange' }} /> : null}
+        {record?.star}{' '}
+        {record?.star ? <StarFilled className="mr-1" style={{ color: 'orange' }} /> : null}
         {record?.response}
       </div>
     ),
@@ -75,7 +98,6 @@ const columns = [
     ),
   },
 ];
-
 
 const Home = () => {
   const [enabledCategories, setEnabledCategories] = useState({
@@ -128,7 +150,6 @@ const Home = () => {
     }
   };
 
-
   return (
     <ConfigProvider>
       <UserLayout
@@ -145,13 +166,13 @@ const Home = () => {
             </div>
             <div>
               <div>
-              <Search
-                allowClear
-                placeholder="Search candidate name"
-                size="large"
-                defaultValue={searchValue}
-                onSearch={onSearch}
-              />
+                <Search
+                  allowClear
+                  placeholder="Search candidate name"
+                  size="large"
+                  defaultValue={searchValue}
+                  onSearch={onSearch}
+                />
               </div>
             </div>
             <div className="!p-0 mb-5 mt-4 card">

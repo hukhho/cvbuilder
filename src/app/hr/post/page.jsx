@@ -15,6 +15,7 @@ import {
   InputNumber,
   Radio,
   Select,
+  Skeleton,
   Space,
   Switch,
   TreeSelect,
@@ -74,8 +75,16 @@ const HRPost = () => {
   const [data, setData] = useState();
   const [resumes, setResumes] = useState([]);
 
+  const [isLimited, setIsLimited] = useState();
+  const [isLoadingPage, setIsLoadingPage] = useState(false);
+  const onChangeSwitch = checked => {
+    console.log(`switch to ${checked}`);
+    setIsLimited(checked);
+  };
+
   const fetchData = async () => {
     try {
+      setIsLoadingPage(true);
       const fetchedDataFromAPI = await getHrConfig();
       console.log('fetchedDataFromAPI: ', fetchedDataFromAPI);
 
@@ -90,6 +99,8 @@ const HRPost = () => {
       });
     } catch (error) {
       console.log('getReviewRequestsByCandiate:Error: ', error);
+    } finally {
+      setIsLoadingPage(false);
     }
   };
 
@@ -185,13 +196,6 @@ const HRPost = () => {
   const onChangeDate = (date, dateString) => {
     console.log(date, dateString);
     setDeadlineString(dateString);
-  };
-
-  const [isLimited, setIsLimited] = useState(false);
-
-  const onChangeSwitch = checked => {
-    console.log(`switch to ${checked}`);
-    setIsLimited(checked);
   };
 
   const [openSuccess, setOpenSuccess] = useState(false);
@@ -365,95 +369,101 @@ const HRPost = () => {
                 </Card>
               </div>
               <div className="mt-16" style={{ width: 900 }}>
-                <Form
-                  layout="vertical"
-                  initialValues={{
-                    size: 'large',
-                    workingType: 'Full Time', // Set the default value here
-                    applyAgain: 1,
-                    salary: 'From 1,000$ to 2,000$',
-                    isLimited: isLimited,
-                  }}
-                  requiredMark={false}
-                  form={form}
-                  onFinish={onFinish}
-                >
-                  <Form.Item
-                    rules={[{ required: true }]}
-                    className="custom-label"
-                    name="title"
-                    label="JOB TITLE *"
+                {isLoadingPage && <Skeleton />}
+                {!isLoadingPage && (
+                  <Form
+                    layout="vertical"
+                    initialValues={{
+                      size: 'large',
+                      workingType: 'Full Time', // Set the default value here
+                      applyAgain: 1,
+                      salary: 'From 1,000$ to 2,000$',
+                      isLimited: isLimited,
+                    }}
+                    requiredMark={false}
+                    form={form}
+                    onFinish={onFinish}
                   >
-                    <Input className="inputEl" />
-                  </Form.Item>
-                  <Form.Item className="custom-label" name="workingType" label="TYPE OF JOB">
-                    <Select
-                      defaultValue="Full Time"
-                      style={{
-                        width: 350,
-                        height: '60px',
-                      }}
-                      onChange={handleChangeSelectJobType}
-                      options={[
-                        {
-                          value: 'Full Time',
-                          label: 'Full Time',
-                        },
-                        {
-                          value: 'Part Time',
-                          label: 'Part Time',
-                        },
-                        {
-                          value: 'Remote',
-                          label: 'Remote',
-                        },
-                        {
-                          value: 'Others',
-                          label: 'Others',
-                        },
-                      ]}
-                    />
-                  </Form.Item>
-                  <Space.Compact block>
-                    {' '}
                     <Form.Item
+                      rules={[{ required: true }]}
                       className="custom-label"
-                      name="companyName"
-                      label="COMPANY NAME"
-                      style={{
-                        width: '40%',
-                        marginRight: '10px',
-                      }}
+                      name="title"
+                      label="JOB TITLE *"
                     >
-                      <Input className="inputEl" placeholder="Google" disabled />
+                      <Input className="inputEl" />
                     </Form.Item>
-                    <Form.Item
-                      className="custom-label"
-                      name="location"
-                      label="COMPANY LOCATION"
-                      style={{
-                        width: '40%',
-                        marginRight: '10px',
-                      }}
-                    >
-                      <Input className="inputEl" placeholder="New York" disabled />
+                    <Form.Item className="custom-label" name="workingType" label="TYPE OF JOB">
+                      <Select
+                        defaultValue="Full Time"
+                        style={{
+                          width: 350,
+                          height: '60px',
+                        }}
+                        onChange={handleChangeSelectJobType}
+                        options={[
+                          {
+                            value: 'Full Time',
+                            label: 'Full Time',
+                          },
+                          {
+                            value: 'Part Time',
+                            label: 'Part Time',
+                          },
+                          {
+                            value: 'Remote',
+                            label: 'Remote',
+                          },
+                          {
+                            value: 'Others',
+                            label: 'Others',
+                          },
+                        ]}
+                      />
                     </Form.Item>
-                    <Form.Item
-                      className="custom-label"
-                      name="avatar"
-                      label="COMPANY AVATAR"
-                      style={{
-                        width: '20%',
-                      }}
-                    >
-                      <Input hidden />
-                      <Avatar size="large" src={data?.companyLogo} />
+                    <Space.Compact block>
+                      {' '}
+                      <Form.Item
+                        className="custom-label"
+                        name="companyName"
+                        label="COMPANY NAME"
+                        style={{
+                          width: '40%',
+                          marginRight: '10px',
+                        }}
+                      >
+                        <Input className="inputEl" placeholder="Google" disabled />
+                      </Form.Item>
+                      <Form.Item
+                        className="custom-label"
+                        name="location"
+                        label="COMPANY LOCATION"
+                        style={{
+                          width: '40%',
+                          marginRight: '10px',
+                        }}
+                      >
+                        <Input className="inputEl" placeholder="New York" disabled />
+                      </Form.Item>
+                      <Form.Item
+                        className="custom-label"
+                        name="avatar"
+                        label="COMPANY AVATAR"
+                        style={{
+                          width: '20%',
+                        }}
+                      >
+                        <Input hidden />
+                        <Avatar size="large" src={data?.companyLogo} />
+                      </Form.Item>
+                    </Space.Compact>
+                    <Form.Item className="custom-label" name="about" label="About">
+                      <Input.TextArea
+                        className="inputEl"
+                        placeholder="About the company"
+                        rows={10}
+                      />
                     </Form.Item>
-                  </Space.Compact>
-                  <Form.Item className="custom-label" name="about" label="About">
-                    <Input.TextArea className="inputEl" placeholder="About the company" rows={10} />
-                  </Form.Item>
-                  {/* <Form.Item className="custom-label" name="" label="SALARY">
+                    {/* <Form.Item className="custom-label" name="" label="SALARY">
                     <Select
                       style={{
                         width: 350,
@@ -525,11 +535,11 @@ const HRPost = () => {
                     )}
                   </Form.Item> */}
 
-                  <Form.Item className="custom-label" name="salary" label="SALARY">
-                    <Input className="inputEl" placeholder="Salary" />
-                  </Form.Item>
+                    <Form.Item className="custom-label" name="salary" label="SALARY">
+                      <Input className="inputEl" placeholder="Salary" />
+                    </Form.Item>
 
-                  {/* <Form.Item className="custom-label" name="salary" label="SALARY">
+                    {/* <Form.Item className="custom-label" name="salary" label="SALARY">
                     <Select
                       className="inputEl"
                       placeholder="Select or Enter Salary"
@@ -543,121 +553,127 @@ const HRPost = () => {
                     </Select>
                   </Form.Item> */}
 
-                  <Form.Item className="custom-label" name="benefit" label="Benefit">
-                    <Input.TextArea
-                      className="inputEl"
-                      placeholder="Say about what benefits candidate can recieve"
-                      rows={10}
-                    />
-                  </Form.Item>
-
-                  <Form.Item className="custom-label" name="requirement" label="Job Requirement">
-                    <Input.TextArea
-                      className="inputEl"
-                      placeholder="Say about requirement of the job"
-                      rows={10}
-                    />
-                  </Form.Item>
-                  <Form.Item className="custom-label" name="description" label="Job Description">
-                    <Input.TextArea
-                      className="inputEl"
-                      placeholder="Say about the description of the job"
-                      rows={10}
-                    />
-                  </Form.Item>
-                  <Form.Item name="skill" className="custom-label" label="Skills">
-                    <Select
-                      mode="tags"
-                      style={{
-                        width: '100%',
-                        height: 50,
-                      }}
-                      placeholder="Tags Mode"
-                      onChange={handleChangeTag}
-                      options={options}
-                    />
-                  </Form.Item>
-                  <div
-                    className="custom-space-item-2"
-                    style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
-                  >
-                    <Form.Item
-                      className="custom-item custom-label"
-                      name="deadline"
-                      // rules={[
-                      //   {
-                      //     required: true,
-                      //     message: 'Please select a deadline',
-                      //   },
-                      // ]}
-                      label="Deadline *"
-                    >
-                      <DatePicker
-                        style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
+                    <Form.Item className="custom-label" name="benefit" label="Benefit">
+                      <Input.TextArea
                         className="inputEl"
-                        format="YYYY-MM-DD"
-                        disabledDate={disabledDate}
-                        onChange={onChangeDate}
+                        placeholder="Say about what benefits candidate can recieve"
+                        rows={10}
                       />
                     </Form.Item>
 
-                    <div className="custom-item custom-label">
-                      <div className="">
-                        <Form.Item name="isLimited" style={{ marginTop: -10, marginBottom: 0 }}>
-                          <Switch
-                            value={isLimited}
-                            defaultChecked={isLimited}
-                            onChange={onChangeSwitch}
-                          />
-                          <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                    <Form.Item className="custom-label" name="requirement" label="Job Requirement">
+                      <Input.TextArea
+                        className="inputEl"
+                        placeholder="Say about requirement of the job"
+                        rows={10}
+                      />
+                    </Form.Item>
+                    <Form.Item className="custom-label" name="description" label="Job Description">
+                      <Input.TextArea
+                        className="inputEl"
+                        placeholder="Say about the description of the job"
+                        rows={10}
+                      />
+                    </Form.Item>
+                    <Form.Item name="skill" className="custom-label" label="Skills">
+                      <Select
+                        mode="tags"
+                        style={{
+                          width: '100%',
+                          height: 50,
+                        }}
+                        placeholder="Tags Mode"
+                        onChange={handleChangeTag}
+                        options={options}
+                      />
+                    </Form.Item>
+                    <div
+                      className="custom-space-item-2"
+                      style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+                    >
+                      <Form.Item
+                        className="custom-item custom-label"
+                        name="deadline"
+                        // rules={[
+                        //   {
+                        //     required: true,
+                        //     message: 'Please select a deadline',
+                        //   },
+                        // ]}
+                        label="Deadline *"
+                      >
+                        <DatePicker
+                          style={{ height: '60px', marginTop: -10, marginBottom: 0 }}
+                          className="inputEl"
+                          format="YYYY-MM-DD"
+                          disabledDate={disabledDate}
+                          onChange={onChangeDate}
+                        />
+                      </Form.Item>
+
+                      <div className="custom-item custom-label">
+                        <div className="">
+                          <Form.Item name="isLimited" style={{ marginTop: -10, marginBottom: 0 }}>
+                            <Switch
+                              value={isLimited}
+                              defaultChecked={isLimited}
+                              onChange={onChangeSwitch}
+                            />
+                            <span className="ml-4">LIMIT CANDIDATE'S APPLYING PER JOB</span>
+                          </Form.Item>
+                        </div>
+
+                        <Form.Item className="" styles={{ marginTop: -10 }} name="applyAgain">
+                          {isLimited && (
+                            <InputNumber
+                              className="inputEl"
+                              defaultValue={1}
+                              min={1}
+                              type="number"
+                            />
+                          )}
                         </Form.Item>
                       </div>
-
-                      <Form.Item className="" styles={{ marginTop: -10 }} name="applyAgain">
-                        {isLimited && (
-                          <InputNumber className="inputEl" defaultValue={1} min={1} type="number" />
-                        )}
-                      </Form.Item>
                     </div>
-                  </div>
-                  <Form.Item>
-                    <div className="flex items-between">
-                      <Button
-                        style={{
-                          height: 35,
-                          width: '78%',
-                          marginRight: '12px',
-                        }}
-                        type="primary"
-                        htmlType="submit"
-                      >
-                        PUBLISH THE JOB
-                      </Button>
-                      <Button
-                        style={{
-                          height: 35,
-                          width: '18%',
-                          background: 'white',
-                        }}
-                        onClick={() => {
-                          // Validate the form fields
-                          form
-                            .validateFields()
-                            .then(values => {
-                              // Validation successful, call the saveDraft function to save the draft
-                              saveDraft(values);
-                            })
-                            .catch(errorInfo => {
-                              // Validation failed, you can handle the error or display a message to the user
-                              console.log('Validation failed:', errorInfo);
-                            });
-                        }}
-                      >
-                        SAVE DRAFT
-                      </Button>{' '}
-                    </div>
-                  </Form.Item>
-                </Form>
+                    <Form.Item>
+                      <div className="flex items-between">
+                        <Button
+                          style={{
+                            height: 35,
+                            width: '78%',
+                            marginRight: '12px',
+                          }}
+                          type="primary"
+                          htmlType="submit"
+                        >
+                          PUBLISH THE JOB
+                        </Button>
+                        <Button
+                          style={{
+                            height: 35,
+                            width: '18%',
+                            background: 'white',
+                          }}
+                          onClick={() => {
+                            // Validate the form fields
+                            form
+                              .validateFields()
+                              .then(values => {
+                                // Validation successful, call the saveDraft function to save the draft
+                                saveDraft(values);
+                              })
+                              .catch(errorInfo => {
+                                // Validation failed, you can handle the error or display a message to the user
+                                console.log('Validation failed:', errorInfo);
+                              });
+                          }}
+                        >
+                          SAVE DRAFT
+                        </Button>{' '}
+                      </div>
+                    </Form.Item>
+                  </Form>
+                )}
               </div>
             </div>
           </div>

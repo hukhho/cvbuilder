@@ -49,15 +49,23 @@ export default function MonthSub({ money, onCreated }) {
   const handleFormSubmit = async event => {
     event.preventDefault();
     try {
-      formData.expenditure = Math.floor(formData.expenditure / 1);
-      const result = await subMonth(formData);
-      openNotification('bottomRight', `Create: ${result.id}`);
+      // formData.expenditure = Math.floor(formData.expenditure / 1);
+      const submitForm = { expenditure: money }
+
+      const result = await subMonth(submitForm);
+      notification.info({
+        message: 'Payment'
+      });
+      // openNotification('bottomRight', `Create: ${result.id}`);
       // onCreated();
       console.log('result: ', result);
       const newTab = window.open(result, '_blank');
       closeModal();
     } catch (error) {
-      openNotification('bottomRight', `Error: ${error}`);
+      notification.error({
+        message: error?.response?.data || 'Error'
+      });
+      // openNotification('bottomRight', `Error: ${error}`);
     }
   };
   return (

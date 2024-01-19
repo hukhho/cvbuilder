@@ -120,6 +120,8 @@ const HRUpdatePost = ({ params }) => {
         } catch (err) {}
       }
 
+      setIsLimited(fetchedJobPosting?.isLimited);
+
       form.setFieldsValue({
         ...fetchedJobPosting,
       });
@@ -227,7 +229,7 @@ const HRUpdatePost = ({ params }) => {
     setDeadlineString(dateString);
   };
 
-  const [isLimited, setIsLimited] = useState(false);
+  const [isLimited, setIsLimited] = useState();
 
   const onChangeSwitch = checked => {
     console.log(`switch to ${checked}`);
@@ -240,7 +242,7 @@ const HRUpdatePost = ({ params }) => {
     values.deadline = deadlineString;
     values.isLimited = isLimited;
     if (!isLimited) {
-      values.applyAgain = 99;
+      values.apply = 99;
     }
     if (values?.share !== 'Draft') {
       if (deadlineString === '') {
@@ -341,21 +343,20 @@ const HRUpdatePost = ({ params }) => {
     );
   };
 
-
   const validateSalary = (rule, value) => {
     if (!value) {
       return Promise.reject('Please enter a salary');
     }
-  
+
     const pattern = /^(You'll love it|Up to \d+\$|Exact \d+\$|From \d+\$ to \d+\$)$/;
-  
+
     if (!pattern.test(value)) {
       return Promise.reject('Invalid salary format');
     }
-  
+
     return Promise.resolve();
   };
-  
+
   return (
     <ConfigProvider>
       <UserLayout
@@ -444,8 +445,8 @@ const HRUpdatePost = ({ params }) => {
                     layout="vertical"
                     initialValues={{
                       size: 'large',
-                      workingType: 'Full Time', // Set the default value here
-                      applyAgain: 1,
+                      // workingType: 'Full Time', // Set the default value here
+                      // apply: 1,
                     }}
                     requiredMark={false}
                     form={form}
@@ -595,7 +596,7 @@ const HRUpdatePost = ({ params }) => {
                           onChange={onChangeDate}
                         />
                       </Form.Item>
-                        {/* <input value={deadlineString} /> */}
+                      {/* <input value={deadlineString} /> */}
 
                       <div className="custom-item custom-label">
                         <div className="">
@@ -609,7 +610,7 @@ const HRUpdatePost = ({ params }) => {
                           </Form.Item>
                         </div>
 
-                        <Form.Item className="" styles={{ marginTop: -10 }} name="applyAgain">
+                        <Form.Item className="" styles={{ marginTop: -10 }} name="apply">
                           {isLimited && (
                             <InputNumber
                               className="inputEl"

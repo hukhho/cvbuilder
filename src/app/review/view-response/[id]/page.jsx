@@ -1234,15 +1234,31 @@ export default function FinishUp({ params }) {
   };
 
   const router = useRouter();
-  const handleViewApply = () => {
-    console.log('View you resume, ', resumeToOpens);
-    refreshResumes();
-    if (resumeToOpen) {
-      router.push(`/resume/${resumeToOpen}/finishup`);
-    } else {
-      return;
+
+  const handleViewApply = async () => {
+    let retries = 3;
+    while (retries > 0) {
+      try {
+        if (resumeToOpen) {
+          refreshResumes();
+          await wait(1000);
+          router.push(`/resume/${resumeToOpen}/finishup`);
+          return;
+        } else {
+          // If resumeToOpen is undefined or null, wait for 1 second and retry
+          await wait(1000);
+          retries--;
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
+
+    console.log('Retry limit reached. ResumeToOpen is still undefined or null.');
   };
+
+  // Function to create a delay using Promises
+  const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   return (
     <main>

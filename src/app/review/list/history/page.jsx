@@ -38,22 +38,46 @@ const columns = [
   //   title: 'Note',
   //   dataIndex: 'note',
   // },
+  // {
+  //   title: 'Price',
+  //   dataIndex: 'price',
+  //   render: text => (
+  //     <div>
+  //       {(Number(text)*1000).toLocaleString('vi-VN', {
+  //         style: 'currency',
+  //         currency: 'VND',
+  //       })}
+  //     </div>
+  //   ),
+  //   sorter: {
+  //     compare: (a, b) => a.price - b.price,
+  //     multiple: 3,
+  //   },
+  // },
   {
     title: 'Price',
     dataIndex: 'price',
-    render: text => (
-      <div>
-        {(Number(text)*1000).toLocaleString('vi-VN', {
-          style: 'currency',
-          currency: 'VND',
-        })}
-      </div>
-    ),
+    render: text => {
+      // Check if text is a string before using replace
+      const cleanedText = typeof text === 'string' ? text.replace('.', '') : text;
+      
+      const parsedNumber = Number(cleanedText);
+  
+      const formattedPrice = isNaN(parsedNumber)
+        ? text // Show the original text if parsing fails
+        : parsedNumber.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          });
+  
+      return <div>{formattedPrice}</div>;
+    },
     sorter: {
       compare: (a, b) => a.price - b.price,
       multiple: 3,
     },
   },
+  
   {
     title: 'Candidate Review',
     dataIndex: 'candidateReview',
