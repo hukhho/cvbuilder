@@ -8,7 +8,7 @@ import useRedirectAfterSomeSeconds from './Redirect';
 import { queryPayment } from '@/app/candidate/candidateServices';
 
 // Component
-const PaymentCallbackPage = () => {
+const PaymentCallbackPageHr = () => {
   const searchParams = useSearchParams();
 
   const requestId = searchParams.get('requestId');
@@ -76,4 +76,4 @@ const PaymentCallbackPage = () => {
   );
 };
 
-export default PaymentCallbackPage;
+export default PaymentCallbackPageHr;
