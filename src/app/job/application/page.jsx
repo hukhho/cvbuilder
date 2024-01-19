@@ -22,6 +22,7 @@ import UserHeaderJob from '@/app/components/UserHeaderJob';
 import { getCandidateApplication, getHrApplication } from '@/app/hr/hrServices';
 import useStore from '@/store/store';
 import Search from 'antd/es/input/Search';
+import moment from 'moment';
 
 const { Title } = Typography;
 
@@ -43,6 +44,8 @@ const Home = () => {
     try {
       const fetchedDataFromAPI = await getCandidateApplication();
       console.log('fetchData fetchedDataFromAPI: ', fetchedDataFromAPI);
+
+      fetchedDataFromAPI.sort((b, a) => moment(a?.applyDate) - moment(b?.applyDate));
 
       setData(fetchedDataFromAPI);
       setFilteredData(fetchedDataFromAPI);
